@@ -5,6 +5,10 @@ const num = (v, d) => (v == null || v === "" ? d : Number(v));
 export const config = {
   store: process.env.SHOPIFY_STORE,
   token: process.env.SHOPIFY_ADMIN_TOKEN,
+  // Client-credentials method (newer custom apps): the engine exchanges these
+  // for a short-lived Admin API token automatically on each run.
+  clientId: process.env.SHOPIFY_CLIENT_ID,
+  clientSecret: process.env.SHOPIFY_CLIENT_SECRET,
   apiVersion: process.env.SHOPIFY_API_VERSION || "2024-10",
 
   geo: process.env.TREND_GEO ?? "EG",
@@ -25,10 +29,14 @@ export const config = {
 };
 
 export function assertConfig() {
-  const missing = [];
-  if (!config.store) missing.push("SHOPIFY_STORE");
-  if (!config.token) missing.push("SHOPIFY_ADMIN_TOKEN");
-  if (missing.length) {
-    throw new Error(`Missing required env: ${missing.join(", ")}. Copy .env.example to .env (see README).`);
+  if (!config.store) {
+    throw new Error("Missing SHOPIFY_STORE. Copy .env.example to .env (see README).");
+  }
+  const hasToken = !!config.token;
+  const hasClientCreds = !!(config.clientId && config.clientSecret);
+  if (!hasToken && !hasClientCreds) {
+    throw new Error(
+      "Provide either SHOPIFY_ADMIN_TOKEN, or SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET (client-credentials method)."
+    );
   }
 }

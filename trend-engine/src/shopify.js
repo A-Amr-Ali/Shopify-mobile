@@ -4,12 +4,37 @@ import { config } from "./config.js";
 const endpoint = () =>
   `https://${config.store}/admin/api/${config.apiVersion}/graphql.json`;
 
+// Resolve an Admin API access token. If a static token is provided we use it;
+// otherwise we exchange client_id + client_secret via the client-credentials
+// grant (Shopify returns a short-lived shpat_ token, refreshed each run).
+let resolvedToken = config.token || null;
+async function ensureToken() {
+  if (resolvedToken) return resolvedToken;
+  const res = await fetch(`https://${config.store}/admin/oauth/access_token`, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "client_credentials",
+      client_id: config.clientId,
+      client_secret: config.clientSecret,
+    }),
+  });
+  if (!res.ok) {
+    throw new Error(`Token exchange failed HTTP ${res.status}: ${await res.text()}`);
+  }
+  const json = await res.json();
+  if (!json.access_token) throw new Error(`Token exchange returned no access_token: ${JSON.stringify(json)}`);
+  resolvedToken = json.access_token;
+  return resolvedToken;
+}
+
 async function gql(query, variables = {}) {
+  const token = await ensureToken();
   const res = await fetch(endpoint(), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Shopify-Access-Token": config.token,
+      "X-Shopify-Access-Token": token,
     },
     body: JSON.stringify({ query, variables }),
   });

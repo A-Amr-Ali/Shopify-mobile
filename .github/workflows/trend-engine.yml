@@ -33,7 +33,11 @@ jobs:
       - name: Run trend engine
         env:
           SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          # Use EITHER a static token…
           SHOPIFY_ADMIN_TOKEN: ${{ secrets.SHOPIFY_ADMIN_TOKEN }}
+          # …OR client credentials (API key + API secret key).
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
           SHOPIFY_API_VERSION: "2024-10"
           TREND_GEO: "EG"
           MAX_TRENDING: "12"
