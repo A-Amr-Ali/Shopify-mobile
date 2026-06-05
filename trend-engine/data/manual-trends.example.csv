@@ -1,0 +1,14 @@
+# Manual TikTok / Instagram trend feed.
+# Copy this file to "manual-trends.csv" and edit. Format:  keyword,weight
+# weight is 0..1 (how hot it is). Lines starting with # are ignored.
+# The engine matches each keyword against your product title / brand / type / tags.
+#
+# Examples — update these whenever you spot something going viral:
+rare beauty,0.9
+soft pinch,1.0
+lip oil,0.85
+charlotte tilbury,0.7
+makeup by mario,0.6
+laura mercier translucent powder,0.8
+saie,0.5
+glossier,0.5

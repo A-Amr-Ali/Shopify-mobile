@@ -1,0 +1,14 @@
+{
+  "name": "sofie-trend-engine",
+  "version": "1.0.0",
+  "description": "Auto-tags trending & best-selling products for Sofie's Makeup Store by blending Google Trends (Egypt), live sales velocity, and a manual TikTok/Instagram feed, then writing tags via the Shopify Admin API.",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node src/index.js",
+    "dry-run": "DRY_RUN=true node src/index.js"
+  },
+  "dependencies": {
+    "google-trends-api": "^4.9.2"
+  }
+}

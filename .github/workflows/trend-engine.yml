@@ -1,0 +1,42 @@
+name: Sofie Trend Engine
+
+# Runs daily to refresh `trending` / `bestseller` product tags from live signals.
+# Configure repo secrets: SHOPIFY_STORE, SHOPIFY_ADMIN_TOKEN (see trend-engine/README.md).
+on:
+  schedule:
+    - cron: "0 6 * * *"   # every day 06:00 UTC (~08:00 Cairo)
+  workflow_dispatch:       # lets you run it on demand from the Actions tab
+    inputs:
+      dry_run:
+        description: "Preview only (no tag writes)"
+        type: boolean
+        default: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: trend-engine
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: trend-engine/package.json
+
+      - name: Install
+        run: npm install --no-audit --no-fund
+
+      - name: Run trend engine
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_ADMIN_TOKEN: ${{ secrets.SHOPIFY_ADMIN_TOKEN }}
+          SHOPIFY_API_VERSION: "2024-10"
+          TREND_GEO: "EG"
+          MAX_TRENDING: "12"
+          MAX_BESTSELLERS: "12"
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: node src/index.js
