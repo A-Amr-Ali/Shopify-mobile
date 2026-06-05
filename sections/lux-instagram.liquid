@@ -22,7 +22,7 @@
             <img src="{{ block.settings.image | image_url: width: 400 }}"
                  srcset="{{ block.settings.image | image_url: width: 300 }} 300w, {{ block.settings.image | image_url: width: 500 }} 500w"
                  sizes="(min-width: 990px) 16vw, 33vw"
-                 alt="{{ block.settings.alt | default: 'Sofie''s Makeup Store on Instagram' | escape }}"
+                 alt="{{ block.settings.alt | default: "Sofie's Makeup Store on Instagram" | escape }}"
                  width="400" height="400" loading="lazy" decoding="async">
           {%- else -%}
             {{ 'image' | placeholder_svg_tag }}

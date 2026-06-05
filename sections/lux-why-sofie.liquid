@@ -13,7 +13,7 @@
           <img src="{{ section.settings.image | image_url: width: 900 }}"
                srcset="{{ section.settings.image | image_url: width: 600 }} 600w, {{ section.settings.image | image_url: width: 1000 }} 1000w"
                sizes="(min-width: 990px) 45vw, 100vw"
-               alt="{{ section.settings.image.alt | default: 'Sofie''s Makeup Store — Egypt''s luxury beauty destination' | escape }}"
+               alt="{{ section.settings.image.alt | default: "Sofie's Makeup Store — Egypt's luxury beauty destination" | escape }}"
                width="900" height="1125" loading="lazy" decoding="async">
         {%- else -%}
           {{ 'lifestyle-1' | placeholder_svg_tag }}

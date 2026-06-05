@@ -67,8 +67,10 @@
             <h2>{{ block.settings.heading | default: 'Explore More' | escape }}</h2>
             <p>
               {%- for i in (1..6) -%}
-                {%- assign lbl = block.settings['label_' | append: i] -%}
-                {%- assign url = block.settings['link_' | append: i] -%}
+                {%- assign label_key = 'label_' | append: i -%}
+                {%- assign link_key = 'link_' | append: i -%}
+                {%- assign lbl = block.settings[label_key] -%}
+                {%- assign url = block.settings[link_key] -%}
                 {%- if lbl != blank and url != blank -%}
                   <a href="{{ url }}" class="sofie__link" style="margin:0 1rem 1rem 0">{{ lbl | escape }}</a>
                 {%- endif -%}

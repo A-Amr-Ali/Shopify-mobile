@@ -6,7 +6,7 @@
 {{ 'sofie-luxury.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'sofie-luxury.js' | asset_url }}" defer></script>
 
-<section class="sofie sofie-hero" aria-label="{{ section.settings.aria_label | default: 'Welcome to Sofie''s Makeup Store' | escape }}">
+<section class="sofie sofie-hero" aria-label="{{ section.settings.aria_label | default: "Welcome to Sofie's Makeup Store" | escape }}">
   <div class="sofie-hero__grid">
 
     {%- comment -%} ---- MAKEUP PANEL (primary) ---- {%- endcomment -%}
@@ -16,7 +16,7 @@
           <img src="{{ section.settings.makeup_image | image_url: width: 1400 }}"
                srcset="{{ section.settings.makeup_image | image_url: width: 700 }} 700w, {{ section.settings.makeup_image | image_url: width: 1100 }} 1100w, {{ section.settings.makeup_image | image_url: width: 1600 }} 1600w"
                sizes="(min-width: 990px) 58vw, 100vw"
-               alt="{{ section.settings.makeup_image.alt | default: 'Luxury makeup at Sofie''s Makeup Store Egypt' | escape }}"
+               alt="{{ section.settings.makeup_image.alt | default: "Luxury makeup at Sofie's Makeup Store Egypt" | escape }}"
                width="1400" height="900" fetchpriority="high" decoding="async">
         {%- else -%}
           {{ 'lifestyle-1' | placeholder_svg_tag }}
