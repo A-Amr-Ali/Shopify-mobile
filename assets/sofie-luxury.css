@@ -4,17 +4,21 @@
    Scope: all classes are namespaced with `sofie-` to avoid collisions with the
    host theme. Drop this file in /assets and it is auto-included by the sections.
    --------------------------------------------------------------------------
-   1. Design tokens (color, type, spacing, motion)
-   2. Primitives (container, buttons, eyebrow, headings, dividers)
-   3. Components (hero, trust bar, product card, category, brand, why, ig, seo)
-   4. Utilities + reduced-motion + responsive
+   ★ TO CHANGE THE "BLACK": edit --sofie-ink below (ONE line). Every dark
+     overlay, the dark band, buttons and headings update automatically.
+       Warm espresso (default) ... #2a201d
+       Deep plum / wine ........... #3a2230
+       Deep emerald ............... #1f3a30
+       True charcoal .............. #232323
    ========================================================================== */
 
 /* 1. DESIGN TOKENS --------------------------------------------------------- */
 :root {
-  /* Luxury neutrals — warm, editorial, Sephora-adjacent but unique */
-  --sofie-ink:        #1a1614;   /* near-black, warm */
-  --sofie-charcoal:   #2c2622;
+  /* ★ The single "dark" colour. Change this one value to re-skin the site. */
+  --sofie-ink:        #2a201d;   /* warm deep espresso (soft black) */
+
+  /* Luxury neutrals — warm, editorial */
+  --sofie-charcoal:   #3a2e29;
   --sofie-stone:      #6f6660;   /* muted body text */
   --sofie-mist:       #a89f98;   /* captions / meta */
   --sofie-line:       #e7e1db;   /* hairline borders */
@@ -22,14 +26,20 @@
   --sofie-cream:      #fbf9f6;   /* page base */
   --sofie-white:      #ffffff;
 
-  /* Accent — restrained champagne/gold + a single deep brand tone */
-  --sofie-gold:       #b08d57;   /* champagne gold */
+  /* Accent — restrained champagne/gold + a soft rose */
+  --sofie-gold:       #b08d57;
   --sofie-gold-deep:  #8a6d3f;
-  --sofie-rose:       #b8857a;   /* soft rose for makeup cues */
+  --sofie-rose:       #b8857a;
   --sofie-success:    #2f7d5b;
 
-  /* Typography — elegant serif display + clean sans body.
-     Falls back gracefully to theme fonts if these aren't loaded. */
+  /* Derived dark overlays (auto-follow --sofie-ink) */
+  --sofie-ov-05: color-mix(in srgb, var(--sofie-ink) 5%, transparent);
+  --sofie-ov-28: color-mix(in srgb, var(--sofie-ink) 28%, transparent);
+  --sofie-ov-66: color-mix(in srgb, var(--sofie-ink) 66%, transparent);
+  --sofie-ov-72: color-mix(in srgb, var(--sofie-ink) 72%, transparent);
+  --sofie-ov-70: color-mix(in srgb, var(--sofie-ink) 70%, transparent);
+
+  /* Typography */
   --sofie-font-display: "Cormorant Garamond", "Playfair Display", Georgia, "Times New Roman", serif;
   --sofie-font-body:    var(--font-body-family, "Inter", "Helvetica Neue", Arial, sans-serif);
 
@@ -37,13 +47,13 @@
   --sofie-fs-body:    1rem;
   --sofie-fs-lead:    1.125rem;
   --sofie-fs-h3:      clamp(1.35rem, 1rem + 1.4vw, 1.9rem);
-  --sofie-fs-h2:      clamp(1.9rem, 1.2rem + 2.6vw, 3rem);
-  --sofie-fs-h1:      clamp(2.6rem, 1.4rem + 4.6vw, 5rem);
+  --sofie-fs-h2:      clamp(1.8rem, 1.2rem + 2.6vw, 3rem);
+  --sofie-fs-h1:      clamp(2.4rem, 1.4rem + 4.6vw, 5rem);
 
-  --sofie-track-wide: 0.22em;   /* luxury letter-spacing for eyebrows */
+  --sofie-track-wide: 0.22em;
   --sofie-track-cta:  0.14em;
 
-  /* Spacing scale (8pt-ish, generous luxury rhythm) */
+  /* Spacing scale */
   --sofie-s1: 0.5rem;
   --sofie-s2: 1rem;
   --sofie-s3: 1.5rem;
@@ -53,10 +63,22 @@
   --sofie-s7: 6.5rem;
 
   --sofie-container: 1320px;
-  --sofie-radius: 2px;          /* sharp, editorial corners = premium */
+  --sofie-radius: 2px;
   --sofie-radius-lg: 6px;
-  --sofie-shadow: 0 18px 50px -28px rgba(26, 22, 20, 0.35);
+  --sofie-shadow: 0 18px 50px -28px color-mix(in srgb, var(--sofie-ink) 35%, transparent);
   --sofie-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Fallback for very old browsers without color-mix (kept subtle, espresso-toned) */
+@supports not (color: color-mix(in srgb, red, blue)) {
+  :root {
+    --sofie-ov-05: rgba(42,32,29,0.05);
+    --sofie-ov-28: rgba(42,32,29,0.28);
+    --sofie-ov-66: rgba(42,32,29,0.66);
+    --sofie-ov-72: rgba(42,32,29,0.72);
+    --sofie-ov-70: rgba(42,32,29,0.70);
+    --sofie-shadow: 0 18px 50px -28px rgba(42,32,29,0.35);
+  }
 }
 
 /* 2. PRIMITIVES ------------------------------------------------------------ */
@@ -114,7 +136,7 @@
   max-width: 60ch;
   margin: 0;
 }
-.sofie__section--ink .sofie__lead { color: rgba(251, 249, 246, 0.78); }
+.sofie__section--ink .sofie__lead { color: color-mix(in srgb, var(--sofie-cream) 78%, transparent); }
 
 .sofie__head {
   display: flex;
@@ -195,7 +217,6 @@
 .sofie-hero { position: relative; background: var(--sofie-ink); }
 .sofie-hero__grid {
   display: grid;
-  /* Makeup leads (business primacy), Home is the elegant counterpart */
   grid-template-columns: 1.15fr 0.85fr;
   min-height: clamp(540px, 78vh, 820px);
 }
@@ -208,26 +229,19 @@
   overflow: hidden;
   isolation: isolate;
 }
-.sofie-hero__media {
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-}
+.sofie-hero__media { position: absolute; inset: 0; z-index: -2; }
 .sofie-hero__media img {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   object-fit: cover;
   transition: transform 1.2s var(--sofie-ease);
 }
 .sofie-hero__panel:hover .sofie-hero__media img { transform: scale(1.05); }
 .sofie-hero__panel::after {
   content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(180deg, rgba(26,22,20,0.05) 0%, rgba(26,22,20,0.72) 100%);
+  position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, var(--sofie-ov-05) 0%, var(--sofie-ov-72) 100%);
 }
-.sofie-hero__panel--home::after { background: linear-gradient(180deg, rgba(26,22,20,0.05) 0%, rgba(26,22,20,0.66) 100%); }
+.sofie-hero__panel--home::after { background: linear-gradient(180deg, var(--sofie-ov-05) 0%, var(--sofie-ov-66) 100%); }
 .sofie-hero__eyebrow {
   font-size: 0.72rem;
   letter-spacing: var(--sofie-track-wide);
@@ -254,7 +268,7 @@
 }
 .sofie-hero__cta { display: flex; flex-wrap: wrap; gap: var(--sofie-s2); }
 
-/* Hero trust strip (above the fold) */
+/* Hero trust strip */
 .sofie-hero__trust {
   position: relative;
   z-index: 2;
@@ -270,7 +284,7 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  color: rgba(251,249,246,0.92);
+  color: color-mix(in srgb, var(--sofie-cream) 92%, transparent);
   font-size: 0.8rem;
   letter-spacing: 0.04em;
 }
@@ -339,9 +353,7 @@
   object-fit: cover;
   transition: opacity 0.5s var(--sofie-ease), transform 0.7s var(--sofie-ease);
 }
-.sofie-card__media img.sofie-card__alt {
-  position: absolute; inset: 0; opacity: 0;
-}
+.sofie-card__media img.sofie-card__alt { position: absolute; inset: 0; opacity: 0; }
 .sofie-card:hover .sofie-card__media img.sofie-card__primary { opacity: 0; }
 .sofie-card:hover .sofie-card__media img.sofie-card__alt { opacity: 1; }
 .sofie-card:hover .sofie-card__media img { transform: scale(1.04); }
@@ -374,9 +386,7 @@
   font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--sofie-mist); margin: 0 0 0.3rem; font-weight: 600;
 }
-.sofie-card__title {
-  font-size: 0.95rem; font-weight: 500; line-height: 1.35; margin: 0 0 0.45rem;
-}
+.sofie-card__title { font-size: 0.95rem; font-weight: 500; line-height: 1.35; margin: 0 0 0.45rem; }
 .sofie-card__title a { color: inherit; text-decoration: none; }
 .sofie-card__title a:hover { color: var(--sofie-gold-deep); }
 .sofie-card__rating { display: inline-flex; align-items: center; gap: 0.3rem; margin-bottom: 0.35rem; }
@@ -401,7 +411,7 @@
 .sofie-cat__item:hover img { transform: scale(1.06); }
 .sofie-cat__item::after {
   content: ""; position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(26,22,20,0) 35%, rgba(26,22,20,0.7) 100%);
+  background: linear-gradient(180deg, transparent 35%, var(--sofie-ov-70) 100%);
 }
 .sofie-cat__label {
   position: absolute; left: 1.25rem; bottom: 1.1rem; z-index: 2;
@@ -434,7 +444,7 @@
 .sofie-brands__item:hover { background: var(--sofie-ink); color: #fff; }
 .sofie-brands__item:hover img { filter: none; opacity: 1; }
 
-/* 3f. WHY SOFIE (editorial story) ------------------------------ */
+/* 3f. WHY SOFIE ------------------------------------------------- */
 .sofie-why__grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(2rem, 5vw, 5rem); }
 .sofie-why__media { position: relative; aspect-ratio: 4 / 5; border-radius: var(--sofie-radius-lg); overflow: hidden; }
 .sofie-why__media img { width: 100%; height: 100%; object-fit: cover; }
@@ -443,6 +453,7 @@
 .sofie-why__pillar svg { width: 30px; height: 30px; color: var(--sofie-gold-deep); }
 .sofie-why__pillar h3 { font-family: var(--sofie-font-display); font-size: 1.25rem; margin: 0 0 0.3rem; font-weight: 600; }
 .sofie-why__pillar p { margin: 0; color: var(--sofie-stone); line-height: 1.55; }
+.sofie__section--ink .sofie-why__pillar p { color: color-mix(in srgb, var(--sofie-cream) 75%, transparent); }
 
 /* 3g. INSTAGRAM ------------------------------------------------ */
 .sofie-ig__grid { display: grid; grid-template-columns: repeat(var(--sofie-ig-cols, 6), 1fr); gap: var(--sofie-s2); }
@@ -450,7 +461,7 @@
 .sofie-ig__item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--sofie-ease); }
 .sofie-ig__item:hover img { transform: scale(1.07); }
 .sofie-ig__item::after {
-  content: ""; position: absolute; inset: 0; background: rgba(26,22,20,0.28);
+  content: ""; position: absolute; inset: 0; background: var(--sofie-ov-28);
   opacity: 0; transition: opacity 0.4s var(--sofie-ease);
 }
 .sofie-ig__item:hover::after { opacity: 1; }
@@ -480,40 +491,88 @@
 .sofie-reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.8s var(--sofie-ease), transform 0.8s var(--sofie-ease); }
 .sofie-reveal.is-in { opacity: 1; transform: none; }
 
+/* ---- TABLET (≤990px) ---- */
 @media (max-width: 990px) {
   :root { --sofie-cols: 3; --sofie-cat-cols: 2; --sofie-brand-cols: 4; --sofie-ig-cols: 4; }
   .sofie-hero__grid { grid-template-columns: 1fr; }
-  .sofie-hero__panel { min-height: 60vh; }
+  .sofie-hero__panel { min-height: 58vh; }
   .sofie-why__grid { grid-template-columns: 1fr; }
   .sofie-trust__grid { grid-template-columns: repeat(2, 1fr); }
   .sofie-trust__item:nth-child(2n) { border-right: none; }
   .sofie-trust__item { border-bottom: 1px solid var(--sofie-line); }
   .sofie-trust__item:last-child, .sofie-trust__item:nth-last-child(2) { border-bottom: none; }
 }
+
+/* ---- MOBILE (≤749px) — tuned for a premium phone experience ---- */
 @media (max-width: 749px) {
   :root { --sofie-cols: 2; --sofie-brand-cols: 3; --sofie-ig-cols: 3; }
+
   .sofie__section { padding-block: var(--sofie-s5); }
-  .sofie__head { flex-direction: column; align-items: flex-start; gap: var(--sofie-s2); }
+  .sofie__head { flex-direction: column; align-items: flex-start; gap: var(--sofie-s2); margin-bottom: var(--sofie-s4); }
   .sofie__head--center { align-items: center; }
-  .sofie-trust__grid { grid-template-columns: 1fr; }
-  .sofie-trust__item { border-right: none; border-bottom: 1px solid var(--sofie-line); }
+  .sofie__h2 { font-size: clamp(1.7rem, 6.5vw, 2.2rem); }
+
+  /* HERO: taller, readable, full-width buttons, tighter overlay for contrast */
+  .sofie-hero__grid { grid-template-columns: 1fr; }
+  .sofie-hero__panel { min-height: 72vh; justify-content: flex-end; padding: 1.5rem 1.25rem 2rem; }
+  .sofie-hero__panel::after { background: linear-gradient(180deg, var(--sofie-ov-28) 0%, var(--sofie-ov-72) 100%); }
+  .sofie-hero__title { font-size: clamp(2.3rem, 10vw, 3.2rem); }
+  .sofie-hero__sub { font-size: 1rem; max-width: 32ch; }
+  .sofie-hero__cta { width: 100%; }
+  .sofie-hero__cta .sofie__btn { flex: 1 1 auto; min-width: calc(50% - 0.5rem); }
+  .sofie-hero__trust { gap: 0.5rem 1.25rem; padding: 1rem; }
+  .sofie-hero__trust-item { font-size: 0.72rem; }
+
+  /* TRUST BAR: single column, comfy rows */
+  .sofie-trust__grid { grid-template-columns: 1fr; gap: 0; }
+  .sofie-trust__item { border-right: none; border-bottom: 1px solid var(--sofie-line); padding: var(--sofie-s3) var(--sofie-s2); }
   .sofie-trust__item:last-child { border-bottom: none; }
-  .sofie-grid { display: grid; }
-  /* On mobile, best-seller grids become swipeable rails for a premium feel */
+
+  /* BEST-SELLER / SEO grids become swipeable luxury rails */
   .sofie-grid--rail-mobile {
     grid-auto-flow: column;
-    grid-auto-columns: 64%;
+    grid-auto-columns: 70%;
     grid-template-columns: none;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+    gap: var(--sofie-s2);
     margin-inline: calc(-1 * clamp(1rem, 4vw, 3rem));
     padding-inline: clamp(1rem, 4vw, 3rem);
     scrollbar-width: none;
   }
   .sofie-grid--rail-mobile::-webkit-scrollbar { display: none; }
   .sofie-grid--rail-mobile > * { scroll-snap-align: start; }
-  .sofie-hero__title { font-size: clamp(2.4rem, 9vw, 3.4rem); }
+
+  /* Quick-add always visible on touch (no hover) + big tap target */
   .sofie-card__quickadd { opacity: 1; transform: none; position: static; margin-top: var(--sofie-s2); }
+  .sofie-card__quickadd .sofie__btn { min-height: 46px; }
+
+  /* CATEGORY tiles: roomy 2-up */
+  .sofie-cat__grid { gap: var(--sofie-s2); }
+  .sofie-cat__label { font-size: 1.1rem; left: 1rem; bottom: 0.9rem; }
+
+  /* BRAND wall: legible 3-up */
+  .sofie-brands__item { min-height: 92px; font-size: 1rem; padding: var(--sofie-s2); }
+
+  /* WHY: image first, comfortable rhythm */
+  .sofie-why__grid { gap: var(--sofie-s4); }
+  .sofie-why__pillars { gap: var(--sofie-s3); }
+
+  /* SEO hero spacing */
+  .sofie-seo__hero { padding-block: var(--sofie-s5) var(--sofie-s5); }
+  .sofie-seo__hero h1 { font-size: clamp(2rem, 9vw, 2.8rem); }
+  .sofie-seo__rich { margin-top: var(--sofie-s5); }
+
+  /* Buttons comfy on phones */
+  .sofie__btn { min-height: 50px; padding: 0 1.5rem; }
+  .sofie-faq__q { font-size: 1.05rem; }
+}
+
+/* ---- SMALL PHONES (≤430px) ---- */
+@media (max-width: 430px) {
+  :root { --sofie-cols: 2; --sofie-ig-cols: 3; }
+  .sofie-grid--rail-mobile { grid-auto-columns: 78%; }
+  .sofie-hero__cta .sofie__btn { min-width: 100%; }  /* stack buttons full-width */
 }
 
 @media (prefers-reduced-motion: reduce) {
