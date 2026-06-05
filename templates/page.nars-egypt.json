@@ -1,5 +1,4 @@
 {
-  "_comment": "SEO landing page for 'NARS Egypt'. Assign to a Page with handle 'nars-egypt'.",
   "sections": {
     "main": {
       "type": "lux-seo-landing",
