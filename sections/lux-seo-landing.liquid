@@ -1,0 +1,134 @@
+{%- comment -%}
+  Sofie — SEO Landing section. Powers high-intent pages such as:
+  "Rare Beauty Egypt", "Huda Beauty Egypt", "Charlotte Tilbury Egypt",
+  "Luxury Makeup Egypt", "Authentic Makeup Egypt", etc.
+
+  Structure (Google + CRO optimised):
+   1. H1 hero with keyword-rich eyebrow, H1, intro, CTAs, inline trust
+   2. Featured products from the mapped collection (real internal links + AJAX)
+   3. Long-form rich SEO copy (blocks)
+   4. Internal-linking row to sibling brand/intent pages
+  Pair with the "Lux FAQ" section (FAQ schema) + lux-jsonld breadcrumb/collection
+  in the page template JSON.
+{%- endcomment -%}
+{{ 'sofie-luxury.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sofie-luxury.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign coll = collections[section.settings.collection]
+  assign limit = section.settings.limit | default: 8
+-%}
+
+{%- comment -%} 1. HERO {%- endcomment -%}
+<section class="sofie sofie-seo__hero" aria-label="{{ section.settings.h1 | escape }}">
+  <div class="sofie__container">
+    {%- if section.settings.eyebrow != blank -%}<span class="sofie__eyebrow">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+    <h1>{{ section.settings.h1 | escape }}</h1>
+    {%- if section.settings.intro != blank -%}<p>{{ section.settings.intro | escape }}</p>{%- endif -%}
+    <div class="sofie-hero__cta" style="justify-content:center">
+      {%- if section.settings.cta != blank -%}<a class="sofie__btn" href="{{ section.settings.cta_link | default: coll.url }}">{{ section.settings.cta | escape }}</a>{%- endif -%}
+      {%- if section.settings.cta2 != blank -%}<a class="sofie__btn sofie__btn--ghost" href="{{ section.settings.cta2_link }}">{{ section.settings.cta2 | escape }}</a>{%- endif -%}
+    </div>
+    <div class="sofie-trust__grid" style="grid-template-columns:repeat(3,auto);justify-content:center;gap:2.5rem;margin-top:2.5rem;border:0">
+      <span class="sofie-hero__trust-item" style="color:var(--sofie-stone)">{% render 'lux-icon', name: 'badge' %} 100% Authentic</span>
+      <span class="sofie-hero__trust-item" style="color:var(--sofie-stone)">{% render 'lux-icon', name: 'sparkle' %} 10+ Years Expertise</span>
+      <span class="sofie-hero__trust-item" style="color:var(--sofie-stone)">{% render 'lux-icon', name: 'truck' %} Fast Delivery Across Egypt</span>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} 2. FEATURED PRODUCTS {%- endcomment -%}
+{%- if coll != blank and coll.products.size > 0 -%}
+<section class="sofie sofie__section" aria-label="Shop {{ section.settings.h1 | escape }}" style="--sofie-cols:4">
+  <div class="sofie__container">
+    <div class="sofie__head sofie-reveal">
+      <div><h2 class="sofie__h2">{{ section.settings.products_heading | default: 'Shop the Collection' | escape }}</h2></div>
+      <a class="sofie__link" href="{{ coll.url }}">View all {% render 'lux-icon', name: 'arrow' %}</a>
+    </div>
+    <div class="sofie-grid sofie-grid--rail-mobile">
+      {%- for product in coll.products limit: limit -%}
+        {% render 'lux-product-card', product: product %}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{%- comment -%} 3. RICH SEO COPY + 4. INTERNAL LINKS {%- endcomment -%}
+<section class="sofie sofie__section sofie__section--tint">
+  <div class="sofie__container">
+    <div class="sofie-seo__rich sofie-reveal">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'text' -%}
+            {%- if block.settings.heading != blank -%}<h2>{{ block.settings.heading | escape }}</h2>{%- endif -%}
+            {{ block.settings.body }}
+          {%- when 'links' -%}
+            <h2>{{ block.settings.heading | default: 'Explore More' | escape }}</h2>
+            <p>
+              {%- for i in (1..6) -%}
+                {%- assign lbl = block.settings['label_' | append: i] -%}
+                {%- assign url = block.settings['link_' | append: i] -%}
+                {%- if lbl != blank and url != blank -%}
+                  <a href="{{ url }}" class="sofie__link" style="margin:0 1rem 1rem 0">{{ lbl | escape }}</a>
+                {%- endif -%}
+              {%- endfor -%}
+            </p>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lux SEO Landing",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Hero (H1)" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Authentic • In Egypt • Delivered Fast" },
+    { "type": "text", "id": "h1", "label": "H1 heading", "default": "Rare Beauty Egypt" },
+    { "type": "textarea", "id": "intro", "label": "Intro paragraph", "default": "Shop 100% authentic Rare Beauty in Egypt at Sofie's Makeup Store. Discover Soft Pinch Liquid Blush, Positive Light, and more — curated by experts, delivered nationwide." },
+    { "type": "text", "id": "cta", "label": "Primary CTA", "default": "Shop the Collection" },
+    { "type": "url", "id": "cta_link", "label": "Primary CTA link" },
+    { "type": "text", "id": "cta2", "label": "Secondary CTA", "default": "Explore All Brands" },
+    { "type": "url", "id": "cta2_link", "label": "Secondary CTA link" },
+
+    { "type": "header", "content": "Featured products" },
+    { "type": "collection", "id": "collection", "label": "Collection to feature" },
+    { "type": "text", "id": "products_heading", "label": "Products heading", "default": "Shop the Collection" },
+    { "type": "range", "id": "limit", "label": "Products", "min": 4, "max": 16, "step": 2, "default": 8 }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "SEO text block",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading (H2)" },
+        { "type": "richtext", "id": "body", "label": "Body" }
+      ]
+    },
+    {
+      "type": "links",
+      "name": "Internal links row",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Explore More" },
+        { "type": "text", "id": "label_1", "label": "Label 1" }, { "type": "url", "id": "link_1", "label": "Link 1" },
+        { "type": "text", "id": "label_2", "label": "Label 2" }, { "type": "url", "id": "link_2", "label": "Link 2" },
+        { "type": "text", "id": "label_3", "label": "Label 3" }, { "type": "url", "id": "link_3", "label": "Link 3" },
+        { "type": "text", "id": "label_4", "label": "Label 4" }, { "type": "url", "id": "link_4", "label": "Link 4" },
+        { "type": "text", "id": "label_5", "label": "Label 5" }, { "type": "url", "id": "link_5", "label": "Link 5" },
+        { "type": "text", "id": "label_6", "label": "Label 6" }, { "type": "url", "id": "link_6", "label": "Link 6" }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Lux SEO Landing",
+    "blocks": [
+      { "type": "text", "settings": { "heading": "Authentic Rare Beauty in Egypt", "body": "<p>At Sofie's Makeup Store, every Rare Beauty product is 100% authentic and sourced from authorized channels. For over a decade we have been Egypt's trusted home for prestige beauty — online and in our Marassi and Akti by Zahra boutiques.</p>" } },
+      { "type": "text", "settings": { "heading": "Why Buy Rare Beauty from Sofie's", "body": "<ul><li>100% authentic — guaranteed</li><li>Curated by 10+ years of beauty expertise</li><li>Fast, careful delivery across Egypt</li><li>Shop in person at Marassi M-Porium & Akti by Zahra</li></ul>" } },
+      { "type": "links" }
+    ]
+  }]
+}
+{% endschema %}

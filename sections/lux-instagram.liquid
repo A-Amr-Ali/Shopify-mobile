@@ -1,0 +1,68 @@
+{%- comment -%}
+  Sofie — Instagram. Elegant manual gallery (no third-party app bloat).
+  Each tile links to a post or to the profile. Keeps the luxury feel and is fast.
+{%- endcomment -%}
+{{ 'sofie-luxury.css' | asset_url | stylesheet_tag }}
+
+<section class="sofie sofie__section {% if section.settings.tint %}sofie__section--tint{% endif %}"
+         style="--sofie-ig-cols: {{ section.settings.columns | default: 6 }};"
+         aria-label="{{ section.settings.heading | escape }}">
+  <div class="sofie__container">
+    <div class="sofie__head sofie__head--center sofie-reveal">
+      {%- if section.settings.eyebrow != blank -%}<span class="sofie__eyebrow">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+      <h2 class="sofie__h2">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.handle != blank -%}
+        <a class="sofie__link" href="{{ section.settings.profile_url }}" rel="nofollow noopener" target="_blank">{% render 'lux-icon', name: 'instagram' %} {{ section.settings.handle | escape }}</a>
+      {%- endif -%}
+    </div>
+    <div class="sofie-ig__grid sofie-reveal">
+      {%- for block in section.blocks -%}
+        <a class="sofie-ig__item" href="{{ block.settings.link | default: section.settings.profile_url }}" rel="nofollow noopener" target="_blank" {{ block.shopify_attributes }} aria-label="View on Instagram">
+          {%- if block.settings.image -%}
+            <img src="{{ block.settings.image | image_url: width: 400 }}"
+                 srcset="{{ block.settings.image | image_url: width: 300 }} 300w, {{ block.settings.image | image_url: width: 500 }} 500w"
+                 sizes="(min-width: 990px) 16vw, 33vw"
+                 alt="{{ block.settings.alt | default: 'Sofie''s Makeup Store on Instagram' | escape }}"
+                 width="400" height="400" loading="lazy" decoding="async">
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag }}
+          {%- endif -%}
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lux Instagram",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "tint", "label": "Tinted background", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "@sofiesmakeupstore" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Join the Sofie Community" },
+    { "type": "text", "id": "handle", "label": "Handle label", "default": "Follow @sofiesmakeupstore" },
+    { "type": "url", "id": "profile_url", "label": "Instagram profile URL" },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 4, "max": 8, "step": 1, "default": 6 }
+  ],
+  "blocks": [
+    {
+      "type": "post",
+      "name": "Post",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "alt", "label": "Alt text" },
+        { "type": "url", "id": "link", "label": "Post link" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [{
+    "name": "Lux Instagram",
+    "blocks": [
+      { "type": "post" }, { "type": "post" }, { "type": "post" },
+      { "type": "post" }, { "type": "post" }, { "type": "post" }
+    ]
+  }]
+}
+{% endschema %}

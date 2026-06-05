@@ -1,0 +1,191 @@
+{%- comment -%}
+  Sofie structured-data engine (JSON-LD). Render with a `type` param.
+  Place {% render 'lux-jsonld', type: 'organization' %} in theme.liquid <head>,
+  and the page-specific ones inside templates.
+
+  Types:
+    organization  -> Organization + LocalBusiness (Marassi + Akti by Zahra) + WebSite SearchAction
+    breadcrumb     -> BreadcrumbList (auto from collection/product/page context)
+    product        -> Product + Offer + AggregateRating (pass product: <obj>)
+    faq            -> FAQPage (pass faq_items: array of {q,a} OR rely on section blocks)
+    collection     -> CollectionPage + ItemList (pass collection: <obj>)
+
+  Configure brand constants in /config (see settings) — defaults below match
+  the brief: Sofie's Makeup Store, Egypt.
+{%- endcomment -%}
+{%- liquid
+  assign biz_name = 'Sofie''s Makeup Store'
+  assign biz_legal = 'Sofie Store'
+  assign biz_logo = settings.logo | default: settings.share_image
+  assign currency = cart.currency.iso_code | default: shop.currency
+-%}
+
+{%- case type -%}
+
+{%- when 'organization' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "{{ shop.url }}/#organization",
+      "name": {{ biz_name | json }},
+      "legalName": {{ biz_legal | json }},
+      "url": "{{ shop.url }}/",
+      {% if biz_logo %}"logo": "{{ biz_logo | image_url: width: 600 }}",{% endif %}
+      "description": "Egypt's trusted luxury beauty destination. 100% authentic premium makeup and home, with 10+ years of beauty expertise.",
+      "foundingDate": "2014",
+      "sameAs": [
+        "https://www.instagram.com/sofiesmakeupstore/",
+        "https://www.facebook.com/Sofiesmakeupstore/"
+      ],
+      "areaServed": { "@type": "Country", "name": "Egypt" }
+    },
+    {
+      "@type": "Store",
+      "@id": "{{ shop.url }}/#store-marassi",
+      "name": "Sofie's Makeup Store — M-Porium, Marassi",
+      "image": {% if biz_logo %}"{{ biz_logo | image_url: width: 600 }}"{% else %}""{% endif %},
+      "url": "{{ shop.url }}/",
+      "priceRange": "$$$",
+      "currenciesAccepted": "EGP",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Marassi",
+        "addressRegion": "North Coast",
+        "addressCountry": "EG"
+      },
+      "parentOrganization": { "@id": "{{ shop.url }}/#organization" }
+    },
+    {
+      "@type": "Store",
+      "@id": "{{ shop.url }}/#store-akti",
+      "name": "Sofie's Makeup Store — Akti by Zahra",
+      "url": "{{ shop.url }}/",
+      "priceRange": "$$$",
+      "currenciesAccepted": "EGP",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Zahra",
+        "addressCountry": "EG"
+      },
+      "parentOrganization": { "@id": "{{ shop.url }}/#organization" }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "{{ shop.url }}/#website",
+      "url": "{{ shop.url }}/",
+      "name": {{ biz_name | json }},
+      "publisher": { "@id": "{{ shop.url }}/#organization" },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": { "@type": "EntryPoint", "urlTemplate": "{{ shop.url }}/search?q={search_term_string}" },
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ]
+}
+</script>
+
+{%- when 'product' -%}
+{%- if product -%}
+{%- assign pr = product -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": {{ pr.title | json }},
+  "url": "{{ shop.url }}{{ pr.url }}",
+  {% if pr.featured_media %}"image": [{% for m in pr.media limit: 4 %}{% if m.media_type == 'image' %}"{{ m | image_url: width: 1200 }}"{% unless forloop.last %},{% endunless %}{% endif %}{% endfor %}],{% endif %}
+  "description": {{ pr.description | strip_html | truncatewords: 60 | json }},
+  {% if pr.vendor != blank %}"brand": { "@type": "Brand", "name": {{ pr.vendor | json }} },{% endif %}
+  "sku": {{ pr.selected_or_first_available_variant.sku | json }},
+  {% if pr.metafields.reviews.rating.value != blank and pr.metafields.reviews.rating_count.value != blank and pr.metafields.reviews.rating_count.value > 0 %}
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ pr.metafields.reviews.rating.value.rating }}",
+    "bestRating": "{{ pr.metafields.reviews.rating.value.scale_max }}",
+    "reviewCount": "{{ pr.metafields.reviews.rating_count.value }}"
+  },
+  {% endif %}
+  {%- comment -%} Prices output as raw decimals (cents/100) so no thousands-separators break the schema. {%- endcomment -%}
+  "offers": {
+    "@type": "{% if pr.variants.size > 1 %}AggregateOffer{% else %}Offer{% endif %}",
+    {% if pr.variants.size > 1 %}"offerCount": {{ pr.variants.size }}, "lowPrice": "{{ pr.price_min | divided_by: 100.0 }}", "highPrice": "{{ pr.price_max | divided_by: 100.0 }}",{% else %}"price": "{{ pr.price | divided_by: 100.0 }}",{% endif %}
+    "priceCurrency": "{{ currency }}",
+    "availability": "https://schema.org/{% if pr.available %}InStock{% else %}OutOfStock{% endif %}",
+    "url": "{{ shop.url }}{{ pr.url }}",
+    "seller": { "@id": "{{ shop.url }}/#organization" }
+  }
+}
+</script>
+{%- endif -%}
+
+{%- when 'breadcrumb' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ shop.url }}/" }
+    {%- if collection and template contains 'collection' -%}
+    , { "@type": "ListItem", "position": 2, "name": {{ collection.title | json }}, "item": "{{ shop.url }}{{ collection.url }}" }
+    {%- endif -%}
+    {%- if product -%}
+      {%- if product.collections.first -%}
+    , { "@type": "ListItem", "position": 2, "name": {{ product.collections.first.title | json }}, "item": "{{ shop.url }}{{ product.collections.first.url }}" }
+    , { "@type": "ListItem", "position": 3, "name": {{ product.title | json }}, "item": "{{ shop.url }}{{ product.url }}" }
+      {%- else -%}
+    , { "@type": "ListItem", "position": 2, "name": {{ product.title | json }}, "item": "{{ shop.url }}{{ product.url }}" }
+      {%- endif -%}
+    {%- endif -%}
+    {%- if page and template contains 'page' -%}
+    , { "@type": "ListItem", "position": 2, "name": {{ page.title | json }}, "item": "{{ shop.url }}{{ page.url }}" }
+    {%- endif -%}
+  ]
+}
+</script>
+
+{%- when 'faq' -%}
+{%- if faq_items and faq_items != blank -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- for item in faq_items -%}
+    {
+      "@type": "Question",
+      "name": {{ item.q | strip_html | json }},
+      "acceptedAnswer": { "@type": "Answer", "text": {{ item.a | strip_html | json }} }
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+
+{%- when 'collection' -%}
+{%- if collection -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": {{ collection.title | json }},
+  "url": "{{ shop.url }}{{ collection.url }}",
+  "description": {{ collection.description | strip_html | truncatewords: 50 | json }},
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": {{ collection.products_count }},
+    "itemListElement": [
+      {%- for product in collection.products limit: 12 -%}
+      { "@type": "ListItem", "position": {{ forloop.index }}, "url": "{{ shop.url }}{{ product.url }}", "name": {{ product.title | json }} }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+}
+</script>
+{%- endif -%}
+
+{%- endcase -%}

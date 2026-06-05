@@ -1,0 +1,66 @@
+{%- comment -%}
+  Sofie — Featured Collection (reusable).
+  Use multiple instances for: Makeup Best Sellers, Home Best Sellers,
+  Trending / Viral, New Arrivals. Mobile becomes a luxury swipe rail.
+{%- endcomment -%}
+{{ 'sofie-luxury.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sofie-luxury.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign coll = collections[section.settings.collection]
+  assign limit = section.settings.limit | default: 8
+  assign cols = section.settings.columns | default: 4
+-%}
+
+<section class="sofie sofie__section {% if section.settings.tint %}sofie__section--tint{% endif %}"
+         aria-label="{{ section.settings.heading | escape }}"
+         style="--sofie-cols: {{ cols }};">
+  <div class="sofie__container">
+    <div class="sofie__head sofie-reveal">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<span class="sofie__eyebrow">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+        <h2 class="sofie__h2">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.subheading != blank -%}<p class="sofie__lead">{{ section.settings.subheading | escape }}</p>{%- endif -%}
+      </div>
+      {%- if section.settings.view_all != blank -%}
+        <a class="sofie__link" href="{{ section.settings.view_all }}">{{ section.settings.view_all_label | default: 'View all' | escape }} {% render 'lux-icon', name: 'arrow' %}</a>
+      {%- endif -%}
+    </div>
+
+    {%- if coll != blank and coll.products.size > 0 -%}
+      <div class="sofie-grid sofie-grid--rail-mobile">
+        {%- for product in coll.products limit: limit -%}
+          {% render 'lux-product-card', product: product, show_quick_add: section.settings.quick_add, show_rating: section.settings.show_rating %}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="sofie-grid sofie-grid--rail-mobile">
+        {%- for i in (1..cols) -%}
+          <article class="sofie-card"><div class="sofie-card__media">{{ 'product-' | append: i | placeholder_svg_tag }}</div>
+          <div class="sofie-card__body"><p class="sofie-card__brand">Brand</p><h3 class="sofie-card__title">Select a collection in the customizer</h3></div></article>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lux Featured Collection",
+  "tag": "section",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "checkbox", "id": "tint", "label": "Tinted background", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Loved By You" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Best Sellers" },
+    { "type": "text", "id": "subheading", "label": "Subheading" },
+    { "type": "range", "id": "limit", "label": "Products to show", "min": 4, "max": 16, "step": 2, "default": 8 },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 3, "max": 5, "step": 1, "default": 4 },
+    { "type": "checkbox", "id": "quick_add", "label": "Enable quick add to bag", "default": true },
+    { "type": "checkbox", "id": "show_rating", "label": "Show review stars (if available)", "default": true },
+    { "type": "url", "id": "view_all", "label": "\"View all\" link" },
+    { "type": "text", "id": "view_all_label", "label": "\"View all\" label", "default": "Shop the edit" }
+  ],
+  "presets": [{ "name": "Lux Featured Collection" }]
+}
+{% endschema %}

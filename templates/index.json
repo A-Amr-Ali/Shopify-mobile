@@ -1,0 +1,196 @@
+{
+  "_comment": "Sofie Store — Luxury high-converting homepage. Order maps to the brief: Hero > Trust > Makeup Best Sellers > Home Best Sellers > Trending/Viral > New Arrivals > Shop by Category > Brand Discovery > Why Sofie > Instagram > FAQ. Set the collection handles in Theme Customizer (defaults reference your real collections).",
+  "sections": {
+    "hero": {
+      "type": "lux-hero-split",
+      "settings": {
+        "makeup_eyebrow": "Egypt's Trusted Luxury Beauty Destination",
+        "makeup_title": "<p>Luxury Makeup,<br>100% Authentic</p>",
+        "makeup_sub": "Rare Beauty, Huda, Charlotte Tilbury, NARS, Makeup by Mario & more — curated by beauty experts for 10+ years.",
+        "makeup_cta": "Shop Makeup",
+        "makeup_link": "shopify://collections/makeup",
+        "makeup_cta2": "Best Sellers",
+        "makeup_link2": "shopify://collections/sephora-favorites-1",
+        "home_eyebrow": "Elegant Living",
+        "home_title": "<p>Elegant Home & Lifestyle</p>",
+        "home_sub": "Refined home & body essentials with timeless, modern design.",
+        "home_cta": "Shop Home",
+        "home_link": "shopify://collections/home",
+        "show_trust_strip": true,
+        "trust_1": "100% Authentic Guaranteed",
+        "trust_2": "10+ Years of Beauty Expertise",
+        "trust_3": "Marassi & Akti by Zahra Boutiques",
+        "trust_4": "Nationwide Delivery"
+      }
+    },
+    "trust": {
+      "type": "lux-trust-bar",
+      "blocks": {
+        "b1": { "type": "pillar", "settings": { "icon": "badge", "title": "100% Authentic Products", "text": "Every item sourced from official brands & authorized distributors." } },
+        "b2": { "type": "pillar", "settings": { "icon": "sparkle", "title": "10+ Years Beauty Expertise", "text": "A decade of curating prestige beauty for Egypt." } },
+        "b3": { "type": "pillar", "settings": { "icon": "store", "title": "Trusted Beauty Destination", "text": "Boutiques at Marassi M-Porium & Akti by Zahra." } },
+        "b4": { "type": "pillar", "settings": { "icon": "lock", "title": "Secure Payments", "text": "Protected checkout. Pay your way, with confidence." } },
+        "b5": { "type": "pillar", "settings": { "icon": "truck", "title": "Fast Nationwide Delivery", "text": "Delivered with care to every governorate in Egypt." } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4", "b5"],
+      "settings": { "tint": false, "eyebrow": "The Sofie Standard", "heading": "Why Sofie's Makeup Store" }
+    },
+    "makeup_bestsellers": {
+      "type": "lux-featured-collection",
+      "settings": {
+        "collection": "makeup",
+        "eyebrow": "Loved By You",
+        "heading": "Makeup Best Sellers",
+        "subheading": "The prestige formulas our community can't stop reordering.",
+        "limit": 8,
+        "columns": 4,
+        "quick_add": true,
+        "show_rating": true,
+        "view_all": "shopify://collections/makeup",
+        "view_all_label": "Shop all makeup"
+      }
+    },
+    "trending": {
+      "type": "lux-featured-collection",
+      "settings": {
+        "collection": "sephora-favorites-1",
+        "tint": true,
+        "eyebrow": "As Seen on TikTok & Instagram",
+        "heading": "Trending & Viral Now",
+        "subheading": "The beauty everyone's talking about — in stock and authentic.",
+        "limit": 8,
+        "columns": 4,
+        "quick_add": true,
+        "show_rating": true,
+        "view_all": "shopify://collections/sephora-favorites-1",
+        "view_all_label": "Shop trending"
+      }
+    },
+    "home_bestsellers": {
+      "type": "lux-featured-collection",
+      "settings": {
+        "collection": "home",
+        "eyebrow": "For Elegant Living",
+        "heading": "Home Best Sellers",
+        "subheading": "Timeless, modern pieces for a more beautiful everyday.",
+        "limit": 8,
+        "columns": 4,
+        "quick_add": true,
+        "show_rating": true,
+        "view_all": "shopify://collections/home",
+        "view_all_label": "Shop all home"
+      }
+    },
+    "new_arrivals": {
+      "type": "lux-featured-collection",
+      "settings": {
+        "collection": "makeup",
+        "tint": true,
+        "eyebrow": "Just Landed",
+        "heading": "New Arrivals",
+        "subheading": "Fresh from the world's most coveted beauty houses.",
+        "limit": 8,
+        "columns": 4,
+        "quick_add": true,
+        "show_rating": false,
+        "view_all": "shopify://collections/all",
+        "view_all_label": "Shop new in"
+      }
+    },
+    "categories": {
+      "type": "lux-shop-by-category",
+      "blocks": {
+        "c1": { "type": "category", "settings": { "collection": "makeup", "label": "Makeup" } },
+        "c2": { "type": "category", "settings": { "collection": "fragrance", "label": "Fragrance" } },
+        "c3": { "type": "category", "settings": { "collection": "makeup-accessories", "label": "Accessories" } },
+        "c4": { "type": "category", "settings": { "collection": "home", "label": "Home & Body" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4"],
+      "settings": { "eyebrow": "Find Your Ritual", "heading": "Shop by Category", "columns": 4 }
+    },
+    "brands": {
+      "type": "lux-brand-discovery",
+      "blocks": {
+        "br1": { "type": "brand", "settings": { "name": "Rare Beauty", "link": "shopify://collections/rare-beauty" } },
+        "br2": { "type": "brand", "settings": { "name": "Huda Beauty", "link": "shopify://collections/huda-beauty" } },
+        "br3": { "type": "brand", "settings": { "name": "Charlotte Tilbury", "link": "shopify://collections/charlotte-tilbury" } },
+        "br4": { "type": "brand", "settings": { "name": "NARS", "link": "shopify://collections/nars" } },
+        "br5": { "type": "brand", "settings": { "name": "Makeup by Mario", "link": "shopify://collections/makeup-by-mario" } },
+        "br6": { "type": "brand", "settings": { "name": "Hourglass", "link": "shopify://collections/hourglass" } },
+        "br7": { "type": "brand", "settings": { "name": "Laura Mercier", "link": "shopify://collections/laura-mercier" } },
+        "br8": { "type": "brand", "settings": { "name": "Glossier", "link": "shopify://collections/glossier" } },
+        "br9": { "type": "brand", "settings": { "name": "Saie", "link": "shopify://collections/saie" } },
+        "br10": { "type": "brand", "settings": { "name": "Summer Fridays", "link": "shopify://collections/summer-fridays" } },
+        "br11": { "type": "brand", "settings": { "name": "Patrick Ta", "link": "shopify://collections/patrick-ta" } },
+        "br12": { "type": "brand", "settings": { "name": "REFY", "link": "shopify://collections/refy" } }
+      },
+      "block_order": ["br1","br2","br3","br4","br5","br6","br7","br8","br9","br10","br11","br12"],
+      "settings": {
+        "tint": true,
+        "eyebrow": "The House of Prestige",
+        "heading": "Discover the World's Most Coveted Brands",
+        "subheading": "100% authentic, hand-picked by our beauty experts.",
+        "columns": 6,
+        "view_all": "shopify://collections",
+        "view_all_label": "Explore All Brands"
+      }
+    },
+    "why": {
+      "type": "lux-why-sofie",
+      "blocks": {
+        "p1": { "type": "pillar", "settings": { "icon": "badge", "title": "Uncompromising Authenticity", "text": "Every product is 100% genuine — no exceptions, ever." } },
+        "p2": { "type": "pillar", "settings": { "icon": "sparkle", "title": "Expert Curation", "text": "A 10-year-trained eye selects only what's truly worth it." } },
+        "p3": { "type": "pillar", "settings": { "icon": "store", "title": "A Real Boutique Experience", "text": "Visit us at Marassi M-Porium & Akti by Zahra." } },
+        "p4": { "type": "pillar", "settings": { "icon": "gift", "title": "Beauty, Beautifully Delivered", "text": "Luxury packaging and care, to your door across Egypt." } }
+      },
+      "block_order": ["p1", "p2", "p3", "p4"],
+      "settings": {
+        "dark": true,
+        "eyebrow": "Our Promise",
+        "heading": "Beauty You Can Trust, for Over a Decade",
+        "body": "<p>For 10+ years, Sofie's Makeup Store has been Egypt's destination for genuinely authentic prestige beauty — curated with the eye of an expert and the care of a friend.</p>",
+        "cta": "Discover Our Story",
+        "cta_link": "shopify://pages/sofies-makeup"
+      }
+    },
+    "instagram": {
+      "type": "lux-instagram",
+      "blocks": {
+        "i1": { "type": "post" }, "i2": { "type": "post" }, "i3": { "type": "post" },
+        "i4": { "type": "post" }, "i5": { "type": "post" }, "i6": { "type": "post" }
+      },
+      "block_order": ["i1", "i2", "i3", "i4", "i5", "i6"],
+      "settings": {
+        "eyebrow": "@sofiesmakeupstore",
+        "heading": "Join the Sofie Community",
+        "handle": "Follow @sofiesmakeupstore",
+        "profile_url": "https://www.instagram.com/sofiesmakeupstore/",
+        "columns": 6
+      }
+    },
+    "faq": {
+      "type": "lux-faq",
+      "blocks": {
+        "f1": { "type": "qa", "settings": { "question": "Are your products 100% authentic?", "answer": "<p>Absolutely. Every item is 100% authentic and sourced directly from official brands and authorized distributors. We have built our reputation on authenticity for over 10 years.</p>" } },
+        "f2": { "type": "qa", "settings": { "question": "How long does delivery take in Egypt?", "answer": "<p>We deliver to every governorate in Egypt. Delivery typically takes 3–14 business days depending on product availability.</p>" } },
+        "f3": { "type": "qa", "settings": { "question": "Do you have a physical store?", "answer": "<p>Yes — visit our boutiques at M-Porium Mall, Marassi and Akti by Zahra. Our beauty experts would love to help you in person.</p>" } },
+        "f4": { "type": "qa", "settings": { "question": "What payment methods do you accept?", "answer": "<p>We offer secure payment options including card and cash on delivery, all through a protected checkout.</p>" } }
+      },
+      "block_order": ["f1", "f2", "f3", "f4"],
+      "settings": { "eyebrow": "Good to Know", "heading": "Frequently Asked Questions", "open_first": true, "emit_schema": true }
+    }
+  },
+  "order": [
+    "hero",
+    "trust",
+    "makeup_bestsellers",
+    "trending",
+    "home_bestsellers",
+    "new_arrivals",
+    "categories",
+    "brands",
+    "why",
+    "instagram",
+    "faq"
+  ]
+}

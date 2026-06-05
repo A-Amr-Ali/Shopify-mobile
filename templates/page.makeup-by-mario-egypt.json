@@ -1,0 +1,91 @@
+{
+  "_comment": "SEO landing page for 'Makeup by Mario Egypt'. Assign to a Page with handle 'makeup-by-mario-egypt'.",
+  "sections": {
+    "main": {
+      "type": "lux-seo-landing",
+      "blocks": {
+        "t1": {
+          "type": "text",
+          "settings": {
+            "heading": "Authentic Makeup by Mario in Egypt",
+            "body": "<p>Created by celebrity makeup artist Mario Dedivanovic, Makeup by Mario is built on pro-level artistry. At Sofie's Makeup Store you can shop it in Egypt with confidence — 100% authentic, from authorized channels.</p>"
+          }
+        },
+        "t2": {
+          "type": "text",
+          "settings": {
+            "heading": "Best-selling Makeup by Mario products",
+            "body": "<ul><li><strong>Master Mattes & Master Metallics</strong> eyeshadow palettes.</li><li><strong>SurrealSkin Foundation</strong> — second-skin, natural finish.</li><li><strong>Ultra Suede Lipsticks</strong> — comfortable, flattering nudes and reds.</li><li><strong>Master Secret Glow</strong> — the artist's highlight.</li></ul>"
+          }
+        },
+        "t3": {
+          "type": "text",
+          "settings": {
+            "heading": "Why buy Makeup by Mario from Sofie's",
+            "body": "<ul><li>100% authentic — guaranteed</li><li>10+ years of beauty expertise</li><li>Fast delivery across Egypt</li><li>Boutiques at Marassi M-Porium & Akti by Zahra</li></ul>"
+          }
+        },
+        "links": {
+          "type": "links",
+          "settings": {
+            "heading": "Explore More",
+            "label_1": "Rare Beauty Egypt",
+            "link_1": "shopify://pages/rare-beauty-egypt",
+            "label_2": "Huda Beauty Egypt",
+            "link_2": "shopify://pages/huda-beauty-egypt",
+            "label_3": "Charlotte Tilbury Egypt",
+            "link_3": "shopify://pages/charlotte-tilbury-egypt",
+            "label_4": "NARS Egypt",
+            "link_4": "shopify://pages/nars-egypt",
+            "label_5": "Luxury Makeup Egypt",
+            "link_5": "shopify://pages/luxury-makeup-egypt",
+            "label_6": "Original Makeup Egypt",
+            "link_6": "shopify://pages/original-makeup-egypt"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "links"
+      ],
+      "settings": {
+        "eyebrow": "Authentic Makeup by Mario • In Egypt • Delivered Fast",
+        "h1": "Makeup by Mario Egypt",
+        "intro": "Shop 100% authentic Makeup by Mario in Egypt at Sofie's Makeup Store. Master Mattes palettes, SurrealSkin foundation, Ultra Suede lipsticks — curated by experts and delivered nationwide.",
+        "cta": "Shop the Collection",
+        "cta_link": "shopify://collections/makeup-by-mario",
+        "cta2": "Explore All Brands",
+        "cta2_link": "shopify://collections",
+        "collection": "makeup-by-mario",
+        "products_heading": "Shop Makeup by Mario",
+        "limit": 8
+      }
+    },
+    "faq": {
+      "type": "lux-faq",
+      "blocks": {
+        "f1": {
+          "type": "qa",
+          "settings": {
+            "question": "Is Makeup by Mario available in Egypt?",
+            "answer": "<p>Yes — shop 100% authentic Makeup by Mario in Egypt at Sofie's Makeup Store, online and in store.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "f1"
+      ],
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "emit_schema": true,
+        "open_first": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq"
+  ]
+}

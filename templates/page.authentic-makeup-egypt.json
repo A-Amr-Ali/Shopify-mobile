@@ -1,0 +1,83 @@
+{
+  "_comment": "SEO landing page for 'Authentic Makeup Egypt'. Assign to a Page with handle 'authentic-makeup-egypt'.",
+  "sections": {
+    "main": {
+      "type": "lux-seo-landing",
+      "blocks": {
+        "t1": {
+          "type": "text",
+          "settings": {
+            "heading": "100% authentic makeup in Egypt",
+            "body": "<p>At Sofie's Makeup Store, authenticity is everything. Every product is 100% authentic, sourced from official brands and authorized distributors. We've earned the trust of beauty lovers across Egypt for over a decade.</p>"
+          }
+        },
+        "t2": {
+          "type": "text",
+          "settings": {
+            "heading": "Authentic prestige brands",
+            "body": "<p>Shop authentic Rare Beauty, NARS, Charlotte Tilbury, Huda Beauty, Makeup by Mario, Hourglass and more — all genuine, all curated by experts, all delivered with care across Egypt.</p>"
+          }
+        },
+        "links": {
+          "type": "links",
+          "settings": {
+            "heading": "Explore More",
+            "label_1": "Rare Beauty Egypt",
+            "link_1": "shopify://pages/rare-beauty-egypt",
+            "label_2": "Huda Beauty Egypt",
+            "link_2": "shopify://pages/huda-beauty-egypt",
+            "label_3": "Charlotte Tilbury Egypt",
+            "link_3": "shopify://pages/charlotte-tilbury-egypt",
+            "label_4": "Makeup by Mario Egypt",
+            "link_4": "shopify://pages/makeup-by-mario-egypt",
+            "label_5": "NARS Egypt",
+            "link_5": "shopify://pages/nars-egypt",
+            "label_6": "Luxury Makeup Egypt",
+            "link_6": "shopify://pages/luxury-makeup-egypt"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "links"
+      ],
+      "settings": {
+        "eyebrow": "100% Authentic • In Egypt",
+        "h1": "Authentic Makeup Egypt",
+        "intro": "Shop 100% authentic makeup in Egypt at Sofie's Makeup Store. Genuine prestige beauty from the brands you love — Rare Beauty, NARS, Charlotte Tilbury, Huda Beauty and more — delivered nationwide.",
+        "cta": "Shop the Collection",
+        "cta_link": "shopify://collections/makeup",
+        "cta2": "Explore All Brands",
+        "cta2_link": "shopify://collections",
+        "collection": "makeup",
+        "products_heading": "Shop Authentic Makeup",
+        "limit": 8
+      }
+    },
+    "faq": {
+      "type": "lux-faq",
+      "blocks": {
+        "f1": {
+          "type": "qa",
+          "settings": {
+            "question": "Is your makeup 100% authentic?",
+            "answer": "<p>Yes — every single product is 100% authentic and sourced from authorized channels.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "f1"
+      ],
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "emit_schema": true,
+        "open_first": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq"
+  ]
+}

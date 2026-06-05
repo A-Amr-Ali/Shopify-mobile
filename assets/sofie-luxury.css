@@ -1,0 +1,522 @@
+/* ==========================================================================
+   SOFIE STORE — LUXURY DESIGN SYSTEM
+   Production-ready, theme-agnostic CSS for the homepage redesign + SEO pages.
+   Scope: all classes are namespaced with `sofie-` to avoid collisions with the
+   host theme. Drop this file in /assets and it is auto-included by the sections.
+   --------------------------------------------------------------------------
+   1. Design tokens (color, type, spacing, motion)
+   2. Primitives (container, buttons, eyebrow, headings, dividers)
+   3. Components (hero, trust bar, product card, category, brand, why, ig, seo)
+   4. Utilities + reduced-motion + responsive
+   ========================================================================== */
+
+/* 1. DESIGN TOKENS --------------------------------------------------------- */
+:root {
+  /* Luxury neutrals — warm, editorial, Sephora-adjacent but unique */
+  --sofie-ink:        #1a1614;   /* near-black, warm */
+  --sofie-charcoal:   #2c2622;
+  --sofie-stone:      #6f6660;   /* muted body text */
+  --sofie-mist:       #a89f98;   /* captions / meta */
+  --sofie-line:       #e7e1db;   /* hairline borders */
+  --sofie-cloud:      #f6f2ee;   /* section tint */
+  --sofie-cream:      #fbf9f6;   /* page base */
+  --sofie-white:      #ffffff;
+
+  /* Accent — restrained champagne/gold + a single deep brand tone */
+  --sofie-gold:       #b08d57;   /* champagne gold */
+  --sofie-gold-deep:  #8a6d3f;
+  --sofie-rose:       #b8857a;   /* soft rose for makeup cues */
+  --sofie-success:    #2f7d5b;
+
+  /* Typography — elegant serif display + clean sans body.
+     Falls back gracefully to theme fonts if these aren't loaded. */
+  --sofie-font-display: "Cormorant Garamond", "Playfair Display", Georgia, "Times New Roman", serif;
+  --sofie-font-body:    var(--font-body-family, "Inter", "Helvetica Neue", Arial, sans-serif);
+
+  --sofie-fs-eyebrow: 0.78rem;
+  --sofie-fs-body:    1rem;
+  --sofie-fs-lead:    1.125rem;
+  --sofie-fs-h3:      clamp(1.35rem, 1rem + 1.4vw, 1.9rem);
+  --sofie-fs-h2:      clamp(1.9rem, 1.2rem + 2.6vw, 3rem);
+  --sofie-fs-h1:      clamp(2.6rem, 1.4rem + 4.6vw, 5rem);
+
+  --sofie-track-wide: 0.22em;   /* luxury letter-spacing for eyebrows */
+  --sofie-track-cta:  0.14em;
+
+  /* Spacing scale (8pt-ish, generous luxury rhythm) */
+  --sofie-s1: 0.5rem;
+  --sofie-s2: 1rem;
+  --sofie-s3: 1.5rem;
+  --sofie-s4: 2rem;
+  --sofie-s5: 3rem;
+  --sofie-s6: 4.5rem;
+  --sofie-s7: 6.5rem;
+
+  --sofie-container: 1320px;
+  --sofie-radius: 2px;          /* sharp, editorial corners = premium */
+  --sofie-radius-lg: 6px;
+  --sofie-shadow: 0 18px 50px -28px rgba(26, 22, 20, 0.35);
+  --sofie-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 2. PRIMITIVES ------------------------------------------------------------ */
+.sofie {
+  font-family: var(--sofie-font-body);
+  color: var(--sofie-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.sofie *,
+.sofie *::before,
+.sofie *::after { box-sizing: border-box; }
+
+.sofie__container {
+  width: 100%;
+  max-width: var(--sofie-container);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 3rem);
+}
+
+.sofie__section { padding-block: var(--sofie-s6); }
+.sofie__section--tint { background: var(--sofie-cloud); }
+.sofie__section--ink  { background: var(--sofie-ink); color: var(--sofie-cream); }
+
+.sofie__eyebrow {
+  display: inline-block;
+  font-size: var(--sofie-fs-eyebrow);
+  letter-spacing: var(--sofie-track-wide);
+  text-transform: uppercase;
+  color: var(--sofie-gold-deep);
+  font-weight: 600;
+  margin: 0 0 var(--sofie-s2);
+}
+.sofie__section--ink .sofie__eyebrow { color: var(--sofie-gold); }
+
+.sofie__h2 {
+  font-family: var(--sofie-font-display);
+  font-size: var(--sofie-fs-h2);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--sofie-s2);
+}
+.sofie__h3 {
+  font-family: var(--sofie-font-display);
+  font-size: var(--sofie-fs-h3);
+  font-weight: 500;
+  line-height: 1.1;
+  margin: 0;
+}
+.sofie__lead {
+  font-size: var(--sofie-fs-lead);
+  line-height: 1.6;
+  color: var(--sofie-stone);
+  max-width: 60ch;
+  margin: 0;
+}
+.sofie__section--ink .sofie__lead { color: rgba(251, 249, 246, 0.78); }
+
+.sofie__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sofie-s3);
+  margin-bottom: var(--sofie-s5);
+}
+.sofie__head--center {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Buttons -------------------------------------------------------- */
+.sofie__btn {
+  --b-bg: var(--sofie-ink);
+  --b-fg: var(--sofie-cream);
+  --b-bd: var(--sofie-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  min-height: 52px;
+  padding: 0 2.1rem;
+  font-family: var(--sofie-font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: var(--sofie-track-cta);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--b-fg);
+  background: var(--b-bg);
+  border: 1px solid var(--b-bd);
+  border-radius: var(--sofie-radius);
+  cursor: pointer;
+  transition: transform 0.4s var(--sofie-ease), background 0.4s var(--sofie-ease), color 0.4s var(--sofie-ease);
+}
+.sofie__btn:hover { transform: translateY(-2px); }
+.sofie__btn--ghost {
+  --b-bg: transparent;
+  --b-fg: var(--sofie-ink);
+  --b-bd: var(--sofie-ink);
+}
+.sofie__btn--ghost:hover { --b-bg: var(--sofie-ink); --b-fg: var(--sofie-cream); }
+.sofie__btn--light {
+  --b-bg: var(--sofie-white);
+  --b-fg: var(--sofie-ink);
+  --b-bd: var(--sofie-white);
+}
+.sofie__btn--gold {
+  --b-bg: var(--sofie-gold);
+  --b-fg: #fff;
+  --b-bd: var(--sofie-gold);
+}
+.sofie__btn--gold:hover { --b-bg: var(--sofie-gold-deep); --b-bd: var(--sofie-gold-deep); }
+
+.sofie__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: var(--sofie-track-cta);
+  text-transform: uppercase;
+  color: var(--sofie-ink);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  transition: gap 0.3s var(--sofie-ease), color 0.3s var(--sofie-ease);
+}
+.sofie__link:hover { gap: 0.9em; color: var(--sofie-gold-deep); }
+.sofie__section--ink .sofie__link { color: var(--sofie-cream); }
+
+/* 3. COMPONENTS ------------------------------------------------------------ */
+
+/* 3a. HERO (split) ----------------------------------------------- */
+.sofie-hero { position: relative; background: var(--sofie-ink); }
+.sofie-hero__grid {
+  display: grid;
+  /* Makeup leads (business primacy), Home is the elegant counterpart */
+  grid-template-columns: 1.15fr 0.85fr;
+  min-height: clamp(540px, 78vh, 820px);
+}
+.sofie-hero__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(1.5rem, 4vw, 4rem);
+  overflow: hidden;
+  isolation: isolate;
+}
+.sofie-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+.sofie-hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s var(--sofie-ease);
+}
+.sofie-hero__panel:hover .sofie-hero__media img { transform: scale(1.05); }
+.sofie-hero__panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(26,22,20,0.05) 0%, rgba(26,22,20,0.72) 100%);
+}
+.sofie-hero__panel--home::after { background: linear-gradient(180deg, rgba(26,22,20,0.05) 0%, rgba(26,22,20,0.66) 100%); }
+.sofie-hero__eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: var(--sofie-track-wide);
+  text-transform: uppercase;
+  color: var(--sofie-gold);
+  font-weight: 700;
+  margin-bottom: var(--sofie-s2);
+}
+.sofie-hero__title {
+  font-family: var(--sofie-font-display);
+  color: #fff;
+  font-size: var(--sofie-fs-h1);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.015em;
+  margin: 0 0 var(--sofie-s2);
+  text-shadow: 0 2px 30px rgba(0,0,0,0.25);
+}
+.sofie-hero__sub {
+  color: rgba(255,255,255,0.86);
+  font-size: var(--sofie-fs-lead);
+  max-width: 38ch;
+  margin: 0 0 var(--sofie-s4);
+}
+.sofie-hero__cta { display: flex; flex-wrap: wrap; gap: var(--sofie-s2); }
+
+/* Hero trust strip (above the fold) */
+.sofie-hero__trust {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(1rem, 4vw, 3.5rem);
+  background: var(--sofie-ink);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: var(--sofie-s3) clamp(1rem, 4vw, 3rem);
+}
+.sofie-hero__trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: rgba(251,249,246,0.92);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+}
+.sofie-hero__trust-item svg { width: 18px; height: 18px; color: var(--sofie-gold); flex: none; }
+
+/* 3b. TRUST BAR -------------------------------------------------- */
+.sofie-trust__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--sofie-s2);
+}
+.sofie-trust__item {
+  text-align: center;
+  padding: var(--sofie-s3) var(--sofie-s2);
+  border-right: 1px solid var(--sofie-line);
+}
+.sofie-trust__item:last-child { border-right: none; }
+.sofie-trust__icon {
+  display: inline-flex;
+  width: 44px; height: 44px;
+  align-items: center; justify-content: center;
+  margin-bottom: var(--sofie-s2);
+  color: var(--sofie-gold-deep);
+}
+.sofie-trust__icon svg { width: 28px; height: 28px; }
+.sofie-trust__title {
+  font-family: var(--sofie-font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem;
+}
+.sofie-trust__text { font-size: 0.85rem; color: var(--sofie-stone); margin: 0; line-height: 1.4; }
+
+/* 3c. PRODUCT CARD ---------------------------------------------- */
+.sofie-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(78%, 1fr);
+  gap: var(--sofie-s3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: var(--sofie-s2);
+  margin-inline: calc(-1 * clamp(1rem, 4vw, 3rem));
+  padding-inline: clamp(1rem, 4vw, 3rem);
+  scrollbar-width: none;
+}
+.sofie-rail::-webkit-scrollbar { display: none; }
+.sofie-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--sofie-cols, 4), 1fr);
+  gap: var(--sofie-s4) var(--sofie-s3);
+}
+.sofie-rail > * { scroll-snap-align: start; }
+
+.sofie-card { position: relative; display: flex; flex-direction: column; }
+.sofie-card__media {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--sofie-cloud);
+  border-radius: var(--sofie-radius);
+}
+.sofie-card__media img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: opacity 0.5s var(--sofie-ease), transform 0.7s var(--sofie-ease);
+}
+.sofie-card__media img.sofie-card__alt {
+  position: absolute; inset: 0; opacity: 0;
+}
+.sofie-card:hover .sofie-card__media img.sofie-card__primary { opacity: 0; }
+.sofie-card:hover .sofie-card__media img.sofie-card__alt { opacity: 1; }
+.sofie-card:hover .sofie-card__media img { transform: scale(1.04); }
+
+.sofie-card__badges {
+  position: absolute; top: 0.75rem; left: 0.75rem;
+  display: flex; flex-direction: column; gap: 0.4rem; z-index: 2;
+}
+.sofie-badge {
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 0.35em 0.7em; border-radius: var(--sofie-radius);
+  background: var(--sofie-ink); color: #fff;
+}
+.sofie-badge--sale { background: var(--sofie-rose); }
+.sofie-badge--new  { background: var(--sofie-gold); }
+.sofie-badge--sold { background: var(--sofie-mist); }
+
+.sofie-card__quickadd {
+  position: absolute; left: 0.75rem; right: 0.75rem; bottom: 0.75rem;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 0.35s var(--sofie-ease), transform 0.35s var(--sofie-ease);
+  z-index: 2;
+}
+.sofie-card:hover .sofie-card__quickadd,
+.sofie-card:focus-within .sofie-card__quickadd { opacity: 1; transform: none; }
+.sofie-card__quickadd .sofie__btn { width: 100%; min-height: 44px; font-size: 0.72rem; }
+
+.sofie-card__body { padding-top: var(--sofie-s2); }
+.sofie-card__brand {
+  font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--sofie-mist); margin: 0 0 0.3rem; font-weight: 600;
+}
+.sofie-card__title {
+  font-size: 0.95rem; font-weight: 500; line-height: 1.35; margin: 0 0 0.45rem;
+}
+.sofie-card__title a { color: inherit; text-decoration: none; }
+.sofie-card__title a:hover { color: var(--sofie-gold-deep); }
+.sofie-card__rating { display: inline-flex; align-items: center; gap: 0.3rem; margin-bottom: 0.35rem; }
+.sofie-card__stars { color: var(--sofie-gold); font-size: 0.8rem; letter-spacing: 0.06em; }
+.sofie-card__rating small { color: var(--sofie-mist); font-size: 0.72rem; }
+.sofie-card__price { font-size: 0.95rem; font-weight: 600; }
+.sofie-card__price del { color: var(--sofie-mist); font-weight: 400; margin-right: 0.4em; }
+.sofie-card__price ins { color: var(--sofie-rose); text-decoration: none; }
+
+/* 3d. SHOP BY CATEGORY ----------------------------------------- */
+.sofie-cat__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--sofie-cat-cols, 4), 1fr);
+  gap: var(--sofie-s3);
+}
+.sofie-cat__item {
+  position: relative; display: block; overflow: hidden;
+  aspect-ratio: 4 / 5; border-radius: var(--sofie-radius);
+  text-decoration: none; isolation: isolate;
+}
+.sofie-cat__item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s var(--sofie-ease); }
+.sofie-cat__item:hover img { transform: scale(1.06); }
+.sofie-cat__item::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(26,22,20,0) 35%, rgba(26,22,20,0.7) 100%);
+}
+.sofie-cat__label {
+  position: absolute; left: 1.25rem; bottom: 1.1rem; z-index: 2;
+  color: #fff; font-family: var(--sofie-font-display);
+  font-size: 1.3rem; font-weight: 500;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.sofie-cat__label::after { content: "→"; font-size: 1rem; opacity: 0; transform: translateX(-6px); transition: 0.3s var(--sofie-ease); }
+.sofie-cat__item:hover .sofie-cat__label::after { opacity: 1; transform: none; }
+
+/* 3e. BRAND DISCOVERY ------------------------------------------ */
+.sofie-brands__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--sofie-brand-cols, 6), 1fr);
+  gap: 1px;
+  background: var(--sofie-line);
+  border: 1px solid var(--sofie-line);
+  border-radius: var(--sofie-radius);
+  overflow: hidden;
+}
+.sofie-brands__item {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 120px; padding: var(--sofie-s3);
+  background: var(--sofie-white); text-decoration: none;
+  color: var(--sofie-ink); font-family: var(--sofie-font-display);
+  font-size: 1.15rem; font-weight: 500; text-align: center;
+  transition: background 0.4s var(--sofie-ease), color 0.4s var(--sofie-ease);
+}
+.sofie-brands__item img { max-height: 46px; max-width: 100%; width: auto; object-fit: contain; filter: grayscale(1); opacity: 0.78; transition: 0.4s var(--sofie-ease); }
+.sofie-brands__item:hover { background: var(--sofie-ink); color: #fff; }
+.sofie-brands__item:hover img { filter: none; opacity: 1; }
+
+/* 3f. WHY SOFIE (editorial story) ------------------------------ */
+.sofie-why__grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(2rem, 5vw, 5rem); }
+.sofie-why__media { position: relative; aspect-ratio: 4 / 5; border-radius: var(--sofie-radius-lg); overflow: hidden; }
+.sofie-why__media img { width: 100%; height: 100%; object-fit: cover; }
+.sofie-why__pillars { display: grid; gap: var(--sofie-s4); margin-top: var(--sofie-s4); }
+.sofie-why__pillar { display: grid; grid-template-columns: auto 1fr; gap: var(--sofie-s3); align-items: start; }
+.sofie-why__pillar svg { width: 30px; height: 30px; color: var(--sofie-gold-deep); }
+.sofie-why__pillar h3 { font-family: var(--sofie-font-display); font-size: 1.25rem; margin: 0 0 0.3rem; font-weight: 600; }
+.sofie-why__pillar p { margin: 0; color: var(--sofie-stone); line-height: 1.55; }
+
+/* 3g. INSTAGRAM ------------------------------------------------ */
+.sofie-ig__grid { display: grid; grid-template-columns: repeat(var(--sofie-ig-cols, 6), 1fr); gap: var(--sofie-s2); }
+.sofie-ig__item { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: var(--sofie-radius); display: block; }
+.sofie-ig__item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--sofie-ease); }
+.sofie-ig__item:hover img { transform: scale(1.07); }
+.sofie-ig__item::after {
+  content: ""; position: absolute; inset: 0; background: rgba(26,22,20,0.28);
+  opacity: 0; transition: opacity 0.4s var(--sofie-ease);
+}
+.sofie-ig__item:hover::after { opacity: 1; }
+
+/* 3h. SEO LANDING + FAQ ---------------------------------------- */
+.sofie-seo__hero { padding-block: var(--sofie-s7) var(--sofie-s6); text-align: center; background: var(--sofie-cloud); }
+.sofie-seo__hero h1 { font-family: var(--sofie-font-display); font-size: var(--sofie-fs-h1); font-weight: 500; line-height: 1.02; margin: 0 auto var(--sofie-s3); max-width: 16ch; }
+.sofie-seo__hero p { max-width: 64ch; margin: 0 auto var(--sofie-s4); color: var(--sofie-stone); font-size: var(--sofie-fs-lead); line-height: 1.65; }
+.sofie-seo__rich { max-width: 78ch; margin: var(--sofie-s6) auto 0; }
+.sofie-seo__rich h2 { font-family: var(--sofie-font-display); font-size: var(--sofie-fs-h3); margin: var(--sofie-s5) 0 var(--sofie-s2); }
+.sofie-seo__rich p, .sofie-seo__rich li { color: var(--sofie-stone); line-height: 1.75; }
+.sofie-seo__rich ul { padding-left: 1.2rem; }
+
+.sofie-faq { max-width: 820px; margin-inline: auto; }
+.sofie-faq__item { border-bottom: 1px solid var(--sofie-line); }
+.sofie-faq__q {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--sofie-s2);
+  background: none; border: 0; cursor: pointer; text-align: left;
+  padding: var(--sofie-s3) 0; font-family: var(--sofie-font-display);
+  font-size: 1.2rem; font-weight: 600; color: var(--sofie-ink);
+}
+.sofie-faq__q::after { content: "+"; font-size: 1.4rem; color: var(--sofie-gold-deep); transition: transform 0.3s var(--sofie-ease); }
+.sofie-faq__item[open] .sofie-faq__q::after { transform: rotate(45deg); }
+.sofie-faq__a { padding: 0 0 var(--sofie-s3); color: var(--sofie-stone); line-height: 1.7; max-width: 70ch; }
+
+/* 4. UTILITIES + RESPONSIVE ----------------------------------------------- */
+.sofie-reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.8s var(--sofie-ease), transform 0.8s var(--sofie-ease); }
+.sofie-reveal.is-in { opacity: 1; transform: none; }
+
+@media (max-width: 990px) {
+  :root { --sofie-cols: 3; --sofie-cat-cols: 2; --sofie-brand-cols: 4; --sofie-ig-cols: 4; }
+  .sofie-hero__grid { grid-template-columns: 1fr; }
+  .sofie-hero__panel { min-height: 60vh; }
+  .sofie-why__grid { grid-template-columns: 1fr; }
+  .sofie-trust__grid { grid-template-columns: repeat(2, 1fr); }
+  .sofie-trust__item:nth-child(2n) { border-right: none; }
+  .sofie-trust__item { border-bottom: 1px solid var(--sofie-line); }
+  .sofie-trust__item:last-child, .sofie-trust__item:nth-last-child(2) { border-bottom: none; }
+}
+@media (max-width: 749px) {
+  :root { --sofie-cols: 2; --sofie-brand-cols: 3; --sofie-ig-cols: 3; }
+  .sofie__section { padding-block: var(--sofie-s5); }
+  .sofie__head { flex-direction: column; align-items: flex-start; gap: var(--sofie-s2); }
+  .sofie__head--center { align-items: center; }
+  .sofie-trust__grid { grid-template-columns: 1fr; }
+  .sofie-trust__item { border-right: none; border-bottom: 1px solid var(--sofie-line); }
+  .sofie-trust__item:last-child { border-bottom: none; }
+  .sofie-grid { display: grid; }
+  /* On mobile, best-seller grids become swipeable rails for a premium feel */
+  .sofie-grid--rail-mobile {
+    grid-auto-flow: column;
+    grid-auto-columns: 64%;
+    grid-template-columns: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin-inline: calc(-1 * clamp(1rem, 4vw, 3rem));
+    padding-inline: clamp(1rem, 4vw, 3rem);
+    scrollbar-width: none;
+  }
+  .sofie-grid--rail-mobile::-webkit-scrollbar { display: none; }
+  .sofie-grid--rail-mobile > * { scroll-snap-align: start; }
+  .sofie-hero__title { font-size: clamp(2.4rem, 9vw, 3.4rem); }
+  .sofie-card__quickadd { opacity: 1; transform: none; position: static; margin-top: var(--sofie-s2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sofie *, .sofie *::before, .sofie *::after { transition: none !important; animation: none !important; }
+  .sofie-reveal { opacity: 1; transform: none; }
+}

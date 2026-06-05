@@ -1,0 +1,99 @@
+{
+  "_comment": "SEO landing page for 'Charlotte Tilbury Egypt'. Assign to a Page with handle 'charlotte-tilbury-egypt'.",
+  "sections": {
+    "main": {
+      "type": "lux-seo-landing",
+      "blocks": {
+        "t1": {
+          "type": "text",
+          "settings": {
+            "heading": "Authentic Charlotte Tilbury in Egypt",
+            "body": "<p>Charlotte Tilbury is the gold standard of glamour — and at Sofie's Makeup Store you can shop it in Egypt with complete peace of mind. Every product is 100% authentic, sourced through authorized channels.</p>"
+          }
+        },
+        "t2": {
+          "type": "text",
+          "settings": {
+            "heading": "Best-selling Charlotte Tilbury products",
+            "body": "<ul><li><strong>Pillow Talk</strong> — the world-famous lip and cheek edit.</li><li><strong>Charlotte's Magic Cream</strong> — cult-favourite hydrating moisturiser.</li><li><strong>Hollywood Flawless Filter</strong> — the complexion booster for lit-from-within glow.</li><li><strong>Airbrush Flawless Setting Spray</strong> — all-day wear.</li></ul>"
+          }
+        },
+        "t3": {
+          "type": "text",
+          "settings": {
+            "heading": "Why buy Charlotte Tilbury from Sofie's",
+            "body": "<ul><li>100% authentic — guaranteed</li><li>10+ years of beauty expertise</li><li>Fast delivery across Egypt</li><li>Boutiques at Marassi M-Porium & Akti by Zahra</li></ul>"
+          }
+        },
+        "links": {
+          "type": "links",
+          "settings": {
+            "heading": "Explore More",
+            "label_1": "Rare Beauty Egypt",
+            "link_1": "shopify://pages/rare-beauty-egypt",
+            "label_2": "Huda Beauty Egypt",
+            "link_2": "shopify://pages/huda-beauty-egypt",
+            "label_3": "Makeup by Mario Egypt",
+            "link_3": "shopify://pages/makeup-by-mario-egypt",
+            "label_4": "NARS Egypt",
+            "link_4": "shopify://pages/nars-egypt",
+            "label_5": "Luxury Makeup Egypt",
+            "link_5": "shopify://pages/luxury-makeup-egypt",
+            "label_6": "Original Makeup Egypt",
+            "link_6": "shopify://pages/original-makeup-egypt"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "links"
+      ],
+      "settings": {
+        "eyebrow": "Authentic Charlotte Tilbury • In Egypt • Delivered Fast",
+        "h1": "Charlotte Tilbury Egypt",
+        "intro": "Shop 100% authentic Charlotte Tilbury in Egypt at Sofie's Makeup Store. Pillow Talk, Magic Cream, Flawless Filter and the full icon line — curated by experts, delivered nationwide.",
+        "cta": "Shop the Collection",
+        "cta_link": "shopify://collections/charlotte-tilbury",
+        "cta2": "Explore All Brands",
+        "cta2_link": "shopify://collections",
+        "collection": "charlotte-tilbury",
+        "products_heading": "Shop Charlotte Tilbury",
+        "limit": 8
+      }
+    },
+    "faq": {
+      "type": "lux-faq",
+      "blocks": {
+        "f1": {
+          "type": "qa",
+          "settings": {
+            "question": "Is Charlotte Tilbury available in Egypt?",
+            "answer": "<p>Yes — shop 100% authentic Charlotte Tilbury in Egypt at Sofie's Makeup Store, online and in store.</p>"
+          }
+        },
+        "f2": {
+          "type": "qa",
+          "settings": {
+            "question": "What is Charlotte Tilbury best known for?",
+            "answer": "<p>Pillow Talk, Magic Cream and Hollywood Flawless Filter are among the most iconic, best-selling products.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2"
+      ],
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "emit_schema": true,
+        "open_first": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq"
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "_comment": "SEO landing page for 'Luxury Makeup Egypt'. Assign to a Page with handle 'luxury-makeup-egypt'.",
+  "sections": {
+    "main": {
+      "type": "lux-seo-landing",
+      "blocks": {
+        "t1": {
+          "type": "text",
+          "settings": {
+            "heading": "Egypt's destination for luxury makeup",
+            "body": "<p>For more than a decade, Sofie's Makeup Store has been Egypt's trusted home for luxury makeup. We curate the world's most coveted prestige brands so you can shop with confidence — every product 100% authentic, sourced from authorized channels.</p>"
+          }
+        },
+        "t2": {
+          "type": "text",
+          "settings": {
+            "heading": "The prestige brands we carry",
+            "body": "<p>From Rare Beauty and Charlotte Tilbury to NARS, Huda Beauty, Makeup by Mario, Hourglass, Laura Mercier, Glossier, Saie and more — discover the luxury beauty the world is talking about, in Egypt.</p>"
+          }
+        },
+        "t3": {
+          "type": "text",
+          "settings": {
+            "heading": "Why shop luxury makeup with Sofie's",
+            "body": "<ul><li>100% authentic — guaranteed</li><li>Expertly curated over 10+ years</li><li>Fast delivery across every governorate in Egypt</li><li>Visit our boutiques at Marassi M-Porium & Akti by Zahra</li></ul>"
+          }
+        },
+        "links": {
+          "type": "links",
+          "settings": {
+            "heading": "Explore More",
+            "label_1": "Rare Beauty Egypt",
+            "link_1": "shopify://pages/rare-beauty-egypt",
+            "label_2": "Huda Beauty Egypt",
+            "link_2": "shopify://pages/huda-beauty-egypt",
+            "label_3": "Charlotte Tilbury Egypt",
+            "link_3": "shopify://pages/charlotte-tilbury-egypt",
+            "label_4": "Makeup by Mario Egypt",
+            "link_4": "shopify://pages/makeup-by-mario-egypt",
+            "label_5": "NARS Egypt",
+            "link_5": "shopify://pages/nars-egypt",
+            "label_6": "Original Makeup Egypt",
+            "link_6": "shopify://pages/original-makeup-egypt"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "links"
+      ],
+      "settings": {
+        "eyebrow": "100% Authentic Luxury Beauty • In Egypt",
+        "h1": "Luxury Makeup Egypt",
+        "intro": "Discover luxury makeup in Egypt at Sofie's Makeup Store — the home of prestige beauty for over 10 years. Rare Beauty, Charlotte Tilbury, NARS, Huda Beauty, Makeup by Mario and more, all 100% authentic.",
+        "cta": "Shop the Collection",
+        "cta_link": "shopify://collections/makeup",
+        "cta2": "Explore All Brands",
+        "cta2_link": "shopify://collections",
+        "collection": "makeup",
+        "products_heading": "Shop Luxury Makeup",
+        "limit": 8
+      }
+    },
+    "faq": {
+      "type": "lux-faq",
+      "blocks": {
+        "f1": {
+          "type": "qa",
+          "settings": {
+            "question": "Where can I buy luxury makeup in Egypt?",
+            "answer": "<p>At Sofie's Makeup Store — online with nationwide delivery, and in our Marassi and Akti by Zahra boutiques. Every product is 100% authentic.</p>"
+          }
+        },
+        "f2": {
+          "type": "qa",
+          "settings": {
+            "question": "Are the luxury brands authentic?",
+            "answer": "<p>Yes, 100% authentic. We source only through authorized channels.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2"
+      ],
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "emit_schema": true,
+        "open_first": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq"
+  ]
+}

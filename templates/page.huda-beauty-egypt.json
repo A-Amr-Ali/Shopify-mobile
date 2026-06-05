@@ -1,0 +1,99 @@
+{
+  "_comment": "SEO landing page for 'Huda Beauty Egypt'. Assign to a Page with handle 'huda-beauty-egypt'.",
+  "sections": {
+    "main": {
+      "type": "lux-seo-landing",
+      "blocks": {
+        "t1": {
+          "type": "text",
+          "settings": {
+            "heading": "Authentic Huda Beauty in Egypt",
+            "body": "<p>Founded by Huda Kattan, Huda Beauty is a global powerhouse in complexion, eyes and lips. At Sofie's Makeup Store you can shop authentic Huda Beauty in Egypt with confidence — sourced through authorized channels and loved by our community for years.</p>"
+          }
+        },
+        "t2": {
+          "type": "text",
+          "settings": {
+            "heading": "Best-selling Huda Beauty products",
+            "body": "<ul><li><strong>#FauxFilter Foundation & Concealer</strong> — full coverage, flawless finish.</li><li><strong>Eyeshadow Palettes</strong> — richly pigmented, blendable colour stories.</li><li><strong>Easy Bake Loose Powder</strong> — for a smooth, set complexion.</li><li><strong>Liquid Matte Lipsticks</strong> — long-wearing, iconic shades.</li></ul>"
+          }
+        },
+        "t3": {
+          "type": "text",
+          "settings": {
+            "heading": "Why buy Huda Beauty from Sofie's",
+            "body": "<ul><li>100% authentic — guaranteed</li><li>10+ years of beauty expertise</li><li>Fast delivery across Egypt</li><li>Boutiques at Marassi M-Porium & Akti by Zahra</li></ul>"
+          }
+        },
+        "links": {
+          "type": "links",
+          "settings": {
+            "heading": "Explore More",
+            "label_1": "Rare Beauty Egypt",
+            "link_1": "shopify://pages/rare-beauty-egypt",
+            "label_2": "Charlotte Tilbury Egypt",
+            "link_2": "shopify://pages/charlotte-tilbury-egypt",
+            "label_3": "Makeup by Mario Egypt",
+            "link_3": "shopify://pages/makeup-by-mario-egypt",
+            "label_4": "NARS Egypt",
+            "link_4": "shopify://pages/nars-egypt",
+            "label_5": "Luxury Makeup Egypt",
+            "link_5": "shopify://pages/luxury-makeup-egypt",
+            "label_6": "Original Makeup Egypt",
+            "link_6": "shopify://pages/original-makeup-egypt"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "links"
+      ],
+      "settings": {
+        "eyebrow": "Authentic Huda Beauty • In Egypt • Delivered Fast",
+        "h1": "Huda Beauty Egypt",
+        "intro": "Discover 100% authentic Huda Beauty in Egypt at Sofie's Makeup Store. Faux Filter foundation, eyeshadow palettes, lip and complexion icons — curated by experts and delivered across Egypt.",
+        "cta": "Shop the Collection",
+        "cta_link": "shopify://collections/huda-beauty",
+        "cta2": "Explore All Brands",
+        "cta2_link": "shopify://collections",
+        "collection": "huda-beauty",
+        "products_heading": "Shop Huda Beauty",
+        "limit": 8
+      }
+    },
+    "faq": {
+      "type": "lux-faq",
+      "blocks": {
+        "f1": {
+          "type": "qa",
+          "settings": {
+            "question": "Is Huda Beauty available in Egypt?",
+            "answer": "<p>Yes — shop 100% authentic Huda Beauty in Egypt at Sofie's Makeup Store, online with nationwide delivery and in store.</p>"
+          }
+        },
+        "f2": {
+          "type": "qa",
+          "settings": {
+            "question": "Is your Huda Beauty authentic?",
+            "answer": "<p>Yes, 100% authentic and sourced from authorized channels.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2"
+      ],
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "emit_schema": true,
+        "open_first": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq"
+  ]
+}

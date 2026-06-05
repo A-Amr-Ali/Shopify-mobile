@@ -1,0 +1,89 @@
+{%- comment -%}
+  Sofie luxury product card — self-contained, no theme dependency.
+  Params:
+    product        (required) a product object
+    show_quick_add (bool, default true)
+    show_rating    (bool, default true)  -> reads metafields if present
+    sizes          (string) responsive sizes attr, default for a 4-col grid
+  Brand line uses product.vendor. Rating reads common review-app metafields
+  (Judge.me / Loox / Shopify Product Reviews) and silently hides if absent.
+{%- endcomment -%}
+{%- liquid
+  assign p = product
+  assign show_quick_add = show_quick_add | default: true, allow_false: true
+  assign show_rating = show_rating | default: true, allow_false: true
+  assign sizes = sizes | default: '(min-width: 990px) 24vw, (min-width: 750px) 33vw, 64vw'
+
+  assign rating_value = p.metafields.reviews.rating.value
+  assign rating_count = p.metafields.reviews.rating_count
+-%}
+<article class="sofie-card sofie-reveal">
+  <a class="sofie-card__media" href="{{ p.url }}" aria-label="{{ p.title | escape }}">
+    {%- if p.featured_media -%}
+      <img
+        class="sofie-card__primary"
+        src="{{ p.featured_media | image_url: width: 600 }}"
+        srcset="{{ p.featured_media | image_url: width: 300 }} 300w, {{ p.featured_media | image_url: width: 600 }} 600w, {{ p.featured_media | image_url: width: 900 }} 900w"
+        sizes="{{ sizes }}"
+        alt="{{ p.featured_media.alt | default: p.title | escape }}"
+        width="600" height="800" loading="lazy" decoding="async">
+      {%- if p.media[1] -%}
+        <img class="sofie-card__alt"
+          src="{{ p.media[1] | image_url: width: 600 }}"
+          srcset="{{ p.media[1] | image_url: width: 300 }} 300w, {{ p.media[1] | image_url: width: 600 }} 600w"
+          sizes="{{ sizes }}" alt="" width="600" height="800" loading="lazy" decoding="async" aria-hidden="true">
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'sofie-card__primary' }}
+    {%- endif -%}
+
+    <div class="sofie-card__badges">
+      {%- if p.available == false -%}
+        <span class="sofie-badge sofie-badge--sold">Sold Out</span>
+      {%- elsif p.compare_at_price > p.price -%}
+        {%- assign saving = p.compare_at_price | minus: p.price | times: 100 | divided_by: p.compare_at_price -%}
+        <span class="sofie-badge sofie-badge--sale">Save {{ saving }}%</span>
+      {%- endif -%}
+      {%- if p.tags contains 'new' or p.tags contains 'New' -%}
+        <span class="sofie-badge sofie-badge--new">New</span>
+      {%- endif -%}
+    </div>
+
+    {%- if show_quick_add and p.available -%}
+      <div class="sofie-card__quickadd">
+        {%- if p.variants.size == 1 -%}
+          <button type="button" class="sofie__btn sofie__btn--light"
+            data-quick-add data-variant-id="{{ p.selected_or_first_available_variant.id }}"
+            data-product-url="{{ p.url }}">Add to Bag</button>
+        {%- else -%}
+          <a class="sofie__btn sofie__btn--light" href="{{ p.url }}">Choose Options</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </a>
+
+  <div class="sofie-card__body">
+    {%- if p.vendor != blank -%}
+      <p class="sofie-card__brand">{{ p.vendor | escape }}</p>
+    {%- endif -%}
+    <h3 class="sofie-card__title"><a href="{{ p.url }}">{{ p.title | escape }}</a></h3>
+
+    {%- if show_rating and rating_value != blank -%}
+      {%- assign full = rating_value.rating | round -%}
+      <div class="sofie-card__rating" aria-label="Rated {{ rating_value.rating }} out of 5">
+        <span class="sofie-card__stars" aria-hidden="true">
+          {%- for i in (1..5) -%}{% if i <= full %}★{% else %}☆{% endif %}{%- endfor -%}
+        </span>
+        {%- if rating_count != blank -%}<small>({{ rating_count.value | default: rating_count }})</small>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="sofie-card__price">
+      {%- if p.compare_at_price > p.price -%}
+        <del>{{ p.compare_at_price | money }}</del><ins>{{ p.price | money }}</ins>
+      {%- else -%}
+        {%- if p.price_varies -%}From {% endif %}{{ p.price | money }}
+      {%- endif -%}
+    </div>
+  </div>
+</article>

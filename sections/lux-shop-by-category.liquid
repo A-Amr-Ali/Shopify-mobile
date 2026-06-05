@@ -1,0 +1,81 @@
+{%- comment -%}
+  Sofie — Shop by Category. Editorial image tiles linking to collections.
+{%- endcomment -%}
+{{ 'sofie-luxury.css' | asset_url | stylesheet_tag }}
+
+<section class="sofie sofie__section {% if section.settings.tint %}sofie__section--tint{% endif %}"
+         style="--sofie-cat-cols: {{ section.settings.columns | default: 4 }};"
+         aria-label="{{ section.settings.heading | escape }}">
+  <div class="sofie__container">
+    <div class="sofie__head sofie__head--center sofie-reveal">
+      {%- if section.settings.eyebrow != blank -%}<span class="sofie__eyebrow">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+      <h2 class="sofie__h2">{{ section.settings.heading | escape }}</h2>
+    </div>
+    <div class="sofie-cat__grid sofie-reveal">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign c = collections[block.settings.collection]
+          assign img = block.settings.image
+          if img == blank and c != blank
+            assign img = c.featured_image
+          endif
+          assign url = block.settings.link
+          if url == blank and c != blank
+            assign url = c.url
+          endif
+          assign label = block.settings.label
+          if label == blank and c != blank
+            assign label = c.title
+          endif
+        -%}
+        <a class="sofie-cat__item" href="{{ url | default: '#' }}" {{ block.shopify_attributes }}>
+          {%- if img -%}
+            <img src="{{ img | image_url: width: 600 }}"
+                 srcset="{{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 700 }} 700w"
+                 sizes="(min-width: 990px) 24vw, 50vw"
+                 alt="{{ label | escape }} — shop at Sofie's Makeup Store Egypt"
+                 width="600" height="750" loading="lazy" decoding="async">
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag }}
+          {%- endif -%}
+          <span class="sofie-cat__label">{{ label | escape }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lux Shop by Category",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "tint", "label": "Tinted background", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Find Your Ritual" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by Category" },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 3, "max": 6, "step": 1, "default": 4 }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category tile",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection (auto image/title/link)" },
+        { "type": "image_picker", "id": "image", "label": "Override image" },
+        { "type": "text", "id": "label", "label": "Override label" },
+        { "type": "url", "id": "link", "label": "Override link" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [{
+    "name": "Lux Shop by Category",
+    "blocks": [
+      { "type": "category", "settings": { "label": "Makeup" } },
+      { "type": "category", "settings": { "label": "Skincare" } },
+      { "type": "category", "settings": { "label": "Fragrance" } },
+      { "type": "category", "settings": { "label": "Home & Body" } }
+    ]
+  }]
+}
+{% endschema %}

@@ -1,0 +1,91 @@
+{%- comment -%}
+  Sofie — Why Sofie? Premium brand storytelling (authenticity, expertise,
+  luxury, trust). Editorial 2-column with image + pillars.
+{%- endcomment -%}
+{{ 'sofie-luxury.css' | asset_url | stylesheet_tag }}
+
+<section class="sofie sofie__section {% if section.settings.dark %}sofie__section--ink{% elsif section.settings.tint %}sofie__section--tint{% endif %}"
+         aria-label="{{ section.settings.heading | escape }}">
+  <div class="sofie__container">
+    <div class="sofie-why__grid">
+      <div class="sofie-why__media sofie-reveal">
+        {%- if section.settings.image -%}
+          <img src="{{ section.settings.image | image_url: width: 900 }}"
+               srcset="{{ section.settings.image | image_url: width: 600 }} 600w, {{ section.settings.image | image_url: width: 1000 }} 1000w"
+               sizes="(min-width: 990px) 45vw, 100vw"
+               alt="{{ section.settings.image.alt | default: 'Sofie''s Makeup Store — Egypt''s luxury beauty destination' | escape }}"
+               width="900" height="1125" loading="lazy" decoding="async">
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag }}
+        {%- endif -%}
+      </div>
+      <div class="sofie-why__copy sofie-reveal">
+        {%- if section.settings.eyebrow != blank -%}<span class="sofie__eyebrow">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+        <h2 class="sofie__h2">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.body != blank -%}<div class="sofie__lead">{{ section.settings.body }}</div>{%- endif -%}
+        <div class="sofie-why__pillars">
+          {%- for block in section.blocks -%}
+            <div class="sofie-why__pillar" {{ block.shopify_attributes }}>
+              {% render 'lux-icon', name: block.settings.icon %}
+              <div>
+                <h3>{{ block.settings.title | escape }}</h3>
+                <p>{{ block.settings.text | escape }}</p>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        {%- if section.settings.cta != blank -%}
+          <div style="margin-top:2.25rem">
+            <a class="sofie__btn {% if section.settings.dark %}sofie__btn--light{% else %}sofie__btn--ghost{% endif %}" href="{{ section.settings.cta_link }}">{{ section.settings.cta | escape }}</a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lux Why Sofie",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "tint", "label": "Tinted background", "default": false },
+    { "type": "checkbox", "id": "dark", "label": "Dark (ink) background", "default": false },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our Promise" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Beauty You Can Trust, for Over a Decade" },
+    { "type": "richtext", "id": "body", "label": "Body", "default": "<p>For 10+ years, Sofie's Makeup Store has been Egypt's destination for genuinely authentic prestige beauty — curated with the eye of an expert and the care of a friend.</p>" },
+    { "type": "text", "id": "cta", "label": "Button label", "default": "Discover Our Story" },
+    { "type": "url", "id": "cta_link", "label": "Button link" }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Story pillar",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "badge",
+          "options": [
+            {"value":"badge","label":"Authenticity"},
+            {"value":"sparkle","label":"Sparkle"},
+            {"value":"shield","label":"Shield"},
+            {"value":"store","label":"Store"},
+            {"value":"gift","label":"Gift"},
+            {"value":"leaf","label":"Leaf"}
+          ] },
+        { "type": "text", "id": "title", "label": "Title", "default": "100% Authentic" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Sourced only from official brands and authorized distributors." }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [{
+    "name": "Lux Why Sofie",
+    "blocks": [
+      { "type": "pillar", "settings": { "icon": "badge", "title": "Uncompromising Authenticity", "text": "Every product is 100% genuine — no exceptions, ever." } },
+      { "type": "pillar", "settings": { "icon": "sparkle", "title": "Expert Curation", "text": "A 10-year-trained eye selects only what's truly worth it." } },
+      { "type": "pillar", "settings": { "icon": "store", "title": "A Real Boutique Experience", "text": "Visit us at Marassi M-Porium & Akti by Zahra." } },
+      { "type": "pillar", "settings": { "icon": "gift", "title": "Beauty, Beautifully Delivered", "text": "Luxury packaging and care, to your door across Egypt." } }
+    ]
+  }]
+}
+{% endschema %}

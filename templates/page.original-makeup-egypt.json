@@ -1,0 +1,91 @@
+{
+  "_comment": "SEO landing page for 'Original Makeup Egypt'. Assign to a Page with handle 'original-makeup-egypt'.",
+  "sections": {
+    "main": {
+      "type": "lux-seo-landing",
+      "blocks": {
+        "t1": {
+          "type": "text",
+          "settings": {
+            "heading": "Original makeup you can trust in Egypt",
+            "body": "<p>Counterfeit beauty is a real risk online. At Sofie's Makeup Store, originality is our promise: every product is genuine, sourced from official brands and authorized distributors. For over 10 years, customers across Egypt have trusted us for original makeup.</p>"
+          }
+        },
+        "t2": {
+          "type": "text",
+          "settings": {
+            "heading": "How we guarantee originality",
+            "body": "<ul><li>We buy only through official brands and authorized distributors.</li><li>Our team has 10+ years of prestige-beauty expertise.</li><li>You can see and shop our products in person at Marassi M-Porium & Akti by Zahra.</li></ul>"
+          }
+        },
+        "links": {
+          "type": "links",
+          "settings": {
+            "heading": "Explore More",
+            "label_1": "Rare Beauty Egypt",
+            "link_1": "shopify://pages/rare-beauty-egypt",
+            "label_2": "Huda Beauty Egypt",
+            "link_2": "shopify://pages/huda-beauty-egypt",
+            "label_3": "Charlotte Tilbury Egypt",
+            "link_3": "shopify://pages/charlotte-tilbury-egypt",
+            "label_4": "Makeup by Mario Egypt",
+            "link_4": "shopify://pages/makeup-by-mario-egypt",
+            "label_5": "NARS Egypt",
+            "link_5": "shopify://pages/nars-egypt",
+            "label_6": "Luxury Makeup Egypt",
+            "link_6": "shopify://pages/luxury-makeup-egypt"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "links"
+      ],
+      "settings": {
+        "eyebrow": "Guaranteed Original • In Egypt",
+        "h1": "Original Makeup Egypt",
+        "intro": "Shop original, 100% authentic makeup in Egypt at Sofie's Makeup Store. We guarantee every product is genuine — sourced from official brands and authorized distributors, with 10+ years of trust.",
+        "cta": "Shop the Collection",
+        "cta_link": "shopify://collections/makeup",
+        "cta2": "Explore All Brands",
+        "cta2_link": "shopify://collections",
+        "collection": "makeup",
+        "products_heading": "Shop Original Makeup",
+        "limit": 8
+      }
+    },
+    "faq": {
+      "type": "lux-faq",
+      "blocks": {
+        "f1": {
+          "type": "qa",
+          "settings": {
+            "question": "Is your makeup original?",
+            "answer": "<p>Yes — 100% original and authentic, sourced from official brands and authorized distributors.</p>"
+          }
+        },
+        "f2": {
+          "type": "qa",
+          "settings": {
+            "question": "How do I know the makeup is not fake?",
+            "answer": "<p>We source exclusively through authorized channels, have a 10+ year track record, and operate physical boutiques you can visit in Egypt.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2"
+      ],
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "emit_schema": true,
+        "open_first": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq"
+  ]
+}

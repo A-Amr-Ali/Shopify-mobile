@@ -1,0 +1,91 @@
+{
+  "_comment": "SEO landing page for 'NARS Egypt'. Assign to a Page with handle 'nars-egypt'.",
+  "sections": {
+    "main": {
+      "type": "lux-seo-landing",
+      "blocks": {
+        "t1": {
+          "type": "text",
+          "settings": {
+            "heading": "Authentic NARS in Egypt",
+            "body": "<p>NARS is a modern classic, famous for its complexion and cheek icons. At Sofie's Makeup Store you can shop authentic NARS in Egypt with full confidence — sourced from authorized channels.</p>"
+          }
+        },
+        "t2": {
+          "type": "text",
+          "settings": {
+            "heading": "Best-selling NARS products",
+            "body": "<ul><li><strong>Radiant Creamy Concealer</strong> — the cult-favourite, full-coverage concealer.</li><li><strong>Blush in Orgasm</strong> — the legendary peachy-pink glow.</li><li><strong>Light Reflecting Foundation</strong> — skincare-infused, natural finish.</li><li><strong>Climax Mascara</strong> — volume and drama.</li></ul>"
+          }
+        },
+        "t3": {
+          "type": "text",
+          "settings": {
+            "heading": "Why buy NARS from Sofie's",
+            "body": "<ul><li>100% authentic — guaranteed</li><li>10+ years of beauty expertise</li><li>Fast delivery across Egypt</li><li>Boutiques at Marassi M-Porium & Akti by Zahra</li></ul>"
+          }
+        },
+        "links": {
+          "type": "links",
+          "settings": {
+            "heading": "Explore More",
+            "label_1": "Rare Beauty Egypt",
+            "link_1": "shopify://pages/rare-beauty-egypt",
+            "label_2": "Huda Beauty Egypt",
+            "link_2": "shopify://pages/huda-beauty-egypt",
+            "label_3": "Charlotte Tilbury Egypt",
+            "link_3": "shopify://pages/charlotte-tilbury-egypt",
+            "label_4": "Makeup by Mario Egypt",
+            "link_4": "shopify://pages/makeup-by-mario-egypt",
+            "label_5": "Luxury Makeup Egypt",
+            "link_5": "shopify://pages/luxury-makeup-egypt",
+            "label_6": "Original Makeup Egypt",
+            "link_6": "shopify://pages/original-makeup-egypt"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "links"
+      ],
+      "settings": {
+        "eyebrow": "Authentic NARS • In Egypt • Delivered Fast",
+        "h1": "NARS Egypt",
+        "intro": "Shop 100% authentic NARS in Egypt at Sofie's Makeup Store. Radiant Creamy Concealer, Orgasm blush, Light Reflecting foundation and more — curated by experts, delivered nationwide.",
+        "cta": "Shop the Collection",
+        "cta_link": "shopify://collections/nars",
+        "cta2": "Explore All Brands",
+        "cta2_link": "shopify://collections",
+        "collection": "nars",
+        "products_heading": "Shop NARS",
+        "limit": 8
+      }
+    },
+    "faq": {
+      "type": "lux-faq",
+      "blocks": {
+        "f1": {
+          "type": "qa",
+          "settings": {
+            "question": "Is NARS available in Egypt?",
+            "answer": "<p>Yes — shop 100% authentic NARS in Egypt at Sofie's Makeup Store, online and in store.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "f1"
+      ],
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "emit_schema": true,
+        "open_first": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq"
+  ]
+}

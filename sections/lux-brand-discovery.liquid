@@ -1,0 +1,78 @@
+{%- comment -%}
+  Sofie — Brand Discovery. Prestige brand wall linking to brand collections.
+  Doubles as internal-linking for SEO (Rare Beauty Egypt, Huda Beauty Egypt...).
+{%- endcomment -%}
+{{ 'sofie-luxury.css' | asset_url | stylesheet_tag }}
+
+<section class="sofie sofie__section {% if section.settings.tint %}sofie__section--tint{% endif %}"
+         style="--sofie-brand-cols: {{ section.settings.columns | default: 6 }};"
+         aria-label="{{ section.settings.heading | escape }}">
+  <div class="sofie__container">
+    <div class="sofie__head sofie__head--center sofie-reveal">
+      {%- if section.settings.eyebrow != blank -%}<span class="sofie__eyebrow">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+      <h2 class="sofie__h2">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.subheading != blank -%}<p class="sofie__lead" style="text-align:center">{{ section.settings.subheading | escape }}</p>{%- endif -%}
+    </div>
+    <div class="sofie-brands__grid sofie-reveal">
+      {%- for block in section.blocks -%}
+        <a class="sofie-brands__item" href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }} aria-label="Shop {{ block.settings.name | escape }}">
+          {%- if block.settings.logo -%}
+            <img src="{{ block.settings.logo | image_url: width: 240 }}" alt="{{ block.settings.name | escape }} — available at Sofie's Makeup Store Egypt" width="120" height="46" loading="lazy" decoding="async">
+          {%- else -%}
+            {{ block.settings.name | escape }}
+          {%- endif -%}
+        </a>
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.view_all != blank -%}
+      <div style="text-align:center;margin-top:2.5rem">
+        <a class="sofie__btn sofie__btn--ghost" href="{{ section.settings.view_all }}">{{ section.settings.view_all_label | escape }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lux Brand Discovery",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "tint", "label": "Tinted background", "default": true },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The House of Prestige" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Discover the World's Most Coveted Brands" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "100% authentic, hand-picked by our beauty experts." },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 4, "max": 8, "step": 1, "default": 6 },
+    { "type": "url", "id": "view_all", "label": "\"All brands\" link" },
+    { "type": "text", "id": "view_all_label", "label": "\"All brands\" label", "default": "Explore All Brands" }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Brand name", "default": "Brand" },
+        { "type": "image_picker", "id": "logo", "label": "Logo (optional)" },
+        { "type": "url", "id": "link", "label": "Brand collection link" }
+      ]
+    }
+  ],
+  "max_blocks": 18,
+  "presets": [{
+    "name": "Lux Brand Discovery",
+    "blocks": [
+      { "type": "brand", "settings": { "name": "Rare Beauty" } },
+      { "type": "brand", "settings": { "name": "Huda Beauty" } },
+      { "type": "brand", "settings": { "name": "Charlotte Tilbury" } },
+      { "type": "brand", "settings": { "name": "NARS" } },
+      { "type": "brand", "settings": { "name": "Makeup by Mario" } },
+      { "type": "brand", "settings": { "name": "Hourglass" } },
+      { "type": "brand", "settings": { "name": "Laura Mercier" } },
+      { "type": "brand", "settings": { "name": "Glossier" } },
+      { "type": "brand", "settings": { "name": "Saie" } },
+      { "type": "brand", "settings": { "name": "Summer Fridays" } },
+      { "type": "brand", "settings": { "name": "Patrick Ta" } },
+      { "type": "brand", "settings": { "name": "REFY" } }
+    ]
+  }]
+}
+{% endschema %}

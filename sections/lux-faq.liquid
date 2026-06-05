@@ -1,0 +1,78 @@
+{%- comment -%}
+  Sofie — FAQ accordion with built-in FAQPage JSON-LD (rich snippets).
+  Accessible native <details>. Use ONE FAQ section per page to avoid duplicate
+  FAQ schema (a current site issue we are fixing).
+{%- endcomment -%}
+{{ 'sofie-luxury.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sofie-luxury.js' | asset_url }}" defer></script>
+
+<section class="sofie sofie__section {% if section.settings.tint %}sofie__section--tint{% endif %}" aria-label="{{ section.settings.heading | escape }}">
+  <div class="sofie__container">
+    <div class="sofie__head sofie__head--center sofie-reveal">
+      {%- if section.settings.eyebrow != blank -%}<span class="sofie__eyebrow">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+      <h2 class="sofie__h2">{{ section.settings.heading | escape }}</h2>
+    </div>
+    <div class="sofie-faq sofie-reveal" {% if section.settings.exclusive %}data-faq-exclusive{% endif %}>
+      {%- for block in section.blocks -%}
+        <details class="sofie-faq__item" {{ block.shopify_attributes }}{% if forloop.first and section.settings.open_first %} open{% endif %}>
+          <summary class="sofie-faq__q">{{ block.settings.question | escape }}</summary>
+          <div class="sofie-faq__a">{{ block.settings.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- if section.settings.emit_schema and section.blocks.size > 0 -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- for block in section.blocks -%}
+    {
+      "@type": "Question",
+      "name": {{ block.settings.question | strip_html | json }},
+      "acceptedAnswer": { "@type": "Answer", "text": {{ block.settings.answer | strip_html | json }} }
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Lux FAQ",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "tint", "label": "Tinted background", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Good to Know" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Frequently Asked Questions" },
+    { "type": "checkbox", "id": "open_first", "label": "Open first item", "default": true },
+    { "type": "checkbox", "id": "exclusive", "label": "Only one open at a time", "default": false },
+    { "type": "checkbox", "id": "emit_schema", "label": "Emit FAQ rich-snippet schema", "default": true },
+    { "type": "paragraph", "content": "Tip: keep only ONE FAQ section with schema enabled per page." }
+  ],
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Are your products 100% authentic?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Yes. Every product is 100% authentic, sourced directly from official brands and authorized distributors. Authenticity is our promise — no exceptions.</p>" }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Lux FAQ",
+    "blocks": [
+      { "type": "qa", "settings": { "question": "Are your products 100% authentic?", "answer": "<p>Absolutely. Every item is 100% authentic and sourced directly from official brands and authorized distributors. We have built our reputation on authenticity for over 10 years.</p>" } },
+      { "type": "qa", "settings": { "question": "How long does delivery take in Egypt?", "answer": "<p>We deliver to every governorate in Egypt. Delivery typically takes 3–14 business days depending on product availability.</p>" } },
+      { "type": "qa", "settings": { "question": "Do you have a physical store?", "answer": "<p>Yes — visit our boutiques at M-Porium Mall, Marassi and Akti by Zahra. Our beauty experts would love to help you in person.</p>" } },
+      { "type": "qa", "settings": { "question": "What payment methods do you accept?", "answer": "<p>We offer secure payment options including card and cash on delivery, all through a protected checkout.</p>" } },
+      { "type": "qa", "settings": { "question": "Can I return or exchange a product?", "answer": "<p>Please see our returns policy for full details. For hygiene reasons some beauty items are final sale; our team is always happy to help.</p>" } }
+    ]
+  }]
+}
+{% endschema %}

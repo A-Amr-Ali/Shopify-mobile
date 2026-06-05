@@ -1,0 +1,30 @@
+{
+  "_comment": "GENERIC SEO landing template. Duplicate this file as page.<handle>.json for each keyword page, then edit content. Assign to a Page via Online Store > Pages > Theme template.",
+  "sections": {
+    "main": {
+      "type": "lux-seo-landing",
+      "blocks": {
+        "t1": { "type": "text", "settings": { "heading": "Heading", "body": "<p>Replace with keyword-rich, genuinely helpful copy.</p>" } },
+        "links": { "type": "links" }
+      },
+      "block_order": ["t1", "links"],
+      "settings": {
+        "eyebrow": "Authentic • In Egypt • Delivered Fast",
+        "h1": "Keyword Egypt",
+        "intro": "Replace with a compelling, keyword-rich intro.",
+        "cta": "Shop the Collection",
+        "collection": "makeup",
+        "limit": 8
+      }
+    },
+    "faq": {
+      "type": "lux-faq",
+      "blocks": {
+        "f1": { "type": "qa", "settings": { "question": "Is this 100% authentic?", "answer": "<p>Yes — 100% authentic, from authorized channels.</p>" } }
+      },
+      "block_order": ["f1"],
+      "settings": { "heading": "Frequently Asked Questions", "emit_schema": true }
+    }
+  },
+  "order": ["main", "faq"]
+}

@@ -1,0 +1,103 @@
+{%- comment -%}
+  Sofie — Luxury Split Hero (Makeup | Home) + above-the-fold trust strip.
+  Makeup panel is intentionally larger (business primacy: brand = "Makeup Store").
+  Editable in the theme customizer. LCP-optimised: hero images eager-loaded.
+{%- endcomment -%}
+{{ 'sofie-luxury.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sofie-luxury.js' | asset_url }}" defer></script>
+
+<section class="sofie sofie-hero" aria-label="{{ section.settings.aria_label | default: 'Welcome to Sofie''s Makeup Store' | escape }}">
+  <div class="sofie-hero__grid">
+
+    {%- comment -%} ---- MAKEUP PANEL (primary) ---- {%- endcomment -%}
+    <div class="sofie-hero__panel sofie-hero__panel--makeup">
+      <div class="sofie-hero__media">
+        {%- if section.settings.makeup_image -%}
+          <img src="{{ section.settings.makeup_image | image_url: width: 1400 }}"
+               srcset="{{ section.settings.makeup_image | image_url: width: 700 }} 700w, {{ section.settings.makeup_image | image_url: width: 1100 }} 1100w, {{ section.settings.makeup_image | image_url: width: 1600 }} 1600w"
+               sizes="(min-width: 990px) 58vw, 100vw"
+               alt="{{ section.settings.makeup_image.alt | default: 'Luxury makeup at Sofie''s Makeup Store Egypt' | escape }}"
+               width="1400" height="900" fetchpriority="high" decoding="async">
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag }}
+        {%- endif -%}
+      </div>
+      <p class="sofie-hero__eyebrow">{{ section.settings.makeup_eyebrow | escape }}</p>
+      <h1 class="sofie-hero__title">{{ section.settings.makeup_title }}</h1>
+      <p class="sofie-hero__sub">{{ section.settings.makeup_sub | escape }}</p>
+      <div class="sofie-hero__cta">
+        <a class="sofie__btn sofie__btn--light" href="{{ section.settings.makeup_link }}">{{ section.settings.makeup_cta | escape }}</a>
+        {%- if section.settings.makeup_link2 != blank -%}
+          <a class="sofie__btn sofie__btn--gold" href="{{ section.settings.makeup_link2 }}">{{ section.settings.makeup_cta2 | escape }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} ---- HOME PANEL ---- {%- endcomment -%}
+    <div class="sofie-hero__panel sofie-hero__panel--home">
+      <div class="sofie-hero__media">
+        {%- if section.settings.home_image -%}
+          <img src="{{ section.settings.home_image | image_url: width: 1000 }}"
+               srcset="{{ section.settings.home_image | image_url: width: 600 }} 600w, {{ section.settings.home_image | image_url: width: 1000 }} 1000w"
+               sizes="(min-width: 990px) 42vw, 100vw"
+               alt="{{ section.settings.home_image.alt | default: 'Elegant home & lifestyle at Sofie Store' | escape }}"
+               width="1000" height="900" fetchpriority="high" decoding="async">
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag }}
+        {%- endif -%}
+      </div>
+      <p class="sofie-hero__eyebrow">{{ section.settings.home_eyebrow | escape }}</p>
+      <h2 class="sofie-hero__title" style="font-size:clamp(2rem,1.2rem+2.6vw,3.4rem)">{{ section.settings.home_title }}</h2>
+      <p class="sofie-hero__sub">{{ section.settings.home_sub | escape }}</p>
+      <div class="sofie-hero__cta">
+        <a class="sofie__btn sofie__btn--light" href="{{ section.settings.home_link }}">{{ section.settings.home_cta | escape }}</a>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} ---- ABOVE-THE-FOLD TRUST STRIP ---- {%- endcomment -%}
+  {%- if section.settings.show_trust_strip -%}
+    <div class="sofie-hero__trust">
+      <span class="sofie-hero__trust-item">{% render 'lux-icon', name: 'shield' %} {{ section.settings.trust_1 | escape }}</span>
+      <span class="sofie-hero__trust-item">{% render 'lux-icon', name: 'badge' %} {{ section.settings.trust_2 | escape }}</span>
+      <span class="sofie-hero__trust-item">{% render 'lux-icon', name: 'store' %} {{ section.settings.trust_3 | escape }}</span>
+      <span class="sofie-hero__trust-item">{% render 'lux-icon', name: 'truck' %} {{ section.settings.trust_4 | escape }}</span>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Lux Hero (Split)",
+  "tag": "section",
+  "class": "sofie-section-hero",
+  "settings": [
+    { "type": "header", "content": "Makeup panel (primary)" },
+    { "type": "image_picker", "id": "makeup_image", "label": "Makeup image" },
+    { "type": "text", "id": "makeup_eyebrow", "label": "Eyebrow", "default": "Egypt's Trusted Luxury Beauty Destination" },
+    { "type": "richtext", "id": "makeup_title", "label": "Title", "default": "<p>Luxury Makeup,<br>100% Authentic</p>" },
+    { "type": "text", "id": "makeup_sub", "label": "Subtitle", "default": "Rare Beauty, Huda, Charlotte Tilbury, NARS & more — curated by beauty experts for 10+ years." },
+    { "type": "text", "id": "makeup_cta", "label": "Button 1 label", "default": "Shop Makeup" },
+    { "type": "url", "id": "makeup_link", "label": "Button 1 link" },
+    { "type": "text", "id": "makeup_cta2", "label": "Button 2 label", "default": "Shop Best Sellers" },
+    { "type": "url", "id": "makeup_link2", "label": "Button 2 link" },
+
+    { "type": "header", "content": "Home panel" },
+    { "type": "image_picker", "id": "home_image", "label": "Home image" },
+    { "type": "text", "id": "home_eyebrow", "label": "Eyebrow", "default": "Elegant Living" },
+    { "type": "richtext", "id": "home_title", "label": "Title", "default": "<p>Elegant Home & Lifestyle</p>" },
+    { "type": "text", "id": "home_sub", "label": "Subtitle", "default": "Refined home & body essentials with timeless, modern design." },
+    { "type": "text", "id": "home_cta", "label": "Button label", "default": "Shop Home" },
+    { "type": "url", "id": "home_link", "label": "Button link" },
+
+    { "type": "header", "content": "Trust strip (above the fold)" },
+    { "type": "checkbox", "id": "show_trust_strip", "label": "Show trust strip", "default": true },
+    { "type": "text", "id": "trust_1", "label": "Trust 1", "default": "100% Authentic Guaranteed" },
+    { "type": "text", "id": "trust_2", "label": "Trust 2", "default": "10+ Years of Beauty Expertise" },
+    { "type": "text", "id": "trust_3", "label": "Trust 3", "default": "Marassi & Akti by Zahra Boutiques" },
+    { "type": "text", "id": "trust_4", "label": "Trust 4", "default": "Nationwide Delivery" },
+    { "type": "text", "id": "aria_label", "label": "Accessibility label" }
+  ],
+  "presets": [{ "name": "Lux Hero (Split)" }]
+}
+{% endschema %}
