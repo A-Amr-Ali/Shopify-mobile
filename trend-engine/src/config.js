@@ -15,6 +15,14 @@ export const config = {
   trendTag: process.env.TREND_TAG || "trending",
   bestsellerTag: process.env.BESTSELLER_TAG || "bestseller",
 
+  // Scope to beauty: only products inside these collection handles are
+  // considered (keeps home appliances etc. out of the beauty trending section).
+  // Comma-separated handles. Empty = scan the whole catalog.
+  collections: (process.env.TREND_COLLECTIONS || "")
+    .split(",").map((s) => s.trim()).filter(Boolean),
+  // Ignore keywords shorter than this (prevents junk like "g" matching everything).
+  minKeywordLen: num(process.env.MIN_KEYWORD_LEN, 4),
+
   maxTrending: num(process.env.MAX_TRENDING, 12),
   maxBestsellers: num(process.env.MAX_BESTSELLERS, 12),
 

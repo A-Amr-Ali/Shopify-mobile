@@ -4,7 +4,7 @@
 // Your homepage's automated collections (tag = trending / bestseller) then
 // update themselves. Safe by default: run with DRY_RUN=true to preview.
 import { config, assertConfig } from "./config.js";
-import { fetchAllProducts, tagsAdd, tagsRemove } from "./shopify.js";
+import { fetchAllProducts, fetchProductsInCollections, tagsAdd, tagsRemove } from "./shopify.js";
 import { buildKeywordUniverse } from "./keywords.js";
 import { googleTrendsScores, googleDailyTrendTerms } from "./signals/googleTrends.js";
 import { manualScores } from "./signals/manual.js";
@@ -36,11 +36,16 @@ async function main() {
   assertConfig();
   console.log(`\n🌷 Sofie Trend Engine  ·  store=${config.store}  geo=${config.geo || "worldwide"}  ${config.dryRun ? "[DRY RUN]" : ""}`);
 
-  // 1) Catalog
-  const products = await fetchAllProducts();
-  console.log(`📦 Loaded ${products.length} products`);
+  // 1) Catalog — scoped to beauty collections when configured.
+  const products = config.collections.length
+    ? await fetchProductsInCollections(config.collections)
+    : await fetchAllProducts();
+  console.log(
+    `📦 Loaded ${products.length} products` +
+      (config.collections.length ? ` from collections: ${config.collections.join(", ")}` : " (whole catalog)")
+  );
   const vendors = [...new Set(products.map((p) => p.vendor).filter(Boolean))];
-  const keywords = buildKeywordUniverse(vendors);
+  const keywords = buildKeywordUniverse(vendors, { minLen: config.minKeywordLen });
 
   // 2) Signals (each one is resilient; failures degrade gracefully)
   console.log(`📈 Gathering signals…`);
@@ -54,7 +59,8 @@ async function main() {
 
   // 3) Rank
   const trending = scoreProducts(products, {
-    googleScores, manualScores: manual, salesScores, dailyTerms, weights: config.weights,
+    googleScores, manualScores: manual, salesScores, dailyTerms,
+    weights: config.weights, minKeywordLen: config.minKeywordLen,
   }).slice(0, config.maxTrending);
 
   const bestsellers = rankBestSellers(products, salesScores).slice(0, config.maxBestsellers);

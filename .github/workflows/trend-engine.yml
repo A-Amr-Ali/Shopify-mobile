@@ -40,6 +40,9 @@ jobs:
           SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
           SHOPIFY_API_VERSION: "2024-10"
           TREND_GEO: "EG"
+          # Scope to beauty collections so home appliances etc. are excluded.
+          # Edit to match your real beauty collection handles.
+          TREND_COLLECTIONS: "makeup,skincare,fragrance,body-moisturizers"
           MAX_TRENDING: "12"
           MAX_BESTSELLERS: "12"
           DRY_RUN: ${{ inputs.dry_run || 'false' }}

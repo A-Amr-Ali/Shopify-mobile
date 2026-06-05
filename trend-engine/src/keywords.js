@@ -37,11 +37,21 @@ export const PRODUCT_KEYWORDS = [
 // across separate batched requests (Trends normalises 0–100 *within* a request).
 export const ANCHOR_KEYWORD = "makeup";
 
-export function buildKeywordUniverse(storeVendors = []) {
+// Generic words that would match too many products — never used as keywords.
+export const STOPWORDS = new Set([
+  "beauty", "makeup", "cosmetics", "the", "and", "set", "kit", "mini",
+  "new", "gift", "home", "samsung", "lg", "bosch", "tcl", "tornado",
+]);
+
+export function buildKeywordUniverse(storeVendors = [], { minLen = 4 } = {}) {
   const set = new Map(); // lowercased -> original
   const add = (k) => {
-    const key = k.trim().toLowerCase();
-    if (key && !set.has(key)) set.set(key, k.trim());
+    const orig = (k || "").trim();
+    const key = orig.toLowerCase();
+    // Reject too-short or generic tokens that cause false matches (e.g. "g").
+    if (key.length < minLen) return;
+    if (STOPWORDS.has(key)) return;
+    if (!set.has(key)) set.set(key, orig);
   };
   BRAND_KEYWORDS.forEach(add);
   PRODUCT_KEYWORDS.forEach(add);

@@ -76,6 +76,37 @@ export async function fetchAllProducts() {
   return out;
 }
 
+// Fetch products that belong to the given collection handles (deduped).
+// Used to scope the engine to beauty collections so non-beauty products
+// (home appliances, etc.) can never be tagged as beauty "trending".
+export async function fetchProductsInCollections(handles) {
+  const byId = new Map();
+  const findQ = `query($q: String!) { collections(first: 1, query: $q) { edges { node { id title } } } }`;
+  const prodQ = `
+    query($id: ID!, $cursor: String) {
+      collection(id: $id) {
+        products(first: 250, after: $cursor) {
+          pageInfo { hasNextPage endCursor }
+          edges { node { id title vendor productType tags totalInventory } }
+        }
+      }
+    }`;
+  for (const handle of handles) {
+    const found = await gql(findQ, { q: `handle:${handle}` });
+    const node = found.collections.edges[0]?.node;
+    if (!node) { console.warn(`⚠️  Collection not found, skipping: ${handle}`); continue; }
+    let cursor = null;
+    do {
+      const data = await gql(prodQ, { id: node.id, cursor });
+      const conn = data.collection?.products;
+      if (!conn) break;
+      for (const e of conn.edges) byId.set(e.node.id, e.node);
+      cursor = conn.pageInfo.hasNextPage ? conn.pageInfo.endCursor : null;
+    } while (cursor);
+  }
+  return [...byId.values()];
+}
+
 export async function tagsAdd(id, tags) {
   if (!tags.length) return;
   const m = `
