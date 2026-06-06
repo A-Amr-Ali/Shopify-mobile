@@ -1,0 +1,42 @@
+name: Sofie New-In Brand Watch
+
+# Reads brands' newest launches, matches to products you stock, tags them `new-in`.
+# Uses the same secrets as the trend engine (SHOPIFY_STORE + client credentials).
+on:
+  schedule:
+    - cron: "30 6 * * *"   # daily 06:30 UTC (~08:30 Cairo), just after the trend engine
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Preview only (no tag writes)"
+        type: boolean
+        default: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: trend-engine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: trend-engine/package.json
+      - name: Install
+        run: npm install --no-audit --no-fund
+      - name: Run new-in watch
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_ADMIN_TOKEN: ${{ secrets.SHOPIFY_ADMIN_TOKEN }}
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+          SHOPIFY_API_VERSION: "2024-10"
+          NEW_IN_TAG: "new-in"
+          MAX_NEW_IN: "24"
+          BRAND_FEED_LIMIT: "40"
+          BRAND_FEED_PAGES: "3"
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: node src/newin.js

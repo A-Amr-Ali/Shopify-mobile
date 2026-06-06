@@ -6,7 +6,9 @@
   "engines": { "node": ">=18" },
   "scripts": {
     "start": "node src/index.js",
-    "dry-run": "DRY_RUN=true node src/index.js"
+    "dry-run": "DRY_RUN=true node src/index.js",
+    "new-in": "node src/newin.js",
+    "new-in:dry-run": "DRY_RUN=true node src/newin.js"
   },
   "dependencies": {
     "google-trends-api": "^4.9.2"

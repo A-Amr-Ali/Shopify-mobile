@@ -34,6 +34,14 @@ export const config = {
 
   salesLookbackDays: num(process.env.SALES_LOOKBACK_DAYS, 14),
   dryRun: bool(process.env.DRY_RUN, false),
+
+  // ── "New In" brand-watch ──
+  newInTag: process.env.NEW_IN_TAG || "new-in",
+  maxNewIn: num(process.env.MAX_NEW_IN, 24),
+  // How many of each brand's newest products to consider.
+  brandFeedLimit: num(process.env.BRAND_FEED_LIMIT, 40),
+  // How many pages of a brand's public feed to scan (250 products/page).
+  brandFeedPages: num(process.env.BRAND_FEED_PAGES, 3),
 };
 
 export function assertConfig() {
