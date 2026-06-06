@@ -8,9 +8,8 @@
 // others (Charlotte Tilbury, NARS, …) are skipped. Sites may block us at any
 // time — when that happens the brand is skipped, never faked.
 import { config, assertConfig } from "./config.js";
-import { fetchAllProducts, tagsAdd, tagsRemove } from "./shopify.js";
+import { fetchAllProducts, fetchProductsInCollections, tagsAdd, tagsRemove } from "./shopify.js";
 import { brandNewArrivals } from "./signals/brandNewArrivals.js";
-import { BRAND_SOURCES } from "./brandSources.js";
 
 const normTitle = (s) => (s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const normVendor = (s) => (s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
@@ -60,60 +59,48 @@ async function main() {
   assertConfig();
   console.log(`\n🆕 Sofie New-In brand watch  ·  store=${config.store}  ${config.dryRun ? "[DRY RUN]" : ""}`);
 
-  // 1) Your catalog
-  const products = await fetchAllProducts();
-  console.log(`📦 Loaded ${products.length} store products`);
+  // 1) Your catalog — scoped to your beauty/makeup collections only (so home
+  // appliances & non-beauty never land in New In).
+  const products = config.collections.length
+    ? await fetchProductsInCollections(config.collections)
+    : await fetchAllProducts();
+  console.log(`📦 Loaded ${products.length} products` +
+    (config.collections.length ? ` from: ${config.collections.join(", ")}` : " (whole catalog)"));
   const idx = buildIndex(products);
 
-  // 2) READABLE brands — newest launches from the last N days (default 10)
-  console.log(`🌐 Reading brand sites (launches in last ${config.brandNewDays} days)…`);
-  const { arrivals, readBrands, skipped } = await brandNewArrivals({
-    pages: config.brandFeedPages, limit: config.brandFeedLimit, maxAgeDays: config.brandNewDays,
-  });
-  console.log(`   read: ${readBrands.join(", ") || "none"}`);
-  if (skipped.length) console.log(`   skipped: ${skipped.join(" | ")}`);
+  // 2) NEW IN = beauty products you uploaded in the last N days (in-stock), newest first.
+  const cutoff = Date.now() - config.storeNewDays * 864e5;
+  const fresh = products
+    .filter((p) =>
+      p.createdAt && new Date(p.createdAt).getTime() >= cutoff &&
+      !(typeof p.totalInventory === "number" && p.totalInventory <= 0))
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const top = fresh.slice(0, config.maxNewIn);
 
-  // Match brand arrivals → products you stock
-  const picks = new Map(); // store product id -> { p, when, source }
-  const notCarried = [];
-  for (const a of arrivals) {
-    const p = matchArrival(a, idx);
-    if (p) {
-      if (!picks.has(p.id)) picks.set(p.id, { p, when: a.createdAt, source: `${a.brand} (brand ${config.brandNewDays}d)` });
-    } else {
-      notCarried.push(a);
-    }
+  console.log(`\n🆕 New In — uploaded in the last ${config.storeNewDays} days (${top.length} of ${fresh.length}):`);
+  top.forEach((p, i) => console.log(`  ${String(i + 1).padStart(2)}. ${p.title}  ·  ${p.vendor}  ·  ${String(p.createdAt).slice(0, 10)}`));
+
+  // 3) Brand buying-alerts: brand launches (last N days) you DON'T carry yet.
+  console.log(`\n🌐 Checking brand sites for launches you don't stock (last ${config.brandNewDays} days)…`);
+  let notCarried = [];
+  try {
+    const { arrivals, skipped } = await brandNewArrivals({
+      pages: config.brandFeedPages, limit: config.brandFeedLimit, maxAgeDays: config.brandNewDays,
+    });
+    if (skipped.length) console.log(`   skipped: ${skipped.join(" | ")}`);
+    notCarried = arrivals.filter((a) => !matchArrival(a, idx));
+  } catch (err) {
+    console.warn(`   brand check skipped: ${err.message}`);
   }
-
-  // 3) NON-READABLE brands — fall back to YOUR store uploads in last N days (default 30)
-  const unsupported = new Set(
-    BRAND_SOURCES.filter((b) => b.platform !== "shopify").map((b) => normVendor(b.name))
-  );
-  const storeCutoff = Date.now() - config.storeNewDays * 864e5;
-  for (const p of products) {
-    if (!unsupported.has(normVendor(p.vendor))) continue;
-    if (!p.createdAt || new Date(p.createdAt).getTime() < storeCutoff) continue;
-    if (typeof p.totalInventory === "number" && p.totalInventory <= 0) continue;
-    if (!picks.has(p.id)) picks.set(p.id, { p, when: p.createdAt, source: `${p.vendor} (store ${config.storeNewDays}d)` });
-  }
-
-  // 4) Combine, newest first, cap
-  const top = [...picks.values()].sort((x, y) => new Date(y.when) - new Date(x.when)).slice(0, config.maxNewIn);
-
-  console.log(`\n🆕 New In — in your store (${top.length}):`);
-  top.forEach((m, i) => console.log(`  ${String(i + 1).padStart(2)}. ${m.p.title}  ·  ${m.source}  ·  ${String(m.when).slice(0, 10)}`));
-
   if (notCarried.length) {
-    console.log(`\n🛒 Brand launches you DON'T carry yet (buying alerts, top 15):`);
+    console.log(`\n🛒 Buying alerts — brand launches you don't stock yet (top 15):`);
     notCarried.sort((x, y) => new Date(y.createdAt) - new Date(x.createdAt)).slice(0, 15)
       .forEach((a) => console.log(`   • ${a.brand}: ${a.title}  ${a.url}`));
   }
 
-  // 5) Write tags. If all readable feeds failed, add-only (never wipe on a fluke).
+  // 4) Write tags — store data is reliable, so full reconcile (add new, drop old).
   console.log(`\n🏷️  Reconciling '${config.newInTag}' tags…`);
-  await reconcile(products, top.map((m) => m.p.id), config.newInTag, {
-    dryRun: config.dryRun, removeStale: readBrands.length > 0,
-  });
+  await reconcile(products, top.map((p) => p.id), config.newInTag, { dryRun: config.dryRun, removeStale: true });
 
   console.log(`\n✅ Done.\n`);
 }

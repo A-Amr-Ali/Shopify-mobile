@@ -34,6 +34,8 @@ jobs:
           SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
           SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
           SHOPIFY_API_VERSION: "2024-10"
+          # Beauty/makeup collections only — keeps appliances & home out of New In.
+          TREND_COLLECTIONS: "makeup,skincare,fragrance,body-moisturizers"
           NEW_IN_TAG: "new-in"
           MAX_NEW_IN: "24"
           BRAND_FEED_LIMIT: "40"
