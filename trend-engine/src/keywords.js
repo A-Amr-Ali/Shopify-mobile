@@ -41,6 +41,8 @@ export const ANCHOR_KEYWORD = "makeup";
 export const STOPWORDS = new Set([
   "beauty", "makeup", "cosmetics", "the", "and", "set", "kit", "mini",
   "new", "gift", "home", "samsung", "lg", "bosch", "tcl", "tornado",
+  // ambiguous generic English words that are also brand names (inflate on Google Trends)
+  "fresh",
 ]);
 
 export function buildKeywordUniverse(storeVendors = [], { minLen = 4 } = {}) {

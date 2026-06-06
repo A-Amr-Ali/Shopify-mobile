@@ -25,6 +25,8 @@ export const config = {
 
   maxTrending: num(process.env.MAX_TRENDING, 12),
   maxBestsellers: num(process.env.MAX_BESTSELLERS, 12),
+  // Max products per brand in Trending (variety — stops one brand flooding).
+  maxPerVendor: num(process.env.MAX_PER_VENDOR, 3),
 
   weights: {
     google: num(process.env.WEIGHT_GOOGLE, 0.5),

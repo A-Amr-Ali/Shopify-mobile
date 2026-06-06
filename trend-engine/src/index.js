@@ -57,11 +57,21 @@ async function main() {
   ]);
   console.log(`   google:${googleScores.size}  manual:${manual.size}  sales:${salesScores.size}  daily:${dailyTerms.length}`);
 
-  // 3) Rank
-  const trending = scoreProducts(products, {
+  // 3) Rank — then diversify so no single brand floods Trending.
+  const rankedTrending = scoreProducts(products, {
     googleScores, manualScores: manual, salesScores, dailyTerms,
     weights: config.weights, minKeywordLen: config.minKeywordLen,
-  }).slice(0, config.maxTrending);
+  });
+  const maxPerVendor = config.maxPerVendor;
+  const vendorCount = {};
+  const trending = [];
+  for (const r of rankedTrending) {
+    const v = (r.product.vendor || "?").toLowerCase();
+    if ((vendorCount[v] || 0) >= maxPerVendor) continue;
+    vendorCount[v] = (vendorCount[v] || 0) + 1;
+    trending.push(r);
+    if (trending.length >= config.maxTrending) break;
+  }
 
   const bestsellers = rankBestSellers(products, salesScores).slice(0, config.maxBestsellers);
 
