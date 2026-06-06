@@ -10,7 +10,7 @@
 import { config, assertConfig } from "./config.js";
 import { fetchAllProducts, fetchProductsInCollections, tagsAdd, tagsRemove } from "./shopify.js";
 import { brandNewArrivals } from "./signals/brandNewArrivals.js";
-import { isBeauty } from "./nonBeauty.js";
+import { isAllowedBrand } from "./beautyBrands.js";
 
 const normTitle = (s) => (s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const normVendor = (s) => (s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
@@ -65,13 +65,14 @@ async function main() {
   console.log(`📦 Loaded ${products.length} products (whole catalog)`);
   const idx = buildIndex(products);
 
-  // 2) NEW IN = BEAUTY products uploaded in the last N days, in stock, newest first.
+  // 2) NEW IN = your BEAUTY BRANDS' products uploaded in the last N days, in stock.
+  //    Allowlist-only so home/tableware/appliances can never appear.
   const cutoff = Date.now() - config.storeNewDays * 864e5;
   const fresh = products
     .filter((p) =>
       p.createdAt && new Date(p.createdAt).getTime() >= cutoff &&
       !(typeof p.totalInventory === "number" && p.totalInventory <= 0) &&
-      isBeauty(p))
+      isAllowedBrand(p.vendor))
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   const top = fresh.slice(0, config.maxNewIn);
 

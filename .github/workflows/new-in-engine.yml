@@ -40,7 +40,7 @@ jobs:
           MAX_NEW_IN: "24"
           BRAND_FEED_LIMIT: "40"
           BRAND_FEED_PAGES: "3"
-          BRAND_NEW_DAYS: "30"
-          STORE_NEW_DAYS: "30"
+          BRAND_NEW_DAYS: "15"
+          STORE_NEW_DAYS: "15"
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
         run: node src/newin.js
