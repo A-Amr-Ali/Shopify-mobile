@@ -42,6 +42,10 @@ export const config = {
   brandFeedLimit: num(process.env.BRAND_FEED_LIMIT, 40),
   // How many pages of a brand's public feed to scan (250 products/page).
   brandFeedPages: num(process.env.BRAND_FEED_PAGES, 3),
+  // Readable brands: only count launches from the last N days.
+  brandNewDays: num(process.env.BRAND_NEW_DAYS, 10),
+  // Non-readable brands: fall back to products uploaded to YOUR store in last N days.
+  storeNewDays: num(process.env.STORE_NEW_DAYS, 30),
 };
 
 export function assertConfig() {

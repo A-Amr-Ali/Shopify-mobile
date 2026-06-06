@@ -64,6 +64,7 @@ export async function fetchAllProducts() {
             productType
             tags
             totalInventory
+            createdAt
           }
         }
       }

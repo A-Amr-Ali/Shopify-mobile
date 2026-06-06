@@ -41,10 +41,12 @@ async function fetchBrandFeed(domain, { pages, limit }) {
 }
 
 // Returns { arrivals: [{brand, title, handle, vendor, createdAt, url}], readBrands, skipped }
-export async function brandNewArrivals({ pages = 3, limit = 40 } = {}) {
+// maxAgeDays: only keep launches created within the last N days (0 = no limit).
+export async function brandNewArrivals({ pages = 3, limit = 40, maxAgeDays = 0 } = {}) {
   const arrivals = [];
   const readBrands = [];
   const skipped = [];
+  const cutoff = maxAgeDays > 0 ? Date.now() - maxAgeDays * 864e5 : 0;
 
   for (const src of BRAND_SOURCES) {
     if (src.platform !== "shopify") {
@@ -52,7 +54,8 @@ export async function brandNewArrivals({ pages = 3, limit = 40 } = {}) {
       continue;
     }
     try {
-      const list = await fetchBrandFeed(src.domain, { pages, limit });
+      let list = await fetchBrandFeed(src.domain, { pages, limit });
+      if (cutoff) list = list.filter((p) => new Date(p.createdAt).getTime() >= cutoff);
       list.forEach((p) => arrivals.push({ brand: src.name, ...p }));
       readBrands.push(`${src.name}:${list.length}`);
     } catch (err) {
