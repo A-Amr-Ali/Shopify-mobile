@@ -65,47 +65,57 @@ async function main() {
   console.log(`📦 Loaded ${products.length} products (whole catalog)`);
   const idx = buildIndex(products);
 
-  // 2) NEW IN = your BEAUTY BRANDS' products uploaded in the last N days, in stock.
-  //    Allowlist-only so home/tableware/appliances can never appear.
-  const cutoff = Date.now() - config.storeNewDays * 864e5;
-  const fresh = products
-    .filter((p) =>
-      p.createdAt && new Date(p.createdAt).getTime() >= cutoff &&
-      !(typeof p.totalInventory === "number" && p.totalInventory <= 0) &&
-      isAllowedBrand(p.vendor))
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  const top = fresh.slice(0, config.maxNewIn);
-
-  // Diagnostic: which brands are showing up as "new" (so we can verify it's clean).
-  const byVendor = {};
-  for (const p of fresh) byVendor[p.vendor || "?"] = (byVendor[p.vendor || "?"] || 0) + 1;
-  const vendorBreakdown = Object.entries(byVendor).sort((a, b) => b[1] - a[1]).slice(0, 20).map(([v, n]) => `${v}:${n}`).join(", ");
-
-  console.log(`\n🆕 New In — beauty uploaded in last ${config.storeNewDays} days (${top.length} shown of ${fresh.length} total):`);
-  top.forEach((p, i) => console.log(`  ${String(i + 1).padStart(2)}. ${p.title}  ·  ${p.vendor}  ·  ${String(p.createdAt).slice(0, 10)}`));
-  console.log(`   fresh vendors: ${vendorBreakdown || "(none found)"}`);
-
-  // 3) Brand buying-alerts: brand launches (last N days) you DON'T carry yet.
-  console.log(`\n🌐 Checking brand sites for launches you don't stock (last ${config.brandNewDays} days)…`);
+  // 2) SOURCE A — LIVE official stores: brand launches (last N days) you STOCK.
+  console.log(`\n🌐 Reading live official stores (launches in last ${config.brandNewDays} days)…`);
+  const matchedBrand = new Map(); // id -> { p, when, source }
   let notCarried = [];
+  let liveOk = false;
   try {
-    const { arrivals, skipped } = await brandNewArrivals({
+    const { arrivals, readBrands, skipped } = await brandNewArrivals({
       pages: config.brandFeedPages, limit: config.brandFeedLimit, maxAgeDays: config.brandNewDays,
     });
+    liveOk = readBrands.length > 0;
+    if (readBrands.length) console.log(`   live: ${readBrands.join(", ")}`);
     if (skipped.length) console.log(`   skipped: ${skipped.join(" | ")}`);
-    notCarried = arrivals.filter((a) => !matchArrival(a, idx));
+    for (const a of arrivals) {
+      const p = matchArrival(a, idx);
+      if (p && !(typeof p.totalInventory === "number" && p.totalInventory <= 0)) {
+        if (!matchedBrand.has(p.id)) matchedBrand.set(p.id, { p, when: p.createdAt || a.createdAt, source: `LIVE ${a.brand}` });
+      } else if (!p) {
+        notCarried.push(a);
+      }
+    }
   } catch (err) {
-    console.warn(`   brand check skipped: ${err.message}`);
+    console.warn(`   live brand read skipped: ${err.message}`);
   }
+
+  // 3) SOURCE B — your recently-uploaded beauty-brand products (allowlist), in stock.
+  const cutoff = Date.now() - config.storeNewDays * 864e5;
+  const freshStore = products.filter((p) =>
+    p.createdAt && new Date(p.createdAt).getTime() >= cutoff &&
+    !(typeof p.totalInventory === "number" && p.totalInventory <= 0) &&
+    isAllowedBrand(p.vendor));
+
+  // 4) Combine BOTH sources → New In (live brand matches first, then recent uploads).
+  const picks = new Map();
+  for (const [id, m] of matchedBrand) picks.set(id, m);
+  for (const p of freshStore) {
+    if (!picks.has(p.id)) picks.set(p.id, { p, when: p.createdAt, source: `uploaded ${config.storeNewDays}d` });
+  }
+  const top = [...picks.values()].sort((x, y) => new Date(y.when) - new Date(x.when)).slice(0, config.maxNewIn);
+
+  console.log(`\n🆕 New In (${top.length}) — live brand matches: ${matchedBrand.size}, recent uploads: ${freshStore.length}`);
+  top.forEach((m, i) => console.log(`  ${String(i + 1).padStart(2)}. ${m.p.title}  ·  ${m.p.vendor}  ·  ${m.source}  ·  ${String(m.when).slice(0, 10)}`));
+
   if (notCarried.length) {
-    console.log(`\n🛒 Buying alerts — brand launches you don't stock yet (top 15):`);
+    console.log(`\n🛒 Buying alerts — live brand launches you don't stock yet (top 15):`);
     notCarried.sort((x, y) => new Date(y.createdAt) - new Date(x.createdAt)).slice(0, 15)
       .forEach((a) => console.log(`   • ${a.brand}: ${a.title}  ${a.url}`));
   }
 
-  // 4) Write tags — store data is reliable, so full reconcile (add new, drop old).
+  // 5) Write tags. Always safe to add; only drop stale when we have store-side data.
   console.log(`\n🏷️  Reconciling '${config.newInTag}' tags…`);
-  await reconcile(products, top.map((p) => p.id), config.newInTag, { dryRun: config.dryRun, removeStale: true });
+  await reconcile(products, top.map((m) => m.p.id), config.newInTag, { dryRun: config.dryRun, removeStale: true });
 
   console.log(`\n✅ Done.\n`);
 }
