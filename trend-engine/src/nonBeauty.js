@@ -9,6 +9,9 @@ export const EXCLUDE_VENDORS = new Set([
   "indesit", "midea", "gree", "haier", "panasonic", "sony", "kenwood",
   "moulinex", "black decker", "delonghi", "nespresso", "dolce gusto",
   "kenwood", "national", "fresh electric", "elaraby", "elba", "candy",
+  // Home / tableware / decor / electronics brands carried by the store:
+  "blond amsterdam", "mackenzie-childs", "mackenzie childs", "kodak",
+  "villeroy & boch", "villeroy boch", "zara home", "le creuset",
 ]);
 
 // If a product's type contains any of these, treat it as non-beauty.
@@ -20,6 +23,9 @@ export const EXCLUDE_TYPE_KEYWORDS = [
   "kitchen", "appliance", "electronics", "mobile", "laptop", "tablet",
   "headphone", "speaker", "sofa", "mattress", "bed", "furniture", "curtain",
   "carpet", "cookware", "pan", "pot",
+  // tableware / dinnerware / decor
+  "plate", "bowl", "mug", "cup", "dish", "tableware", "dinnerware", "glassware",
+  "tumbler", "cutlery", "ceramic", "porcelain", "vase", "tray", "jar", "decor",
 ];
 
 const norm = (s) => (s || "").toLowerCase().replace(/\s+/g, " ").trim();
