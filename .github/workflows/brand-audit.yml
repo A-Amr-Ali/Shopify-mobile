@@ -1,0 +1,19 @@
+name: Sofie Brand Audit
+
+# On-demand: lists which official brand stores we can read live + newest products.
+# Read-only (public brand feeds) — needs no secrets.
+on:
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: trend-engine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: node src/brandaudit.js
