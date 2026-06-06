@@ -10,6 +10,7 @@
 import { config, assertConfig } from "./config.js";
 import { fetchAllProducts, fetchProductsInCollections, tagsAdd, tagsRemove } from "./shopify.js";
 import { brandNewArrivals } from "./signals/brandNewArrivals.js";
+import { isBeauty } from "./nonBeauty.js";
 
 const normTitle = (s) => (s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const normVendor = (s) => (s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
@@ -59,26 +60,29 @@ async function main() {
   assertConfig();
   console.log(`\n🆕 Sofie New-In brand watch  ·  store=${config.store}  ${config.dryRun ? "[DRY RUN]" : ""}`);
 
-  // 1) Your catalog — scoped to your beauty/makeup collections only (so home
-  // appliances & non-beauty never land in New In).
-  const products = config.collections.length
-    ? await fetchProductsInCollections(config.collections)
-    : await fetchAllProducts();
-  console.log(`📦 Loaded ${products.length} products` +
-    (config.collections.length ? ` from: ${config.collections.join(", ")}` : " (whole catalog)"));
+  // 1) Whole catalog — we filter to beauty ourselves (robust to your collection setup).
+  const products = await fetchAllProducts();
+  console.log(`📦 Loaded ${products.length} products (whole catalog)`);
   const idx = buildIndex(products);
 
-  // 2) NEW IN = beauty products you uploaded in the last N days (in-stock), newest first.
+  // 2) NEW IN = BEAUTY products uploaded in the last N days, in stock, newest first.
   const cutoff = Date.now() - config.storeNewDays * 864e5;
   const fresh = products
     .filter((p) =>
       p.createdAt && new Date(p.createdAt).getTime() >= cutoff &&
-      !(typeof p.totalInventory === "number" && p.totalInventory <= 0))
+      !(typeof p.totalInventory === "number" && p.totalInventory <= 0) &&
+      isBeauty(p))
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   const top = fresh.slice(0, config.maxNewIn);
 
-  console.log(`\n🆕 New In — uploaded in the last ${config.storeNewDays} days (${top.length} of ${fresh.length}):`);
+  // Diagnostic: which brands are showing up as "new" (so we can verify it's clean).
+  const byVendor = {};
+  for (const p of fresh) byVendor[p.vendor || "?"] = (byVendor[p.vendor || "?"] || 0) + 1;
+  const vendorBreakdown = Object.entries(byVendor).sort((a, b) => b[1] - a[1]).slice(0, 20).map(([v, n]) => `${v}:${n}`).join(", ");
+
+  console.log(`\n🆕 New In — beauty uploaded in last ${config.storeNewDays} days (${top.length} shown of ${fresh.length} total):`);
   top.forEach((p, i) => console.log(`  ${String(i + 1).padStart(2)}. ${p.title}  ·  ${p.vendor}  ·  ${String(p.createdAt).slice(0, 10)}`));
+  console.log(`   fresh vendors: ${vendorBreakdown || "(none found)"}`);
 
   // 3) Brand buying-alerts: brand launches (last N days) you DON'T carry yet.
   console.log(`\n🌐 Checking brand sites for launches you don't stock (last ${config.brandNewDays} days)…`);
