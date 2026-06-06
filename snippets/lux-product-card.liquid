@@ -27,12 +27,6 @@
         sizes="{{ sizes }}"
         alt="{{ p.featured_media.alt | default: p.title | escape }}"
         width="600" height="800" loading="lazy" decoding="async">
-      {%- if p.media[1] -%}
-        <img class="sofie-card__alt"
-          src="{{ p.media[1] | image_url: width: 600 }}"
-          srcset="{{ p.media[1] | image_url: width: 300 }} 300w, {{ p.media[1] | image_url: width: 600 }} 600w"
-          sizes="{{ sizes }}" alt="" width="600" height="800" loading="lazy" decoding="async" aria-hidden="true">
-      {%- endif -%}
     {%- else -%}
       {{ 'product-1' | placeholder_svg_tag: 'sofie-card__primary' }}
     {%- endif -%}
