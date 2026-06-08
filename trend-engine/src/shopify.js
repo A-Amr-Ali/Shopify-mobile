@@ -65,6 +65,8 @@ export async function fetchAllProducts() {
             tags
             totalInventory
             createdAt
+            status
+            publishedAt
           }
         }
       }
@@ -88,7 +90,7 @@ export async function fetchProductsInCollections(handles) {
       collection(id: $id) {
         products(first: 250, after: $cursor) {
           pageInfo { hasNextPage endCursor }
-          edges { node { id title vendor productType tags totalInventory } }
+          edges { node { id title vendor productType tags totalInventory createdAt status publishedAt } }
         }
       }
     }`;

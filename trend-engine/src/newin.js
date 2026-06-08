@@ -79,7 +79,8 @@ async function main() {
     if (skipped.length) console.log(`   skipped: ${skipped.join(" | ")}`);
     for (const a of arrivals) {
       const p = matchArrival(a, idx);
-      if (p && !(typeof p.totalInventory === "number" && p.totalInventory <= 0)) {
+      const live = p && p.publishedAt && p.status === "ACTIVE" && !(typeof p.totalInventory === "number" && p.totalInventory <= 0);
+      if (live) {
         if (!matchedBrand.has(p.id)) matchedBrand.set(p.id, { p, when: p.createdAt || a.createdAt, source: `LIVE ${a.brand}` });
       } else if (!p) {
         notCarried.push(a);
@@ -93,6 +94,7 @@ async function main() {
   const cutoff = Date.now() - config.storeNewDays * 864e5;
   const freshStore = products.filter((p) =>
     p.createdAt && new Date(p.createdAt).getTime() >= cutoff &&
+    p.publishedAt && p.status === "ACTIVE" &&
     !(typeof p.totalInventory === "number" && p.totalInventory <= 0) &&
     isAllowedBrand(p.vendor));
 
