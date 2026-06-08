@@ -85,13 +85,16 @@ async function main() {
     !(typeof p.totalInventory === "number" && p.totalInventory <= 0) &&
     isAllowedBrand(p.vendor));
 
-  // 4) Combine BOTH sources → New In (live brand matches first, then recent uploads).
-  const picks = new Map();
-  for (const [id, m] of matchedBrand) picks.set(id, m);
-  for (const p of freshStore) {
-    if (!picks.has(p.id)) picks.set(p.id, { p, when: p.createdAt, source: `uploaded ${config.storeNewDays}d` });
-  }
-  const top = [...picks.values()].sort((x, y) => new Date(y.when) - new Date(x.when)).slice(0, config.maxNewIn);
+  // 4) Combine → New In. Brand picks (launches + best-sellers) ALWAYS first,
+  // then recent uploads by date. Best-sellers have old upload dates, so they
+  // must not be date-sorted against fresh uploads (or they'd sink off the list).
+  const brandArr = [...matchedBrand.values()].sort((x, y) => new Date(y.when) - new Date(x.when));
+  const used = new Set(brandArr.map((m) => m.p.id));
+  const freshArr = freshStore
+    .filter((p) => !used.has(p.id))
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .map((p) => ({ p, when: p.createdAt, source: `uploaded ${config.storeNewDays}d` }));
+  const top = [...brandArr, ...freshArr].slice(0, config.maxNewIn);
 
   console.log(`\n🆕 New In (${top.length}) — live brand matches: ${matchedBrand.size}, recent uploads: ${freshStore.length}`);
   top.forEach((m, i) => console.log(`  ${String(i + 1).padStart(2)}. ${m.p.title}  ·  ${m.p.vendor}  ·  ${m.source}  ·  ${String(m.when).slice(0, 10)}`));
