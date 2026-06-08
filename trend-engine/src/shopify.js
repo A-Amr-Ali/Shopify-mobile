@@ -121,6 +121,47 @@ export async function tagsAdd(id, tags) {
   if (errs.length) throw new Error(`tagsAdd: ${JSON.stringify(errs)}`);
 }
 
+// SEO audit: walk every product and return compact per-product SEO flags
+// (no heavy HTML kept in memory — only lengths/booleans).
+export async function fetchProductsSeo() {
+  const out = [];
+  let cursor = null;
+  const q = `
+    query($cursor: String) {
+      products(first: 150, after: $cursor) {
+        pageInfo { hasNextPage endCursor }
+        edges { node {
+          id title vendor productType status publishedAt handle
+          descriptionHtml
+          seo { title description }
+          featuredImage { altText }
+        } }
+      }
+    }`;
+  do {
+    const data = await gql(q, { cursor });
+    for (const e of data.products.edges) {
+      const n = e.node;
+      const desc = (n.descriptionHtml || "").replace(/<[^>]*>/g, "").trim();
+      out.push({
+        id: n.id,
+        title: n.title,
+        vendor: n.vendor,
+        productType: n.productType,
+        status: n.status,
+        published: !!n.publishedAt,
+        handle: n.handle,
+        seoTitle: (n.seo && n.seo.title) || "",
+        seoDesc: (n.seo && n.seo.description) || "",
+        descLen: desc.length,
+        alt: (n.featuredImage && n.featuredImage.altText) || "",
+      });
+    }
+    cursor = data.products.pageInfo.hasNextPage ? data.products.pageInfo.endCursor : null;
+  } while (cursor);
+  return out;
+}
+
 // Diagnostic: products that currently carry a given tag (storefront-relevant fields).
 export async function productsByTag(tag, limit = 100) {
   const q = `
