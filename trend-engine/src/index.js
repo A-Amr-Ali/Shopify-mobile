@@ -11,6 +11,7 @@ import { manualScores } from "./signals/manual.js";
 import { salesVelocityScores } from "./signals/salesVelocity.js";
 import { scoreProducts, rankBestSellers } from "./match.js";
 import { brandNewArrivals } from "./signals/brandNewArrivals.js";
+import { brandBestsellers } from "./signals/brandBestsellers.js";
 import { buildStoreIndex, matchArrival } from "./matchStore.js";
 
 const hasTag = (p, tag) => (p.tags || []).some((t) => t.toLowerCase() === tag.toLowerCase());
@@ -81,8 +82,19 @@ async function main() {
       }
     }
     console.log(`   brand launches you stock: ${brandPicks.length}`);
+
+    // Brand best-sellers (rhode / One/Size …) you stock → feature in Trending.
+    const best = await brandBestsellers();
+    for (const b of best) {
+      const p = matchArrival(b, idx);
+      if (p && !seen.has(p.id)) {
+        seen.add(p.id);
+        brandPicks.push({ product: p, score: 1, reasons: { bestseller: `${b.brand}` } });
+      }
+    }
+    console.log(`   brand best-sellers you stock: ${brandPicks.length} total brand picks`);
   } catch (err) {
-    console.warn(`   brand launch check skipped: ${err.message}`);
+    console.warn(`   brand check skipped: ${err.message}`);
   }
 
   // Safeguard: if every signal is empty (Google Trends down AND no brand data),

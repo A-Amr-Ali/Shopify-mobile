@@ -12,6 +12,7 @@ import { fetchAllProducts, fetchProductsInCollections, tagsAdd, tagsRemove } fro
 import { brandNewArrivals } from "./signals/brandNewArrivals.js";
 import { isAllowedBrand } from "./beautyBrands.js";
 import { buildStoreIndex, matchArrival } from "./matchStore.js";
+import { brandBestsellers } from "./signals/brandBestsellers.js";
 
 const hasTag = (p, tag) => (p.tags || []).some((t) => t.toLowerCase() === tag.toLowerCase());
 const buildIndex = buildStoreIndex;
@@ -60,6 +61,20 @@ async function main() {
     }
   } catch (err) {
     console.warn(`   live brand read skipped: ${err.message}`);
+  }
+
+  // 2b) Brand BEST-SELLERS (rhode / One/Size …) you stock → always feature.
+  try {
+    const best = await brandBestsellers();
+    for (const b of best) {
+      const p = matchArrival(b, idx);
+      const ok = p && p.publishedAt && p.status === "ACTIVE" && !(typeof p.totalInventory === "number" && p.totalInventory <= 0);
+      if (ok && !matchedBrand.has(p.id)) {
+        matchedBrand.set(p.id, { p, when: p.createdAt || new Date().toISOString(), source: `BEST ${b.brand}` });
+      }
+    }
+  } catch (err) {
+    console.warn(`   brand best-seller check skipped: ${err.message}`);
   }
 
   // 3) SOURCE B — your recently-uploaded beauty-brand products (allowlist), in stock.
