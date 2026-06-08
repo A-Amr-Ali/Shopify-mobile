@@ -7,6 +7,7 @@ export const BEAUTY_BRANDS = new Set([
   "hourglass", "saie", "laura mercier", "glossier", "armani", "armani beauty",
   "giorgio armani", "summer fridays", "patrick ta", "refy", "rhode", "kosas",
   "merit", "natasha denona", "fenty beauty", "fenty skin", "anastasia beverly hills",
+  "one/size", "one size", "onesize", "one/size beauty", "pixi", "beautyblender",
   "benefit", "benefit cosmetics", "too faced", "tarte", "milk makeup", "ilia",
   "tower 28", "westman atelier", "rms beauty", "nudestix", "jones road",
   "victoria beckham beauty", "urban decay", "smashbox", "bobbi brown", "mac",

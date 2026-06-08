@@ -11,38 +11,10 @@ import { config, assertConfig } from "./config.js";
 import { fetchAllProducts, fetchProductsInCollections, tagsAdd, tagsRemove } from "./shopify.js";
 import { brandNewArrivals } from "./signals/brandNewArrivals.js";
 import { isAllowedBrand } from "./beautyBrands.js";
+import { buildStoreIndex, matchArrival } from "./matchStore.js";
 
-const normTitle = (s) => (s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-const normVendor = (s) => (s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const hasTag = (p, tag) => (p.tags || []).some((t) => t.toLowerCase() === tag.toLowerCase());
-
-function buildIndex(products) {
-  const byTitle = new Map();
-  const byVendor = new Map();
-  for (const p of products) {
-    const t = normTitle(p.title);
-    if (t && !byTitle.has(t)) byTitle.set(t, p);
-    const v = normVendor(p.vendor);
-    if (v) (byVendor.get(v) || byVendor.set(v, []).get(v)).push(p);
-  }
-  return { byTitle, byVendor };
-}
-
-// Find the store product that matches a brand arrival (exact title, else a
-// vendor-scoped contains match to catch minor naming differences).
-function matchArrival(arrival, idx) {
-  const at = normTitle(arrival.title);
-  if (!at) return null;
-  if (idx.byTitle.has(at)) return idx.byTitle.get(at);
-
-  const candidates = idx.byVendor.get(normVendor(arrival.brand)) || idx.byVendor.get(normVendor(arrival.vendor)) || [];
-  for (const p of candidates) {
-    const pt = normTitle(p.title);
-    if (!pt) continue;
-    if (pt.includes(at) || at.includes(pt)) return p;
-  }
-  return null;
-}
+const buildIndex = buildStoreIndex;
 
 async function reconcile(products, desiredIds, tag, { dryRun, removeStale = true }) {
   const desired = new Set(desiredIds);

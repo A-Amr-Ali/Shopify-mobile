@@ -7,7 +7,8 @@
 // degrades gracefully: any brand that blocks us or isn't Shopify is skipped
 // with a warning, and the rest still work.
 export const BRAND_SOURCES = [
-  { name: "Rhode", domain: "rhode.com", platform: "shopify" },
+  { name: "Rhode", domain: "rhodeskin.com", platform: "shopify" },
+  { name: "One/Size", domain: "onesizebeauty.com", platform: "shopify" },
   { name: "Rare Beauty", domain: "rarebeauty.com", platform: "shopify" },
   { name: "Makeup by Mario", domain: "makeupbymario.com", platform: "shopify" },
   { name: "Patrick Ta", domain: "patrickta.com", platform: "shopify" },

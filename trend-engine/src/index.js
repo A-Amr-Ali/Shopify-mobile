@@ -10,6 +10,8 @@ import { googleTrendsScores, googleDailyTrendTerms } from "./signals/googleTrend
 import { manualScores } from "./signals/manual.js";
 import { salesVelocityScores } from "./signals/salesVelocity.js";
 import { scoreProducts, rankBestSellers } from "./match.js";
+import { brandNewArrivals } from "./signals/brandNewArrivals.js";
+import { buildStoreIndex, matchArrival } from "./matchStore.js";
 
 const hasTag = (p, tag) => (p.tags || []).some((t) => t.toLowerCase() === tag.toLowerCase());
 
@@ -60,25 +62,51 @@ async function main() {
   ]);
   console.log(`   google:${googleScores.size}  manual:${manual.size}  sales:${salesScores.size}  daily:${dailyTerms.length}`);
 
-  // Safeguard: if every signal is empty (e.g. Google Trends API was down),
+  // 2b) NEWS FROM OFFICIAL STORES — brand launches (last N days) you stock.
+  // These are treated as trending/viral and merged in ahead of search signal.
+  const brandPicks = [];
+  try {
+    const { arrivals, readBrands, skipped } = await brandNewArrivals({
+      pages: config.brandFeedPages, limit: config.brandFeedLimit, maxAgeDays: config.brandNewDays,
+    });
+    if (readBrands.length) console.log(`   live official stores: ${readBrands.join(", ")}`);
+    if (skipped.length) console.log(`   skipped: ${skipped.join(" | ")}`);
+    const idx = buildStoreIndex(sellable);
+    const seen = new Set();
+    for (const a of arrivals) {
+      const p = matchArrival(a, idx);
+      if (p && !seen.has(p.id)) {
+        seen.add(p.id);
+        brandPicks.push({ product: p, score: 1, reasons: { brand: `LIVE ${a.brand}` } });
+      }
+    }
+    console.log(`   brand launches you stock: ${brandPicks.length}`);
+  } catch (err) {
+    console.warn(`   brand launch check skipped: ${err.message}`);
+  }
+
+  // Safeguard: if every signal is empty (Google Trends down AND no brand data),
   // do NOT wipe existing tags — keep what's there until a good run.
-  const signalsPresent = googleScores.size > 0 || manual.size > 0 || salesScores.size > 0;
+  const signalsPresent = googleScores.size > 0 || manual.size > 0 || salesScores.size > 0 || brandPicks.length > 0;
   if (!signalsPresent) {
     console.log(`\n⚠️  No signals available this run — keeping existing tags untouched.`);
   }
 
-  // 3) Rank — then diversify so no single brand floods Trending.
-  const rankedTrending = scoreProducts(sellable, {
+  // 3) Rank: brand launches first, then Google-driven — diversify per brand.
+  const rankedTrending = [...brandPicks, ...scoreProducts(sellable, {
     googleScores, manualScores: manual, salesScores, dailyTerms,
     weights: config.weights, minKeywordLen: config.minKeywordLen,
-  });
+  })];
   const maxPerVendor = config.maxPerVendor;
   const vendorCount = {};
+  const seenIds = new Set();
   const trending = [];
   for (const r of rankedTrending) {
+    if (seenIds.has(r.product.id)) continue;
     const v = (r.product.vendor || "?").toLowerCase();
     if ((vendorCount[v] || 0) >= maxPerVendor) continue;
     vendorCount[v] = (vendorCount[v] || 0) + 1;
+    seenIds.add(r.product.id);
     trending.push(r);
     if (trending.length >= config.maxTrending) break;
   }
