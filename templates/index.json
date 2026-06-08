@@ -97,16 +97,16 @@
     "trending": {
       "type": "lux-featured-collection",
       "settings": {
-        "collection": "sephora-favorites-1",
+        "collection": "trending",
         "tint": true,
         "eyebrow": "As Seen on TikTok & Instagram",
         "heading": "Trending & Viral Now",
         "subheading": "The beauty everyone's talking about — in stock and authentic.",
-        "limit": 8,
+        "limit": 10,
         "columns": 5,
         "quick_add": true,
         "show_rating": true,
-        "view_all": "shopify://collections/sephora-favorites-1",
+        "view_all": "shopify://collections/trending",
         "view_all_label": "Shop trending"
       }
     },
