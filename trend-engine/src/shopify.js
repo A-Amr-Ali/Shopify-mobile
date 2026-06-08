@@ -119,6 +119,22 @@ export async function tagsAdd(id, tags) {
   if (errs.length) throw new Error(`tagsAdd: ${JSON.stringify(errs)}`);
 }
 
+// Diagnostic: products that currently carry a given tag (storefront-relevant fields).
+export async function productsByTag(tag, limit = 100) {
+  const q = `
+    query($q: String!, $n: Int!) {
+      products(first: $n, query: $q) {
+        edges { node {
+          id title vendor status tags
+          publishedAt
+          totalInventory
+        } }
+      }
+    }`;
+  const data = await gql(q, { q: `tag:'${tag}'`, n: limit });
+  return data.products.edges.map((e) => e.node);
+}
+
 export async function tagsRemove(id, tags) {
   if (!tags.length) return;
   const m = `
