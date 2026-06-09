@@ -121,6 +121,17 @@ export async function tagsAdd(id, tags) {
   if (errs.length) throw new Error(`tagsAdd: ${JSON.stringify(errs)}`);
 }
 
+// Write SEO title + description on a product (fills the meta fields).
+export async function setProductSeo(id, seo) {
+  const m = `
+    mutation($input: ProductInput!) {
+      productUpdate(input: $input) { product { id } userErrors { field message } }
+    }`;
+  const data = await gql(m, { input: { id, seo } });
+  const errs = data.productUpdate.userErrors;
+  if (errs.length) throw new Error(`productUpdate: ${JSON.stringify(errs)}`);
+}
+
 // SEO audit: walk every product and return compact per-product SEO flags
 // (no heavy HTML kept in memory — only lengths/booleans).
 export async function fetchProductsSeo() {

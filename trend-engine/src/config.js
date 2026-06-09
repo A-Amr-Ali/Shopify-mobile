@@ -36,6 +36,8 @@ export const config = {
 
   salesLookbackDays: num(process.env.SALES_LOOKBACK_DAYS, 14),
   dryRun: bool(process.env.DRY_RUN, false),
+  // SEO optimizer: max products to write per run (0 = all).
+  maxWrites: num(process.env.MAX_WRITES, 0),
 
   // ── "New In" brand-watch ──
   newInTag: process.env.NEW_IN_TAG || "new-in",

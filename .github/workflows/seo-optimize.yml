@@ -1,0 +1,37 @@
+name: Sofie SEO Optimizer
+
+# Fills missing meta title + meta description on products (fill-gaps only).
+# Run with "Preview only" first to see what it will write.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Preview only (no writes)"
+        type: boolean
+        default: true
+      max_writes:
+        description: "Max products to write this run (0 = all)"
+        default: "0"
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: trend-engine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install --no-audit --no-fund
+      - name: Run SEO optimizer
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_ADMIN_TOKEN: ${{ secrets.SHOPIFY_ADMIN_TOKEN }}
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+          SHOPIFY_API_VERSION: "2024-10"
+          DRY_RUN: ${{ inputs.dry_run }}
+          MAX_WRITES: ${{ inputs.max_writes }}
+        run: node src/seooptimize.js
