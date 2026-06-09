@@ -1,6 +1,8 @@
 name: Sofie SEO — Image Alt
 
 on:
+  schedule:
+    - cron: "30 5 * * 1"   # weekly Mon 05:30 UTC — fills alt text on new images
   workflow_dispatch:
     inputs:
       dry_run:

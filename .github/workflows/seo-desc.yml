@@ -1,6 +1,8 @@
 name: Sofie SEO — Descriptions
 
 on:
+  schedule:
+    - cron: "0 6 * * 1"   # weekly Mon 06:00 UTC — enriches new thin/empty descriptions
   workflow_dispatch:
     inputs:
       dry_run:

@@ -3,6 +3,8 @@ name: Sofie SEO Optimizer
 # Fills missing meta title + meta description on products (fill-gaps only).
 # Run with "Preview only" first to see what it will write.
 on:
+  schedule:
+    - cron: "0 5 * * 1"   # weekly Mon 05:00 UTC — fills meta on new products
   workflow_dispatch:
     inputs:
       dry_run:
