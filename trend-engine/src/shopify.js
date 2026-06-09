@@ -132,6 +132,87 @@ export async function setProductSeo(id, seo) {
   if (errs.length) throw new Error(`productUpdate: ${JSON.stringify(errs)}`);
 }
 
+// Fetch products with full description HTML (for the thin-description enricher).
+export async function fetchProductsDesc() {
+  const out = [];
+  let cursor = null;
+  const q = `
+    query($cursor: String) {
+      products(first: 120, after: $cursor) {
+        pageInfo { hasNextPage endCursor }
+        edges { node { id title vendor status publishedAt descriptionHtml } }
+      }
+    }`;
+  do {
+    const data = await gql(q, { cursor });
+    for (const e of data.products.edges) {
+      const n = e.node;
+      const html = n.descriptionHtml || "";
+      out.push({
+        id: n.id, title: n.title, vendor: n.vendor,
+        status: n.status, published: !!n.publishedAt,
+        html, len: html.replace(/<[^>]*>/g, "").trim().length,
+      });
+    }
+    cursor = data.products.pageInfo.hasNextPage ? data.products.pageInfo.endCursor : null;
+  } while (cursor);
+  return out;
+}
+
+// Set the product body description (HTML).
+export async function setProductDescription(id, html) {
+  const m = `
+    mutation($input: ProductInput!) {
+      productUpdate(input: $input) { product { id } userErrors { field message } }
+    }`;
+  const data = await gql(m, { input: { id, descriptionHtml: html } });
+  const errs = data.productUpdate.userErrors;
+  if (errs.length) throw new Error(`productUpdate(desc): ${JSON.stringify(errs)}`);
+}
+
+// Fetch products with their featured media id + alt (for alt-text writing).
+export async function fetchProductsAlt() {
+  const out = [];
+  let cursor = null;
+  const q = `
+    query($cursor: String) {
+      products(first: 150, after: $cursor) {
+        pageInfo { hasNextPage endCursor }
+        edges { node {
+          id title vendor status publishedAt
+          featuredMedia { id alt }
+        } }
+      }
+    }`;
+  do {
+    const data = await gql(q, { cursor });
+    for (const e of data.products.edges) {
+      const n = e.node;
+      out.push({
+        id: n.id, title: n.title, vendor: n.vendor,
+        status: n.status, published: !!n.publishedAt,
+        mediaId: n.featuredMedia ? n.featuredMedia.id : null,
+        alt: (n.featuredMedia && n.featuredMedia.alt) || "",
+      });
+    }
+    cursor = data.products.pageInfo.hasNextPage ? data.products.pageInfo.endCursor : null;
+  } while (cursor);
+  return out;
+}
+
+// Set alt text on a product's media image.
+export async function setMediaAlt(productId, mediaId, alt) {
+  const m = `
+    mutation($productId: ID!, $media: [UpdateMediaInput!]!) {
+      productUpdateMedia(productId: $productId, media: $media) {
+        media { id } mediaUserErrors { field message }
+      }
+    }`;
+  const data = await gql(m, { productId, media: [{ id: mediaId, alt }] });
+  const errs = data.productUpdateMedia.mediaUserErrors;
+  if (errs.length) throw new Error(`updateMedia: ${JSON.stringify(errs)}`);
+}
+
 // SEO audit: walk every product and return compact per-product SEO flags
 // (no heavy HTML kept in memory — only lengths/booleans).
 export async function fetchProductsSeo() {
