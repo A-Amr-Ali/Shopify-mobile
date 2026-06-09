@@ -7,6 +7,9 @@
 // HONEST LIMITS: only brands on a readable (Shopify) platform can be watched;
 // others (Charlotte Tilbury, NARS, …) are skipped. Sites may block us at any
 // time — when that happens the brand is skipped, never faked.
+import { writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { dirname, resolve } from "node:path";
 import { config, assertConfig } from "./config.js";
 import { fetchAllProducts, fetchProductsInCollections, tagsAdd, tagsRemove } from "./shopify.js";
 import { brandNewArrivals } from "./signals/brandNewArrivals.js";
@@ -16,6 +19,69 @@ import { brandBestsellers } from "./signals/brandBestsellers.js";
 
 const hasTag = (p, tag) => (p.tags || []).some((t) => t.toLowerCase() === tag.toLowerCase());
 const buildIndex = buildStoreIndex;
+
+// Rewrite the repo's BUYING-ALERTS.md so the file is always current. Grouped by
+// brand, newest first. Called every run; the workflow commits it back if changed.
+async function writeBuyingAlerts(notCarried, { readBrands, skipped }) {
+  const here = dirname(fileURLToPath(import.meta.url));        // trend-engine/src
+  const out = resolve(here, "../../BUYING-ALERTS.md");          // repo root
+  const today = new Date().toISOString().slice(0, 10);
+
+  // Group launches by brand, newest first within each group.
+  const byBrand = new Map();
+  for (const a of notCarried) {
+    if (!byBrand.has(a.brand)) byBrand.set(a.brand, []);
+    byBrand.get(a.brand).push(a);
+  }
+  const sortedBrands = [...byBrand.entries()].sort((x, y) => {
+    const ny = Math.max(...y[1].map((a) => +new Date(a.createdAt) || 0));
+    const nx = Math.max(...x[1].map((a) => +new Date(a.createdAt) || 0));
+    return ny - nx;
+  });
+
+  const lines = [];
+  lines.push("# 🛒 Sofie's — Buying Alerts");
+  lines.push("");
+  lines.push("**Brand launches on official stores that you DON'T stock yet.**");
+  lines.push(`Auto-generated ${today} · refreshes automatically every day via the New-In engine.`);
+  lines.push("");
+  lines.push("> These are new products the brands just launched (read live from their official");
+  lines.push("> sites) that aren't in your catalog. Review and decide what to order.");
+  lines.push("");
+  lines.push("---");
+
+  if (!sortedBrands.length) {
+    lines.push("");
+    lines.push("_No new un-stocked launches detected in the latest run._");
+  } else {
+    for (const [brand, items] of sortedBrands) {
+      lines.push("");
+      lines.push(`## ✨ ${brand}`);
+      const seen = new Set();
+      for (const a of items.sort((p, q) => new Date(q.createdAt) - new Date(p.createdAt))) {
+        if (seen.has(a.url)) continue;
+        seen.add(a.url);
+        lines.push(`- **${a.title}** — ${a.url}`);
+      }
+    }
+  }
+
+  lines.push("");
+  lines.push("---");
+  lines.push("");
+  lines.push("### Notes");
+  if (readBrands && readBrands.length) {
+    lines.push(`- Brands we read live this run: ${readBrands.join(", ")}.`);
+  }
+  if (skipped && skipped.length) {
+    lines.push(`- Brands we couldn't read (not on a public platform): ${skipped.join(", ")}.`);
+  }
+  lines.push('- The full, always-current list is also in **GitHub → Actions → "Sofie New-In Brand Watch" → latest run → "Run new-in watch" step → 🛒 Buying alerts**.');
+  lines.push("");
+
+  await writeFile(out, lines.join("\n"), "utf8");
+  console.log(`\n📝 Wrote ${out} (${sortedBrands.length} brand${sortedBrands.length === 1 ? "" : "s"}).`);
+}
 
 async function reconcile(products, desiredIds, tag, { dryRun, removeStale = true }) {
   const desired = new Set(desiredIds);
@@ -43,10 +109,14 @@ async function main() {
   const matchedBrand = new Map(); // id -> { p, when, source }
   let notCarried = [];
   let liveOk = false;
+  let readBrands = [], skipped = [];
   try {
-    const { arrivals, readBrands, skipped } = await brandNewArrivals({
+    const res = await brandNewArrivals({
       pages: config.brandFeedPages, limit: config.brandFeedLimit, maxAgeDays: config.brandNewDays,
     });
+    const arrivals = res.arrivals;
+    readBrands = res.readBrands;
+    skipped = res.skipped;
     liveOk = readBrands.length > 0;
     if (readBrands.length) console.log(`   live: ${readBrands.join(", ")}`);
     if (skipped.length) console.log(`   skipped: ${skipped.join(" | ")}`);
@@ -103,6 +173,19 @@ async function main() {
     console.log(`\n🛒 Buying alerts — live brand launches you don't stock yet (top 15):`);
     notCarried.sort((x, y) => new Date(y.createdAt) - new Date(x.createdAt)).slice(0, 15)
       .forEach((a) => console.log(`   • ${a.brand}: ${a.title}  ${a.url}`));
+  }
+
+  // Rewrite BUYING-ALERTS.md so the repo file is always current (workflow commits it).
+  // Only refresh when we actually read brands live, so a transient fetch outage
+  // never blanks the file.
+  if (liveOk) {
+    try {
+      await writeBuyingAlerts(notCarried, { readBrands, skipped });
+    } catch (err) {
+      console.warn(`   buying-alerts file write skipped: ${err.message}`);
+    }
+  } else {
+    console.log(`\n📝 Skipped BUYING-ALERTS.md refresh (no brands read live this run).`);
   }
 
   // 5) Write tags. Always safe to add; only drop stale when we have store-side data.
