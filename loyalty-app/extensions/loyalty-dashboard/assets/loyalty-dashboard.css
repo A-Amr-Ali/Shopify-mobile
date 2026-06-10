@@ -1,0 +1,55 @@
+/* Sofie's Loyalty dashboard — luxury, on-brand, espresso ink. */
+.sofie-loyalty {
+  --ink: #2a201d;
+  --line: color-mix(in srgb, var(--ink) 14%, transparent);
+  --soft: color-mix(in srgb, var(--ink) 5%, #fff);
+  color: var(--ink);
+  max-width: 880px;
+  margin: 0 auto;
+  font-family: inherit;
+}
+.sofie-loyalty__eyebrow {
+  text-transform: uppercase; letter-spacing: .18em; font-size: .72rem;
+  color: color-mix(in srgb, var(--ink) 60%, transparent);
+}
+.sofie-loyalty__title { font-size: 1.7rem; margin: .2rem 0 1.1rem; font-weight: 500; }
+.sofie-loyalty__grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.4rem;
+}
+@media (max-width: 640px) { .sofie-loyalty__grid { grid-template-columns: 1fr; } }
+.sofie-loyalty__card {
+  border: 1px solid var(--line); border-radius: 14px; padding: 1.2rem 1.3rem;
+  background: var(--soft);
+}
+.sofie-loyalty__label {
+  display: block; font-size: .8rem; letter-spacing: .04em;
+  color: color-mix(in srgb, var(--ink) 60%, transparent);
+}
+.sofie-loyalty__points { display: block; font-size: 2.4rem; line-height: 1.1; margin: .2rem 0; }
+.sofie-loyalty__tier {
+  display: inline-block; font-size: .78rem; text-transform: uppercase; letter-spacing: .12em;
+  border: 1px solid var(--line); border-radius: 999px; padding: .18rem .7rem;
+}
+.sofie-loyalty__tier[data-tier-key="vip"] { background: color-mix(in srgb, var(--ink) 8%, #fff); }
+.sofie-loyalty__tier[data-tier-key="icon"] { background: var(--ink); color: #fff; }
+.sofie-loyalty__bar {
+  height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; margin: .7rem 0 .5rem;
+}
+.sofie-loyalty__bar > span { display: block; height: 100%; background: var(--ink); transition: width .5s ease; }
+.sofie-loyalty__subhead { font-size: 1.05rem; font-weight: 500; margin: 0 0 .8rem; }
+.sofie-loyalty__reward-list { display: flex; flex-wrap: wrap; gap: .7rem; }
+.sofie-loyalty__reward {
+  display: flex; flex-direction: column; align-items: flex-start; gap: .15rem;
+  border: 1px solid var(--ink); background: #fff; color: var(--ink);
+  border-radius: 12px; padding: .7rem 1.1rem; cursor: pointer; transition: .2s;
+}
+.sofie-loyalty__reward:hover:not(:disabled) { background: var(--ink); color: #fff; }
+.sofie-loyalty__reward.is-locked { opacity: .4; cursor: not-allowed; }
+.sofie-loyalty__reward.is-busy { opacity: .6; pointer-events: none; }
+.sofie-loyalty__reward-egp { font-weight: 600; }
+.sofie-loyalty__reward-cost { font-size: .78rem; opacity: .75; }
+.sofie-loyalty__msg { margin-top: .9rem; font-size: .9rem; min-height: 1.2em; }
+.sofie-loyalty__msg.is-success { color: #1f7a4d; }
+.sofie-loyalty__msg.is-error { color: #b23b3b; }
+.sofie-loyalty__grid[data-state="loading"] { opacity: .5; }
+.sofie-loyalty__grid[data-state="error"]::after { content: "Couldn't load your rewards."; opacity: .6; }

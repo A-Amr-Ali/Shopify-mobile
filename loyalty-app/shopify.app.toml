@@ -1,0 +1,37 @@
+# Shopify app configuration. Fill client_id after `shopify app config link`.
+# Docs: https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration
+
+name = "sofie-loyalty"
+handle = "sofie-loyalty"
+# client_id = "..."            # set by `shopify app config link`
+application_url = "https://loyalty.sofiestore.net"
+embedded = true
+
+[access_scopes]
+# Phase 1 needs: read customers (lookup), write customers (metafields),
+# read orders (earn/reverse), write discounts (mint redemption codes),
+# read products (tips/inference in later phases).
+scopes = "read_customers,write_customers,read_orders,write_discounts,read_products"
+
+[auth]
+redirect_urls = [
+  "https://loyalty.sofiestore.net/auth/callback",
+  "https://loyalty.sofiestore.net/auth/shopify/callback",
+  "https://loyalty.sofiestore.net/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-10"
+
+  [[webhooks.subscriptions]]
+  topics = [ "orders/paid", "refunds/create", "orders/cancelled" ]
+  uri = "/webhooks"
+
+# App Proxy: storefront calls to /apps/loyalty/* are forwarded here, signed.
+[app_proxy]
+url = "https://loyalty.sofiestore.net/apps/loyalty"
+subpath = "loyalty"
+prefix = "apps"
+
+[pos]
+embedded = false
