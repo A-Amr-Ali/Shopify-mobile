@@ -20,7 +20,7 @@ export const loader = async ({ request }) => {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("skin_type, undertone, foundation_shade, foundation_brand, lip_shades, updated_at")
+    .select("skin_type, undertone, foundation_shade, foundation_brand, lip_shades, lip_finish_pref, skin_concerns, current_products, completion_pct, tips, updated_at")
     .eq("customer_id", customerId)
     .maybeSingle();
 
@@ -39,6 +39,7 @@ export const loader = async ({ request }) => {
     },
     rewards: REDEMPTION_TIERS,
     profile: profile ?? null,
-    tips: [], // Phase 3
+    completion_pct: profile?.completion_pct ?? 0,
+    tips: profile?.tips ?? [],
   });
 };

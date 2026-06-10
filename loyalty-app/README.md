@@ -30,6 +30,31 @@ metafields for the theme/Functions to read.
 - Tests for the ledger: earn, redeem, refund-reversal, idempotency
   (`test/`, run with `npm test` — pure Node, no DB needed).
 
+## Phase 2 — beauty profile + non-purchase earning
+- Quiz save + 250 pts (`POST /apps/loyalty/quiz`), manual "products I use" + 50 pts
+  (`POST /apps/loyalty/profile`), profile schema + completion scoring
+  (`app/lib/profile.server.js`).
+- Order-history inference, hybrid metafields + title/variant parsing
+  (`app/lib/inference.server.js`) — gap-fills the profile on every paid order.
+- Profile/tips mirrored to customer metafields for the theme.
+- Judge.me verified-buyer review webhook → 100 pts, capped 4/month
+  (`app/routes/webhooks.judgeme.jsx`).
+- Account-creation join bonus (100 pts) via `customers/create`.
+
+## Phase 3 — tips, birthday, referrals, social, crons
+- Rules-based tips engine + optional Claude enhancement
+  (`app/lib/tips.server.js`, `app/lib/anthropic.server.js`).
+- Birthday daily cron (`/jobs/birthday-daily`) → tier gift code + Klaviyo flow;
+  tier recompute cron (`/jobs/tier-recompute`) over the rolling 12-month window.
+- Referrals (`POST /apps/loyalty/referral`): friend welcome code now, 500 pts to
+  the referrer when the friend's first order is paid.
+- Social follow (`POST /apps/loyalty/social`): 50 pts once per platform.
+- Theme: **Beauty Profile Quiz** app block + tips on the dashboard.
+- Tests: profile completion, inference parsing, tips rules, review cap.
+
+See `DEPLOY.md` for the full setup (Supabase migrations, Railway, crons,
+Judge.me, Klaviyo flows).
+
 ## Run
 ```bash
 cp .env.example .env      # fill in secrets

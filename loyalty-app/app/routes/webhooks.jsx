@@ -8,8 +8,13 @@ import { createLedger } from "../lib/ledger.server.js";
 import { createSupabaseStore } from "../lib/store.supabase.js";
 import { eligibleEgpFromOrder, toEgp } from "../lib/points.server.js";
 import { tierForSpend, multiplierFor, recomputeHeldTier } from "../lib/tier.server.js";
-import { mirrorCustomer } from "../lib/metafields.server.js";
+import { mirrorCustomer, mirrorProfile } from "../lib/metafields.server.js";
 import { trackEvent } from "../lib/klaviyo.server.js";
+import { awardSignup, awardReferral } from "../lib/earn-actions.server.js";
+import { inferProfileFromOrders } from "../lib/inference.server.js";
+import { mergeInferred } from "../lib/profile.server.js";
+import { generateTips } from "../lib/tips.server.js";
+import { REFERRAL } from "../config/loyalty.js";
 
 const ledger = createLedger(createSupabaseStore());
 const gid = (id) => (String(id).startsWith("gid://") ? String(id) : `gid://shopify/Customer/${id}`);
@@ -27,6 +32,9 @@ export const action = async ({ request }) => {
         break;
       case "ORDERS_CANCELLED":
         await onOrderCancelled(payload, admin);
+        break;
+      case "CUSTOMERS_CREATE":
+        await onCustomerCreate(payload, admin);
         break;
       default:
         console.warn(`Unhandled webhook topic: ${topic}`);
@@ -91,6 +99,75 @@ async function onOrderPaid(order, admin) {
   if (tier !== (existing?.tier ?? "insider")) {
     await trackEvent("Loyalty Tier Upgraded", email, { tier, lifetime_spend_egp: lifetime });
   }
+
+  // Fallback signup bonus for accounts that predate the app (idempotent).
+  await awardSignup(customerId).catch((e) => console.warn(`signup award: ${e.message}`));
+
+  // Referral qualification: friend's FIRST paid order rewards the referrer.
+  await qualifyReferral(customerId, email).catch((e) => console.warn(`referral qualify: ${e.message}`));
+
+  // Order-history inference (gap-fill the profile + refresh tips).
+  if (admin) {
+    try {
+      const inferred = await inferProfileFromOrders(admin, customerId);
+      const profile = await mergeInferred(customerId, inferred);
+      const { tips } = await generateTips(customerId, profile);
+      await mirrorProfile(admin, customerId, profile, tips);
+    } catch (e) {
+      console.warn(`inference skipped: ${e.message}`);
+    }
+  }
+}
+
+// Reward the referrer when the referred friend's first order is paid.
+async function qualifyReferral(customerId, email) {
+  if (!email) return;
+  // Is this the customer's first purchase?
+  const { count } = await supabase
+    .from("points_ledger").select("*", { count: "exact", head: true })
+    .eq("customer_id", customerId).eq("reason", "purchase");
+  if ((count ?? 0) !== 1) return; // not the first paid order
+
+  const { data: ref } = await supabase
+    .from("referrals").select("id, referrer_id")
+    .eq("referred_email", email.toLowerCase()).eq("status", "pending").maybeSingle();
+  if (!ref) return;
+
+  const award = await awardReferral(ref.referrer_id, ref.id);
+  await supabase.from("referrals").update({
+    status: "rewarded", referred_customer_id: customerId,
+  }).eq("id", ref.id);
+
+  const { data: referrer } = await supabase
+    .from("customers").select("email").eq("shopify_customer_id", ref.referrer_id).maybeSingle();
+  if (award.applied) {
+    await trackEvent("Loyalty Referral Rewarded", referrer?.email, {
+      points: REFERRAL.referrerPoints, balance: award.balanceAfter, referred_email: email,
+    });
+  }
+}
+
+// New account → 100-pt join bonus + mirror (idempotent).
+async function onCustomerCreate(customer, admin) {
+  if (!customer?.id) return;
+  const customerId = gid(customer.id);
+  const email = customer.email;
+  await supabase.from("customers").upsert(
+    { shopify_customer_id: customerId, email, birthday: parseBirthday(customer) },
+    { onConflict: "shopify_customer_id" }
+  );
+  const award = await awardSignup(customerId);
+  if (!award.applied) return;
+  if (admin) await mirrorCustomer(admin, customerId, { points: award.balanceAfter, tier: "insider", spend: 0 });
+  await trackEvent("Loyalty Points Earned", email, { points: 100, reason: "signup", balance: award.balanceAfter });
+}
+
+// Birthday may arrive as a customer metafield/note; best-effort parse (YYYY-MM-DD).
+function parseBirthday(customer) {
+  const raw = customer.birthday || customer.note_attributes?.find?.((n) => /birth/i.test(n.name))?.value;
+  if (!raw) return null;
+  const d = new Date(raw);
+  return Number.isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
 }
 
 async function onRefundCreate(refund, admin) {

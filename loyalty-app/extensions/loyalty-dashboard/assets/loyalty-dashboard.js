@@ -36,6 +36,39 @@
     }
 
     renderRewards(data.rewards || [], data.balance);
+    renderTips(data.tips || [], data.completion_pct || 0);
+  }
+
+  function renderTips(tips, completion) {
+    var wrap = root.querySelector("[data-tips]");
+    if (!wrap) return;
+    var list = root.querySelector("[data-tips-list]");
+    var nudge = root.querySelector("[data-tips-nudge]");
+    list.innerHTML = "";
+    if (!tips.length) {
+      // No profile yet — invite them to take the quiz.
+      if (nudge) {
+        nudge.hidden = false;
+        nudge.textContent = "Take the Beauty Profile quiz to unlock personalized tips and earn 250 points.";
+      }
+      wrap.hidden = false;
+      return;
+    }
+    if (nudge) nudge.hidden = completion >= 100;
+    if (nudge && completion < 100) nudge.textContent = "Your profile is " + completion + "% complete — finish it for sharper recommendations.";
+    tips.forEach(function (t) {
+      var el = document.createElement("div");
+      el.className = "sofie-loyalty__tip";
+      el.innerHTML = "<strong>" + escapeHtml(t.title) + "</strong><p>" + escapeHtml(t.body) + "</p>";
+      list.appendChild(el);
+    });
+    wrap.hidden = false;
+  }
+
+  function escapeHtml(s) {
+    return String(s || "").replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
   }
 
   function renderRewards(rewards, balance) {
@@ -96,6 +129,9 @@
       })
       .catch(function () { grid.setAttribute("data-state", "error"); });
   }
+
+  // Let the quiz block trigger a refresh after a successful submit.
+  window.SofieLoyaltyReload = load;
 
   load();
 })();

@@ -24,7 +24,7 @@ redirect_urls = [
 api_version = "2024-10"
 
   [[webhooks.subscriptions]]
-  topics = [ "orders/paid", "refunds/create", "orders/cancelled" ]
+  topics = [ "orders/paid", "refunds/create", "orders/cancelled", "customers/create" ]
   uri = "/webhooks"
 
 # App Proxy: storefront calls to /apps/loyalty/* are forwarded here, signed.

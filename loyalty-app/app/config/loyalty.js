@@ -53,4 +53,57 @@ export const METAFIELDS = {
   points: { key: "loyalty_points", type: "number_integer" },
   tier: { key: "loyalty_tier", type: "single_line_text_field" },
   spend: { key: "lifetime_spend_egp", type: "number_integer" },
+  profile: { key: "beauty_profile", type: "json" }, // compact profile for theme
+  tips: { key: "beauty_tips", type: "json" }, // personalized tips for theme
+};
+
+// Product metafields the inference engine reads (namespace `custom`).
+export const PRODUCT_METAFIELDS = {
+  namespace: "custom",
+  shade: "shade",
+  finish: "finish",
+  category: "category",
+  undertone: "undertone",
+};
+
+// Referral: friend's welcome discount (minted when a referral is created).
+export const REFERRAL = {
+  referrerPoints: EARN_ACTIONS.referral.points, // 500
+  welcomeEgp: Number(process.env.REFERRAL_WELCOME_EGP ?? 200),
+  welcomeCodePrefix: "SOFIE-WELCOME-",
+};
+
+// Birthday gift entitlements per tier (the code value Klaviyo emails out).
+export const BIRTHDAY = {
+  insider: { egp: 0, note: "Deluxe mini with purchase in your birthday month" },
+  vip: { egp: 300, note: "Choice gift + 2x points this month" },
+  icon: { egp: 750, note: "Premium full-size gift + 2x points + 1:1 consultation" },
+  codePrefix: "SOFIE-BDAY-",
+};
+
+// Profile fields that count toward "complete" (for the completion nudge).
+export const PROFILE_COMPLETION_FIELDS = [
+  "skin_type", "undertone", "skin_concerns", "foundation_shade", "lip_finish_pref",
+];
+
+// Cron auth: jobs require this shared secret in the `x-cron-key` header.
+export const CRON_KEY = process.env.CRON_KEY || "";
+
+// The shop domain (e.g. sofiestore.myshopify.com) — used by crons + the Judge.me
+// webhook to obtain an offline admin client. Required for Phase 3 background jobs.
+export const SHOP_DOMAIN = process.env.SHOP_DOMAIN || "";
+
+// Judge.me webhook shared secret (set the same value in Judge.me's webhook config).
+export const JUDGEME_SECRET = process.env.JUDGEME_WEBHOOK_SECRET || "";
+
+// Trailing window for rolling-spend tier recompute.
+export const ROLLING_WINDOW_DAYS = 365;
+
+// Claude (Anthropic) tips — optional. Rules-based tips always run; Claude turns
+// them into on-brand prose when enabled. Defaults to the most capable model;
+// override with ANTHROPIC_MODEL (e.g. claude-haiku-4-5) to trade quality for cost.
+export const TIPS = {
+  useClaude: /^(1|true|yes)$/i.test(String(process.env.TIPS_USE_CLAUDE ?? "")),
+  model: process.env.ANTHROPIC_MODEL || "claude-opus-4-8",
+  maxTokens: Number(process.env.TIPS_MAX_TOKENS ?? 700),
 };

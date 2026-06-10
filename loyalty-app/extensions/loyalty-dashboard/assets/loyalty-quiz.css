@@ -1,0 +1,33 @@
+/* Sofie's Beauty Profile quiz — matches the loyalty dashboard's espresso theme. */
+.sofie-quiz {
+  --ink: #2a201d;
+  --line: color-mix(in srgb, var(--ink) 14%, transparent);
+  --soft: color-mix(in srgb, var(--ink) 5%, #fff);
+  color: var(--ink);
+  max-width: 680px;
+  margin: 0 auto;
+  font-family: inherit;
+}
+.sofie-quiz__eyebrow {
+  text-transform: uppercase; letter-spacing: .18em; font-size: .72rem;
+  color: color-mix(in srgb, var(--ink) 60%, transparent);
+}
+.sofie-quiz__title { font-size: 1.6rem; margin: .2rem 0 .3rem; font-weight: 500; }
+.sofie-quiz__sub { margin: 0 0 1.2rem; color: color-mix(in srgb, var(--ink) 75%, transparent); }
+.sofie-quiz__form { display: grid; gap: 1rem; }
+.sofie-quiz__form label { display: grid; gap: .35rem; font-size: .9rem; }
+.sofie-quiz__form select,
+.sofie-quiz__form input[type="text"] {
+  border: 1px solid var(--line); border-radius: 10px; padding: .6rem .7rem; font: inherit; background: #fff;
+}
+.sofie-quiz__concerns { border: 1px solid var(--line); border-radius: 12px; padding: .8rem 1rem; }
+.sofie-quiz__concerns legend { font-size: .85rem; padding: 0 .4rem; }
+.sofie-quiz__chk { display: inline-flex; align-items: center; gap: .35rem; margin: .3rem .9rem .3rem 0; font-size: .88rem; }
+.sofie-quiz__btn {
+  border: 1px solid var(--ink); background: var(--ink); color: #fff;
+  border-radius: 12px; padding: .8rem 1.2rem; cursor: pointer; font: inherit; transition: opacity .2s;
+}
+.sofie-quiz__btn:disabled { opacity: .5; cursor: progress; }
+.sofie-quiz__msg { margin: .3rem 0 0; font-size: .9rem; min-height: 1.2em; }
+.sofie-quiz__msg.is-success { color: #1f7a4d; }
+.sofie-quiz__msg.is-error { color: #b23b3b; }

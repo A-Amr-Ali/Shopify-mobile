@@ -53,3 +53,16 @@
 .sofie-loyalty__msg.is-error { color: #b23b3b; }
 .sofie-loyalty__grid[data-state="loading"] { opacity: .5; }
 .sofie-loyalty__grid[data-state="error"]::after { content: "Couldn't load your rewards."; opacity: .6; }
+
+/* Tips + profile completion */
+.sofie-loyalty__tips { margin-top: 1.6rem; }
+.sofie-loyalty__nudge {
+  background: var(--soft); border: 1px solid var(--line); border-radius: 12px;
+  padding: .8rem 1rem; font-size: .9rem; margin: 0 0 1rem;
+}
+.sofie-loyalty__tips-list { display: grid; gap: .8rem; }
+.sofie-loyalty__tip {
+  border: 1px solid var(--line); border-radius: 12px; padding: .9rem 1.1rem; background: #fff;
+}
+.sofie-loyalty__tip strong { display: block; margin-bottom: .25rem; }
+.sofie-loyalty__tip p { margin: 0; font-size: .92rem; color: color-mix(in srgb, var(--ink) 80%, transparent); }

@@ -45,3 +45,29 @@ export async function mintDiscountCode(admin, { amountEgp, customerId, code }) {
   if (errs.length) throw new Error(`discountCodeBasicCreate: ${JSON.stringify(errs)}`);
   return { code: finalCode, nodeId: body.data.discountCodeBasicCreate.codeDiscountNode.id };
 }
+
+/**
+ * Mint a single-use code NOT tied to a specific customer (referral welcome gift,
+ * birthday gift before the customer record exists). Usage-capped at 1.
+ */
+export async function mintOpenCode(admin, { amountEgp, code, prefix, days = 90 }) {
+  const finalCode = code || (prefix || REDEEM_CODE_PREFIX) + crypto.randomBytes(4).toString("hex").toUpperCase();
+  const endsAt = new Date(Date.now() + days * 864e5).toISOString();
+  const basic = {
+    title: `Loyalty code ${finalCode}`,
+    code: finalCode,
+    startsAt: new Date().toISOString(),
+    endsAt,
+    usageLimit: 1,
+    customerSelection: { all: true },
+    customerGets: {
+      value: { discountAmount: { amount: amountEgp, appliesOnEachItem: false } },
+      items: { all: true },
+    },
+  };
+  const res = await admin.graphql(CREATE, { variables: { basic } });
+  const body = await res.json();
+  const errs = body?.data?.discountCodeBasicCreate?.userErrors ?? [];
+  if (errs.length) throw new Error(`discountCodeBasicCreate(open): ${JSON.stringify(errs)}`);
+  return { code: finalCode, nodeId: body.data.discountCodeBasicCreate.codeDiscountNode.id };
+}

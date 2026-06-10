@@ -35,19 +35,37 @@ shopify app deploy           # pushes app config, webhooks, app proxy, extension
   customer metafield definitions (`custom.loyalty_points`, `custom.loyalty_tier`,
   `custom.lifetime_spend_egp`) automatically — no manual admin clicks.
 
+  Migrations to apply: `0001_init.sql`, `0002_sessions.sql`, `0003_profile_referral.sql`.
+
 ## 5. Theme
 - In the theme editor, add the **Loyalty Dashboard** app block to the customer
-  account area (or any section that accepts app blocks). It reads everything
-  client-side from `/apps/loyalty/me`.
+  account area (balance, tier, progress, redeem, **personalized tips**).
+- Add the **Beauty Profile Quiz** app block (earns 250 pts, builds the profile).
+  Both read/write client-side via `/apps/loyalty/*` (HMAC-verified).
 
-## 6. Verify
-- Place a test order, mark it **paid** → check `points_ledger` has a `purchase`
-  row and the customer metafields updated.
-- Refund part of it → a `refund_reversal` row appears (prorated).
-- Redeem from the dashboard → a single-use `SOFIE-PTS-…` code is minted and the
-  balance drops.
+## 6. Judge.me reviews (Phase 2)
+- In Judge.me → Settings → Webhooks, add a webhook for "review created" pointing at
+  `https://loyalty.sofiestore.net/webhooks/judgeme?token=YOUR_SECRET`.
+- Set the same value as `JUDGEME_WEBHOOK_SECRET` in Railway. Verified-buyer
+  reviews award 100 pts (capped 4/month, idempotent per review).
 
-## Cron (Phase 3)
-Birthday + tier-recompute jobs will be added as a separate Railway **cron
-service** (e.g. `0 5 * * *`) running `node jobs/<name>.js`. Not needed for
-Phase 1 — tier is recomputed inline on every paid order.
+## 7. Crons (Phase 3) — Railway scheduled jobs
+Add two Railway **cron services** (or any scheduler) that POST to the app with the
+`x-cron-key: $CRON_KEY` header:
+- Daily `0 5 * * *`  → `POST /jobs/tier-recompute` (rolling-12-month tier refresh)
+- Daily `0 6 * * *`  → `POST /jobs/birthday-daily`  (birthday gifts → Klaviyo flow)
+Set `CRON_KEY` and `SHOP_DOMAIN` in Railway. Example:
+`curl -X POST -H "x-cron-key: $CRON_KEY" https://loyalty.sofiestore.net/jobs/birthday-daily`
+
+## 8. Klaviyo flows
+Create flows triggered by these events the app pushes: `Loyalty Points Earned`,
+`Loyalty Tier Upgraded`, `Loyalty Reward Redeemed`, `Loyalty Referral Rewarded`,
+`Loyalty Birthday Gift` (date-property birthday flow emails the unique code).
+
+## 9. Verify
+- Place a test order, mark it **paid** → `points_ledger` gets a `purchase` row,
+  metafields update, and the profile is gap-filled from order history.
+- Refund part of it → a prorated `refund_reversal` row appears.
+- Redeem from the dashboard → a single-use `SOFIE-PTS-…` code is minted.
+- Submit the quiz → 250 pts once, tips appear on the dashboard.
+- Create a customer → 100-pt join bonus.

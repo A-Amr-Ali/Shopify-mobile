@@ -29,3 +29,29 @@ export async function mirrorCustomer(admin, customerId, { points, tier, spend })
   if (errs.length) throw new Error(`metafieldsSet: ${JSON.stringify(errs)}`);
   return body.data.metafieldsSet.metafields;
 }
+
+/** Mirror a compact beauty profile (+ optional tips) for the theme to read. */
+export async function mirrorProfile(admin, customerId, profile, tips) {
+  const ns = METAFIELDS.namespace;
+  const compact = profile && {
+    skin_type: profile.skin_type ?? null,
+    undertone: profile.undertone ?? null,
+    foundation_shade: profile.foundation_shade ?? null,
+    foundation_brand: profile.foundation_brand ?? null,
+    lip_finish_pref: profile.lip_finish_pref ?? null,
+    skin_concerns: profile.skin_concerns ?? [],
+  };
+  const metafields = [];
+  if (compact) {
+    metafields.push({ ownerId: customerId, namespace: ns, key: METAFIELDS.profile.key, type: METAFIELDS.profile.type, value: JSON.stringify(compact) });
+  }
+  if (tips) {
+    metafields.push({ ownerId: customerId, namespace: ns, key: METAFIELDS.tips.key, type: METAFIELDS.tips.type, value: JSON.stringify(tips) });
+  }
+  if (!metafields.length) return [];
+  const res = await admin.graphql(MUTATION, { variables: { metafields } });
+  const body = await res.json();
+  const errs = body?.data?.metafieldsSet?.userErrors ?? [];
+  if (errs.length) throw new Error(`metafieldsSet(profile): ${JSON.stringify(errs)}`);
+  return body.data.metafieldsSet.metafields;
+}

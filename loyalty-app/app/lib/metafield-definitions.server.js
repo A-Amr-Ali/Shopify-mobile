@@ -16,6 +16,8 @@ const DEFINITIONS = [
   { name: "Loyalty Points", key: METAFIELDS.points.key, type: METAFIELDS.points.type },
   { name: "Loyalty Tier", key: METAFIELDS.tier.key, type: METAFIELDS.tier.type },
   { name: "Lifetime Spend (EGP)", key: METAFIELDS.spend.key, type: METAFIELDS.spend.type },
+  { name: "Beauty Profile", key: METAFIELDS.profile.key, type: METAFIELDS.profile.type },
+  { name: "Beauty Tips", key: METAFIELDS.tips.key, type: METAFIELDS.tips.type },
 ];
 
 export async function ensureCustomerMetafieldDefinitions(admin) {

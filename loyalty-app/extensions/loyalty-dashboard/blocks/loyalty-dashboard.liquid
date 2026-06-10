@@ -37,6 +37,12 @@
       <p class="sofie-loyalty__msg" data-msg role="status"></p>
     </div>
 
+    <div class="sofie-loyalty__tips" data-tips hidden>
+      <h3 class="sofie-loyalty__subhead">{{ block.settings.tips_heading }}</h3>
+      <p class="sofie-loyalty__nudge" data-tips-nudge hidden></p>
+      <div class="sofie-loyalty__tips-list" data-tips-list></div>
+    </div>
+
     <noscript>Enable JavaScript to view your loyalty rewards.</noscript>
   </div>
 
@@ -54,7 +60,8 @@
     { "type": "text", "id": "currency", "label": "Currency suffix", "default": "EGP" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Sofie Rewards" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Your Loyalty" },
-    { "type": "text", "id": "rewards_heading", "label": "Rewards heading", "default": "Redeem your points" }
+    { "type": "text", "id": "rewards_heading", "label": "Rewards heading", "default": "Redeem your points" },
+    { "type": "text", "id": "tips_heading", "label": "Tips heading", "default": "Your personalized beauty tips" }
   ]
 }
 {% endschema %}

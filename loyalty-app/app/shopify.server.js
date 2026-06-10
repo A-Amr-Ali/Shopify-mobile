@@ -23,6 +23,7 @@ const shopify = shopifyApp({
     ORDERS_PAID: { deliveryMethod: "http", callbackUrl: "/webhooks" },
     REFUNDS_CREATE: { deliveryMethod: "http", callbackUrl: "/webhooks" },
     ORDERS_CANCELLED: { deliveryMethod: "http", callbackUrl: "/webhooks" },
+    CUSTOMERS_CREATE: { deliveryMethod: "http", callbackUrl: "/webhooks" },
   },
   hooks: {
     // On install/reauth: register webhooks and ensure customer metafield defs.
