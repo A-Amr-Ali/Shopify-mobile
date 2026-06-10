@@ -10,7 +10,8 @@
     "build": "remix vite:build",
     "start": "remix-serve ./build/server/index.js",
     "deploy": "shopify app deploy",
-    "test": "node --test"
+    "test": "node --test",
+    "verify": "node scripts/verify-lifecycle.js"
   },
   "dependencies": {
     "@remix-run/node": "^2.13.1",

@@ -63,6 +63,19 @@ Create flows triggered by these events the app pushes: `Loyalty Points Earned`,
 `Loyalty Birthday Gift` (date-property birthday flow emails the unique code).
 
 ## 9. Verify
+**Automated smoke test** — walks the whole lifecycle (signup → quiz → tips →
+products → social → order paid → review → referral → redeem → refund) against your
+real Supabase and asserts the ledger math at every step:
+```bash
+# needs SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY and migrations 0001–0003 applied
+npm run verify
+# also ping the deployed App Proxy (HMAC + routing) — needs SHOPIFY_API_SECRET:
+node scripts/verify-lifecycle.js --proxy https://loyalty.sofiestore.net/apps/loyalty
+```
+It writes clearly-labelled `TEST-*` rows; remove them afterwards by running
+`scripts/cleanup-test-data.sql` in the Supabase SQL editor.
+
+**Manual checks**
 - Place a test order, mark it **paid** → `points_ledger` gets a `purchase` row,
   metafields update, and the profile is gap-filled from order history.
 - Refund part of it → a prorated `refund_reversal` row appears.
