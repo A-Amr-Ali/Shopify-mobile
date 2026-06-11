@@ -4,7 +4,7 @@
 name = "sofie-loyalty"
 handle = "sofie-loyalty"
 # client_id = "..."            # set by `shopify app config link`
-application_url = "https://loyalty.sofiestore.net"
+application_url = "https://shopify-mobile-production.up.railway.app"
 embedded = true
 
 [access_scopes]
@@ -15,9 +15,9 @@ scopes = "read_customers,write_customers,read_orders,write_discounts,read_produc
 
 [auth]
 redirect_urls = [
-  "https://loyalty.sofiestore.net/auth/callback",
-  "https://loyalty.sofiestore.net/auth/shopify/callback",
-  "https://loyalty.sofiestore.net/api/auth/callback"
+  "https://shopify-mobile-production.up.railway.app/auth/callback",
+  "https://shopify-mobile-production.up.railway.app/auth/shopify/callback",
+  "https://shopify-mobile-production.up.railway.app/api/auth/callback"
 ]
 
 [webhooks]
@@ -29,7 +29,7 @@ api_version = "2024-10"
 
 # App Proxy: storefront calls to /apps/loyalty/* are forwarded here, signed.
 [app_proxy]
-url = "https://loyalty.sofiestore.net/apps/loyalty"
+url = "https://shopify-mobile-production.up.railway.app/apps/loyalty"
 subpath = "loyalty"
 prefix = "apps"
 
