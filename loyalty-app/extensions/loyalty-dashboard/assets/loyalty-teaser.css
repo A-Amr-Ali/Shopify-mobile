@@ -1,0 +1,53 @@
+/* Sofie Rewards public teaser banner. */
+.sofie-teaser {
+  background: var(--teaser-bg, #2a201d);
+  color: var(--teaser-fg, #fff);
+  border-radius: 16px;
+  margin: 1rem auto;
+  max-width: 1100px;
+  overflow: hidden;
+}
+.sofie-teaser__link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 2.4rem 1.6rem;
+  transition: filter .2s ease, transform .2s ease;
+}
+.sofie-teaser__link:hover { filter: brightness(1.06); }
+.sofie-teaser__inner { max-width: 640px; }
+.sofie-teaser--center { text-align: center; }
+.sofie-teaser--center .sofie-teaser__inner { margin: 0 auto; }
+.sofie-teaser--left { text-align: left; }
+
+.sofie-teaser__eyebrow {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  font-size: .72rem;
+  opacity: .8;
+  margin-bottom: .5rem;
+}
+.sofie-teaser__title {
+  font-size: clamp(1.4rem, 3vw, 2.1rem);
+  line-height: 1.15;
+  margin: 0 0 .5rem;
+  font-weight: 600;
+  color: inherit;
+}
+.sofie-teaser__sub {
+  margin: 0 0 1.2rem;
+  font-size: .98rem;
+  opacity: .9;
+  color: inherit;
+}
+.sofie-teaser__btn {
+  display: inline-block;
+  background: var(--teaser-accent, #c9a96a);
+  color: #1b1410;
+  font-weight: 600;
+  padding: .75rem 1.5rem;
+  border-radius: 999px;
+  font-size: .95rem;
+}
+.sofie-teaser__link:hover .sofie-teaser__btn { transform: translateY(-1px); }
