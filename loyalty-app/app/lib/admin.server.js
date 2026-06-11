@@ -13,8 +13,10 @@ async function mintToken(shop) {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
       grant_type: "client_credentials",
-      client_id: process.env.SHOPIFY_API_KEY,
-      client_secret: process.env.SHOPIFY_API_SECRET,
+      // Prefer a dedicated Shopify-admin custom app (confirmed to support the
+      // client-credentials grant); fall back to the main app's credentials.
+      client_id: process.env.SHOPIFY_ADMIN_CLIENT_ID || process.env.SHOPIFY_API_KEY,
+      client_secret: process.env.SHOPIFY_ADMIN_CLIENT_SECRET || process.env.SHOPIFY_API_SECRET,
     }),
   });
   if (!res.ok) throw new Error(`token exchange HTTP ${res.status}: ${await res.text()}`);
