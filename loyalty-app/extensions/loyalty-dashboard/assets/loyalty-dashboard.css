@@ -96,3 +96,14 @@
   .sofie-loyalty__order { grid-template-columns: 1fr auto; row-gap: .25rem; }
   .sofie-loyalty__order-date { grid-column: 1 / -1; order: 5; }
 }
+
+/* Logged-out guest panel */
+.sofie-loyalty--guest {
+  text-align: center; border: 1px solid var(--line); border-radius: 16px;
+  padding: 2.4rem 1.4rem; background: var(--soft); max-width: 620px; margin: 1rem auto;
+}
+.sofie-loyalty__guest-sub { margin: .6rem auto 1.2rem; max-width: 460px; color: color-mix(in srgb, var(--ink) 80%, transparent); }
+.sofie-loyalty__guest-btn {
+  display: inline-block; background: var(--ink); color: #fff; text-decoration: none;
+  font-weight: 600; padding: .8rem 1.6rem; border-radius: 999px;
+}

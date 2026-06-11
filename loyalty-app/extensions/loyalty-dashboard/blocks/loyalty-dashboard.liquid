@@ -72,6 +72,14 @@
 
   {{ 'loyalty-dashboard.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'loyalty-dashboard.js' | asset_url }}" defer></script>
+{%- else -%}
+  <div class="sofie-loyalty sofie-loyalty--guest">
+    <span class="sofie-loyalty__eyebrow">{{ block.settings.eyebrow }}</span>
+    <h2 class="sofie-loyalty__title">{{ block.settings.guest_heading }}</h2>
+    <p class="sofie-loyalty__guest-sub">{{ block.settings.guest_text }}</p>
+    <a class="sofie-loyalty__guest-btn" href="{{ block.settings.guest_link | default: '/account' }}">{{ block.settings.guest_cta }}</a>
+  </div>
+  {{ 'loyalty-dashboard.css' | asset_url | stylesheet_tag }}
 {%- endif -%}
 
 {% schema %}
@@ -88,7 +96,12 @@
     { "type": "text", "id": "profile_heading", "label": "Profile heading", "default": "Your beauty profile" },
     { "type": "text", "id": "tips_heading", "label": "Tips heading", "default": "Your personalized beauty tips" },
     { "type": "checkbox", "id": "show_orders", "label": "Show recent orders", "default": true },
-    { "type": "text", "id": "orders_heading", "label": "Orders heading", "default": "Recent orders" }
+    { "type": "text", "id": "orders_heading", "label": "Orders heading", "default": "Recent orders" },
+    { "type": "header", "content": "Logged-out visitors" },
+    { "type": "text", "id": "guest_heading", "label": "Guest heading", "default": "Join Sofie Rewards" },
+    { "type": "textarea", "id": "guest_text", "label": "Guest text", "default": "Sign in or create a free account to earn points on every order, take your beauty profile quiz, and redeem points for EGP off." },
+    { "type": "text", "id": "guest_cta", "label": "Guest button", "default": "Sign in to start earning" },
+    { "type": "url", "id": "guest_link", "label": "Guest button link", "info": "Usually /account" }
   ]
 }
 {% endschema %}
