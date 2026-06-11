@@ -89,6 +89,9 @@ export const PROFILE_COMPLETION_FIELDS = [
 // Cron auth: jobs require this shared secret in the `x-cron-key` header.
 export const CRON_KEY = process.env.CRON_KEY || "";
 
+// Staff console password (the /staff in-store lookup + redeem tool).
+export const STAFF_KEY = process.env.STAFF_KEY || "";
+
 // The shop domain (e.g. sofiestore.myshopify.com) — used by crons + the Judge.me
 // webhook to obtain an offline admin client. Required for Phase 3 background jobs.
 export const SHOP_DOMAIN = process.env.SHOP_DOMAIN || "";
