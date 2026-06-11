@@ -12,8 +12,19 @@ const QUIZ_FIELDS = [
   "undertone",
 ];
 
+// The profiles table has a FK to customers(shopify_customer_id). A shopper can
+// reach the quiz before any order/webhook created their customer row, so make
+// sure it exists before writing a profile (avoids a FK violation → 500).
+async function ensureCustomer(customerId) {
+  await supabase.from("customers").upsert(
+    { shopify_customer_id: customerId },
+    { onConflict: "shopify_customer_id", ignoreDuplicates: true }
+  );
+}
+
 /** Upsert a profile from quiz answers (whitelisted fields only). */
 export async function saveQuiz(customerId, answers) {
+  await ensureCustomer(customerId);
   const patch = { customer_id: customerId, source: "quiz", updated_at: new Date().toISOString() };
   for (const f of QUIZ_FIELDS) if (answers[f] !== undefined) patch[f] = answers[f];
   const { data, error } = await supabase
@@ -29,6 +40,7 @@ export async function saveQuiz(customerId, answers) {
 
 /** Append manually-entered "products I use" (deduped by brand+product+shade). */
 export async function addCurrentProducts(customerId, items) {
+  await ensureCustomer(customerId);
   const { data: existing } = await supabase
     .from("profiles").select("current_products").eq("customer_id", customerId).maybeSingle();
   const current = existing?.current_products ?? [];
@@ -55,6 +67,7 @@ export async function getProfile(customerId) {
 
 /** Fill only the gaps from an inferred profile — never overwrite quiz/manual data. */
 export async function mergeInferred(customerId, inferred) {
+  await ensureCustomer(customerId);
   const existing = (await getProfile(customerId)) ?? { customer_id: customerId };
   const patch = { customer_id: customerId, updated_at: new Date().toISOString() };
   let changed = false;
