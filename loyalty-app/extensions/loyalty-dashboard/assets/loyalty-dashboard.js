@@ -36,7 +36,39 @@
     }
 
     renderRewards(data.rewards || [], data.balance);
+    renderProfile(data.profile);
     renderTips(data.tips || [], data.completion_pct || 0);
+  }
+
+  function renderProfile(profile) {
+    var card = root.querySelector("[data-profile-card]");
+    var grid = root.querySelector("[data-profile-grid]");
+    if (!card || !grid) return;
+    if (!profile) { card.hidden = true; return; }
+
+    var rows = [];
+    function add(label, val) {
+      if (val == null || val === "") return;
+      if (Array.isArray(val)) { if (!val.length) return; val = val.join(", "); }
+      rows.push([label, String(val)]);
+    }
+    var cap = function (s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; };
+    add("Skin type", cap(profile.skin_type));
+    add("Undertone", cap(profile.undertone));
+    add("Foundation shade", profile.foundation_shade);
+    add("Foundation brand", profile.foundation_brand);
+    add("Lip finish", cap(profile.lip_finish_pref));
+    add("Skin concerns", profile.skin_concerns);
+    var prods = (profile.current_products || []).map(function (p) {
+      return p.brand + " " + p.product + (p.shade ? " (" + p.shade + ")" : "");
+    });
+    add("Products you use", prods);
+
+    grid.innerHTML = rows.map(function (r) {
+      return "<div class='sofie-loyalty__pf-row'><dt>" + escapeHtml(r[0]) +
+        "</dt><dd>" + escapeHtml(r[1]) + "</dd></div>";
+    }).join("");
+    card.hidden = rows.length === 0;
   }
 
   function renderTips(tips, completion) {

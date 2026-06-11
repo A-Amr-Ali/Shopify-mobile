@@ -66,3 +66,33 @@
 }
 .sofie-loyalty__tip strong { display: block; margin-bottom: .25rem; }
 .sofie-loyalty__tip p { margin: 0; font-size: .92rem; color: color-mix(in srgb, var(--ink) 80%, transparent); }
+
+/* Beauty profile details */
+.sofie-loyalty__profile { margin-top: 1.6rem; }
+.sofie-loyalty__profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem 1.4rem; margin: 0; }
+@media (max-width: 560px) { .sofie-loyalty__profile-grid { grid-template-columns: 1fr; } }
+.sofie-loyalty__pf-row {
+  display: flex; justify-content: space-between; gap: 1rem;
+  border-bottom: 1px solid var(--line); padding: .55rem 0;
+}
+.sofie-loyalty__pf-row dt { color: color-mix(in srgb, var(--ink) 60%, transparent); font-size: .9rem; }
+.sofie-loyalty__pf-row dd { margin: 0; font-weight: 500; text-align: right; }
+
+/* Recent orders */
+.sofie-loyalty__orders { margin-top: 1.6rem; }
+.sofie-loyalty__order-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.sofie-loyalty__order {
+  display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: .8rem;
+  border: 1px solid var(--line); border-radius: 12px; padding: .7rem 1rem; font-size: .9rem; background: #fff;
+}
+.sofie-loyalty__order-no { font-weight: 600; text-decoration: none; color: var(--ink); }
+.sofie-loyalty__order-date { color: color-mix(in srgb, var(--ink) 55%, transparent); }
+.sofie-loyalty__order-total { font-weight: 600; }
+.sofie-loyalty__order-status {
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .06em;
+  border: 1px solid var(--line); border-radius: 999px; padding: .12rem .55rem;
+}
+@media (max-width: 560px) {
+  .sofie-loyalty__order { grid-template-columns: 1fr auto; row-gap: .25rem; }
+  .sofie-loyalty__order-date { grid-column: 1 / -1; order: 5; }
+}
