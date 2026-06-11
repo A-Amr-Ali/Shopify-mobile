@@ -3,7 +3,7 @@
 // (handled in webhooks.jsx). App Proxy + HMAC.
 import { json } from "@remix-run/node";
 import { verifyAppProxy } from "../lib/hmac.server.js";
-import { unauthenticated } from "../shopify.server.js";
+import { getAdmin } from "../lib/admin.server.js";
 import { supabase } from "../db.server.js";
 import { mintOpenCode } from "../lib/discounts.server.js";
 import { REFERRAL } from "../config/loyalty.js";
@@ -32,7 +32,7 @@ export const action = async ({ request }) => {
 
   let welcome = null;
   try {
-    const { admin } = await unauthenticated.admin(params.get("shop"));
+    const admin = await getAdmin(params.get("shop"));
     welcome = await mintOpenCode(admin, {
       amountEgp: REFERRAL.welcomeEgp, prefix: REFERRAL.welcomeCodePrefix,
     });

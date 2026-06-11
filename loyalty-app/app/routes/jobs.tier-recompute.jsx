@@ -2,7 +2,7 @@
 // 12-month spend from the ledger (purchase + refund rows in the trailing window),
 // recomputes the held tier, and mirrors. Auth: x-cron-key header == CRON_KEY.
 import { json } from "@remix-run/node";
-import { unauthenticated } from "../shopify.server.js";
+import { getAdmin } from "../lib/admin.server.js";
 import { supabase } from "../db.server.js";
 import { recomputeHeldTier } from "../lib/tier.server.js";
 import { mirrorCustomer } from "../lib/metafields.server.js";
@@ -15,7 +15,7 @@ export const action = async ({ request }) => {
   }
   const since = new Date(Date.now() - ROLLING_WINDOW_DAYS * 864e5).toISOString();
   let admin = null;
-  try { admin = (await unauthenticated.admin(SHOP_DOMAIN)).admin; } catch { /* mirror best-effort */ }
+  try { admin = await getAdmin(SHOP_DOMAIN); } catch { /* mirror best-effort */ }
 
   const { data: customers, error } = await supabase
     .from("customers").select("shopify_customer_id, tier, tier_locked_until, email");

@@ -3,7 +3,7 @@
 // and emits a Klaviyo event so the birthday flow emails the code.
 // Auth: x-cron-key header == CRON_KEY.
 import { json } from "@remix-run/node";
-import { unauthenticated } from "../shopify.server.js";
+import { getAdmin } from "../lib/admin.server.js";
 import { supabase } from "../db.server.js";
 import { mintOpenCode } from "../lib/discounts.server.js";
 import { trackEvent } from "../lib/klaviyo.server.js";
@@ -25,7 +25,7 @@ export const action = async ({ request }) => {
 
   const todays = (customers ?? []).filter((c) => String(c.birthday).slice(5) === mmdd);
   let admin = null;
-  try { admin = (await unauthenticated.admin(SHOP_DOMAIN)).admin; } catch { /* code mint best-effort */ }
+  try { admin = await getAdmin(SHOP_DOMAIN); } catch { /* code mint best-effort */ }
 
   let granted = 0, skipped = 0;
   for (const c of todays) {

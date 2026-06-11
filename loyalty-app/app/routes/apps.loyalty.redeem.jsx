@@ -2,7 +2,7 @@
 // App Proxy + HMAC; customer id from the signed param only.
 import { json } from "@remix-run/node";
 import { verifyAppProxy } from "../lib/hmac.server.js";
-import { unauthenticated } from "../shopify.server.js";
+import { getAdmin } from "../lib/admin.server.js";
 import { supabase } from "../db.server.js";
 import { createLedger } from "../lib/ledger.server.js";
 import { createSupabaseStore } from "../lib/store.supabase.js";
@@ -47,7 +47,7 @@ export const action = async ({ request }) => {
 
   // Mint the discount code. If this fails, compensate the debit (credit back).
   try {
-    const { admin } = await unauthenticated.admin(params.get("shop"));
+    const admin = await getAdmin(params.get("shop"));
     const { code, nodeId } = await mintDiscountCode(admin, {
       amountEgp: reward.egpValue,
       customerId,

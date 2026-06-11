@@ -5,7 +5,7 @@
 // the customer by email via the Admin API.
 import { json } from "@remix-run/node";
 import crypto from "node:crypto";
-import { unauthenticated } from "../shopify.server.js";
+import { getAdmin } from "../lib/admin.server.js";
 import { supabase } from "../db.server.js";
 import { awardReview } from "../lib/earn-actions.server.js";
 import { mirrorCustomer } from "../lib/metafields.server.js";
@@ -42,7 +42,7 @@ export const action = async ({ request }) => {
   const reviewId = review.id || review.review_id;
   if (!verified || !email || !reviewId) return json({ ok: true, skipped: "not_verified_buyer" });
 
-  const { admin } = await unauthenticated.admin(SHOP_DOMAIN);
+  const admin = await getAdmin(SHOP_DOMAIN);
   const customerId = await customerIdByEmail(admin, email);
   if (!customerId) return json({ ok: true, skipped: "no_customer" });
 

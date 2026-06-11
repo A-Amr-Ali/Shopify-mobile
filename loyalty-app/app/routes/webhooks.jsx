@@ -3,6 +3,7 @@
 // refund id in the ledger). COD-aware: we earn on orders/paid (which fires when
 // a COD order becomes paid at delivery), and reverse on refund/cancel.
 import { authenticate } from "../shopify.server.js";
+import { getAdmin } from "../lib/admin.server.js";
 import { supabase } from "../db.server.js";
 import { createLedger } from "../lib/ledger.server.js";
 import { createSupabaseStore } from "../lib/store.supabase.js";
@@ -20,7 +21,15 @@ const ledger = createLedger(createSupabaseStore());
 const gid = (id) => (String(id).startsWith("gid://") ? String(id) : `gid://shopify/Customer/${id}`);
 
 export const action = async ({ request }) => {
-  const { topic, payload, admin } = await authenticate.webhook(request);
+  const { topic, payload, admin: sessionAdmin, shop } = await authenticate.webhook(request);
+
+  // The managed-install flow may not leave a stored session, so the webhook's
+  // admin can be undefined. Fall back to a client-credentials admin so metafield
+  // mirroring + order-history inference still run.
+  let admin = sessionAdmin;
+  if (!admin && shop) {
+    try { admin = await getAdmin(shop); } catch (e) { console.warn(`webhook admin fallback failed: ${e.message}`); }
+  }
 
   try {
     switch (topic) {
