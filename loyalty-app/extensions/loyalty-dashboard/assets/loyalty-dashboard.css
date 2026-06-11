@@ -107,3 +107,29 @@
   display: inline-block; background: var(--ink); color: #fff; text-decoration: none;
   font-weight: 600; padding: .8rem 1.6rem; border-radius: 999px;
 }
+
+/* Gift rewards */
+.sofie-loyalty__gifts { margin-top: 1rem; }
+.sofie-loyalty__gift-head { font-size: .95rem; font-weight: 500; margin: 0 0 .5rem; opacity: .8; }
+.sofie-loyalty__gift-list { display: flex; flex-wrap: wrap; gap: .7rem; }
+.sofie-loyalty__gift { flex-direction: column; align-items: flex-start; }
+
+/* Product recommendations */
+.sofie-loyalty__reco { margin-top: 1.6rem; }
+.sofie-loyalty__reco-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem;
+}
+.sofie-reco {
+  border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+  background: #fff; display: flex; flex-direction: column;
+}
+.sofie-reco__media { display: block; aspect-ratio: 1 / 1; background: var(--soft); }
+.sofie-reco__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sofie-reco__body { padding: .7rem .8rem; display: flex; flex-direction: column; gap: .35rem; flex: 1; }
+.sofie-reco__title { font-size: .88rem; color: var(--ink); text-decoration: none; line-height: 1.25; }
+.sofie-reco__price { font-weight: 600; font-size: .9rem; }
+.sofie-reco__btn {
+  margin-top: auto; border: 1px solid var(--ink); background: var(--ink); color: #fff;
+  border-radius: 999px; padding: .5rem .8rem; cursor: pointer; font-size: .82rem;
+}
+.sofie-reco__btn:hover { opacity: .92; }

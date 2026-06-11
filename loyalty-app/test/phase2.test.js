@@ -6,6 +6,7 @@ import {
 } from "../app/lib/inference.server.js";
 import { buildRulesTips } from "../app/lib/tips-core.js";
 import { withinMonthlyCap } from "../app/lib/earn-core.js";
+import { buildKeywords } from "../app/lib/recommend.server.js";
 
 test("completionPct counts filled fields (arrays count when non-empty)", () => {
   assert.equal(completionPct(null), 0);
@@ -77,6 +78,28 @@ test("buildRulesTips produces routine + undertone + owned-product tips", () => {
 test("buildRulesTips empty for empty profile", () => {
   assert.deepEqual(buildRulesTips(null), []);
   assert.deepEqual(buildRulesTips({}), []);
+});
+
+test("buildKeywords maps a profile to catalog search terms", () => {
+  assert.deepEqual(buildKeywords(null), []);
+  const kws = buildKeywords({
+    skin_type: "oily", undertone: "warm", lip_finish_pref: "matte",
+    skin_concerns: ["large pores"],
+    current_products: [{ brand: "Rhode", product: "Lip" }],
+  });
+  assert.ok(kws.includes("oil-free"));
+  assert.ok(kws.includes("matte lip"));
+  assert.ok(kws.includes("warm foundation"));
+  assert.ok(kws.includes("pore"));   // from "large pores"
+  assert.ok(kws.includes("Rhode"));  // favourite brand
+  assert.ok(kws.length <= 6);
+
+  // Capped at 6 even with many signals.
+  const big = buildKeywords({
+    skin_type: "dry", undertone: "cool", lip_finish_pref: "glossy",
+    skin_concerns: ["acne", "dark spots", "redness", "dullness"],
+  });
+  assert.equal(big.length, 6);
 });
 
 test("withinMonthlyCap enforces the 4/month review cap", () => {

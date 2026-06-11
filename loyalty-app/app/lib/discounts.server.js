@@ -71,3 +71,30 @@ export async function mintOpenCode(admin, { amountEgp, code, prefix, days = 90 }
   if (errs.length) throw new Error(`discountCodeBasicCreate(open): ${JSON.stringify(errs)}`);
   return { code: finalCode, nodeId: body.data.discountCodeBasicCreate.codeDiscountNode.id };
 }
+
+/**
+ * Mint a single-use 100%-off code for ONE specific product (a points-redeemed
+ * free gift). The customer adds that product to cart and the code makes it free.
+ * @param {string} opts.productGid  gid://shopify/Product/123
+ * @param {string} opts.customerId  Shopify GID — restricts the code to them
+ */
+export async function mintProductGiftCode(admin, { productGid, customerId, code }) {
+  const finalCode = code || REDEEM_CODE_PREFIX + "GIFT-" + crypto.randomBytes(3).toString("hex").toUpperCase();
+  const basic = {
+    title: `Loyalty gift ${finalCode}`,
+    code: finalCode,
+    startsAt: new Date().toISOString(),
+    usageLimit: 1,
+    appliesOncePerCustomer: true,
+    customerSelection: { customers: { add: [customerId] } },
+    customerGets: {
+      value: { percentage: 1.0 }, // 100% off → free
+      items: { products: { productsToAdd: [productGid] } },
+    },
+  };
+  const res = await admin.graphql(CREATE, { variables: { basic } });
+  const body = await res.json();
+  const errs = body?.data?.discountCodeBasicCreate?.userErrors ?? [];
+  if (errs.length) throw new Error(`discountCodeBasicCreate(gift): ${JSON.stringify(errs)}`);
+  return { code: finalCode, nodeId: body.data.discountCodeBasicCreate.codeDiscountNode.id };
+}

@@ -37,7 +37,16 @@
     <div class="sofie-loyalty__rewards" data-rewards hidden>
       <h3 class="sofie-loyalty__subhead">{{ block.settings.rewards_heading }}</h3>
       <div class="sofie-loyalty__reward-list" data-reward-list></div>
+      <div class="sofie-loyalty__gifts" data-gifts hidden>
+        <h4 class="sofie-loyalty__gift-head">{{ block.settings.gifts_heading }}</h4>
+        <div class="sofie-loyalty__gift-list" data-gift-list></div>
+      </div>
       <p class="sofie-loyalty__msg" data-msg role="status"></p>
+    </div>
+
+    <div class="sofie-loyalty__reco" data-reco hidden>
+      <h3 class="sofie-loyalty__subhead">{{ block.settings.reco_heading }}</h3>
+      <div class="sofie-loyalty__reco-list" data-reco-list></div>
     </div>
 
     <div class="sofie-loyalty__profile" data-profile-card hidden>
@@ -93,6 +102,8 @@
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Sofie Rewards" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Welcome back" },
     { "type": "text", "id": "rewards_heading", "label": "Rewards heading", "default": "Redeem your points" },
+    { "type": "text", "id": "gifts_heading", "label": "Gifts heading", "default": "Or redeem for a free gift" },
+    { "type": "text", "id": "reco_heading", "label": "Recommendations heading", "default": "Recommended for your routine" },
     { "type": "text", "id": "profile_heading", "label": "Profile heading", "default": "Your beauty profile" },
     { "type": "text", "id": "tips_heading", "label": "Tips heading", "default": "Your personalized beauty tips" },
     { "type": "checkbox", "id": "show_orders", "label": "Show recent orders", "default": true },

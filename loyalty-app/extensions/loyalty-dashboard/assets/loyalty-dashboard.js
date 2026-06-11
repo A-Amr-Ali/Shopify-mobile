@@ -36,8 +36,35 @@
     }
 
     renderRewards(data.rewards || [], data.balance);
+    renderGifts(data.gifts || [], data.balance);
     renderProfile(data.profile);
     renderTips(data.tips || [], data.completion_pct || 0);
+  }
+
+  function renderGifts(gifts, balance) {
+    var wrap = root.querySelector("[data-gifts]");
+    var list = root.querySelector("[data-gift-list]");
+    if (!wrap || !list) return;
+    list.innerHTML = "";
+    if (!gifts.length) { wrap.hidden = true; return; }
+    gifts.forEach(function (g) {
+      var afford = balance >= g.pointsCost;
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "sofie-loyalty__reward sofie-loyalty__gift" + (afford ? "" : " is-locked");
+      btn.disabled = !afford;
+      btn.innerHTML =
+        '<span class="sofie-loyalty__reward-egp">🎁 ' + escapeHtml(g.title) + "</span>" +
+        '<span class="sofie-loyalty__reward-cost">' + fmt(g.pointsCost) + " pts</span>";
+      btn.addEventListener("click", function () {
+        redeem({ giftId: g.id }, btn, function (j) {
+          return "Gift unlocked! Use code " + j.code + " at checkout — your " + (j.gift || "gift") +
+            " is free. New balance: " + fmt(j.balance) + " pts.";
+        });
+      });
+      list.appendChild(btn);
+    });
+    wrap.hidden = false;
   }
 
   function renderProfile(profile) {
@@ -117,21 +144,27 @@
       btn.innerHTML =
         '<span class="sofie-loyalty__reward-egp">' + fmt(r.egpValue) + " " + currency + " off</span>" +
         '<span class="sofie-loyalty__reward-cost">' + fmt(r.pointsCost) + " pts</span>";
-      btn.addEventListener("click", function () { redeem(r.pointsCost, btn); });
+      btn.addEventListener("click", function () {
+        redeem({ pointsCost: r.pointsCost }, btn, function (j) {
+          return "Done! Use code " + j.code + " at checkout for " + fmt(j.egp_value) + " " +
+            currency + " off. New balance: " + fmt(j.balance) + " pts.";
+        });
+      });
       list.appendChild(btn);
     });
     wrap.hidden = false;
   }
 
-  function redeem(pointsCost, btn) {
+  // payload = { pointsCost } or { giftId }; successMsg(j) returns the message.
+  function redeem(payload, btn, successMsg) {
     if (btn.dataset.busy) return;
     btn.dataset.busy = "1";
     btn.classList.add("is-busy");
-    setMsg("Creating your discount code…");
+    setMsg("Working on it…");
     fetch(base + "/redeem", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pointsCost: pointsCost }),
+      body: JSON.stringify(payload),
     })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (res) {
@@ -144,12 +177,61 @@
           setMsg(map[res.j.error] || "Could not redeem right now. Please try again.", "error");
           return;
         }
-        setMsg("Done! Use code " + res.j.code + " at checkout for " +
-          fmt(res.j.egp_value) + " " + currency + " off. New balance: " + fmt(res.j.balance) + " pts.", "success");
-        load(); // refresh balance + reward availability
+        setMsg(successMsg(res.j), "success");
+        load();
       })
       .catch(function () { setMsg("Network error. Please try again.", "error"); })
       .finally(function () { delete btn.dataset.busy; btn.classList.remove("is-busy"); });
+  }
+
+  // ── Product recommendations (from the quiz/profile) ──
+  function loadReco() {
+    fetch(base + "/recommendations", { headers: { Accept: "application/json" } })
+      .then(function (r) { return r.json(); })
+      .then(function (data) { renderReco((data && data.products) || []); })
+      .catch(function () { /* recommendations are best-effort */ });
+  }
+
+  function renderReco(products) {
+    var wrap = root.querySelector("[data-reco]");
+    var list = root.querySelector("[data-reco-list]");
+    if (!wrap || !list || !products.length) return;
+    list.innerHTML = "";
+    products.forEach(function (p) {
+      var url = "/products/" + p.handle;
+      var card = document.createElement("div");
+      card.className = "sofie-reco";
+      card.innerHTML =
+        '<a class="sofie-reco__media" href="' + url + '">' +
+        (p.image ? '<img src="' + p.image + '" alt="' + escapeHtml(p.title) + '" loading="lazy">' : "") + "</a>" +
+        '<div class="sofie-reco__body">' +
+        '<a class="sofie-reco__title" href="' + url + '">' + escapeHtml(p.title) + "</a>" +
+        '<span class="sofie-reco__price">' + fmt(Math.round(Number(p.price))) + " " + currency + "</span>" +
+        '<button type="button" class="sofie-reco__btn" data-variant="' + p.variantId + '">Add to bag</button>' +
+        "</div>";
+      card.querySelector("[data-variant]").addEventListener("click", function () { addToCart(p.variantId, this); });
+      list.appendChild(card);
+    });
+    wrap.hidden = false;
+  }
+
+  function addToCart(variantId, btn) {
+    if (btn.dataset.busy) return;
+    btn.dataset.busy = "1";
+    var orig = btn.textContent;
+    btn.textContent = "Adding…";
+    fetch("/cart/add.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: Number(variantId), quantity: 1 }),
+    })
+      .then(function (r) { if (!r.ok) throw new Error("add failed"); return r.json(); })
+      .then(function () {
+        btn.textContent = "Added ✓";
+        document.dispatchEvent(new CustomEvent("sofie:cart-updated"));
+        setTimeout(function () { btn.textContent = orig; delete btn.dataset.busy; }, 1600);
+      })
+      .catch(function () { btn.textContent = "Try again"; delete btn.dataset.busy; });
   }
 
   function load() {
@@ -160,6 +242,7 @@
         render(data);
       })
       .catch(function () { grid.setAttribute("data-state", "error"); });
+    loadReco();
   }
 
   // Let the quiz block trigger a refresh after a successful submit.

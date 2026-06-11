@@ -24,6 +24,13 @@ export const loader = async ({ request }) => {
     .eq("customer_id", customerId)
     .maybeSingle();
 
+  // Free-product gifts the merchant configured in rewards_catalog.
+  const { data: gifts } = await supabase
+    .from("rewards_catalog")
+    .select("id, title, points_cost")
+    .eq("type", "product").eq("active", true)
+    .order("points_cost");
+
   const rolling = customer?.rolling_spend_egp ?? 0;
   const progress = tierProgress(rolling);
 
@@ -38,6 +45,7 @@ export const loader = async ({ request }) => {
       pct: progress.pct,
     },
     rewards: REDEMPTION_TIERS,
+    gifts: (gifts ?? []).map((g) => ({ id: g.id, title: g.title, pointsCost: g.points_cost })),
     profile: profile ?? null,
     completion_pct: profile?.completion_pct ?? 0,
     tips: profile?.tips ?? [],
