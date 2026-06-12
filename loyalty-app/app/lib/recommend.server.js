@@ -43,10 +43,10 @@ export function buildKeywords(profile) {
 
 const QUERY = `
   query Reco($q: String!) {
-    products(first: 4, query: $q, sortKey: BEST_SELLING) {
+    products(first: 4, query: $q) {
       edges { node {
         id title handle
-        featuredImage { url(transform: { maxWidth: 400 }) }
+        featuredImage { url }
         variants(first: 1) { edges { node { id price availableForSale } } }
       } }
     }
@@ -54,10 +54,10 @@ const QUERY = `
 
 const BEST_SELLERS = `
   query Best {
-    products(first: 8, sortKey: BEST_SELLING) {
+    products(first: 8, sortKey: UPDATED_AT, reverse: true) {
       edges { node {
         id title handle
-        featuredImage { url(transform: { maxWidth: 400 }) }
+        featuredImage { url }
         variants(first: 1) { edges { node { id price availableForSale } } }
       } }
     }
@@ -84,6 +84,7 @@ export async function searchByKeywords(admin, keywords, limit = 8) {
     try {
       const res = await admin.graphql(QUERY, { variables: { q: kw } });
       const body = await res.json();
+      if (body?.errors) console.warn(`recommendations "${kw}" GraphQL: ${JSON.stringify(body.errors)}`);
       for (const e of body?.data?.products?.edges || []) {
         if (seen.has(e.node.id)) continue;
         const card = toCard(e.node);
@@ -104,6 +105,7 @@ export async function bestSellers(admin, limit = 8) {
   try {
     const res = await admin.graphql(BEST_SELLERS);
     const body = await res.json();
+    if (body?.errors) console.warn(`best-sellers GraphQL: ${JSON.stringify(body.errors)}`);
     const out = [];
     for (const e of body?.data?.products?.edges || []) {
       const card = toCard(e.node);
