@@ -83,6 +83,7 @@ const PAGE = `<!doctype html>
     $("find").disabled=true;$("findMsg").textContent="Searching…";$("findMsg").className="msg";
     post("/staff/lookup",{email:email}).then(function(res){
       $("find").disabled=false;
+      if(res.j.error==="staff_key_not_set"){$("findMsg").textContent="Server password not set yet — add STAFF_KEY in Railway and let it redeploy.";$("findMsg").className="msg err";return}
       if(res.j.error==="unauthorized"){$("findMsg").textContent="Wrong password.";$("findMsg").className="msg err";sessionStorage.removeItem("sofieStaffKey");show("loginCard",true);show("findCard",false);return}
       if(!res.j.found){$("findMsg").textContent="No customer with that email.";$("findMsg").className="msg err";show("custCard",false);return}
       cust=res.j;$("findMsg").textContent="";renderCust()

@@ -5,8 +5,6 @@ import { getAdmin } from "../lib/admin.server.js";
 import { supabase } from "../db.server.js";
 import { REDEMPTION_TIERS, STAFF_KEY, SHOP_DOMAIN } from "../config/loyalty.js";
 
-const ok = (k) => STAFF_KEY && k === STAFF_KEY;
-
 async function customerByEmail(admin, email) {
   const res = await admin.graphql(
     `query($q: String!){ customers(first: 1, query: $q){ edges { node { id firstName lastName email } } } }`,
@@ -17,7 +15,8 @@ async function customerByEmail(admin, email) {
 
 export const action = async ({ request }) => {
   const body = await request.json().catch(() => ({}));
-  if (!ok(body.key)) return json({ error: "unauthorized" }, { status: 401 });
+  if (!STAFF_KEY) return json({ error: "staff_key_not_set" }, { status: 503 });
+  if (String(body.key ?? "").trim() !== STAFF_KEY.trim()) return json({ error: "unauthorized" }, { status: 401 });
   const email = String(body.email || "").trim().toLowerCase();
   if (!email || !email.includes("@")) return json({ error: "bad_email" }, { status: 400 });
 

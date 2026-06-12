@@ -13,7 +13,8 @@ const ledger = createLedger(createSupabaseStore());
 
 export const action = async ({ request }) => {
   const body = await request.json().catch(() => ({}));
-  if (!STAFF_KEY || body.key !== STAFF_KEY) return json({ error: "unauthorized" }, { status: 401 });
+  if (!STAFF_KEY) return json({ error: "staff_key_not_set" }, { status: 503 });
+  if (String(body.key ?? "").trim() !== STAFF_KEY.trim()) return json({ error: "unauthorized" }, { status: 401 });
   const customerId = body.customerId;
   if (!customerId) return json({ error: "bad_input" }, { status: 400 });
 
