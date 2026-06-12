@@ -2,7 +2,7 @@
 // available; otherwise falls back to a solid rules-based answer from the
 // customer's profile — so the advisor always responds (and gets smarter once
 // Claude is funded). Native fetch (no SDK), matching the rest of the codebase.
-import { TIPS } from "../config/loyalty.js";
+import { TIPS, ADVISOR } from "../config/loyalty.js";
 import { buildRulesTips } from "./tips-core.js";
 import { buildKeywords } from "./recommend.server.js";
 
@@ -13,13 +13,26 @@ const SYSTEM = `You are the personal beauty advisor for Sofie's Store, an Egypti
 luxury beauty boutique (brands: Rhode, Rare Beauty, Charlotte Tilbury, Huda Beauty,
 Saie, Makeup by Mario, Kosas, Patrick Ta, ONE/SIZE). Voice: warm, expert, concise,
 encouraging — like a knowledgeable friend at the counter. Be Egypt-aware (heat,
-humidity). Use the customer's beauty profile to personalize. Give practical,
-specific, step-by-step advice — short paragraphs or numbered steps, no fluff,
-no medical claims. ALWAYS include 2-3 short catalog search terms in
-"product_searches" that match your advice (e.g. "matte setting spray",
-"hydrating primer", "warm nude lipstick") so we can show shoppable products.
-Respond ONLY as compact JSON: {"answer": string, "product_searches": string[]}.
-No markdown, no code fences.`;
+humidity). PERSONALIZE precisely to THIS customer's profile — reference their exact
+skin type, undertone, shade, finish and concerns; never give a generic templated
+answer, and vary your advice to the specifics. When useful, SEARCH THE WEB for
+current product reviews, dupes, comparisons, and trends, and weave in what you find
+(mention the source/brand). Give practical, specific, step-by-step advice — short
+steps, no fluff, no medical claims. ALWAYS include 2-3 short catalog search terms in
+"product_searches" that match your advice (e.g. "matte setting spray", "hydrating
+primer", "warm nude lipstick").
+End with ONLY a compact JSON object on its own: {"answer": string, "product_searches": string[]}.`;
+
+function extractJSON(text) {
+  try { return JSON.parse(text); } catch { /* fall through */ }
+  const a = text.lastIndexOf("{");
+  const b = text.lastIndexOf("}");
+  if (a >= 0 && b > a) { try { return JSON.parse(text.slice(a, b + 1)); } catch { /* nope */ } }
+  // First {...} block.
+  const m = text.match(/\{[\s\S]*\}/);
+  if (m) { try { return JSON.parse(m[0]); } catch { /* nope */ } }
+  return null;
+}
 
 // Claude path — returns the parsed result or null if unavailable/failed.
 async function claudeAnswer(profile, question) {
@@ -27,19 +40,31 @@ async function claudeAnswer(profile, question) {
   if (!apiKey) return null;
   const user =
     `Customer profile:\n${JSON.stringify(profile || {}, null, 2)}\n\n` +
-    `Question: ${question}\n\nReturn the JSON only.`;
+    `Question: ${question}\n\nResearch if helpful, then answer. End with the JSON object only.`;
+
+  const payload = {
+    model: TIPS.model,
+    max_tokens: 1200,
+    system: SYSTEM,
+    messages: [{ role: "user", content: user }],
+  };
+  if (ADVISOR.webSearch) {
+    payload.tools = [{ type: "web_search_20250305", name: "web_search", max_uses: ADVISOR.maxSearches }];
+  }
+
   try {
     const res = await fetch(ENDPOINT, {
       method: "POST",
       headers: { "x-api-key": apiKey, "anthropic-version": VERSION, "content-type": "application/json" },
-      body: JSON.stringify({ model: TIPS.model, max_tokens: 900, system: SYSTEM, messages: [{ role: "user", content: user }] }),
+      body: JSON.stringify(payload),
     });
     if (!res.ok) { console.warn(`advisor HTTP ${res.status}: ${await res.text()}`); return null; }
     const data = await res.json();
-    const text = (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("");
-    const parsed = JSON.parse(text);
+    const text = (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("\n");
+    const parsed = extractJSON(text);
+    if (!parsed || !parsed.answer) { console.warn("advisor: no JSON in response"); return null; }
     return {
-      answer: String(parsed.answer || "").trim(),
+      answer: String(parsed.answer).trim(),
       productSearches: Array.isArray(parsed.product_searches) ? parsed.product_searches.slice(0, 3).map(String) : [],
       source: "claude",
     };

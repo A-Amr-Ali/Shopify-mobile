@@ -1,0 +1,79 @@
+{%- comment -%}
+  Public "Sofie Rewards" program explainer — shows to EVERYONE. Sells the program:
+  how to earn, how to redeem, and the Insider/VIP/Icon tier benefits. Put it on a
+  "Rewards" page or the homepage to drive sign-ups. Everything is editable.
+{%- endcomment -%}
+
+<section class="sofie-prog">
+  <div class="sofie-prog__head">
+    <span class="sofie-prog__eyebrow">{{ block.settings.eyebrow }}</span>
+    <h2 class="sofie-prog__title">{{ block.settings.heading }}</h2>
+    <p class="sofie-prog__sub">{{ block.settings.subheading }}</p>
+  </div>
+
+  <div class="sofie-prog__steps">
+    <div class="sofie-prog__step"><span>1</span><h3>{{ block.settings.s1_t }}</h3><p>{{ block.settings.s1_b }}</p></div>
+    <div class="sofie-prog__step"><span>2</span><h3>{{ block.settings.s2_t }}</h3><p>{{ block.settings.s2_b }}</p></div>
+    <div class="sofie-prog__step"><span>3</span><h3>{{ block.settings.s3_t }}</h3><p>{{ block.settings.s3_b }}</p></div>
+  </div>
+
+  <h3 class="sofie-prog__tiers-title">{{ block.settings.tiers_title }}</h3>
+  <div class="sofie-prog__tiers">
+    {%- assign tiers = "1,2,3" | split: "," -%}
+    {%- for i in tiers -%}
+      {%- assign nk = "t" | append: i | append: "_name" -%}
+      {%- assign rk = "t" | append: i | append: "_req" -%}
+      {%- assign pk = "t" | append: i | append: "_perks" -%}
+      <div class="sofie-prog__tier sofie-prog__tier--{{ i }}">
+        <h4 class="sofie-prog__tier-name">{{ block.settings[nk] }}</h4>
+        <p class="sofie-prog__tier-req">{{ block.settings[rk] }}</p>
+        <ul class="sofie-prog__perks">
+          {%- assign perks = block.settings[pk] | newline_to_br | split: "<br />" -%}
+          {%- for p in perks -%}{%- assign t = p | strip -%}{%- if t != blank -%}<li>{{ t }}</li>{%- endif -%}{%- endfor -%}
+        </ul>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- if block.settings.cta_label != blank -%}
+    <div class="sofie-prog__cta-wrap">
+      <a class="sofie-prog__cta" href="{{ block.settings.cta_link | default: '/account/register' }}">{{ block.settings.cta_label }}</a>
+    </div>
+  {%- endif -%}
+</section>
+
+{{ 'loyalty-program.css' | asset_url | stylesheet_tag }}
+
+{% schema %}
+{
+  "name": "Sofie Rewards Program",
+  "target": "section",
+  "settings": [
+    { "type": "header", "content": "Intro" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Sofie Rewards" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Beauty that rewards you" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Earn points on everything you love, unlock exclusive perks, and rise through our tiers — online and in our boutiques." },
+    { "type": "header", "content": "How it works" },
+    { "type": "text", "id": "s1_t", "label": "Step 1 title", "default": "Join free" },
+    { "type": "text", "id": "s1_b", "label": "Step 1 text", "default": "Create an account and take your beauty quiz to start earning instantly." },
+    { "type": "text", "id": "s2_t", "label": "Step 2 title", "default": "Earn points" },
+    { "type": "text", "id": "s2_b", "label": "Step 2 text", "default": "1 point for every 10 EGP, plus points for reviews, referrals and follows." },
+    { "type": "text", "id": "s3_t", "label": "Step 3 title", "default": "Redeem & enjoy" },
+    { "type": "text", "id": "s3_b", "label": "Step 3 text", "default": "Turn points into EGP off, free gifts, and members-only perks." },
+    { "type": "header", "content": "Tiers" },
+    { "type": "text", "id": "tiers_title", "label": "Tiers title", "default": "Your tiers" },
+    { "type": "text", "id": "t1_name", "label": "Tier 1 name", "default": "Insider" },
+    { "type": "text", "id": "t1_req", "label": "Tier 1 requirement", "default": "Free to join" },
+    { "type": "textarea", "id": "t1_perks", "label": "Tier 1 perks (one per line)", "default": "1× points on every order\nBirthday treat\nPersonalized tips & quiz\nEarly access to drops" },
+    { "type": "text", "id": "t2_name", "label": "Tier 2 name", "default": "VIP" },
+    { "type": "text", "id": "t2_req", "label": "Tier 2 requirement", "default": "Spend 40,000 EGP / year" },
+    { "type": "textarea", "id": "t2_perks", "label": "Tier 2 perks (one per line)", "default": "1.25× points\nFree shipping\nBirthday gift + 2× points that month\nExclusive member offers" },
+    { "type": "text", "id": "t3_name", "label": "Tier 3 name", "default": "Icon" },
+    { "type": "text", "id": "t3_req", "label": "Tier 3 requirement", "default": "Spend 120,000 EGP / year" },
+    { "type": "textarea", "id": "t3_perks", "label": "Tier 3 perks (one per line)", "default": "1.5× points\nEverything in VIP\nPremium birthday gift\n1:1 beauty consultation" },
+    { "type": "header", "content": "Call to action" },
+    { "type": "text", "id": "cta_label", "label": "Button text", "default": "Join Sofie Rewards" },
+    { "type": "url", "id": "cta_link", "label": "Button link", "info": "e.g. /account/register or your My Rewards page" }
+  ]
+}
+{% endschema %}

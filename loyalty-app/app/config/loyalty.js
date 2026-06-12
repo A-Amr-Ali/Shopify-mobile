@@ -110,3 +110,10 @@ export const TIPS = {
   model: process.env.ANTHROPIC_MODEL || "claude-opus-4-8",
   maxTokens: Number(process.env.TIPS_MAX_TOKENS ?? 700),
 };
+
+// Advisor: let Claude search the web live for current reviews/trends (costs a
+// bit more per answer). Toggle off with ADVISOR_WEB_SEARCH=false.
+export const ADVISOR = {
+  webSearch: /^(1|true|yes)$/i.test(String(process.env.ADVISOR_WEB_SEARCH ?? "true")),
+  maxSearches: Number(process.env.ADVISOR_MAX_SEARCHES ?? 3),
+};

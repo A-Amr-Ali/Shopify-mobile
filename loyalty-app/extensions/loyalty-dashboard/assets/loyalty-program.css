@@ -1,0 +1,42 @@
+/* Public Sofie Rewards program explainer. */
+.sofie-prog {
+  --ink: #2a201d;
+  --line: color-mix(in srgb, var(--ink) 14%, transparent);
+  --soft: color-mix(in srgb, var(--ink) 5%, #fff);
+  --gold: #c9a96a;
+  color: var(--ink); max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem; font-family: inherit;
+}
+.sofie-prog__head { text-align: center; max-width: 640px; margin: 0 auto 2rem; }
+.sofie-prog__eyebrow { text-transform: uppercase; letter-spacing: .2em; font-size: .72rem; opacity: .65; }
+.sofie-prog__title { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 600; margin: .3rem 0 .5rem; }
+.sofie-prog__sub { opacity: .85; margin: 0; }
+
+.sofie-prog__steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2.4rem; }
+@media (max-width: 700px) { .sofie-prog__steps { grid-template-columns: 1fr; } }
+.sofie-prog__step { border: 1px solid var(--line); border-radius: 14px; padding: 1.2rem; background: #fff; }
+.sofie-prog__step span {
+  display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem;
+  border-radius: 999px; background: var(--ink); color: #fff; font-weight: 600; margin-bottom: .6rem;
+}
+.sofie-prog__step h3 { margin: 0 0 .3rem; font-size: 1.05rem; }
+.sofie-prog__step p { margin: 0; font-size: .92rem; opacity: .85; }
+
+.sofie-prog__tiers-title { text-align: center; font-size: 1.3rem; margin: 0 0 1.2rem; }
+.sofie-prog__tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+@media (max-width: 800px) { .sofie-prog__tiers { grid-template-columns: 1fr; } }
+.sofie-prog__tier { border: 1px solid var(--line); border-radius: 16px; padding: 1.4rem; background: var(--soft); }
+.sofie-prog__tier--3 { background: var(--ink); color: #fff; border-color: var(--ink); }
+.sofie-prog__tier--3 .sofie-prog__tier-req { color: var(--gold); }
+.sofie-prog__tier--2 { border-color: color-mix(in srgb, var(--gold) 60%, var(--line)); }
+.sofie-prog__tier-name { margin: 0 0 .2rem; font-size: 1.25rem; }
+.sofie-prog__tier-req { margin: 0 0 .9rem; font-size: .85rem; opacity: .8; }
+.sofie-prog__perks { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.sofie-prog__perks li { position: relative; padding-left: 1.3rem; font-size: .92rem; }
+.sofie-prog__perks li::before { content: "✓"; position: absolute; left: 0; color: var(--gold); font-weight: 700; }
+
+.sofie-prog__cta-wrap { text-align: center; margin-top: 2rem; }
+.sofie-prog__cta {
+  display: inline-block; background: var(--ink); color: #fff; text-decoration: none; font-weight: 600;
+  padding: .9rem 2rem; border-radius: 999px;
+}
+.sofie-prog__cta:hover { opacity: .92; }
