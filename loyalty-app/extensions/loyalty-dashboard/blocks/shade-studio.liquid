@@ -1,0 +1,69 @@
+{%- comment -%}
+  Sofie Shade Studio — a 2D virtual shade try-on. Upload a model photo, list your
+  shades (label | hex | area | product-url), and the face tints to each shade when
+  a customer taps it, with a "Shop this shade" button. No AR provider needed.
+  Position the lip/cheek zones with the sliders to match your model photo.
+{%- endcomment -%}
+
+<section class="sofie-shade">
+  <div class="sofie-shade__head">
+    <span class="sofie-shade__eyebrow">{{ block.settings.eyebrow }}</span>
+    <h2 class="sofie-shade__title">{{ block.settings.heading }}</h2>
+  </div>
+
+  <div class="sofie-shade__wrap"
+    data-shade
+    style="--lipx:{{ block.settings.lip_x }}%; --lipy:{{ block.settings.lip_y }}%; --lipw:{{ block.settings.lip_w }}%; --liph:{{ block.settings.lip_h }}%; --cy:{{ block.settings.cheek_y }}%; --cw:{{ block.settings.cheek_w }}%; --cgap:{{ block.settings.cheek_gap }}%; --strength:{{ block.settings.intensity | divided_by: 100.0 }};">
+
+    <div class="sofie-shade__stage">
+      {%- if block.settings.model != blank -%}
+        <img class="sofie-shade__model" src="{{ block.settings.model | image_url: width: 800 }}" alt="Shade try-on model" width="800">
+      {%- else -%}
+        <div class="sofie-shade__placeholder">Upload a model photo in this block's settings →</div>
+      {%- endif -%}
+      <span class="sofie-shade__lips" data-lips></span>
+      <span class="sofie-shade__cheek sofie-shade__cheek--l" data-cheek></span>
+      <span class="sofie-shade__cheek sofie-shade__cheek--r" data-cheek></span>
+    </div>
+
+    <div class="sofie-shade__controls">
+      <div class="sofie-shade__tabs">
+        <button type="button" class="sofie-shade__tab is-active" data-area="lip">Lips</button>
+        <button type="button" class="sofie-shade__tab" data-area="cheek">Cheeks</button>
+        <button type="button" class="sofie-shade__clear" data-clear>Clear</button>
+      </div>
+      <div class="sofie-shade__palette" data-palette></div>
+      <a class="sofie-shade__shop" data-shop href="#" hidden>Shop this shade</a>
+    </div>
+
+    <script type="application/json" data-shades>{{ block.settings.shades | json }}</script>
+  </div>
+</section>
+
+{{ 'shade-studio.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'shade-studio.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Shade Studio (try-on)",
+  "target": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Virtual try-on" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Find your shade" },
+    { "type": "image_picker", "id": "model", "label": "Model photo", "info": "A front-facing face photo works best." },
+    { "type": "header", "content": "Shades" },
+    { "type": "textarea", "id": "shades", "label": "Shades", "info": "One per line:  Label | #hex | lip or cheek | /products/handle",
+      "default": "Ruby Red | #9b1b30 | lip | /collections/all\nSoft Nude | #c98a7a | lip | /collections/all\nBerry | #7d2244 | lip | /collections/all\nCoral | #e87a5d | lip | /collections/all\nPeach Glow | #e89a7a | cheek | /collections/all\nRose | #d97a8a | cheek | /collections/all" },
+    { "type": "header", "content": "Lip zone position" },
+    { "type": "range", "id": "lip_x", "label": "Lips — horizontal", "min": 30, "max": 70, "step": 1, "unit": "%", "default": 50 },
+    { "type": "range", "id": "lip_y", "label": "Lips — vertical", "min": 50, "max": 90, "step": 1, "unit": "%", "default": 73 },
+    { "type": "range", "id": "lip_w", "label": "Lips — width", "min": 6, "max": 30, "step": 1, "unit": "%", "default": 16 },
+    { "type": "range", "id": "lip_h", "label": "Lips — height", "min": 3, "max": 16, "step": 1, "unit": "%", "default": 7 },
+    { "type": "header", "content": "Cheek zone position" },
+    { "type": "range", "id": "cheek_y", "label": "Cheeks — vertical", "min": 40, "max": 80, "step": 1, "unit": "%", "default": 60 },
+    { "type": "range", "id": "cheek_w", "label": "Cheeks — size", "min": 6, "max": 26, "step": 1, "unit": "%", "default": 14 },
+    { "type": "range", "id": "cheek_gap", "label": "Cheeks — spacing", "min": 14, "max": 44, "step": 1, "unit": "%", "default": 28 },
+    { "type": "range", "id": "intensity", "label": "Colour intensity", "min": 20, "max": 90, "step": 5, "unit": "%", "default": 60 }
+  ]
+}
+{% endschema %}

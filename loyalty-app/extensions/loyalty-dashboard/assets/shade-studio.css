@@ -1,0 +1,44 @@
+/* Sofie Shade Studio — 2D try-on. */
+.sofie-shade { --ink:#2a201d; --line:color-mix(in srgb,var(--ink) 14%,transparent); --soft:color-mix(in srgb,var(--ink) 5%,#fff);
+  color:var(--ink); max-width:760px; margin:0 auto; padding:1.2rem 1rem; font-family:inherit; }
+.sofie-shade__eyebrow { text-transform:uppercase; letter-spacing:.18em; font-size:.72rem; opacity:.65; }
+.sofie-shade__title { font-size:1.5rem; font-weight:600; margin:.2rem 0 1rem; }
+.sofie-shade__wrap { display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; align-items:start; }
+@media (max-width:640px){ .sofie-shade__wrap { grid-template-columns:1fr; } }
+
+.sofie-shade__stage { position:relative; border-radius:16px; overflow:hidden; background:var(--soft); aspect-ratio:4/5; }
+.sofie-shade__model { width:100%; height:100%; object-fit:cover; display:block; }
+.sofie-shade__placeholder { display:flex; align-items:center; justify-content:center; height:100%; text-align:center; padding:1rem; opacity:.6; font-size:.9rem; }
+
+.sofie-shade__lips, .sofie-shade__cheek {
+  position:absolute; pointer-events:none; background:transparent;
+  mix-blend-mode:multiply; opacity:var(--strength,.6); transition:background .2s ease;
+}
+.sofie-shade__lips {
+  left:var(--lipx); top:var(--lipy); width:var(--lipw); height:var(--liph);
+  transform:translate(-50%,-50%); border-radius:50%; filter:blur(6px);
+}
+.sofie-shade__cheek {
+  top:var(--cy); width:var(--cw); aspect-ratio:1; transform:translateY(-50%);
+  border-radius:50%; filter:blur(12px); opacity:calc(var(--strength,.6) * .7);
+}
+.sofie-shade__cheek--l { left:calc(50% - var(--cgap)); margin-left:calc(var(--cw) / -2); }
+.sofie-shade__cheek--r { left:calc(50% + var(--cgap)); margin-left:calc(var(--cw) / -2); }
+
+.sofie-shade__tabs { display:flex; gap:.5rem; align-items:center; margin-bottom:.8rem; }
+.sofie-shade__tab, .sofie-shade__clear {
+  border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:999px;
+  padding:.45rem .9rem; cursor:pointer; font:inherit; font-size:.85rem;
+}
+.sofie-shade__tab.is-active { background:var(--ink); color:#fff; border-color:var(--ink); }
+.sofie-shade__clear { margin-left:auto; }
+.sofie-shade__palette { display:flex; flex-wrap:wrap; gap:.6rem; }
+.sofie-shade__swatch {
+  width:2.4rem; height:2.4rem; border-radius:999px; border:2px solid #fff;
+  box-shadow:0 0 0 1px var(--line); cursor:pointer; padding:0;
+}
+.sofie-shade__swatch.is-on { box-shadow:0 0 0 2px var(--ink); transform:scale(1.08); }
+.sofie-shade__shop {
+  display:inline-block; margin-top:1rem; background:var(--ink); color:#fff; text-decoration:none;
+  font-weight:600; padding:.7rem 1.3rem; border-radius:999px; font-size:.9rem;
+}
