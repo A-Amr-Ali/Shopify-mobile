@@ -44,6 +44,22 @@
       <p class="sofie-loyalty__msg" data-msg role="status"></p>
     </div>
 
+    <div class="sofie-loyalty__advisor" data-advisor>
+      <h3 class="sofie-loyalty__subhead">{{ block.settings.advisor_heading }}</h3>
+      <div class="sofie-advisor__chips">
+        <button type="button" class="sofie-advisor__chip" data-ask="I have an event tonight — what makeup look should I do with what suits me?">Event tonight 💄</button>
+        <button type="button" class="sofie-advisor__chip" data-ask="Help me fix my main skin concern with a simple routine.">Fix my skin concern ✨</button>
+        <button type="button" class="sofie-advisor__chip" data-ask="Build me a simple morning and night routine for my skin.">My daily routine 🧴</button>
+      </div>
+      <div class="sofie-advisor__row">
+        <input type="text" class="sofie-advisor__input" data-ask-input
+          placeholder="Ask anything… e.g. how do I stop my foundation melting in the heat?">
+        <button type="button" class="sofie-advisor__send" data-ask-send>Ask</button>
+      </div>
+      <div class="sofie-advisor__answer" data-ask-answer hidden></div>
+      <div class="sofie-loyalty__reco-list" data-ask-products></div>
+    </div>
+
     <div class="sofie-loyalty__reco" data-reco hidden>
       <h3 class="sofie-loyalty__subhead">{{ block.settings.reco_heading }}</h3>
       <div class="sofie-loyalty__reco-list" data-reco-list></div>
@@ -104,6 +120,7 @@
     { "type": "text", "id": "rewards_heading", "label": "Rewards heading", "default": "Redeem your points" },
     { "type": "text", "id": "gifts_heading", "label": "Gifts heading", "default": "Or redeem for a free gift" },
     { "type": "text", "id": "reco_heading", "label": "Recommendations heading", "default": "Recommended for your routine" },
+    { "type": "text", "id": "advisor_heading", "label": "Advisor heading", "default": "Ask your beauty advisor" },
     { "type": "text", "id": "profile_heading", "label": "Profile heading", "default": "Your beauty profile" },
     { "type": "text", "id": "tips_heading", "label": "Tips heading", "default": "Your personalized beauty tips" },
     { "type": "checkbox", "id": "show_orders", "label": "Show recent orders", "default": true },

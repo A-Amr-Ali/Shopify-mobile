@@ -133,3 +133,25 @@
   border-radius: 999px; padding: .5rem .8rem; cursor: pointer; font-size: .82rem;
 }
 .sofie-reco__btn:hover { opacity: .92; }
+
+/* Beauty advisor */
+.sofie-loyalty__advisor { margin-top: 1.6rem; }
+.sofie-advisor__chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .7rem; }
+.sofie-advisor__chip {
+  border: 1px solid var(--line); background: var(--soft); color: var(--ink);
+  border-radius: 999px; padding: .45rem .9rem; cursor: pointer; font: inherit; font-size: .85rem;
+}
+.sofie-advisor__chip:hover { background: color-mix(in srgb, var(--ink) 8%, #fff); }
+.sofie-advisor__row { display: flex; gap: .5rem; }
+.sofie-advisor__input {
+  flex: 1; border: 1px solid var(--line); border-radius: 12px; padding: .7rem .9rem; font: inherit;
+}
+.sofie-advisor__send {
+  border: 1px solid var(--ink); background: var(--ink); color: #fff; border-radius: 12px;
+  padding: .7rem 1.2rem; cursor: pointer; font: inherit;
+}
+.sofie-advisor__answer {
+  margin-top: .9rem; background: #fff; border: 1px solid var(--line); border-radius: 12px;
+  padding: 1rem 1.1rem; white-space: pre-wrap; line-height: 1.5; font-size: .95rem;
+}
+.sofie-loyalty__advisor .sofie-loyalty__reco-list { margin-top: 1rem; }

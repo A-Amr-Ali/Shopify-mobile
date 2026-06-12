@@ -27,6 +27,10 @@ export const action = async ({ request }) => {
 
   const { data: c } = await supabase.from("customers").select("email, points_balance").eq("shopify_customer_id", customerId).maybeSingle();
   if (award.applied) await trackEvent("Loyalty Points Earned", c?.email, { points: 250, reason: "quiz", balance: award.balanceAfter });
+  // Lets a Klaviyo flow email the personalized tips to the customer.
+  await trackEvent("Loyalty Tips Ready", c?.email, {
+    tips, profile: { skin_type: profile.skin_type, undertone: profile.undertone, lip_finish_pref: profile.lip_finish_pref },
+  });
 
   return json({
     ok: true,

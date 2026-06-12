@@ -192,27 +192,64 @@
       .catch(function () { /* recommendations are best-effort */ });
   }
 
+  function productCard(p) {
+    var url = "/products/" + p.handle;
+    var card = document.createElement("div");
+    card.className = "sofie-reco";
+    card.innerHTML =
+      '<a class="sofie-reco__media" href="' + url + '">' +
+      (p.image ? '<img src="' + p.image + '" alt="' + escapeHtml(p.title) + '" loading="lazy">' : "") + "</a>" +
+      '<div class="sofie-reco__body">' +
+      '<a class="sofie-reco__title" href="' + url + '">' + escapeHtml(p.title) + "</a>" +
+      '<span class="sofie-reco__price">' + fmt(Math.round(Number(p.price))) + " " + currency + "</span>" +
+      '<button type="button" class="sofie-reco__btn" data-variant="' + p.variantId + '">Add to bag</button>' +
+      "</div>";
+    card.querySelector("[data-variant]").addEventListener("click", function () { addToCart(p.variantId, this); });
+    return card;
+  }
+
   function renderReco(products) {
     var wrap = root.querySelector("[data-reco]");
     var list = root.querySelector("[data-reco-list]");
     if (!wrap || !list || !products.length) return;
     list.innerHTML = "";
-    products.forEach(function (p) {
-      var url = "/products/" + p.handle;
-      var card = document.createElement("div");
-      card.className = "sofie-reco";
-      card.innerHTML =
-        '<a class="sofie-reco__media" href="' + url + '">' +
-        (p.image ? '<img src="' + p.image + '" alt="' + escapeHtml(p.title) + '" loading="lazy">' : "") + "</a>" +
-        '<div class="sofie-reco__body">' +
-        '<a class="sofie-reco__title" href="' + url + '">' + escapeHtml(p.title) + "</a>" +
-        '<span class="sofie-reco__price">' + fmt(Math.round(Number(p.price))) + " " + currency + "</span>" +
-        '<button type="button" class="sofie-reco__btn" data-variant="' + p.variantId + '">Add to bag</button>' +
-        "</div>";
-      card.querySelector("[data-variant]").addEventListener("click", function () { addToCart(p.variantId, this); });
-      list.appendChild(card);
-    });
+    products.forEach(function (p) { list.appendChild(productCard(p)); });
     wrap.hidden = false;
+  }
+
+  // ── Interactive beauty advisor ──
+  function initAdvisor() {
+    var send = root.querySelector("[data-ask-send]");
+    var input = root.querySelector("[data-ask-input]");
+    if (!send || !input) return;
+    root.querySelectorAll("[data-ask]").forEach(function (chip) {
+      chip.addEventListener("click", function () { ask(chip.getAttribute("data-ask")); });
+    });
+    send.addEventListener("click", function () { ask(input.value.trim()); });
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter") ask(input.value.trim()); });
+  }
+
+  function ask(question) {
+    if (!question) return;
+    var ans = root.querySelector("[data-ask-answer]");
+    var prod = root.querySelector("[data-ask-products]");
+    ans.hidden = false; ans.textContent = "Thinking…"; ans.className = "sofie-advisor__answer";
+    prod.innerHTML = "";
+    fetch(base + "/ask", {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question: question }),
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok || !res.j.ok) {
+          ans.textContent = res.j.error === "advisor_unavailable"
+            ? "The advisor isn't switched on yet — please check back soon."
+            : "Sorry, I couldn't answer that just now. Please try again.";
+          return;
+        }
+        ans.textContent = res.j.answer;
+        (res.j.products || []).forEach(function (p) { prod.appendChild(productCard(p)); });
+      })
+      .catch(function () { ans.textContent = "Network error. Please try again."; });
   }
 
   function addToCart(variantId, btn) {
@@ -248,5 +285,6 @@
   // Let the quiz block trigger a refresh after a successful submit.
   window.SofieLoyaltyReload = load;
 
+  initAdvisor();
   load();
 })();
