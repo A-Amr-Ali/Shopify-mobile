@@ -1,17 +1,15 @@
-# Shopify app configuration. Fill client_id after `shopify app config link`.
-# Docs: https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration
-
-name = "sofie-loyalty"
+name = "Sofie Loyalty"
 handle = "sofie-loyalty"
-# client_id = "..."            # set by `shopify app config link`
 application_url = "https://shopify-mobile-production.up.railway.app"
 embedded = true
+client_id = "443655f566bb961bf61d4272f755aea3"
 
 [access_scopes]
-# Phase 1 needs: read customers (lookup), write customers (metafields),
-# read orders (earn/reverse), write discounts (mint redemption codes),
-# read products (tips/inference in later phases).
+# read/write customers (lookup + metafields), read orders (earn/reverse),
+# write discounts (mint codes), read products (recommendations/advisor).
 scopes = "read_customers,write_customers,read_orders,write_discounts,read_products"
+optional_scopes = [ ]
+use_legacy_install_flow = false
 
 [auth]
 redirect_urls = [
@@ -21,13 +19,17 @@ redirect_urls = [
 ]
 
 [webhooks]
-api_version = "2024-10"
+api_version = "2026-04"
 
   [[webhooks.subscriptions]]
-  topics = [ "orders/paid", "refunds/create", "orders/cancelled", "customers/create" ]
   uri = "/webhooks"
+  topics = [
+    "orders/paid",
+    "refunds/create",
+    "orders/cancelled",
+    "customers/create"
+  ]
 
-# App Proxy: storefront calls to /apps/loyalty/* are forwarded here, signed.
 [app_proxy]
 url = "https://shopify-mobile-production.up.railway.app/apps/loyalty"
 subpath = "loyalty"
