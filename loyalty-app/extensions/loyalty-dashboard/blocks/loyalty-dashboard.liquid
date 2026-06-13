@@ -34,61 +34,81 @@
       </div>
     </div>
 
-    <div class="sofie-loyalty__rewards" data-rewards hidden>
-      <h3 class="sofie-loyalty__subhead">{{ block.settings.rewards_heading }}</h3>
-      <div class="sofie-loyalty__reward-list" data-reward-list></div>
-      <div class="sofie-loyalty__gifts" data-gifts hidden>
-        <h4 class="sofie-loyalty__gift-head">{{ block.settings.gifts_heading }}</h4>
-        <div class="sofie-loyalty__gift-list" data-gift-list></div>
+    <nav class="sofie-tabs" data-tabs>
+      <button type="button" class="sofie-tabs__btn is-active" data-tab-btn="redeem">Redeem</button>
+      <button type="button" class="sofie-tabs__btn" data-tab-btn="advisor">Advisor</button>
+      <button type="button" class="sofie-tabs__btn" data-tab-btn="foryou">For You</button>
+      <button type="button" class="sofie-tabs__btn" data-tab-btn="profile">My Profile</button>
+      {%- if block.settings.show_orders and customer.orders.size > 0 -%}
+        <button type="button" class="sofie-tabs__btn" data-tab-btn="orders">Orders</button>
+      {%- endif -%}
+    </nav>
+
+    <div class="sofie-tab is-active" data-tab="redeem">
+      <div class="sofie-loyalty__rewards" data-rewards hidden>
+        <h3 class="sofie-loyalty__subhead">{{ block.settings.rewards_heading }}</h3>
+        <div class="sofie-loyalty__reward-list" data-reward-list></div>
+        <div class="sofie-loyalty__gifts" data-gifts hidden>
+          <h4 class="sofie-loyalty__gift-head">{{ block.settings.gifts_heading }}</h4>
+          <div class="sofie-loyalty__gift-list" data-gift-list></div>
+        </div>
+        <p class="sofie-loyalty__msg" data-msg role="status"></p>
       </div>
-      <p class="sofie-loyalty__msg" data-msg role="status"></p>
     </div>
 
-    <div class="sofie-loyalty__advisor" data-advisor>
-      <h3 class="sofie-loyalty__subhead">{{ block.settings.advisor_heading }}</h3>
-      <div class="sofie-advisor__chips">
-        <button type="button" class="sofie-advisor__chip" data-ask="I have an event tonight — what makeup look should I do with what suits me?">Event tonight 💄</button>
-        <button type="button" class="sofie-advisor__chip" data-ask="Help me fix my main skin concern with a simple routine.">Fix my skin concern ✨</button>
-        <button type="button" class="sofie-advisor__chip" data-ask="Build me a simple morning and night routine for my skin.">My daily routine 🧴</button>
+    <div class="sofie-tab" data-tab="advisor">
+      <div class="sofie-loyalty__advisor" data-advisor>
+        <h3 class="sofie-loyalty__subhead">{{ block.settings.advisor_heading }}</h3>
+        <div class="sofie-advisor__chips">
+          <button type="button" class="sofie-advisor__chip" data-ask="I have an event tonight — what makeup look should I do with what suits me?">Event tonight 💄</button>
+          <button type="button" class="sofie-advisor__chip" data-ask="Help me fix my main skin concern with a simple routine.">Fix my skin concern ✨</button>
+          <button type="button" class="sofie-advisor__chip" data-ask="Build me a simple morning and night routine for my skin.">My daily routine 🧴</button>
+        </div>
+        <div class="sofie-advisor__row">
+          <input type="text" class="sofie-advisor__input" data-ask-input
+            placeholder="Ask anything… e.g. how do I stop my foundation melting in the heat?">
+          <button type="button" class="sofie-advisor__send" data-ask-send>Ask</button>
+        </div>
+        <div class="sofie-advisor__answer" data-ask-answer hidden></div>
+        <div class="sofie-loyalty__reco-list" data-ask-products></div>
       </div>
-      <div class="sofie-advisor__row">
-        <input type="text" class="sofie-advisor__input" data-ask-input
-          placeholder="Ask anything… e.g. how do I stop my foundation melting in the heat?">
-        <button type="button" class="sofie-advisor__send" data-ask-send>Ask</button>
+    </div>
+
+    <div class="sofie-tab" data-tab="foryou">
+      <div class="sofie-loyalty__reco" data-reco hidden>
+        <h3 class="sofie-loyalty__subhead">{{ block.settings.reco_heading }}</h3>
+        <div class="sofie-loyalty__reco-list" data-reco-list></div>
       </div>
-      <div class="sofie-advisor__answer" data-ask-answer hidden></div>
-      <div class="sofie-loyalty__reco-list" data-ask-products></div>
+      <p class="sofie-loyalty__empty" data-reco-empty hidden>Take the quiz to unlock products picked for you.</p>
     </div>
 
-    <div class="sofie-loyalty__reco" data-reco hidden>
-      <h3 class="sofie-loyalty__subhead">{{ block.settings.reco_heading }}</h3>
-      <div class="sofie-loyalty__reco-list" data-reco-list></div>
-    </div>
-
-    <div class="sofie-loyalty__profile" data-profile-card hidden>
-      <h3 class="sofie-loyalty__subhead">{{ block.settings.profile_heading }}</h3>
-      <dl class="sofie-loyalty__profile-grid" data-profile-grid></dl>
-    </div>
-
-    <div class="sofie-loyalty__tips" data-tips hidden>
-      <h3 class="sofie-loyalty__subhead">{{ block.settings.tips_heading }}</h3>
-      <p class="sofie-loyalty__nudge" data-tips-nudge hidden></p>
-      <div class="sofie-loyalty__tips-list" data-tips-list></div>
+    <div class="sofie-tab" data-tab="profile">
+      <div class="sofie-loyalty__profile" data-profile-card hidden>
+        <h3 class="sofie-loyalty__subhead">{{ block.settings.profile_heading }}</h3>
+        <dl class="sofie-loyalty__profile-grid" data-profile-grid></dl>
+      </div>
+      <div class="sofie-loyalty__tips" data-tips hidden>
+        <h3 class="sofie-loyalty__subhead">{{ block.settings.tips_heading }}</h3>
+        <p class="sofie-loyalty__nudge" data-tips-nudge hidden></p>
+        <div class="sofie-loyalty__tips-list" data-tips-list></div>
+      </div>
     </div>
 
     {%- if block.settings.show_orders and customer.orders.size > 0 -%}
-      <div class="sofie-loyalty__orders">
-        <h3 class="sofie-loyalty__subhead">{{ block.settings.orders_heading }}</h3>
-        <ul class="sofie-loyalty__order-list">
-          {%- for order in customer.orders limit: 5 -%}
-            <li class="sofie-loyalty__order">
-              <a class="sofie-loyalty__order-no" href="{{ order.customer_url }}">#{{ order.order_number }}</a>
-              <span class="sofie-loyalty__order-date">{{ order.created_at | date: "%b %d, %Y" }}</span>
-              <span class="sofie-loyalty__order-total">{{ order.total_price | money }}</span>
-              <span class="sofie-loyalty__order-status">{{ order.financial_status_label }}</span>
-            </li>
-          {%- endfor -%}
-        </ul>
+      <div class="sofie-tab" data-tab="orders">
+        <div class="sofie-loyalty__orders">
+          <h3 class="sofie-loyalty__subhead">{{ block.settings.orders_heading }}</h3>
+          <ul class="sofie-loyalty__order-list">
+            {%- for order in customer.orders limit: 8 -%}
+              <li class="sofie-loyalty__order">
+                <a class="sofie-loyalty__order-no" href="{{ order.customer_url }}">#{{ order.order_number }}</a>
+                <span class="sofie-loyalty__order-date">{{ order.created_at | date: "%b %d, %Y" }}</span>
+                <span class="sofie-loyalty__order-total">{{ order.total_price | money }}</span>
+                <span class="sofie-loyalty__order-status">{{ order.financial_status_label }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
       </div>
     {%- endif -%}
 

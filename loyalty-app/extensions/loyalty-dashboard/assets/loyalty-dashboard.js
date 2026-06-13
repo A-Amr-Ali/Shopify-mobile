@@ -211,7 +211,10 @@
   function renderReco(products) {
     var wrap = root.querySelector("[data-reco]");
     var list = root.querySelector("[data-reco-list]");
-    if (!wrap || !list || !products.length) return;
+    var empty = root.querySelector("[data-reco-empty]");
+    if (!wrap || !list) return;
+    if (!products.length) { if (empty) empty.hidden = false; return; }
+    if (empty) empty.hidden = true;
     list.innerHTML = "";
     products.forEach(function (p) { list.appendChild(productCard(p)); });
     wrap.hidden = false;
@@ -282,9 +285,22 @@
     loadReco();
   }
 
+  function initTabs() {
+    var btns = root.querySelectorAll("[data-tab-btn]");
+    var panels = root.querySelectorAll("[data-tab]");
+    btns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-tab-btn");
+        btns.forEach(function (b) { b.classList.toggle("is-active", b === btn); });
+        panels.forEach(function (p) { p.classList.toggle("is-active", p.getAttribute("data-tab") === id); });
+      });
+    });
+  }
+
   // Let the quiz block trigger a refresh after a successful submit.
   window.SofieLoyaltyReload = load;
 
+  initTabs();
   initAdvisor();
   load();
 })();

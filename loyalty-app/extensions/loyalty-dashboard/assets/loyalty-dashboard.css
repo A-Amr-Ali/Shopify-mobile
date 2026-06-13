@@ -155,3 +155,19 @@
   padding: 1rem 1.1rem; white-space: pre-wrap; line-height: 1.5; font-size: .95rem;
 }
 .sofie-loyalty__advisor .sofie-loyalty__reco-list { margin-top: 1rem; }
+
+/* Tabbed navigation */
+.sofie-tabs {
+  display: flex; flex-wrap: wrap; gap: .2rem; border-bottom: 1px solid var(--line);
+  margin: 1.4rem 0 1.3rem;
+}
+.sofie-tabs__btn {
+  border: none; background: none; font: inherit; font-size: .95rem; cursor: pointer;
+  color: color-mix(in srgb, var(--ink) 55%, transparent);
+  padding: .6rem .9rem; border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.sofie-tabs__btn.is-active { color: var(--ink); font-weight: 600; border-bottom-color: var(--ink); }
+.sofie-tab { display: none; }
+.sofie-tab.is-active { display: block; }
+.sofie-tab > div:first-child { margin-top: 0; }
+.sofie-loyalty__empty { color: color-mix(in srgb, var(--ink) 60%, transparent); font-size: .92rem; }
