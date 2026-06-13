@@ -171,3 +171,18 @@
 .sofie-tab.is-active { display: block; }
 .sofie-tab > div:first-child { margin-top: 0; }
 .sofie-loyalty__empty { color: color-mix(in srgb, var(--ink) 60%, transparent); font-size: .92rem; }
+
+/* Edit-profile (retake quiz) inside My Profile tab */
+.sofie-edit { margin-top: 1.4rem; border: 1px solid var(--line); border-radius: 12px; background: var(--soft); }
+.sofie-edit__summary { cursor: pointer; padding: .9rem 1.1rem; font-weight: 500; list-style: none; }
+.sofie-edit__summary::-webkit-details-marker { display: none; }
+.sofie-edit__summary::after { content: "＋"; float: right; opacity: .6; }
+.sofie-edit[open] .sofie-edit__summary::after { content: "−"; }
+.sofie-edit__form { display: grid; gap: .9rem; padding: 0 1.1rem 1.1rem; }
+.sofie-edit__form label { display: grid; gap: .3rem; font-size: .9rem; }
+.sofie-edit__form select, .sofie-edit__form input[type="text"] {
+  border: 1px solid var(--line); border-radius: 10px; padding: .6rem .7rem; font: inherit; background: #fff;
+}
+.sofie-edit__concerns { border: 1px solid var(--line); border-radius: 10px; padding: .7rem .9rem; }
+.sofie-edit__concerns legend { font-size: .82rem; padding: 0 .3rem; }
+.sofie-edit__chk { display: inline-flex; align-items: center; gap: .3rem; margin: .25rem .8rem .25rem 0; font-size: .86rem; }

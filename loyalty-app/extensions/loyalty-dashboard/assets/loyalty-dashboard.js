@@ -38,7 +38,60 @@
     renderRewards(data.rewards || [], data.balance);
     renderGifts(data.gifts || [], data.balance);
     renderProfile(data.profile);
+    prefillQuiz(data.profile);
     renderTips(data.tips || [], data.completion_pct || 0);
+  }
+
+  // Pre-fill the editable quiz with the saved profile so customers can change it.
+  function prefillQuiz(profile) {
+    var form = root.querySelector("[data-quiz-form]");
+    if (!form || !profile) return;
+    ["skin_type", "undertone", "lip_finish_pref"].forEach(function (n) {
+      var el = form.elements[n];
+      if (el && profile[n]) el.value = profile[n];
+    });
+    if (form.elements.foundation_shade && profile.foundation_shade) {
+      form.elements.foundation_shade.value = profile.foundation_shade;
+    }
+    var concerns = profile.skin_concerns || [];
+    form.querySelectorAll('input[name="skin_concerns"]').forEach(function (c) {
+      c.checked = concerns.indexOf(c.value) !== -1;
+    });
+  }
+
+  function initQuiz() {
+    var form = root.querySelector("[data-quiz-form]");
+    if (!form) return;
+    var msg = root.querySelector("[data-quiz-msg]");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var fd = new FormData(form);
+      var answers = {
+        skin_type: fd.get("skin_type") || null,
+        undertone: fd.get("undertone") || null,
+        lip_finish_pref: fd.get("lip_finish_pref") || null,
+        foundation_shade: (fd.get("foundation_shade") || "").trim() || null,
+        skin_concerns: fd.getAll("skin_concerns"),
+      };
+      var btn = form.querySelector("button[type=submit]");
+      btn.disabled = true;
+      if (msg) { msg.textContent = "Saving…"; msg.className = "sofie-loyalty__msg"; }
+      fetch(base + "/quiz", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(answers),
+      })
+        .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+        .then(function (res) {
+          if (!res.ok || !res.j.ok) { if (msg) { msg.textContent = "Couldn't save — please try again."; msg.className = "sofie-loyalty__msg is-error"; } return; }
+          if (msg) {
+            msg.textContent = (res.j.awarded ? "You earned " + res.j.awarded + " points! " : "Profile updated. ") + "Refreshing your picks…";
+            msg.className = "sofie-loyalty__msg is-success";
+          }
+          load();      // refresh profile, tips
+          loadReco();  // refresh recommendations
+        })
+        .catch(function () { if (msg) { msg.textContent = "Network error. Please try again."; msg.className = "sofie-loyalty__msg is-error"; } })
+        .finally(function () { btn.disabled = false; });
+    });
   }
 
   function renderGifts(gifts, balance) {
@@ -302,5 +355,6 @@
 
   initTabs();
   initAdvisor();
+  initQuiz();
   load();
 })();

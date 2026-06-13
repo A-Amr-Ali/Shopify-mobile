@@ -92,6 +92,45 @@
         <p class="sofie-loyalty__nudge" data-tips-nudge hidden></p>
         <div class="sofie-loyalty__tips-list" data-tips-list></div>
       </div>
+
+      <details class="sofie-edit" data-quiz-wrap>
+        <summary class="sofie-edit__summary">{{ block.settings.edit_heading }}</summary>
+        <form class="sofie-edit__form" data-quiz-form>
+          <label>Skin type
+            <select name="skin_type">
+              <option value="">Choose…</option>
+              <option value="dry">Dry</option><option value="oily">Oily</option>
+              <option value="combo">Combination</option><option value="normal">Normal</option>
+              <option value="sensitive">Sensitive</option>
+            </select>
+          </label>
+          <label>Undertone
+            <select name="undertone">
+              <option value="">Choose…</option>
+              <option value="warm">Warm</option><option value="cool">Cool</option><option value="neutral">Neutral</option>
+            </select>
+          </label>
+          <label>Preferred lip finish
+            <select name="lip_finish_pref">
+              <option value="">Choose…</option>
+              <option value="matte">Matte</option><option value="satin">Satin</option>
+              <option value="glossy">Glossy</option><option value="dewy">Dewy</option>
+            </select>
+          </label>
+          <label>Foundation shade (optional)
+            <input type="text" name="foundation_shade" placeholder="e.g. 230 Warm" maxlength="40">
+          </label>
+          <fieldset class="sofie-edit__concerns">
+            <legend>Skin concerns</legend>
+            {%- assign concerns = "Acne,Dryness,Dark spots,Large pores,Redness,Fine lines,Dullness" | split: "," -%}
+            {%- for c in concerns -%}
+              <label class="sofie-edit__chk"><input type="checkbox" name="skin_concerns" value="{{ c }}"> {{ c }}</label>
+            {%- endfor -%}
+          </fieldset>
+          <button type="submit" class="sofie-advisor__send">Save &amp; update</button>
+          <p class="sofie-loyalty__msg" data-quiz-msg role="status"></p>
+        </form>
+      </details>
     </div>
 
     {%- if block.settings.show_orders and customer.orders.size > 0 -%}
@@ -143,6 +182,7 @@
     { "type": "text", "id": "advisor_heading", "label": "Advisor heading", "default": "Ask your beauty advisor" },
     { "type": "text", "id": "profile_heading", "label": "Profile heading", "default": "Your beauty profile" },
     { "type": "text", "id": "tips_heading", "label": "Tips heading", "default": "Your personalized beauty tips" },
+    { "type": "text", "id": "edit_heading", "label": "Edit-profile heading", "default": "Update your beauty profile (retake anytime)" },
     { "type": "checkbox", "id": "show_orders", "label": "Show recent orders", "default": true },
     { "type": "text", "id": "orders_heading", "label": "Orders heading", "default": "Recent orders" },
     { "type": "header", "content": "Logged-out visitors" },
