@@ -1,0 +1,16 @@
+api_version = "2024-10"
+
+# Customer Account UI extension — shows a Sofie Rewards card inside Shopify's
+# hosted customer account portal (the /account orders page), with a button to
+# the full My Rewards hub. Authenticates to our backend with the session token.
+[[extensions]]
+type = "ui_extension"
+name = "Sofie Rewards (account)"
+handle = "loyalty-account"
+
+  [[extensions.targeting]]
+  target = "customer-account.order-index.block.render"
+  module = "./src/OrderIndexBlock.jsx"
+
+  [extensions.capabilities]
+  network_access = true
