@@ -27,7 +27,8 @@ api_version = "2026-04"
     "orders/paid",
     "refunds/create",
     "orders/cancelled",
-    "customers/create"
+    "customers/create",
+    "checkouts/update"
   ]
 
 [app_proxy]

@@ -15,6 +15,7 @@ import { awardSignup, awardReferral } from "../lib/earn-actions.server.js";
 import { inferProfileFromOrders } from "../lib/inference.server.js";
 import { mergeInferred } from "../lib/profile.server.js";
 import { generateTips } from "../lib/tips.server.js";
+import { recordEvent } from "../lib/agent/insights.server.js";
 import { REFERRAL } from "../config/loyalty.js";
 
 const ledger = createLedger(createSupabaseStore());
@@ -45,6 +46,10 @@ export const action = async ({ request }) => {
       case "CUSTOMERS_CREATE":
         await onCustomerCreate(payload, admin);
         break;
+      case "CHECKOUTS_UPDATE":
+      case "CHECKOUTS_CREATE":
+        await onCheckoutUpdate(payload);
+        break;
       default:
         console.warn(`Unhandled webhook topic: ${topic}`);
     }
@@ -71,9 +76,21 @@ async function onOrderPaid(order, admin) {
   const email = order.customer.email || order.email;
 
   await supabase.from("customers").upsert(
-    { shopify_customer_id: customerId, email },
-    { onConflict: "shopify_customer_id", ignoreDuplicates: true }
+    {
+      shopify_customer_id: customerId,
+      email,
+      first_name: order.customer.first_name || undefined,
+      locale: localeOf(order.customer_locale),
+    },
+    { onConflict: "shopify_customer_id" }
   );
+
+  // Feed the AI Sales Agent (idempotent by order id). Records taste signal even
+  // for COD/0-point orders so post-purchase + win-back outreach can fire later.
+  await recordEvent({
+    customerId, type: "purchase", token: `order:${order.id}`,
+    data: { items: lineItems(order), value_egp: Math.round(Number(order.current_total_price ?? order.total_price ?? 0)) },
+  }).catch((e) => console.warn(`event purchase: ${e.message}`));
 
   const existing = await loadCustomer(customerId);
   const multiplier = multiplierFor(existing?.tier ?? "insider");
@@ -156,13 +173,52 @@ async function qualifyReferral(customerId, email) {
   }
 }
 
+// Abandoned-cart signal. Shopify has no "abandoned" webhook, so we record every
+// checkout that has line items + an identifiable customer; the agent treats it as
+// abandoned only once it's aged past the window without a matching purchase.
+async function onCheckoutUpdate(checkout) {
+  const cid = checkout?.customer?.id;
+  if (!cid || !(checkout.line_items?.length)) return;
+  if (checkout.completed_at) return; // already converted — not abandoned
+  const customerId = gid(cid);
+  await supabase.from("customers").upsert(
+    {
+      shopify_customer_id: customerId,
+      email: checkout.email || checkout.customer?.email || undefined,
+      first_name: checkout.customer?.first_name || undefined,
+    },
+    { onConflict: "shopify_customer_id" }
+  );
+  // token = the checkout token, so updates collapse to one event per checkout.
+  await recordEvent({
+    customerId, type: "checkout", token: `checkout:${checkout.token || checkout.id}`,
+    productHandle: null,
+    data: { items: lineItems(checkout), value_egp: Math.round(Number(checkout.total_price ?? 0)) },
+  });
+}
+
+// Compact, PII-free line-item summary for the agent's context.
+function lineItems(src) {
+  return (src.line_items ?? []).slice(0, 12).map((li) => ({
+    title: li.title || li.name, handle: li.handle || null, qty: li.quantity || 1,
+  }));
+}
+
+function localeOf(raw) {
+  if (!raw) return undefined;
+  return String(raw).toLowerCase().startsWith("ar") ? "ar" : "en";
+}
+
 // New account → 100-pt join bonus + mirror (idempotent).
 async function onCustomerCreate(customer, admin) {
   if (!customer?.id) return;
   const customerId = gid(customer.id);
   const email = customer.email;
   await supabase.from("customers").upsert(
-    { shopify_customer_id: customerId, email, birthday: parseBirthday(customer) },
+    {
+      shopify_customer_id: customerId, email, birthday: parseBirthday(customer),
+      first_name: customer.first_name || undefined,
+    },
     { onConflict: "shopify_customer_id" }
   );
   const award = await awardSignup(customerId);

@@ -62,6 +62,36 @@ Create flows triggered by these events the app pushes: `Loyalty Points Earned`,
 `Loyalty Tier Upgraded`, `Loyalty Reward Redeemed`, `Loyalty Referral Rewarded`,
 `Loyalty Birthday Gift` (date-property birthday flow emails the unique code).
 
+## 8b. AI Sales Agent (Phase 4)
+Personalised, on-brand outreach from behaviour (abandoned cart, product views,
+purchase history) in English + Arabic. Drafts are reviewed at `/staff/agent`
+until you trust it; then flip `AGENT_AUTOSEND=true` to send automatically (still
+gated by the brand guardrails).
+
+1. **Migrate**: apply `supabase/migrations/0004_agent.sql` in the Supabase SQL editor.
+2. **Webhook**: `checkouts/update` was added to `shopify.app.toml` — run
+   `shopify app deploy` so Shopify registers it (this is what powers abandoned-cart).
+3. **Tracker (product views)**: in the theme editor → **App embeds**, enable
+   **Sofie Behaviour Tracker** (sends a signed beacon to `/apps/loyalty/track`;
+   logged-in customers only). Requires the app's App Proxy (already configured).
+4. **Cron**: add a Railway scheduled job, e.g. hourly `0 * * * *` →
+   `POST /jobs/agent-run` with `x-cron-key: $CRON_KEY`. It scores recent activity,
+   generates drafts (cap `AGENT_MAX_PER_RUN`), and (if autosend) dispatches.
+   `curl -X POST -H "x-cron-key: $CRON_KEY" https://loyalty.sofiestore.net/jobs/agent-run`
+5. **Klaviyo Flow**: create ONE flow triggered by the **`Sofie AI Agent Message`**
+   metric. Map event properties → message: `subject`, `body_en`/`body_ar` (pick by
+   the `language` property), `products`, `trigger`. Add an Email channel and a
+   WhatsApp channel inside the flow; split on consent/locale. The app writes the
+   copy; the flow only renders + sends, so opt-out/quiet-hours stay with Klaviyo.
+6. **Test first**: open `/staff/agent`, enter the staff password, type a real
+   customer email, pick a scenario, and **Generate preview** — nothing sends.
+   Review the queue and **Approve & send** individual drafts until you're happy,
+   then set `AGENT_AUTOSEND=true` in Railway.
+
+Env: `AGENT_AUTOSEND`, `AGENT_MAX_PER_RUN`, `AGENT_MIN_DAYS_BETWEEN`,
+`AGENT_ABANDON_HOURS`, `AGENT_BROWSE_MIN_VIEWS`, `AGENT_POST_PURCHASE_DAYS`,
+`AGENT_WINBACK_DAYS`, `AGENT_KLAVIYO_METRIC`, `AGENT_MODEL` (see `.env.example`).
+
 ## 9. Verify
 **Automated smoke test** — walks the whole lifecycle (signup → quiz → tips →
 products → social → order paid → review → referral → redeem → refund) against your

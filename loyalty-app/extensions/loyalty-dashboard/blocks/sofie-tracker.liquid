@@ -1,0 +1,38 @@
+{%- comment -%}
+  Sofie behaviour tracker (app embed). Enable once under Theme editor →
+  App embeds. On product pages it sends a signed beacon to /apps/loyalty/track
+  so the AI Sales Agent knows what logged-in customers are looking at. Fires only
+  for logged-in customers (the App Proxy adds the verified customer id); guests
+  send nothing. No third-party scripts, no cookies set here.
+{%- endcomment -%}
+
+{%- if block.settings.enabled and customer and request.page_type == 'product' and product -%}
+  <script>
+    (function () {
+      try {
+        var payload = JSON.stringify({
+          handle: {{ product.handle | json }},
+          title: {{ product.title | json }}
+        });
+        // App Proxy path on the storefront origin → Shopify signs + proxies it.
+        fetch("/apps/loyalty/track", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: payload,
+          keepalive: true
+        }).catch(function () {});
+      } catch (e) {}
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Sofie Behaviour Tracker",
+  "target": "body",
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "Track product views (logged-in customers only)", "default": true },
+    { "type": "paragraph", "content": "Powers the AI Sales Agent's 'browsed, didn't buy' outreach. Only logged-in customers are tracked, and only product pages. No data is shared with third parties." }
+  ]
+}
+{% endschema %}
