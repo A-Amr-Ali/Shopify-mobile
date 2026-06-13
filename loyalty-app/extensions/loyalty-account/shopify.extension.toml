@@ -10,7 +10,7 @@ handle = "loyalty-account"
 
   [[extensions.targeting]]
   target = "customer-account.order-index.block.render"
-  module = "./src/OrderIndexBlock.jsx"
+  module = "./src/OrderIndexBlock.js"
 
   [extensions.capabilities]
   network_access = true
