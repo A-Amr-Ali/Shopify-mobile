@@ -51,10 +51,13 @@ function productRows(products = []) {
  * @returns {string} full HTML email
  */
 export function renderEmail(m) {
-  const { ink, gold, page, storeUrl, fromName, footerLocation } = EMAIL;
+  const { ink, gold, page, storeUrl, fromName, footerLocation, unsubscribeEmail } = EMAIL;
   const products = Array.isArray(m.products) ? m.products : [];
   const cta = products[0] ? `${storeUrl}/products/${esc(products[0].handle)}` : storeUrl;
   const bodyHtml = esc(m.body).replace(/\n/g, "<br>");
+  const unsub = unsubscribeEmail
+    ? `<br><a href="mailto:${esc(unsubscribeEmail)}?subject=Unsubscribe" style="color:#b3aaa3;text-decoration:underline;">Unsubscribe</a>`
+    : "";
 
   return `<div style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(m.preview || "A little note from Sofie")}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${page};margin:0;padding:0;">
@@ -75,7 +78,7 @@ export function renderEmail(m) {
       ${productRows(products)}
       <tr><td style="padding:18px 40px 0;"><div style="height:1px;background:#ece6df;line-height:1px;font-size:0;">&nbsp;</div></td></tr>
       <tr><td style="padding:20px 40px 6px;" dir="auto"><p style="margin:0;color:#3a302c;font-size:15px;line-height:1.7;">With love,<br><span style="color:${gold};letter-spacing:.06em;">${esc(fromName)}</span></p></td></tr>
-      <tr><td style="padding:18px 40px 30px;" align="center"><p style="margin:0;color:#9a8f88;font-size:12px;line-height:1.7;">Sofie · ${esc(footerLocation)}<br><a href="${storeUrl}" style="color:#9a8f88;text-decoration:underline;">${esc(storeUrl.replace(/^https?:\/\//, ""))}</a></p></td></tr>
+      <tr><td style="padding:18px 40px 30px;" align="center"><p style="margin:0;color:#9a8f88;font-size:12px;line-height:1.7;">Sofie · ${esc(footerLocation)}<br><a href="${storeUrl}" style="color:#9a8f88;text-decoration:underline;">${esc(storeUrl.replace(/^https?:\/\//, ""))}</a>${unsub}</p></td></tr>
     </table>
   </td></tr>
 </table>`;

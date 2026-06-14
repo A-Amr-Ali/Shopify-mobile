@@ -18,6 +18,7 @@ import { composeMessage } from "../lib/agent/compose.server.js";
 import { checkMessage } from "../lib/agent/guardrail.server.js";
 import { dispatchMessage } from "../lib/agent/dispatch.server.js";
 import { renderEmail } from "../lib/agent/email.server.js";
+import { mailerConfigured, sendEmail } from "../lib/agent/mailer.server.js";
 import { trackEvent } from "../lib/klaviyo.server.js";
 import { searchByKeywords, bestSellers } from "../lib/recommend.server.js";
 
@@ -130,6 +131,15 @@ async function testSend(body) {
   const lang = /^ar/i.test(String(snap.locale || "")) ? "ar" : "en";
   const bodyText = lang === "ar" ? draft.bodyAr : draft.bodyEn;
   const html = renderEmail({ subject: draft.subject, preview: draft.preview, body: bodyText, products: cards });
+
+  // Preferred: send the real test email directly via Brevo/Resend.
+  if (mailerConfigured()) {
+    const sent = await sendEmail({ to: email, subject: draft.subject, html });
+    if (!sent.ok) return json({ error: "send_failed", detail: sent.error }, { status: 502 });
+    return json({ ok: true, sent: true, via: sent.via, to: email });
+  }
+
+  // Fallback: fire a Klaviyo event (needs a Klaviyo flow + plan).
   await trackEvent(AGENT.klaviyoMetric, email, {
     trigger: candidate.trigger,
     channel_hint: "email",

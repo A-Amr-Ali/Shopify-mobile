@@ -111,6 +111,8 @@ export const EMAIL = {
   storeUrl: process.env.STORE_URL || "https://sofiestore.net",
   logoUrl: process.env.AGENT_LOGO_URL || "", // empty → elegant "SOFIE" wordmark
   fromName: process.env.AGENT_FROM_NAME || "The Sofie Atelier",
+  fromEmail: process.env.EMAIL_FROM || "", // verified sender for direct send
+  unsubscribeEmail: process.env.EMAIL_UNSUBSCRIBE || process.env.EMAIL_FROM || "",
   footerLocation: process.env.AGENT_FOOTER_LOCATION || "Marassi & Mivida, Egypt",
   ink: "#2a201d", gold: "#c9a96a", cream: "#f6f3ef", page: "#efeae4",
 };
