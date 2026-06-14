@@ -12,7 +12,8 @@ export const action = async ({ request }) => {
   if (!STAFF_KEY) return json({ error: "staff_key_not_set" }, { status: 503 });
   if (String(body.key ?? "").trim() !== STAFF_KEY.trim()) return json({ error: "unauthorized" }, { status: 401 });
 
-  const dayStart = new Date(); dayStart.setUTCHours(0, 0, 0, 0);
+  const now = new Date();
+  const dayStart = new Date(now); dayStart.setUTCHours(0, 0, 0, 0);
   const since = dayStart.toISOString();
 
   const tally = async (table, build) => {
