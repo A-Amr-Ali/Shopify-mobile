@@ -12,9 +12,8 @@ function logo() {
   const { logoUrl, ink, storeUrl } = EMAIL;
   const inner = logoUrl
     ? `<img src="${esc(logoUrl)}" alt="Sofie" width="120" style="display:block;border:0;max-height:42px;width:auto;margin:0 auto;" />`
-    : `<span style="color:#fff;letter-spacing:.32em;font-size:20px;text-transform:uppercase;">Sofie</span>`;
-  return `<a href="${esc(storeUrl)}" style="text-decoration:none;color:#fff;">${inner}</a>`;
-  // ink kept for parity; header bg uses it below.
+    : `<span style="color:${ink};letter-spacing:.32em;font-size:20px;text-transform:uppercase;">Sofie</span>`;
+  return `<a href="${esc(storeUrl)}" style="text-decoration:none;color:${ink};">${inner}</a>`;
 }
 
 function productRows(products = []) {
@@ -51,7 +50,7 @@ function productRows(products = []) {
  * @returns {string} full HTML email
  */
 export function renderEmail(m) {
-  const { ink, gold, page, storeUrl, fromName, footerLocation, unsubscribeEmail } = EMAIL;
+  const { ink, gold, page, storeUrl, fromName, footerLocation, unsubscribeEmail, headerBg } = EMAIL;
   const products = Array.isArray(m.products) ? m.products : [];
   const cta = products[0] ? `${storeUrl}/products/${esc(products[0].handle)}` : storeUrl;
   const bodyHtml = esc(m.body).replace(/\n/g, "<br>");
@@ -63,7 +62,7 @@ export function renderEmail(m) {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${page};margin:0;padding:0;">
   <tr><td align="center" style="padding:28px 12px;">
     <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:18px;overflow:hidden;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-      <tr><td align="center" style="background:${ink};padding:22px 24px;">${logo()}</td></tr>
+      <tr><td align="center" style="background:${headerBg};padding:22px 24px;">${logo()}</td></tr>
       <tr><td style="height:3px;background:${gold};line-height:3px;font-size:0;">&nbsp;</td></tr>
       <tr><td style="padding:34px 40px 6px 40px;" dir="auto">
         <p style="margin:0 0 6px;color:${gold};font-size:12px;letter-spacing:.2em;text-transform:uppercase;">A note from Sofie</p>
