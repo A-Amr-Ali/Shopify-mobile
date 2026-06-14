@@ -114,8 +114,8 @@ const PAGE = `<!doctype html>
         sb.disabled=true;$("tsMsg").textContent="Sending…";$("tsMsg").className="msg";
         post({action:"test_send",email:email,trigger:$("tTrigger").value}).then(function(rr){
           sb.disabled=false;
-          if(rr.j.ok){$("tsMsg").textContent="✅ Sent to Klaviyo for "+esc(email)+". Check your inbox, then build the flow on the 'Sofie AI Agent Message' metric.";$("tsMsg").className="msg ok"}
-          else{$("tsMsg").textContent="Couldn't send ("+(rr.j.error||"error")+").";$("tsMsg").className="msg err"}
+          if(rr.j.ok){$("tsMsg").textContent="✅ Sent to "+esc(email)+" via "+(rr.j.via||"email")+". Check your inbox.";$("tsMsg").className="msg ok"}
+          else{$("tsMsg").textContent="Couldn't send ("+(rr.j.error||"error")+(rr.j.detail?": "+rr.j.detail:"")+").";$("tsMsg").className="msg err"}
         }).catch(function(){sb.disabled=false;$("tsMsg").textContent="Network error.";$("tsMsg").className="msg err"})
       };
     }).catch(function(){$("tGen").disabled=false;$("tMsg").textContent="Network error.";$("tMsg").className="msg err"})
