@@ -1,0 +1,132 @@
+<!--
+  Sofie — AI Sales Agent email template (paste into Klaviyo as a single HTML block).
+  The AI fills the words per customer via event variables:
+    {{ event.subject }}  {{ event.preview }}  {{ event.body }}  {{ event.products }}
+  Brand: espresso ink #2a201d · gold #c9a96a · cream #f6f3ef.
+  Arabic is handled automatically by dir="auto" on the body.
+  REMEMBER: replace LOGO_URL with your hosted logo, and check the footer address.
+-->
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;">{{ event.preview|default:"A little note from Sofie" }}</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#efeae4;margin:0;padding:0;">
+  <tr>
+    <td align="center" style="padding:28px 12px;">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:18px;overflow:hidden;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+
+        <!-- Header / logo -->
+        <tr>
+          <td align="center" style="background:#2a201d;padding:22px 24px;">
+            <a href="https://sofiestore.net" style="text-decoration:none;">
+              <img src="LOGO_URL" alt="Sofie" width="120" style="display:block;border:0;max-height:42px;width:auto;" />
+              <!-- Fallback wordmark if no logo set: -->
+              <!-- <span style="color:#fff;letter-spacing:.32em;font-size:20px;text-transform:uppercase;">Sofie</span> -->
+            </a>
+          </td>
+        </tr>
+
+        <!-- Gold hairline -->
+        <tr><td style="height:3px;background:#c9a96a;line-height:3px;font-size:0;">&nbsp;</td></tr>
+
+        <!-- Greeting + eyebrow -->
+        <tr>
+          <td style="padding:34px 40px 6px 40px;" dir="auto">
+            <p style="margin:0 0 6px;color:#c9a96a;font-size:12px;letter-spacing:.2em;text-transform:uppercase;">A note from Sofie</p>
+            <h1 style="margin:0;color:#2a201d;font-size:24px;line-height:1.3;font-weight:500;">
+              {{ event.subject|default:"Something caught your eye" }}
+            </h1>
+          </td>
+        </tr>
+
+        <!-- The AI-written body (English or Arabic) -->
+        <tr>
+          <td style="padding:14px 40px 8px 40px;" dir="auto">
+            <div style="color:#3a302c;font-size:16px;line-height:1.8;white-space:pre-line;">{{ event.body }}</div>
+          </td>
+        </tr>
+
+        <!-- Primary CTA -->
+        <tr>
+          <td align="center" style="padding:22px 40px 6px 40px;">
+            <table role="presentation" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center" bgcolor="#2a201d" style="border-radius:999px;">
+                  <a href="https://sofiestore.net{% if event.products %}/products/{{ event.products.0.handle }}{% endif %}"
+                     style="display:inline-block;padding:14px 34px;color:#ffffff;font-size:15px;letter-spacing:.04em;text-decoration:none;border-radius:999px;">
+                     Discover
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        {% if event.products %}
+        <!-- Section label -->
+        <tr>
+          <td style="padding:30px 40px 4px 40px;" dir="auto">
+            <p style="margin:0;color:#9a8f88;font-size:12px;letter-spacing:.18em;text-transform:uppercase;">Chosen for you</p>
+          </td>
+        </tr>
+
+        <!-- Product grid -->
+        <tr>
+          <td style="padding:8px 28px 8px 28px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              {% for p in event.products %}
+              <tr>
+                <td style="padding:10px 12px;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #ece6df;border-radius:14px;overflow:hidden;">
+                    <tr>
+                      <td width="92" style="padding:12px;" valign="middle">
+                        <a href="https://sofiestore.net/products/{{ p.handle }}">
+                          <img src="{{ p.image }}" alt="{{ p.title }}" width="68" height="68"
+                               style="display:block;border:0;width:68px;height:68px;object-fit:cover;border-radius:10px;background:#f6f3ef;" />
+                        </a>
+                      </td>
+                      <td valign="middle" style="padding:12px 14px 12px 0;" dir="auto">
+                        <a href="https://sofiestore.net/products/{{ p.handle }}"
+                           style="display:block;color:#2a201d;font-size:15px;line-height:1.4;text-decoration:none;margin:0 0 4px;">{{ p.title }}</a>
+                        <span style="color:#6b625c;font-size:14px;">{{ p.price }} EGP</span>
+                      </td>
+                      <td width="92" valign="middle" align="right" style="padding:12px 16px 12px 0;">
+                        <a href="https://sofiestore.net/products/{{ p.handle }}"
+                           style="display:inline-block;border:1px solid #2a201d;color:#2a201d;font-size:13px;text-decoration:none;padding:8px 16px;border-radius:999px;">View</a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+          </td>
+        </tr>
+        {% endif %}
+
+        <!-- Soft divider -->
+        <tr><td style="padding:18px 40px 0;"><div style="height:1px;background:#ece6df;line-height:1px;font-size:0;">&nbsp;</div></td></tr>
+
+        <!-- Brand sign-off -->
+        <tr>
+          <td style="padding:20px 40px 6px;" dir="auto">
+            <p style="margin:0;color:#3a302c;font-size:15px;line-height:1.7;">With love,<br><span style="color:#c9a96a;letter-spacing:.06em;">The Sofie Atelier</span></p>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="padding:22px 40px 34px;" align="center">
+            <p style="margin:0 0 8px;color:#9a8f88;font-size:12px;line-height:1.7;">
+              Sofie · Marassi &amp; Mivida, Egypt<br>
+              <a href="https://sofiestore.net" style="color:#9a8f88;text-decoration:underline;">sofiestore.net</a>
+            </p>
+            <p style="margin:0;color:#b3aaa3;font-size:11px;line-height:1.7;">
+              You're receiving this because you're part of Sofie.
+              <a href="{% unsubscribe %}" style="color:#b3aaa3;text-decoration:underline;">Unsubscribe</a>
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
