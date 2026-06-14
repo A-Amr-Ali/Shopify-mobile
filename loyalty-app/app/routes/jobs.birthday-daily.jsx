@@ -31,6 +31,11 @@ export const action = async ({ request }) => {
 
   let granted = 0, skipped = 0;
   for (const c of todays) {
+    // Safety 1: never email anyone whose birthday isn't actually today.
+    if (String(c.birthday).slice(5) !== mmdd) continue;
+    // Safety 2: must have a real email address to receive the gift.
+    if (!c.email || !c.email.includes("@")) { skipped++; continue; }
+
     // 365-day guard: one grant per customer per calendar year.
     const { error: insErr } = await supabase
       .from("birthday_grants").insert({ customer_id: c.shopify_customer_id, year, tier: c.tier });
