@@ -128,8 +128,8 @@ async function testSend(body) {
   if (r.error) return json({ error: r.error }, { status: r.status || 400 });
   const { email, snap, candidate, draft, cards } = r;
   const lang = /^ar/i.test(String(snap.locale || "")) ? "ar" : "en";
-  const body = lang === "ar" ? draft.bodyAr : draft.bodyEn;
-  const html = renderEmail({ subject: draft.subject, preview: draft.preview, body, products: cards });
+  const bodyText = lang === "ar" ? draft.bodyAr : draft.bodyEn;
+  const html = renderEmail({ subject: draft.subject, preview: draft.preview, body: bodyText, products: cards });
   await trackEvent(AGENT.klaviyoMetric, email, {
     trigger: candidate.trigger,
     channel_hint: "email",
@@ -138,7 +138,7 @@ async function testSend(body) {
     preview: draft.preview,
     body_en: draft.bodyEn,
     body_ar: draft.bodyAr,
-    body,
+    body: bodyText,
     html,
     products: cards,
     test: true,
