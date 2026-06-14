@@ -6,7 +6,7 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign link = block.settings.link | default: '/account/register'
+  assign link = block.settings.link | default: '/pages/sofie-rewards'
   if customer and block.settings.member_link != blank
     assign link = block.settings.member_link
   endif
@@ -48,8 +48,8 @@
     { "type": "text", "id": "heading", "label": "Heading", "default": "Earn points on every order" },
     { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Join free and collect points on purchases, reviews & referrals — then redeem them for EGP off your favourites." },
     { "type": "header", "content": "Call to action" },
-    { "type": "text", "id": "cta_label", "label": "Button text (visitors)", "default": "Join & start earning" },
-    { "type": "url", "id": "link", "label": "Link (visitors)", "info": "Where visitors go — e.g. your My Rewards page or /account/register" },
+    { "type": "text", "id": "cta_label", "label": "Button text (visitors)", "default": "Learn More & Join Free" },
+    { "type": "url", "id": "link", "label": "Link (visitors)", "info": "Where visitors go — e.g. /pages/sofie-rewards so they can learn before signing up" },
     { "type": "text", "id": "member_cta", "label": "Button text (logged-in)", "default": "View your rewards" },
     { "type": "url", "id": "member_link", "label": "Link (logged-in)", "info": "Where signed-in customers go — e.g. /account" },
     { "type": "header", "content": "Colours" },

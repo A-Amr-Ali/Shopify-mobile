@@ -1,0 +1,40 @@
+{
+  "sections": {
+    "main": {
+      "type": "lux-rewards",
+      "blocks": {
+        "earn1": { "type": "earn", "settings": { "label": "Purchase", "points": "1 pt per 10 EGP spent" } },
+        "earn2": { "type": "earn", "settings": { "label": "Write a product review", "points": "+50 pts" } },
+        "earn3": { "type": "earn", "settings": { "label": "Complete your Beauty Profile quiz", "points": "+100 pts" } },
+        "earn4": { "type": "earn", "settings": { "label": "Refer a friend who makes a purchase", "points": "+200 pts" } },
+        "earn5": { "type": "earn", "settings": { "label": "Follow us on Instagram", "points": "+25 pts" } },
+        "tier1": { "type": "tier", "settings": { "name": "Sofie Insider", "spend": "Starting tier", "multiplier": "1x points" } },
+        "tier2": { "type": "tier", "settings": { "name": "Sofie VIP", "spend": "40,000 EGP/year", "multiplier": "1.5x points" } },
+        "tier3": { "type": "tier", "settings": { "name": "Sofie Icon", "spend": "120,000 EGP/year", "multiplier": "2x points" } }
+      },
+      "block_order": ["earn1", "earn2", "earn3", "earn4", "earn5", "tier1", "tier2", "tier3"],
+      "settings": {
+        "eyebrow": "Sofie Rewards",
+        "h1": "Sofie Rewards — Earn While You Glow",
+        "intro": "Every order brings you closer to your next reward. Join free, earn points on everything you love, and unlock more the more you glow.",
+        "cta_label": "Join Free & Start Earning",
+        "cta_link": "/account/register",
+        "how_title": "How It Works",
+        "how_1": "Earn 1 point for every 10 EGP you spend.",
+        "how_2": "100 points = 50 EGP off your next order (about a 5% reward rate).",
+        "how_3": "Points are awarded when your order is fulfilled — not at checkout.",
+        "earn_title": "Ways to Earn",
+        "tiers_title": "Your Tier",
+        "col_tier": "Tier",
+        "col_spend": "Annual Spend",
+        "col_mult": "Multiplier",
+        "tiers_note": "Tiers are calculated on a rolling 12-month basis.",
+        "redeem_title": "Redeeming Points",
+        "redeem_body": "<p>Points can be redeemed at checkout as EGP off your order. Minimum redemption: 100 points (= 50 EGP).</p>",
+        "final_cta_label": "Join Free & Start Earning",
+        "final_cta_link": "/account/register"
+      }
+    }
+  },
+  "order": ["main"]
+}

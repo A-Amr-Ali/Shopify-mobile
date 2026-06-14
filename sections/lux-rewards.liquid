@@ -1,0 +1,193 @@
+{%- comment -%}
+  Sofie — Rewards program page. Explains how the loyalty program works (earn,
+  ways to earn, tiers, redeem) and drives sign-ups. Built on the shared
+  sofie-luxury design system; no third-party apps or scripts.
+  Pair with templates/page.sofie-rewards.json on a page with handle `sofie-rewards`.
+{%- endcomment -%}
+{{ 'sofie-luxury.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sofie-luxury.js' | asset_url }}" defer></script>
+
+<style>
+  .sofie-rw__how { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:2rem; }
+  .sofie-rw__how-item { background:var(--sofie-white); border:1px solid var(--sofie-line); border-radius:var(--sofie-radius-lg); padding:1.8rem 1.5rem; text-align:center; }
+  .sofie-rw__how-item span { display:inline-grid; place-items:center; width:2.4rem; height:2.4rem; border-radius:999px; background:var(--sofie-ink); color:var(--sofie-white); font-family:var(--sofie-font-display); font-size:1.2rem; margin-bottom:.8rem; }
+  .sofie-rw__how-item p { margin:0; color:var(--sofie-stone); line-height:1.6; }
+  .sofie-rw__earn { list-style:none; margin:1.5rem auto 0; padding:0; max-width:640px; }
+  .sofie-rw__earn li { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1rem .2rem; border-bottom:1px solid var(--sofie-line); }
+  .sofie-rw__earn li:last-child { border-bottom:0; }
+  .sofie-rw__earn-label { color:var(--sofie-ink); }
+  .sofie-rw__earn-pts { font-family:var(--sofie-font-display); color:var(--sofie-gold-deep); font-size:1.15rem; white-space:nowrap; }
+  .sofie-rw__tiers-wrap { margin-top:2rem; overflow-x:auto; }
+  .sofie-rw__tiers { width:100%; border-collapse:collapse; min-width:480px; background:var(--sofie-white); border:1px solid var(--sofie-line); border-radius:var(--sofie-radius-lg); overflow:hidden; }
+  .sofie-rw__tiers th, .sofie-rw__tiers td { padding:1rem 1.2rem; text-align:left; border-bottom:1px solid var(--sofie-line); }
+  .sofie-rw__tiers thead th { background:var(--sofie-ink); color:var(--sofie-white); font-weight:500; letter-spacing:.04em; }
+  .sofie-rw__tiers tbody tr:last-child td { border-bottom:0; }
+  .sofie-rw__tiers .sofie-rw__tier-name { font-family:var(--sofie-font-display); font-size:1.15rem; color:var(--sofie-ink); }
+  .sofie-rw__note { text-align:center; color:var(--sofie-mist); margin-top:1rem; font-size:.92rem; }
+  .sofie-rw__redeem { max-width:680px; margin:0 auto; text-align:center; }
+  .sofie-rw__redeem p { color:var(--sofie-stone); line-height:1.7; }
+  @media (max-width:740px){ .sofie-rw__how { grid-template-columns:1fr; } }
+</style>
+
+{%- comment -%} HERO {%- endcomment -%}
+<section class="sofie sofie-seo__hero" aria-label="{{ section.settings.h1 | escape }}">
+  <div class="sofie__container">
+    {%- if section.settings.eyebrow != blank -%}<span class="sofie__eyebrow">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+    <h1>{{ section.settings.h1 | escape }}</h1>
+    {%- if section.settings.intro != blank -%}<p>{{ section.settings.intro | escape }}</p>{%- endif -%}
+    {%- if section.settings.cta_label != blank -%}
+      <div class="sofie-hero__cta" style="justify-content:center">
+        <a class="sofie__btn" href="{{ section.settings.cta_link | default: '/account/register' }}">{{ section.settings.cta_label | escape }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- comment -%} SECTION 1 — HOW IT WORKS {%- endcomment -%}
+<section class="sofie sofie__section sofie__section--tint">
+  <div class="sofie__container">
+    <div class="sofie__head sofie__head--center sofie-reveal">
+      <h2 class="sofie__h2">{{ section.settings.how_title | escape }}</h2>
+    </div>
+    <div class="sofie-rw__how sofie-reveal">
+      {%- if section.settings.how_1 != blank -%}<div class="sofie-rw__how-item"><span>1</span><p>{{ section.settings.how_1 }}</p></div>{%- endif -%}
+      {%- if section.settings.how_2 != blank -%}<div class="sofie-rw__how-item"><span>2</span><p>{{ section.settings.how_2 }}</p></div>{%- endif -%}
+      {%- if section.settings.how_3 != blank -%}<div class="sofie-rw__how-item"><span>3</span><p>{{ section.settings.how_3 }}</p></div>{%- endif -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} SECTION 2 — WAYS TO EARN {%- endcomment -%}
+<section class="sofie sofie__section">
+  <div class="sofie__container">
+    <div class="sofie__head sofie__head--center sofie-reveal">
+      <h2 class="sofie__h2">{{ section.settings.earn_title | escape }}</h2>
+    </div>
+    <ul class="sofie-rw__earn sofie-reveal">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'earn' -%}
+          <li {{ block.shopify_attributes }}>
+            <span class="sofie-rw__earn-label">{{ block.settings.label | escape }}</span>
+            <span class="sofie-rw__earn-pts">{{ block.settings.points | escape }}</span>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{%- comment -%} SECTION 3 — YOUR TIER {%- endcomment -%}
+<section class="sofie sofie__section sofie__section--tint">
+  <div class="sofie__container">
+    <div class="sofie__head sofie__head--center sofie-reveal">
+      <h2 class="sofie__h2">{{ section.settings.tiers_title | escape }}</h2>
+    </div>
+    <div class="sofie-rw__tiers-wrap sofie-reveal">
+      <table class="sofie-rw__tiers">
+        <thead>
+          <tr>
+            <th scope="col">{{ section.settings.col_tier | escape }}</th>
+            <th scope="col">{{ section.settings.col_spend | escape }}</th>
+            <th scope="col">{{ section.settings.col_mult | escape }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'tier' -%}
+              <tr {{ block.shopify_attributes }}>
+                <td class="sofie-rw__tier-name">{{ block.settings.name | escape }}</td>
+                <td>{{ block.settings.spend | escape }}</td>
+                <td>{{ block.settings.multiplier | escape }}</td>
+              </tr>
+            {%- endif -%}
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+    {%- if section.settings.tiers_note != blank -%}<p class="sofie-rw__note">{{ section.settings.tiers_note | escape }}</p>{%- endif -%}
+  </div>
+</section>
+
+{%- comment -%} SECTION 4 — REDEEMING + FINAL CTA {%- endcomment -%}
+<section class="sofie sofie__section">
+  <div class="sofie__container">
+    <div class="sofie-rw__redeem sofie-reveal">
+      <h2 class="sofie__h2">{{ section.settings.redeem_title | escape }}</h2>
+      {{ section.settings.redeem_body }}
+      {%- if section.settings.final_cta_label != blank -%}
+        <div class="sofie-hero__cta" style="justify-content:center;margin-top:1.5rem">
+          <a class="sofie__btn" href="{{ section.settings.final_cta_link | default: '/account/register' }}">{{ section.settings.final_cta_label | escape }}</a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lux Rewards",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Sofie Rewards" },
+    { "type": "text", "id": "h1", "label": "H1 heading", "default": "Sofie Rewards — Earn While You Glow" },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Every order brings you closer to your next reward. Join free, earn points on everything you love, and unlock more the more you glow." },
+    { "type": "text", "id": "cta_label", "label": "Hero button text", "default": "Join Free & Start Earning" },
+    { "type": "url", "id": "cta_link", "label": "Hero button link" },
+
+    { "type": "header", "content": "Section 1 — How It Works" },
+    { "type": "text", "id": "how_title", "label": "Heading", "default": "How It Works" },
+    { "type": "text", "id": "how_1", "label": "Point 1", "default": "Earn 1 point for every 10 EGP you spend." },
+    { "type": "text", "id": "how_2", "label": "Point 2", "default": "100 points = 50 EGP off your next order (about a 5% reward rate)." },
+    { "type": "text", "id": "how_3", "label": "Point 3", "default": "Points are awarded when your order is fulfilled — not at checkout." },
+
+    { "type": "header", "content": "Section 2 — Ways to Earn" },
+    { "type": "text", "id": "earn_title", "label": "Heading", "default": "Ways to Earn" },
+
+    { "type": "header", "content": "Section 3 — Your Tier" },
+    { "type": "text", "id": "tiers_title", "label": "Heading", "default": "Your Tier" },
+    { "type": "text", "id": "col_tier", "label": "Column 1 label", "default": "Tier" },
+    { "type": "text", "id": "col_spend", "label": "Column 2 label", "default": "Annual Spend" },
+    { "type": "text", "id": "col_mult", "label": "Column 3 label", "default": "Multiplier" },
+    { "type": "text", "id": "tiers_note", "label": "Note under table", "default": "Tiers are calculated on a rolling 12-month basis." },
+
+    { "type": "header", "content": "Section 4 — Redeeming Points" },
+    { "type": "text", "id": "redeem_title", "label": "Heading", "default": "Redeeming Points" },
+    { "type": "richtext", "id": "redeem_body", "label": "Body", "default": "<p>Points can be redeemed at checkout as EGP off your order. Minimum redemption: 100 points (= 50 EGP).</p>" },
+    { "type": "text", "id": "final_cta_label", "label": "Final button text", "default": "Join Free & Start Earning" },
+    { "type": "url", "id": "final_cta_link", "label": "Final button link" }
+  ],
+  "blocks": [
+    {
+      "type": "earn",
+      "name": "Way to earn",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Action", "default": "Purchase" },
+        { "type": "text", "id": "points", "label": "Points", "default": "1 pt per 10 EGP spent" }
+      ]
+    },
+    {
+      "type": "tier",
+      "name": "Tier row",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Tier name", "default": "Sofie Insider" },
+        { "type": "text", "id": "spend", "label": "Annual spend", "default": "Starting tier" },
+        { "type": "text", "id": "multiplier", "label": "Multiplier", "default": "1x points" }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Lux Rewards",
+    "blocks": [
+      { "type": "earn", "settings": { "label": "Purchase", "points": "1 pt per 10 EGP spent" } },
+      { "type": "earn", "settings": { "label": "Write a product review", "points": "+50 pts" } },
+      { "type": "earn", "settings": { "label": "Complete your Beauty Profile quiz", "points": "+100 pts" } },
+      { "type": "earn", "settings": { "label": "Refer a friend who makes a purchase", "points": "+200 pts" } },
+      { "type": "earn", "settings": { "label": "Follow us on Instagram", "points": "+25 pts" } },
+      { "type": "tier", "settings": { "name": "Sofie Insider", "spend": "Starting tier", "multiplier": "1x points" } },
+      { "type": "tier", "settings": { "name": "Sofie VIP", "spend": "40,000 EGP/year", "multiplier": "1.5x points" } },
+      { "type": "tier", "settings": { "name": "Sofie Icon", "spend": "120,000 EGP/year", "multiplier": "2x points" } }
+    ]
+  }]
+}
+{% endschema %}
