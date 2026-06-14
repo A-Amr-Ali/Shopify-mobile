@@ -103,3 +103,14 @@ export const AGENT = {
   // The Klaviyo metric the dispatcher fires (your Flow listens on this).
   klaviyoMetric: process.env.AGENT_KLAVIYO_METRIC || "Sofie AI Agent Message",
 };
+
+// Email presentation. The app renders the FULL designed HTML server-side and
+// sends it as the event's `html` property, so Klaviyo only needs a one-line HTML
+// block ({{ event.html }}) — no design work in Klaviyo.
+export const EMAIL = {
+  storeUrl: process.env.STORE_URL || "https://sofiestore.net",
+  logoUrl: process.env.AGENT_LOGO_URL || "", // empty → elegant "SOFIE" wordmark
+  fromName: process.env.AGENT_FROM_NAME || "The Sofie Atelier",
+  footerLocation: process.env.AGENT_FOOTER_LOCATION || "Marassi & Mivida, Egypt",
+  ink: "#2a201d", gold: "#c9a96a", cream: "#f6f3ef", page: "#efeae4",
+};

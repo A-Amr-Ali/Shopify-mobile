@@ -17,6 +17,7 @@ import { evaluateTriggers } from "../lib/agent/triggers.server.js";
 import { composeMessage } from "../lib/agent/compose.server.js";
 import { checkMessage } from "../lib/agent/guardrail.server.js";
 import { dispatchMessage } from "../lib/agent/dispatch.server.js";
+import { renderEmail } from "../lib/agent/email.server.js";
 import { trackEvent } from "../lib/klaviyo.server.js";
 import { searchByKeywords, bestSellers } from "../lib/recommend.server.js";
 
@@ -127,6 +128,8 @@ async function testSend(body) {
   if (r.error) return json({ error: r.error }, { status: r.status || 400 });
   const { email, snap, candidate, draft, cards } = r;
   const lang = /^ar/i.test(String(snap.locale || "")) ? "ar" : "en";
+  const body = lang === "ar" ? draft.bodyAr : draft.bodyEn;
+  const html = renderEmail({ subject: draft.subject, preview: draft.preview, body, products: cards });
   await trackEvent(AGENT.klaviyoMetric, email, {
     trigger: candidate.trigger,
     channel_hint: "email",
@@ -135,7 +138,8 @@ async function testSend(body) {
     preview: draft.preview,
     body_en: draft.bodyEn,
     body_ar: draft.bodyAr,
-    body: lang === "ar" ? draft.bodyAr : draft.bodyEn,
+    body,
+    html,
     products: cards,
     test: true,
   });

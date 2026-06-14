@@ -5,6 +5,7 @@
 import { trackEvent } from "../klaviyo.server.js";
 import { supabase } from "../../db.server.js";
 import { AGENT } from "../../config/brand-voice.js";
+import { renderEmail } from "./email.server.js";
 
 /**
  * @param {object} message  an agent_messages row (must have email)
@@ -15,6 +16,8 @@ export async function dispatchMessage(message) {
 
   // Pick the body language the Flow should prefer (Flow can still switch).
   const lang = /^ar/i.test(String(message.profile_locale || "")) ? "ar" : "en";
+  const body = lang === "ar" ? message.body_ar : message.body_en;
+  const html = renderEmail({ subject: message.subject, preview: message.preview, body, products: message.products || [] });
 
   await trackEvent(AGENT.klaviyoMetric, message.email, {
     trigger: message.trigger,
@@ -24,7 +27,8 @@ export async function dispatchMessage(message) {
     preview: message.preview,
     body_en: message.body_en,
     body_ar: message.body_ar,
-    body: lang === "ar" ? message.body_ar : message.body_en,
+    body,
+    html, // full designed email — drop {{ event.html }} into a Klaviyo HTML block
     products: message.products || [],
     message_id: message.id,
   });
