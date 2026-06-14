@@ -7,6 +7,8 @@ import { getAdmin } from "../lib/admin.server.js";
 import { supabase } from "../db.server.js";
 import { mintOpenCode } from "../lib/discounts.server.js";
 import { trackEvent } from "../lib/klaviyo.server.js";
+import { mailerConfigured, sendEmail } from "../lib/agent/mailer.server.js";
+import { renderBirthdayEmail } from "../lib/agent/email.server.js";
 import { CRON_KEY, SHOP_DOMAIN, BIRTHDAY } from "../config/loyalty.js";
 
 export const action = async ({ request }) => {
@@ -19,7 +21,7 @@ export const action = async ({ request }) => {
 
   // birthday is a DATE; match on month-day regardless of birth year.
   const { data: customers, error } = await supabase
-    .from("customers").select("shopify_customer_id, email, tier, birthday")
+    .from("customers").select("shopify_customer_id, email, first_name, tier, birthday")
     .not("birthday", "is", null);
   if (error) return json({ error: error.message }, { status: 500 });
 
@@ -46,11 +48,18 @@ export const action = async ({ request }) => {
       .update({ code, egp_value: gift.egp })
       .eq("customer_id", c.shopify_customer_id).eq("year", year);
 
-    // Klaviyo birthday flow emails the code; the flow's own "not in last 365 days"
-    // guard plus our birthday_grants unique constraint prevent double-sends.
-    await trackEvent("Loyalty Birthday Gift", c.email, {
-      tier: c.tier, gift_egp: gift.egp, code, note: gift.note, double_points: c.tier !== "insider",
-    });
+    // Email the gift to the customer. Prefer direct send via Brevo/Resend; fall
+    // back to a Klaviyo event if no mail provider is configured. The birthday_grants
+    // unique constraint already prevents double-sends.
+    if (mailerConfigured()) {
+      const html = renderBirthdayEmail({ firstName: c.first_name, code, egp: gift.egp, note: gift.note });
+      const r = await sendEmail({ to: c.email, subject: "Happy birthday from Sofie 🎉", html });
+      if (!r.ok) console.warn(`bday email: ${r.error}`);
+    } else {
+      await trackEvent("Loyalty Birthday Gift", c.email, {
+        tier: c.tier, gift_egp: gift.egp, code, note: gift.note, double_points: c.tier !== "insider",
+      });
+    }
     granted++;
   }
   return json({ ok: true, birthdays: todays.length, granted, already_granted: skipped });

@@ -33,6 +33,23 @@ export const action = async ({ request }) => {
     .from("agent_messages").select("created_at")
     .order("created_at", { ascending: false }).limit(1).maybeSingle();
 
+  // Birthdays: today + the next 7 days (match on month-day, any birth year).
+  const mmdd = (d) => `${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+  const todayKey = mmdd(now);
+  const weekKeys = {};
+  for (let i = 1; i <= 7; i++) { const d = new Date(now); d.setUTCDate(d.getUTCDate() + i); weekKeys[mmdd(d)] = d.toISOString().slice(0, 10); }
+  const { data: bdayRows } = await supabase
+    .from("customers").select("first_name, email, birthday, tier").not("birthday", "is", null);
+  const nameOf = (c) => c.first_name || c.email || "Customer";
+  const birthdaysToday = [];
+  const birthdaysWeek = [];
+  for (const c of bdayRows ?? []) {
+    const key = String(c.birthday).slice(5); // MM-DD
+    if (key === todayKey) birthdaysToday.push({ name: nameOf(c), email: c.email, tier: c.tier });
+    else if (weekKeys[key]) birthdaysWeek.push({ name: nameOf(c), email: c.email, date: weekKeys[key] });
+  }
+  birthdaysWeek.sort((a, b) => a.date.localeCompare(b.date));
+
   const emailProvider = process.env.RESEND_API_KEY ? "resend" : (process.env.BREVO_API_KEY ? "brevo" : "none");
 
   return json({
@@ -40,6 +57,8 @@ export const action = async ({ request }) => {
     mode: AGENT.autoSend ? "auto" : "review",
     sentToday, queue, totalCustomers, eventsToday,
     lastMessageAt: last?.created_at ?? null,
+    birthdaysToday: birthdaysToday.slice(0, 25),
+    birthdaysWeek: birthdaysWeek.slice(0, 25),
     integrations: {
       email: mailerConfigured() ? emailProvider : "none",
       anthropic: !!process.env.ANTHROPIC_API_KEY,

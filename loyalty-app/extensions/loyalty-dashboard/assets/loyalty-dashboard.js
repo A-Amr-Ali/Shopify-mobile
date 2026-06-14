@@ -39,6 +39,8 @@
     renderGifts(data.gifts || [], data.balance);
     renderProfile(data.profile);
     prefillQuiz(data.profile);
+    var bdEl = root.querySelector('[data-quiz-form] input[name="birthday"]');
+    if (bdEl && data.birthday) bdEl.value = String(data.birthday).slice(0, 10);
     renderTips(data.tips || [], data.completion_pct || 0);
   }
 
@@ -72,6 +74,7 @@
         lip_finish_pref: fd.get("lip_finish_pref") || null,
         foundation_shade: (fd.get("foundation_shade") || "").trim() || null,
         skin_concerns: fd.getAll("skin_concerns"),
+        birthday: (fd.get("birthday") || "").trim() || null,
       };
       var btn = form.querySelector("button[type=submit]");
       btn.disabled = true;

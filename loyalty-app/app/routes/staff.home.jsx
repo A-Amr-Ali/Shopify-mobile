@@ -66,6 +66,12 @@ const PAGE = `<!doctype html>
     <div class="integ" id="integ"></div>
   </div>
 
+  <div class="card" id="bdayCard">
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem"><strong>🎂 Birthdays</strong></div>
+    <div id="bdayToday"></div>
+    <div id="bdayWeek"></div>
+  </div>
+
   <div class="h">Your screens</div>
   <div class="grid">
     <a class="tile" href="/staff/agent"><b>🤖 AI Sales Agent</b><span>Test, review & approve messages</span></a>
@@ -89,6 +95,7 @@ const PAGE = `<!doctype html>
   var key=sessionStorage.getItem("sofieStaffKey")||"";
   function show(id,on){$(id).classList[on?"remove":"add"]("hide")}
   function fmt(n){return Number(n||0).toLocaleString("en-EG")}
+  function esc(s){var d=document.createElement("div");d.textContent=s==null?"":String(s);return d.innerHTML}
   function ago(iso){if(!iso)return"never";var s=(Date.now()-new Date(iso).getTime())/1000;if(s<90)return"just now";if(s<5400)return Math.round(s/60)+" min ago";if(s<172800)return Math.round(s/3600)+" h ago";return Math.round(s/86400)+" d ago"}
 
   if(key){show("loginCard",false);show("app",true);load()}
@@ -111,6 +118,13 @@ const PAGE = `<!doctype html>
         $("mode").className="mode "+(j.mode==="auto"?"auto":"review");
         $("status").textContent="Last message prepared: "+ago(j.lastMessageAt)+(j.mode==="review"?"  ·  Approve drafts in the AI Sales Agent screen.":"");
         $("status").className="msg";
+        var today=j.birthdaysToday||[], week=j.birthdaysWeek||[];
+        $("bdayToday").innerHTML = today.length
+          ? '<p style="margin:.2rem 0;color:var(--ok)"><b>Today ('+today.length+'):</b> '+today.map(function(b){return esc(b.name)}).join(", ")+' — gift sent automatically 🎁</p>'
+          : '<p style="margin:.2rem 0;color:#8a807a">No birthdays today.</p>';
+        $("bdayWeek").innerHTML = week.length
+          ? '<p style="margin:.2rem 0;color:#6b625c"><b>Next 7 days:</b> '+week.map(function(b){return esc(b.name)+" ("+esc(b.date)+")"}).join(", ")+'</p>'
+          : '';
         var i=j.integrations||{};
         $("integ").innerHTML=
           dot(i.email&&i.email!=="none")+"Email ("+(i.email||"none")+")"+

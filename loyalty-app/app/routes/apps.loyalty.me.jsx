@@ -14,7 +14,7 @@ export const loader = async ({ request }) => {
 
   const { data: customer } = await supabase
     .from("customers")
-    .select("points_balance, tier, lifetime_spend_egp, rolling_spend_egp")
+    .select("points_balance, tier, lifetime_spend_egp, rolling_spend_egp, birthday")
     .eq("shopify_customer_id", customerId)
     .maybeSingle();
 
@@ -49,5 +49,6 @@ export const loader = async ({ request }) => {
     profile: profile ?? null,
     completion_pct: profile?.completion_pct ?? 0,
     tips: profile?.tips ?? [],
+    birthday: customer?.birthday ?? null,
   });
 };

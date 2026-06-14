@@ -18,6 +18,15 @@ export const action = async ({ request }) => {
 
   const answers = await request.json().catch(() => ({}));
   const profile = await saveQuiz(customerId, answers);
+
+  // Optional birthday (for the birthday-gift program). Stored on the customer
+  // record, not the beauty profile. Accept only a valid YYYY-MM-DD date.
+  if (answers.birthday) {
+    const bd = String(answers.birthday).slice(0, 10);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(bd)) {
+      await supabase.from("customers").update({ birthday: bd }).eq("shopify_customer_id", customerId);
+    }
+  }
   const award = await awardQuiz(customerId); // idempotent: 0 on repeat
   const { tips } = await generateTips(customerId, profile);
 
