@@ -105,7 +105,19 @@ const PAGE = `<!doctype html>
       $("tGen").disabled=false;
       if(r.j.error==="unauthorized"){logout();return}
       if(!r.j.ok){$("tMsg").textContent="Couldn't generate ("+(r.j.error||"error")+").";$("tMsg").className="msg err";return}
-      $("tMsg").textContent="";$("tOut").innerHTML=msgCard(r.j.preview,{});
+      $("tMsg").textContent="";
+      var acts='<div class="acts"><button data-testsend="1">Send this test to '+esc(email)+'</button></div>'+
+        '<p class="msg" id="tsMsg"></p>';
+      $("tOut").innerHTML=msgCard(r.j.preview,{acts:acts});
+      var sb=document.querySelector("[data-testsend]");
+      if(sb)sb.onclick=function(){
+        sb.disabled=true;$("tsMsg").textContent="Sending…";$("tsMsg").className="msg";
+        post({action:"test_send",email:email,trigger:$("tTrigger").value}).then(function(rr){
+          sb.disabled=false;
+          if(rr.j.ok){$("tsMsg").textContent="✅ Sent to Klaviyo for "+esc(email)+". Check your inbox, then build the flow on the 'Sofie AI Agent Message' metric.";$("tsMsg").className="msg ok"}
+          else{$("tsMsg").textContent="Couldn't send ("+(rr.j.error||"error")+").";$("tsMsg").className="msg err"}
+        }).catch(function(){sb.disabled=false;$("tsMsg").textContent="Network error.";$("tsMsg").className="msg err"})
+      };
     }).catch(function(){$("tGen").disabled=false;$("tMsg").textContent="Network error.";$("tMsg").className="msg err"})
   };
 

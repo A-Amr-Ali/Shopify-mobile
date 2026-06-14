@@ -2,6 +2,8 @@
 // Protected by STAFF_KEY (sent in the body). Actions:
 //   list  → pending drafts to review
 //   test  → generate a preview for one email WITHOUT saving or sending
+//   test_send → fire ONE real event to Klaviyo for that email (creates the
+//               metric + lets you see the live email) — does not save a draft
 //   send  → dispatch a draft now (after a final guardrail check)
 //   skip  → discard a draft
 //   edit  → save manual edits to a draft's copy
@@ -9,11 +11,13 @@ import { json } from "@remix-run/node";
 import { getAdmin } from "../lib/admin.server.js";
 import { supabase } from "../db.server.js";
 import { STAFF_KEY, SHOP_DOMAIN } from "../config/loyalty.js";
+import { AGENT } from "../config/brand-voice.js";
 import { buildSnapshot } from "../lib/agent/insights.server.js";
 import { evaluateTriggers } from "../lib/agent/triggers.server.js";
 import { composeMessage } from "../lib/agent/compose.server.js";
 import { checkMessage } from "../lib/agent/guardrail.server.js";
 import { dispatchMessage } from "../lib/agent/dispatch.server.js";
+import { trackEvent } from "../lib/klaviyo.server.js";
 import { searchByKeywords, bestSellers } from "../lib/recommend.server.js";
 
 export const action = async ({ request }) => {
@@ -24,6 +28,7 @@ export const action = async ({ request }) => {
   switch (body.action) {
     case "list": return listDrafts();
     case "test": return testForEmail(body);
+    case "test_send": return testSend(body);
     case "send": return sendDraft(body);
     case "skip": return skipDraft(body);
     case "edit": return editDraft(body);
@@ -66,10 +71,11 @@ function pickTestCandidate(snap, forced) {
   return cand;
 }
 
-// Generate a live preview for one customer — the "test before going live" path.
-async function testForEmail(body) {
+// Resolve an email → customer, then compose a draft + products. Shared by the
+// preview and the test-send paths. Returns { error } or { snap, candidate, draft, cards }.
+async function buildPreview(body) {
   const email = String(body.email || "").trim().toLowerCase();
-  if (!email.includes("@")) return json({ error: "bad_email" }, { status: 400 });
+  if (!email.includes("@")) return { error: "bad_email", status: 400 };
 
   let admin = null, custId = null;
   try {
@@ -88,14 +94,21 @@ async function testForEmail(body) {
     const { data } = await supabase.from("customers").select("shopify_customer_id").eq("email", email).maybeSingle();
     custId = data?.shopify_customer_id;
   }
-  if (!custId) return json({ error: "no_customer" }, { status: 404 });
+  if (!custId) return { error: "no_customer", status: 404 };
 
   const snap = await buildSnapshot(custId);
   const candidate = pickTestCandidate(snap, body.trigger);
   const draft = await composeMessage(snap, candidate);
   const cards = await products(admin, draft.productSearches);
-  const g = checkMessage({ subject: draft.subject, body: `${draft.bodyEn}\n${draft.bodyAr}` });
+  return { email, snap, candidate, draft, cards };
+}
 
+// Generate a live preview for one customer — the "test before going live" path.
+async function testForEmail(body) {
+  const r = await buildPreview(body);
+  if (r.error) return json({ error: r.error }, { status: r.status || 400 });
+  const { candidate, draft, cards } = r;
+  const g = checkMessage({ subject: draft.subject, body: `${draft.bodyEn}\n${draft.bodyAr}` });
   return json({
     ok: true,
     preview: {
@@ -105,6 +118,28 @@ async function testForEmail(body) {
       products: cards, guardrail: g,
     },
   });
+}
+
+// Fire ONE real Klaviyo event for this email (and deliver via your Flow). Used to
+// create the metric in Klaviyo and to see the actual email. No draft is saved.
+async function testSend(body) {
+  const r = await buildPreview(body);
+  if (r.error) return json({ error: r.error }, { status: r.status || 400 });
+  const { email, snap, candidate, draft, cards } = r;
+  const lang = /^ar/i.test(String(snap.locale || "")) ? "ar" : "en";
+  await trackEvent(AGENT.klaviyoMetric, email, {
+    trigger: candidate.trigger,
+    channel_hint: "email",
+    language: lang,
+    subject: draft.subject,
+    preview: draft.preview,
+    body_en: draft.bodyEn,
+    body_ar: draft.bodyAr,
+    body: lang === "ar" ? draft.bodyAr : draft.bodyEn,
+    products: cards,
+    test: true,
+  });
+  return json({ ok: true, sent: true, to: email });
 }
 
 async function sendDraft(body) {
