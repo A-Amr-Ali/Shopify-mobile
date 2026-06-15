@@ -75,6 +75,7 @@ const PAGE = `<!doctype html>
   <div class="h">Your screens</div>
   <div class="grid">
     <a class="tile" href="/staff/agent"><b>🤖 AI Sales Agent</b><span>Test, review & approve messages</span></a>
+    <a class="tile" href="/staff/customers"><b>👥 Customers</b><span>Directory: orders, points, tier, birthday</span></a>
     <a class="tile" href="/staff"><b>🛍️ In-store console</b><span>Look up, award & redeem points</span></a>
   </div>
 
