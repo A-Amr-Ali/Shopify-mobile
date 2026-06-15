@@ -172,6 +172,26 @@
 .sofie-tab > div:first-child { margin-top: 0; }
 .sofie-loyalty__empty { color: color-mix(in srgb, var(--ink) 60%, transparent); font-size: .92rem; }
 
+/* Birthday capture card (My Profile tab) */
+.sofie-bday {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1.2rem;
+  border: 1px solid var(--line); border-radius: 14px; padding: 1.1rem 1.3rem;
+  background: var(--soft); margin-bottom: 1.4rem;
+}
+.sofie-bday__text { flex: 1; min-width: 220px; }
+.sofie-bday__text strong { display: block; font-size: 1.02rem; }
+.sofie-bday__text p { margin: .2rem 0 0; font-size: .9rem; color: color-mix(in srgb, var(--ink) 70%, transparent); }
+.sofie-bday__form { display: flex; gap: .5rem; align-items: center; }
+.sofie-bday__form input[type="date"] {
+  border: 1px solid var(--line); border-radius: 10px; padding: .6rem .7rem; font: inherit; background: #fff;
+}
+.sofie-bday__form button {
+  border: 1px solid var(--ink); background: var(--ink); color: #fff;
+  border-radius: 999px; padding: .6rem 1.2rem; cursor: pointer; font: inherit;
+}
+.sofie-bday__form button:hover { opacity: .92; }
+.sofie-bday .sofie-loyalty__msg { flex-basis: 100%; margin: 0; }
+
 /* Edit-profile (retake quiz) inside My Profile tab */
 .sofie-edit { margin-top: 1.4rem; border: 1px solid var(--line); border-radius: 12px; background: var(--soft); }
 .sofie-edit__summary { cursor: pointer; padding: .9rem 1.1rem; font-weight: 500; list-style: none; }

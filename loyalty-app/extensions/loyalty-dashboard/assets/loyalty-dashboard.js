@@ -39,7 +39,7 @@
     renderGifts(data.gifts || [], data.balance);
     renderProfile(data.profile);
     prefillQuiz(data.profile);
-    var bdEl = root.querySelector('[data-quiz-form] input[name="birthday"]');
+    var bdEl = root.querySelector('[data-bday-form] input[name="birthday"]');
     if (bdEl && data.birthday) bdEl.value = String(data.birthday).slice(0, 10);
     renderTips(data.tips || [], data.completion_pct || 0);
   }
@@ -74,7 +74,6 @@
         lip_finish_pref: fd.get("lip_finish_pref") || null,
         foundation_shade: (fd.get("foundation_shade") || "").trim() || null,
         skin_concerns: fd.getAll("skin_concerns"),
-        birthday: (fd.get("birthday") || "").trim() || null,
       };
       var btn = form.querySelector("button[type=submit]");
       btn.disabled = true;
@@ -356,8 +355,34 @@
   // Let the quiz block trigger a refresh after a successful submit.
   window.SofieLoyaltyReload = load;
 
+  // Save just the birthday (separate from the quiz so it never clears a profile).
+  function initBirthday() {
+    var form = root.querySelector("[data-bday-form]");
+    if (!form) return;
+    var msg = root.querySelector("[data-bday-msg]");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var val = (new FormData(form).get("birthday") || "").trim();
+      if (!val) return;
+      var btn = form.querySelector("button[type=submit]");
+      btn.disabled = true;
+      if (msg) { msg.textContent = "Saving…"; msg.className = "sofie-loyalty__msg"; }
+      fetch(base + "/birthday", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ birthday: val }),
+      })
+        .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+        .then(function (res) {
+          btn.disabled = false;
+          if (!res.ok || !res.j.ok) { if (msg) { msg.textContent = "Couldn't save — please try again."; msg.className = "sofie-loyalty__msg is-error"; } return; }
+          if (msg) { msg.textContent = "Saved! Your birthday gift will arrive on the day. 🎁"; msg.className = "sofie-loyalty__msg is-success"; }
+        })
+        .catch(function () { btn.disabled = false; if (msg) { msg.textContent = "Network error. Please try again."; msg.className = "sofie-loyalty__msg is-error"; } });
+    });
+  }
+
   initTabs();
   initAdvisor();
   initQuiz();
+  initBirthday();
   load();
 })();
