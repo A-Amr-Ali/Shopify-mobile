@@ -40,7 +40,11 @@
     renderProfile(data.profile);
     prefillQuiz(data.profile);
     var bdEl = root.querySelector('[data-bday-form] input[name="birthday"]');
-    if (bdEl && data.birthday) bdEl.value = String(data.birthday).slice(0, 10);
+    if (bdEl && data.birthday) {
+      bdEl.value = String(data.birthday).slice(0, 10);
+      var bdText = root.querySelector("[data-bday-card] .sofie-bday__text");
+      if (bdText) bdText.innerHTML = "<strong>🎂 Your birthday is saved</strong><p>We'll send your gift on the day. You can update it anytime.</p>";
+    }
     renderTips(data.tips || [], data.completion_pct || 0);
   }
 

@@ -34,6 +34,18 @@
       </div>
     </div>
 
+    <div class="sofie-bday" data-bday-card>
+      <div class="sofie-bday__text">
+        <strong>🎂 Add your birthday</strong>
+        <p>Tell us your birthday and we'll send you a gift to enjoy on your next order.</p>
+      </div>
+      <form class="sofie-bday__form" data-bday-form>
+        <input type="date" name="birthday" aria-label="Your birthday" required>
+        <button type="submit">Save</button>
+      </form>
+      <p class="sofie-loyalty__msg" data-bday-msg role="status"></p>
+    </div>
+
     <nav class="sofie-tabs" data-tabs>
       <button type="button" class="sofie-tabs__btn is-active" data-tab-btn="redeem">Redeem</button>
       <button type="button" class="sofie-tabs__btn" data-tab-btn="advisor">Advisor</button>
@@ -83,17 +95,6 @@
     </div>
 
     <div class="sofie-tab" data-tab="profile">
-      <div class="sofie-bday" data-bday-card>
-        <div class="sofie-bday__text">
-          <strong>🎂 Add your birthday</strong>
-          <p>Tell us your birthday and we'll send you a gift to enjoy on your next order.</p>
-        </div>
-        <form class="sofie-bday__form" data-bday-form>
-          <input type="date" name="birthday" aria-label="Your birthday" required>
-          <button type="submit">Save</button>
-        </form>
-        <p class="sofie-loyalty__msg" data-bday-msg role="status"></p>
-      </div>
       <div class="sofie-loyalty__profile" data-profile-card hidden>
         <h3 class="sofie-loyalty__subhead">{{ block.settings.profile_heading }}</h3>
         <dl class="sofie-loyalty__profile-grid" data-profile-grid></dl>
