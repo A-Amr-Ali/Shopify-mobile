@@ -37,7 +37,7 @@
     {%- if section.settings.intro != blank -%}<p>{{ section.settings.intro | escape }}</p>{%- endif -%}
     {%- if section.settings.cta_label != blank -%}
       <div class="sofie-hero__cta" style="justify-content:center">
-        <a class="sofie__btn" href="{{ section.settings.cta_link | default: '/account/register' }}">{{ section.settings.cta_label | escape }}</a>
+        <a class="sofie__btn" href="{{ section.settings.cta_link | default: '/account/login?return_url=/pages/my-rewards' }}">{{ section.settings.cta_label | escape }}</a>
       </div>
     {%- endif -%}
   </div>
@@ -116,7 +116,7 @@
       {{ section.settings.redeem_body }}
       {%- if section.settings.final_cta_label != blank -%}
         <div class="sofie-hero__cta" style="justify-content:center;margin-top:1.5rem">
-          <a class="sofie__btn" href="{{ section.settings.final_cta_link | default: '/account/register' }}">{{ section.settings.final_cta_label | escape }}</a>
+          <a class="sofie__btn" href="{{ section.settings.final_cta_link | default: '/account/login?return_url=/pages/my-rewards' }}">{{ section.settings.final_cta_label | escape }}</a>
         </div>
       {%- endif -%}
     </div>

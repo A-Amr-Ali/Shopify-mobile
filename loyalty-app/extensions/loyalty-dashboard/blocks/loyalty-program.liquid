@@ -37,7 +37,7 @@
 
   {%- if block.settings.cta_label != blank -%}
     <div class="sofie-prog__cta-wrap">
-      <a class="sofie-prog__cta" href="{{ block.settings.cta_link | default: '/account/register' }}">{{ block.settings.cta_label }}</a>
+      <a class="sofie-prog__cta" href="{{ block.settings.cta_link | default: '/account/login?return_url=/pages/my-rewards' }}">{{ block.settings.cta_label }}</a>
     </div>
   {%- endif -%}
 </section>

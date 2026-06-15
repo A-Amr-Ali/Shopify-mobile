@@ -7,8 +7,8 @@
 
 {%- liquid
   assign link = block.settings.link | default: '/pages/sofie-rewards'
-  if customer and block.settings.member_link != blank
-    assign link = block.settings.member_link
+  if customer
+    assign link = block.settings.member_link | default: '/pages/my-rewards'
   endif
   assign cta = block.settings.cta_label
   if customer and block.settings.member_cta != blank

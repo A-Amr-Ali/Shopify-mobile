@@ -18,7 +18,7 @@
         "h1": "Sofie Rewards — Earn While You Glow",
         "intro": "Every order brings you closer to your next reward. Join free, earn points on everything you love, and unlock more the more you glow.",
         "cta_label": "Join Free & Start Earning",
-        "cta_link": "/account/register",
+        "cta_link": "/account/login?return_url=/pages/my-rewards",
         "how_title": "How It Works",
         "how_1": "Earn 1 point for every 10 EGP you spend.",
         "how_2": "100 points = 50 EGP off your next order (about a 5% reward rate).",
@@ -32,7 +32,7 @@
         "redeem_title": "Redeeming Points",
         "redeem_body": "<p>Points can be redeemed at checkout as EGP off your order. Minimum redemption: 100 points (= 50 EGP).</p>",
         "final_cta_label": "Join Free & Start Earning",
-        "final_cta_link": "/account/register"
+        "final_cta_link": "/account/login?return_url=/pages/my-rewards"
       }
     }
   },
