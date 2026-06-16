@@ -41,7 +41,7 @@
                srcset="{{ section.settings.home_image | image_url: width: 600 }} 600w, {{ section.settings.home_image | image_url: width: 1000 }} 1000w"
                sizes="(min-width: 990px) 42vw, 100vw"
                alt="{{ section.settings.home_image.alt | default: 'Elegant home & lifestyle at Sofie Store' | escape }}"
-               width="1000" height="900" fetchpriority="high" decoding="async">
+               width="1000" height="900" loading="lazy" decoding="async">
         {%- else -%}
           {{ 'lifestyle-2' | placeholder_svg_tag }}
         {%- endif -%}
