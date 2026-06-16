@@ -9,6 +9,13 @@
 (function () {
   "use strict";
 
+  // The sections each include this file, so on a page with several lux sections
+  // the script can be injected multiple times. Initialise ONCE — otherwise the
+  // document-level "Add to Bag" listener would attach repeatedly (adding an item
+  // several times per click) and we'd run redundant observers.
+  if (window.__sofieLuxInit) return;
+  window.__sofieLuxInit = true;
+
   /* ---- Scroll reveal ---------------------------------------------------- */
   var reveals = document.querySelectorAll(".sofie-reveal");
   if (reveals.length && "IntersectionObserver" in window) {
