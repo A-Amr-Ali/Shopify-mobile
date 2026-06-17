@@ -1,0 +1,73 @@
+{%- comment -%}
+  Sofie — Free-shipping progress bar (AOV booster). Reads the live cart via AJAX
+  and shows how much more the customer needs to spend to unlock free shipping;
+  updates live when items are added (listens for the sofie:cart:updated event the
+  quick-add buttons fire). Self-contained — add it to the top of any page, or to
+  the header group in the theme editor for sitewide reach. No third-party scripts.
+{%- endcomment -%}
+{{ 'sofie-luxury.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .sofie-ship { background: {{ section.settings.bg }}; color: {{ section.settings.fg }}; }
+  .sofie-ship--sticky { position: sticky; top: 0; z-index: 50; }
+  .sofie-ship__inner { max-width: var(--sofie-container); margin: 0 auto; padding: .55rem 1.2rem; display: flex; align-items: center; gap: .9rem; justify-content: center; flex-wrap: wrap; }
+  .sofie-ship__msg { font-size: .85rem; letter-spacing: .02em; }
+  .sofie-ship__bar { width: min(220px, 40vw); height: 6px; border-radius: 999px; background: color-mix(in srgb, {{ section.settings.fg }} 22%, transparent); overflow: hidden; }
+  .sofie-ship__fill { display: block; height: 100%; width: 0; background: {{ section.settings.accent }}; transition: width .5s ease; }
+  .sofie-ship[hidden] { display: none; }
+</style>
+
+<div class="sofie-ship {% if section.settings.sticky %}sofie-ship--sticky{% endif %}"
+     data-sofie-ship
+     data-threshold="{{ section.settings.threshold }}"
+     data-pre="{{ section.settings.pre_message | escape }}"
+     data-success="{{ section.settings.success_message | escape }}">
+  <div class="sofie-ship__inner">
+    <span class="sofie-ship__msg" data-ship-msg>{{ section.settings.pre_message | replace: '{amount}', section.settings.threshold }}</span>
+    <span class="sofie-ship__bar"><span class="sofie-ship__fill" data-ship-fill></span></span>
+  </div>
+</div>
+
+<script>
+(function () {
+  var bar = document.querySelector("[data-sofie-ship]");
+  if (!bar || bar.__sofieShip) return;
+  bar.__sofieShip = true;
+  var threshold = (parseFloat(bar.getAttribute("data-threshold")) || 0) * 100; // EGP -> subunits
+  var pre = bar.getAttribute("data-pre") || "";
+  var success = bar.getAttribute("data-success") || "";
+  var msgEl = bar.querySelector("[data-ship-msg]");
+  var fillEl = bar.querySelector("[data-ship-fill]");
+  function egp(cents) { return Math.ceil(cents / 100).toLocaleString("en-EG"); }
+  function render(total) {
+    if (threshold <= 0) { bar.hidden = true; return; }
+    var pct = Math.max(0, Math.min(100, Math.round(total / threshold * 100)));
+    fillEl.style.width = pct + "%";
+    msgEl.textContent = (total >= threshold) ? success : pre.replace("{amount}", egp(threshold - total));
+  }
+  function load() {
+    fetch((window.Shopify && Shopify.routes ? Shopify.routes.root : "/") + "cart.js", { headers: { Accept: "application/json" } })
+      .then(function (r) { return r.json(); }).then(function (c) { render(c.total_price || 0); }).catch(function () {});
+  }
+  document.addEventListener("sofie:cart:updated", function (e) { if (e.detail) render(e.detail.total_price || 0); });
+  load();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Lux Free-Shipping Bar",
+  "tag": "section",
+  "settings": [
+    { "type": "number", "id": "threshold", "label": "Free-shipping threshold (EGP)", "default": 2000 },
+    { "type": "text", "id": "pre_message", "label": "Before threshold", "default": "You're {amount} EGP away from FREE shipping", "info": "Use {amount} where the remaining total should appear." },
+    { "type": "text", "id": "success_message", "label": "After threshold", "default": "🎉 You've unlocked FREE shipping!" },
+    { "type": "checkbox", "id": "sticky", "label": "Stick to top when scrolling", "default": true },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#2a201d" },
+    { "type": "color", "id": "fg", "label": "Text", "default": "#ffffff" },
+    { "type": "color", "id": "accent", "label": "Progress fill", "default": "#c9a96a" }
+  ],
+  "presets": [{ "name": "Lux Free-Shipping Bar" }]
+}
+{% endschema %}

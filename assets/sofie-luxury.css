@@ -367,6 +367,7 @@
 .sofie-badge--sale { background: var(--sofie-rose); }
 .sofie-badge--new  { background: var(--sofie-gold); }
 .sofie-badge--sold { background: var(--sofie-mist); }
+.sofie-badge--low  { background: #b23b3b; }
 
 .sofie-card__quickadd {
   position: absolute; left: 0.75rem; right: 0.75rem; bottom: 0.75rem;

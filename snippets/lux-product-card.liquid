@@ -41,6 +41,11 @@
       {%- if p.tags contains 'new' or p.tags contains 'New' -%}
         <span class="sofie-badge sofie-badge--new">New</span>
       {%- endif -%}
+      {%- comment -%} Scarcity: only when stock is tracked, in stock, and low. {%- endcomment -%}
+      {%- assign v = p.selected_or_first_available_variant -%}
+      {%- if p.available and v.inventory_management != blank and v.inventory_quantity > 0 and v.inventory_quantity <= 8 -%}
+        <span class="sofie-badge sofie-badge--low">Only {{ v.inventory_quantity }} left</span>
+      {%- endif -%}
     </div>
 
     {%- if show_quick_add and p.available -%}
