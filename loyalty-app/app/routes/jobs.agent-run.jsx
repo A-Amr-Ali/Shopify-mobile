@@ -1,5 +1,5 @@
 // POST /jobs/agent-run — the AI Sales Agent pipeline. Scores recently-active
-// customers, generates a personalised bilingual note for those who qualify,
+// customers, generates a personalised English note for those who qualify,
 // attaches shoppable products, runs the brand guardrail, and either saves a
 // DRAFT for review (default) or dispatches it (AGENT_AUTOSEND=true). Idempotent
 // via dedupe_key. Auth: x-cron-key header == CRON_KEY.
@@ -41,8 +41,8 @@ export const action = async ({ request }) => {
     const draft = await composeMessage(snap, candidate);
     const products = await resolveProducts(admin, draft.productSearches, snap, candidate);
 
-    // Guardrail both languages; an Arabic-only violation still blocks send.
-    const g = checkMessage({ subject: draft.subject, body: `${draft.bodyEn}\n${draft.bodyAr}` });
+    // Guardrail the English copy.
+    const g = checkMessage({ subject: draft.subject, body: draft.bodyEn });
     const autoOk = AGENT.autoSend && g.ok && draft.source === "claude";
 
     const row = {

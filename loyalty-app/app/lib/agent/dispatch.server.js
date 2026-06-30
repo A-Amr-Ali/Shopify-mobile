@@ -15,9 +15,9 @@ import { mailerConfigured, sendEmail } from "./mailer.server.js";
 export async function dispatchMessage(message) {
   if (!message?.email) return { sent: false, reason: "no_email" };
 
-  // Pick the body language (from the customer's locale).
-  const lang = /^ar/i.test(String(message.profile_locale || "")) ? "ar" : "en";
-  const body = lang === "ar" ? message.body_ar : message.body_en;
+  // English only.
+  const lang = "en";
+  const body = message.body_en;
   const html = renderEmail({ subject: message.subject, preview: message.preview, body, products: message.products || [] });
 
   // Preferred path: send directly via Brevo/Resend (no Klaviyo plan needed).

@@ -98,8 +98,8 @@ export const AGENT = {
   maxPerRun: Number(process.env.AGENT_MAX_PER_RUN ?? 25),
   // Don't message the same person more than once per this many days.
   minDaysBetweenMessages: Number(process.env.AGENT_MIN_DAYS_BETWEEN ?? 5),
-  // Languages to generate. The Flow / profile locale picks which one to send.
-  languages: ["en", "ar"],
+  // Languages to generate. English only.
+  languages: ["en"],
   // The Klaviyo metric the dispatcher fires (your Flow listens on this).
   klaviyoMetric: process.env.AGENT_KLAVIYO_METRIC || "Sofie AI Agent Message",
 };

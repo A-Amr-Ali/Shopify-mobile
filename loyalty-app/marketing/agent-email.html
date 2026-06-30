@@ -2,8 +2,7 @@
   Sofie — AI Sales Agent email template (paste into Klaviyo as a single HTML block).
   The AI fills the words per customer via event variables:
     {{ event.subject }}  {{ event.preview }}  {{ event.body }}  {{ event.products }}
-  Brand: espresso ink #2a201d · gold #c9a96a · cream #f6f3ef.
-  Arabic is handled automatically by dir="auto" on the body.
+  Brand: espresso ink #2a201d · gold #c9a96a · cream #f6f3ef. English only.
   REMEMBER: replace LOGO_URL with your hosted logo, and check the footer address.
 -->
 <div style="display:none;max-height:0;overflow:hidden;opacity:0;">{{ event.preview|default:"A little note from Sofie" }}</div>
@@ -37,7 +36,7 @@
           </td>
         </tr>
 
-        <!-- The AI-written body (English or Arabic) -->
+        <!-- The AI-written body (English) -->
         <tr>
           <td style="padding:14px 40px 8px 40px;" dir="auto">
             <div style="color:#3a302c;font-size:16px;line-height:1.8;white-space:pre-line;">{{ event.body }}</div>

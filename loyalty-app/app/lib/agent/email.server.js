@@ -1,8 +1,8 @@
 // Render a complete, email-client-safe HTML email server-side, so Klaviyo only
 // needs a one-line HTML block ({{ event.html }}) with no design work. The subject
-// and body come from the AI; products are the resolved catalog cards. Arabic is
-// handled with dir="auto" + right alignment. Unsubscribe is added by Klaviyo's
-// own footer block (managed per-recipient), not here.
+// and body come from the AI (English); products are the resolved catalog cards.
+// Unsubscribe is added by Klaviyo's own footer block (managed per-recipient), not
+// here.
 import { EMAIL } from "../../config/brand-voice.js";
 
 const esc = (s) => String(s ?? "")
