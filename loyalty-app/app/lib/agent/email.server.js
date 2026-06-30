@@ -30,11 +30,11 @@ function productRows(products = []) {
               <a href="${url}"><img src="${img}" alt="${esc(p.title)}" width="68" height="68" style="display:block;border:0;width:68px;height:68px;object-fit:cover;border-radius:10px;background:${cream};" /></a>
             </td>
             <td valign="middle" style="padding:12px 14px 12px 0;" dir="auto">
-              <a href="${url}" style="display:block;color:#2a201d;font-size:15px;line-height:1.4;text-decoration:none;margin:0 0 4px;">${esc(p.title)}</a>
-              <span style="color:#6b625c;font-size:14px;">${esc(p.price)} EGP</span>
+              <a href="${url}" style="display:block;color:#2a201d;font-size:15px;line-height:1.4;text-decoration:none;margin:0 0 5px;font-family:Georgia,'Times New Roman',serif;">${esc(p.title)}</a>
+              <span style="color:#6b625c;font-size:14px;letter-spacing:.02em;">${esc(p.price)} EGP</span>
             </td>
             <td width="92" valign="middle" align="right" style="padding:12px 16px 12px 0;">
-              <a href="${url}" style="display:inline-block;border:1px solid #2a201d;color:#2a201d;font-size:13px;text-decoration:none;padding:8px 16px;border-radius:999px;">View</a>
+              <a href="${url}" style="display:inline-block;border:1px solid #c9a96a;color:#2a201d;font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:9px 16px;border-radius:999px;">View</a>
             </td>
           </tr>
         </table>
@@ -62,6 +62,7 @@ function shell(contentHtml, preheader) {
       <tr><td align="center" style="background:${headerBg};padding:22px 24px;">${logo()}</td></tr>
       <tr><td style="height:3px;background:${gold};line-height:3px;font-size:0;">&nbsp;</td></tr>
       ${contentHtml}
+      <tr><td style="padding:28px 40px 4px;" align="center"><p style="margin:0;color:#9a8f88;font-size:11px;letter-spacing:.16em;text-transform:uppercase;">100% Authentic&nbsp;&nbsp;·&nbsp;&nbsp;Fast Delivery Across Egypt&nbsp;&nbsp;·&nbsp;&nbsp;Secure Checkout</p></td></tr>
       <tr><td style="padding:18px 40px 0;"><div style="height:1px;background:#ece6df;line-height:1px;font-size:0;">&nbsp;</div></td></tr>
       <tr><td style="padding:20px 40px 6px;" dir="auto"><p style="margin:0;color:#3a302c;font-size:15px;line-height:1.7;">With love,<br><span style="color:${gold};letter-spacing:.06em;">${esc(fromName)}</span></p></td></tr>
       <tr><td style="padding:18px 40px 30px;" align="center"><p style="margin:0;color:#9a8f88;font-size:12px;line-height:1.7;">Sofie · ${esc(footerLocation)}<br><a href="${storeUrl}" style="color:#9a8f88;text-decoration:underline;">${esc(storeUrl.replace(/^https?:\/\//, ""))}</a>${unsub}</p></td></tr>
@@ -77,13 +78,13 @@ export function renderEmail(m) {
   const bodyHtml = esc(m.body).replace(/\n/g, "<br>");
   const content = `
       <tr><td style="padding:34px 40px 6px 40px;" dir="auto">
-        <p style="margin:0 0 6px;color:${gold};font-size:12px;letter-spacing:.2em;text-transform:uppercase;">A note from Sofie</p>
-        <h1 style="margin:0;color:${ink};font-size:24px;line-height:1.3;font-weight:500;">${esc(m.subject || "Something caught your eye")}</h1>
+        <p style="margin:0 0 8px;color:${gold};font-size:12px;letter-spacing:.2em;text-transform:uppercase;">A note from Sofie</p>
+        <h1 style="margin:0;color:${ink};font-size:27px;line-height:1.3;font-weight:400;font-family:Georgia,'Times New Roman',serif;">${esc(m.subject || "Something caught your eye")}</h1>
       </td></tr>
       <tr><td style="padding:14px 40px 8px 40px;" dir="auto"><div style="color:#3a302c;font-size:16px;line-height:1.8;">${bodyHtml}</div></td></tr>
       <tr><td align="center" style="padding:22px 40px 6px 40px;">
         <table role="presentation" cellpadding="0" cellspacing="0"><tr><td align="center" bgcolor="${ink}" style="border-radius:999px;">
-          <a href="${cta}" style="display:inline-block;padding:14px 34px;color:#ffffff;font-size:15px;letter-spacing:.04em;text-decoration:none;border-radius:999px;">Discover</a>
+          <a href="${cta}" style="display:inline-block;padding:14px 38px;color:#ffffff;font-size:13px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;border-radius:999px;">Discover</a>
         </td></tr></table>
       </td></tr>
       ${productRows(products)}`;
@@ -111,8 +112,8 @@ export function renderBirthdayEmail(gift = {}) {
     : `Your birthday treat: ${esc(gift.note || "a little something with your next order this month.")}`;
   const content = `
       <tr><td style="padding:34px 40px 6px 40px;" dir="auto">
-        <p style="margin:0 0 6px;color:${gold};font-size:12px;letter-spacing:.2em;text-transform:uppercase;">Happy Birthday</p>
-        <h1 style="margin:0;color:${ink};font-size:24px;line-height:1.3;font-weight:500;">Happy birthday${name} 🎉</h1>
+        <p style="margin:0 0 8px;color:${gold};font-size:12px;letter-spacing:.2em;text-transform:uppercase;">Happy Birthday</p>
+        <h1 style="margin:0;color:${ink};font-size:27px;line-height:1.3;font-weight:400;font-family:Georgia,'Times New Roman',serif;">Happy birthday${name} 🎉</h1>
       </td></tr>
       <tr><td style="padding:14px 40px 14px 40px;" dir="auto"><div style="color:#3a302c;font-size:16px;line-height:1.8;">Wishing you a beautiful day from all of us at Sofie. ${giftLine}</div></td></tr>
       ${codeBox}
