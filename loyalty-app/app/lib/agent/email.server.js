@@ -19,30 +19,34 @@ function logo() {
 function productRows(products = []) {
   if (!products.length) return "";
   const { storeUrl, cream } = EMAIL;
-  const rows = products.map((p) => {
+  // A vertical card: image on top, title, price, View — sized to sit two per row.
+  const card = (p) => {
+    if (!p) return `<td width="50%" style="padding:8px;">&nbsp;</td>`;
     const url = `${storeUrl}/products/${esc(p.handle)}`;
     const img = p.image ? esc(p.image) : "";
     return `
-      <tr><td style="padding:10px 12px;">
+      <td width="50%" valign="top" style="padding:8px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #ece6df;border-radius:14px;overflow:hidden;">
-          <tr>
-            <td width="92" style="padding:12px;" valign="middle">
-              <a href="${url}"><img src="${img}" alt="${esc(p.title)}" width="68" height="68" style="display:block;border:0;width:68px;height:68px;object-fit:cover;border-radius:10px;background:${cream};" /></a>
-            </td>
-            <td valign="middle" style="padding:12px 14px 12px 0;" dir="auto">
-              <a href="${url}" style="display:block;color:#2a201d;font-size:15px;line-height:1.4;text-decoration:none;margin:0 0 5px;font-family:Georgia,'Times New Roman',serif;">${esc(p.title)}</a>
-              <span style="color:#6b625c;font-size:14px;letter-spacing:.02em;">${esc(p.price)} EGP</span>
-            </td>
-            <td width="92" valign="middle" align="right" style="padding:12px 16px 12px 0;">
-              <a href="${url}" style="display:inline-block;border:1px solid #c9a96a;color:#2a201d;font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:9px 16px;border-radius:999px;">View</a>
-            </td>
-          </tr>
+          <tr><td style="padding:0;line-height:0;">
+            <a href="${url}"><img src="${img}" alt="${esc(p.title)}" width="262" style="display:block;border:0;width:100%;height:180px;object-fit:cover;background:${cream};" /></a>
+          </td></tr>
+          <tr><td style="padding:13px 14px 4px;" dir="auto">
+            <a href="${url}" style="display:block;color:#2a201d;font-size:14px;line-height:1.4;text-decoration:none;margin:0 0 5px;font-family:Georgia,'Times New Roman',serif;">${esc(p.title)}</a>
+            <span style="color:#6b625c;font-size:14px;letter-spacing:.02em;">${esc(p.price)} EGP</span>
+          </td></tr>
+          <tr><td style="padding:8px 14px 14px;">
+            <a href="${url}" style="display:inline-block;border:1px solid #c9a96a;color:#2a201d;font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:9px 16px;border-radius:999px;">View</a>
+          </td></tr>
         </table>
-      </td></tr>`;
-  }).join("");
+      </td>`;
+  };
+  let rows = "";
+  for (let i = 0; i < products.length; i += 2) {
+    rows += `<tr>${card(products[i])}${card(products[i + 1])}</tr>`;
+  }
   return `
     <tr><td style="padding:30px 40px 4px 40px;" dir="auto"><p style="margin:0;color:#9a8f88;font-size:12px;letter-spacing:.18em;text-transform:uppercase;">Chosen for you</p></td></tr>
-    <tr><td style="padding:8px 28px 8px 28px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">${rows}</table></td></tr>`;
+    <tr><td style="padding:8px 32px 8px 32px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">${rows}</table></td></tr>`;
 }
 
 /**
