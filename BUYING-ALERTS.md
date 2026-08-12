@@ -1,7 +1,7 @@
 # 🛒 Sofie's — Buying Alerts
 
 **Brand launches on official stores that you DON'T stock yet.**
-Auto-generated 2026-08-11 · refreshes automatically every day via the New-In engine.
+Auto-generated 2026-08-12 · refreshes automatically every day via the New-In engine.
 
 > These are new products the brands just launched (read live from their official
 > sites) that aren't in your catalog. Review and decide what to order.
@@ -9,6 +9,7 @@ Auto-generated 2026-08-11 · refreshes automatically every day via the New-In en
 ---
 
 ## ✨ Saie
+- **SuperSuede™ Baked Eyeshadow** — https://saiehello.com/products/supersuede-baked-eyeshadow
 - **The Beach Case** — https://saiehello.com/products/the-beach-case
 
 ## ✨ Summer Fridays
@@ -21,11 +22,10 @@ Auto-generated 2026-08-11 · refreshes automatically every day via the New-In en
 
 ## ✨ Patrick Ta
 - **Sculpt & Brighten Trio** — https://patrickta.com/products/sculpt-brighten-trio
-- **Eye Sculpt Set** — https://patrickta.com/products/eye-sculpt-set
 
 ---
 
 ### Notes
-- Brands we read live this run: Rhode:0, One/Size:0, Rare Beauty:0, Makeup by Mario:0, Patrick Ta:2, Summer Fridays:6, Saie:1, Glossier:0, Kosas:0.
+- Brands we read live this run: Rhode:0, One/Size:0, Rare Beauty:0, Makeup by Mario:0, Patrick Ta:1, Summer Fridays:6, Saie:2, Glossier:0, Kosas:0.
 - Brands we couldn't read (not on a public platform): Charlotte Tilbury (unsupported platform), NARS (unsupported platform), Laura Mercier (unsupported platform), Hourglass (unsupported platform), Huda Beauty (unsupported platform).
 - The full, always-current list is also in **GitHub → Actions → "Sofie New-In Brand Watch" → latest run → "Run new-in watch" step → 🛒 Buying alerts**.
