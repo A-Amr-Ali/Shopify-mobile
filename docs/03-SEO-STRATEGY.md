@@ -7,6 +7,7 @@ optimized collections + complete structured data + tight internal linking.
 ## 1. Keyword → page map
 | Target keyword (+ EG/Arabic intent) | Page (template) | Primary collection |
 |---|---|---|
+| rhode egypt / rhode egypt where to buy / رود مصر | `page.rhode-egypt.json` | `rhode` |
 | rare beauty egypt / ريرر بيوتي مصر | `page.rare-beauty-egypt.json` | `rare-beauty` |
 | huda beauty egypt / هدى بيوتي مصر | `page.huda-beauty-egypt.json` | `huda-beauty` |
 | charlotte tilbury egypt | `page.charlotte-tilbury-egypt.json` | `charlotte-tilbury` |
@@ -41,6 +42,7 @@ Keep titles ≤ ~60 chars, metas ≤ ~155. Front-load the keyword.
 
 | Page | Title tag | Meta description |
 |---|---|---|
+| Rhode Egypt | `Rhode Egypt — 100% Authentic \| Sofie's` | `Buy authentic Rhode in Egypt at Sofie's Makeup Store. Peptide Lip Treatment, Lip Tint, Glazing Milk & more. 100% original. Fast delivery nationwide.` |
 | Rare Beauty Egypt | `Rare Beauty Egypt — 100% Authentic \| Sofie's` | `Shop authentic Rare Beauty in Egypt at Sofie's Makeup Store. Soft Pinch Blush, Positive Light & more. Fast delivery nationwide. 100% original.` |
 | Huda Beauty Egypt | `Huda Beauty Egypt — 100% Authentic \| Sofie's` | `Authentic Huda Beauty in Egypt: Faux Filter, palettes, lips & more. Curated by experts, delivered across Egypt. 100% original, guaranteed.` |
 | Charlotte Tilbury Egypt | `Charlotte Tilbury Egypt — Authentic \| Sofie's` | `Shop authentic Charlotte Tilbury in Egypt — Pillow Talk, Magic Cream, Flawless Filter. 100% original. Fast delivery nationwide.` |
