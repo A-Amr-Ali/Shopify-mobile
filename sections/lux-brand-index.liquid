@@ -1,0 +1,96 @@
+{%- comment -%}
+  Sofie — Brand Index (A–Z). A crawlable directory of every brand collection, for
+  /pages/brands. Pure internal linking: one clean link per brand, grouped under
+  letter headings, so Google can reach every brand collection from one hub page.
+
+  Blocks render in the order they appear, so keep them alphabetical in the theme
+  editor — Liquid can't sort blocks by a nested setting. Letter headings are
+  derived from each brand's first character, so they stay correct either way.
+{%- endcomment -%}
+{{ 'sofie-luxury.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .sofie-bindex { padding: 3rem 1.2rem; }
+  .sofie-bindex__inner { max-width: var(--sofie-container); margin: 0 auto; }
+  .sofie-bindex__eyebrow { color: var(--sofie-gold); font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; margin: 0 0 .5rem; }
+  .sofie-bindex__h1 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: clamp(1.7rem, 4vw, 2.4rem); color: var(--sofie-ink); margin: 0 0 .6rem; }
+  .sofie-bindex__intro { color: #5c534e; font-size: 1rem; line-height: 1.75; max-width: 62ch; margin: 0 0 1.6rem; }
+  .sofie-bindex__jump { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 2rem; padding: 0; list-style: none; }
+  .sofie-bindex__jump a { display: inline-block; min-width: 2rem; text-align: center; padding: .35rem .5rem; border: 1px solid #e6ded6; border-radius: 999px; color: var(--sofie-ink); text-decoration: none; font-size: .8rem; letter-spacing: .06em; }
+  .sofie-bindex__letter { font-family: Georgia, 'Times New Roman', serif; font-size: 1.25rem; color: var(--sofie-gold); margin: 2rem 0 .75rem; padding-bottom: .4rem; border-bottom: 1px solid #ece6df; scroll-margin-top: 5rem; }
+  .sofie-bindex__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: .55rem 1.5rem; }
+  .sofie-bindex__list a { color: var(--sofie-ink); text-decoration: none; font-size: 1rem; line-height: 1.9; border-bottom: 1px solid transparent; }
+  .sofie-bindex__list a:hover { border-bottom-color: var(--sofie-gold); }
+</style>
+
+<section class="sofie-bindex">
+  <div class="sofie-bindex__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="sofie-bindex__eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h1 class="sofie-bindex__h1">{{ section.settings.heading }}</h1>
+    {%- if section.settings.intro != blank -%}
+      <div class="sofie-bindex__intro">{{ section.settings.intro }}</div>
+    {%- endif -%}
+
+    {%- comment -%} Pass 1: collect the distinct first letters for the jump bar. {%- endcomment -%}
+    {%- assign seen = '' -%}
+    {%- for block in section.blocks -%}
+      {%- assign l = block.settings.name | strip | slice: 0 | upcase -%}
+      {%- unless seen contains l -%}{%- assign seen = seen | append: l -%}{%- endunless -%}
+    {%- endfor -%}
+
+    {%- if section.settings.show_jump and seen != '' -%}
+      <ul class="sofie-bindex__jump">
+        {%- assign letters = seen | split: '' -%}
+        {%- for l in letters -%}
+          <li><a href="#brand-{{ l | downcase }}">{{ l }}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- comment -%} Pass 2: render, opening a new letter group when it changes. {%- endcomment -%}
+    {%- assign prev = '' -%}
+    {%- for block in section.blocks -%}
+      {%- assign l = block.settings.name | strip | slice: 0 | upcase -%}
+      {%- if l != prev -%}
+        {%- unless forloop.first -%}</ul>{%- endunless -%}
+        <h2 class="sofie-bindex__letter" id="brand-{{ l | downcase }}">{{ l }}</h2>
+        <ul class="sofie-bindex__list">
+        {%- assign prev = l -%}
+      {%- endif -%}
+        <li{{ block.shopify_attributes }}>
+          <a href="{{ block.settings.link | default: '/collections' }}">{{ block.settings.name }}</a>
+        </li>
+      {%- if forloop.last -%}</ul>{%- endif -%}
+    {%- endfor -%}
+
+    {%- if section.blocks.size == 0 -%}
+      <p class="sofie-bindex__intro">Add a brand block to start the index.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lux Brand Index",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "All Brands" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by Brand" },
+    { "type": "richtext", "id": "intro", "label": "Intro", "default": "<p>Every prestige brand we carry in Egypt, A to Z. Authentic stock, priced in EGP, delivered nationwide.</p>" },
+    { "type": "checkbox", "id": "show_jump", "label": "Show A–Z jump bar", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Brand name", "info": "Keep blocks in alphabetical order — they render in this order." },
+        { "type": "url", "id": "link", "label": "Link to brand collection" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Lux Brand Index" }]
+}
+{% endschema %}

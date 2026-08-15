@@ -1,0 +1,132 @@
+{
+  "sections": {
+    "main": {
+      "type": "lux-brand-index",
+      "blocks": {
+        "b01": {
+          "type": "brand",
+          "settings": {
+            "name": "Charlotte Tilbury",
+            "link": "shopify://collections/charlotte-tilbury"
+          }
+        },
+        "b02": {
+          "type": "brand",
+          "settings": {
+            "name": "Glossier",
+            "link": "shopify://collections/glossier"
+          }
+        },
+        "b03": {
+          "type": "brand",
+          "settings": {
+            "name": "Hourglass",
+            "link": "shopify://collections/hourglass"
+          }
+        },
+        "b04": {
+          "type": "brand",
+          "settings": {
+            "name": "Huda Beauty",
+            "link": "shopify://collections/huda-beauty"
+          }
+        },
+        "b05": {
+          "type": "brand",
+          "settings": {
+            "name": "Kosas",
+            "link": "shopify://collections/kosas"
+          }
+        },
+        "b06": {
+          "type": "brand",
+          "settings": {
+            "name": "Laura Mercier",
+            "link": "shopify://collections/laura-mercier"
+          }
+        },
+        "b07": {
+          "type": "brand",
+          "settings": {
+            "name": "Makeup by Mario",
+            "link": "shopify://collections/makeup-by-mario"
+          }
+        },
+        "b08": {
+          "type": "brand",
+          "settings": {
+            "name": "NARS",
+            "link": "shopify://collections/nars"
+          }
+        },
+        "b09": {
+          "type": "brand",
+          "settings": {
+            "name": "One/Size",
+            "link": "shopify://collections/one-size"
+          }
+        },
+        "b10": {
+          "type": "brand",
+          "settings": {
+            "name": "Patrick Ta",
+            "link": "shopify://collections/patrick-ta"
+          }
+        },
+        "b11": {
+          "type": "brand",
+          "settings": {
+            "name": "Rare Beauty",
+            "link": "shopify://collections/rare-beauty"
+          }
+        },
+        "b12": {
+          "type": "brand",
+          "settings": {
+            "name": "Rhode",
+            "link": "shopify://collections/rhode"
+          }
+        },
+        "b13": {
+          "type": "brand",
+          "settings": {
+            "name": "Saie",
+            "link": "shopify://collections/saie"
+          }
+        },
+        "b14": {
+          "type": "brand",
+          "settings": {
+            "name": "Summer Fridays",
+            "link": "shopify://collections/summer-fridays"
+          }
+        }
+      },
+      "block_order": [
+        "b01",
+        "b02",
+        "b03",
+        "b04",
+        "b05",
+        "b06",
+        "b07",
+        "b08",
+        "b09",
+        "b10",
+        "b11",
+        "b12",
+        "b13",
+        "b14"
+      ],
+      "settings": {
+        "eyebrow": "All Brands",
+        "heading": "Shop by Brand",
+        "intro": "<p>Every prestige brand we carry in Egypt, A to Z. We source authentic stock, price it in EGP, and deliver to every governorate — or visit us at Marassi M-Porium and New Cairo Mivida.</p>",
+        "show_jump": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
