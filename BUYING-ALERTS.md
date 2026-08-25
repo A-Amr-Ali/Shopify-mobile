@@ -1,7 +1,7 @@
 # 🛒 Sofie's — Buying Alerts
 
 **Brand launches on official stores that you DON'T stock yet.**
-Auto-generated 2026-08-24 · refreshes automatically every day via the New-In engine.
+Auto-generated 2026-08-25 · refreshes automatically every day via the New-In engine.
 
 > These are new products the brands just launched (read live from their official
 > sites) that aren't in your catalog. Review and decide what to order.
