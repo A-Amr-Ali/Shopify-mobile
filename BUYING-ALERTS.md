@@ -1,7 +1,7 @@
 # 🛒 Sofie's — Buying Alerts
 
 **Brand launches on official stores that you DON'T stock yet.**
-Auto-generated 2026-08-28 · refreshes automatically every day via the New-In engine.
+Auto-generated 2026-08-29 · refreshes automatically every day via the New-In engine.
 
 > These are new products the brands just launched (read live from their official
 > sites) that aren't in your catalog. Review and decide what to order.
@@ -18,7 +18,7 @@ Auto-generated 2026-08-28 · refreshes automatically every day via the New-In en
 - **Heat Check No Melt, No Shine Trio** — https://onesizebeauty.com/products/heat-check-no-melt-no-shine-trio
 
 ## ✨ Rare Beauty
-- **Rare Beginnings Fragrance Collector’s Set** — https://rarebeauty.com/products/rare-beginnings-fragrance-collector-s-set
+- **Rare Beginnings Eau de Parfum Collector’s Set** — https://rarebeauty.com/products/rare-beginnings-fragrance-collector-s-set
 
 ---
 
