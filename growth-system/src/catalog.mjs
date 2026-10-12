@@ -3,7 +3,8 @@ import { normalizeFeed } from './engine.mjs';
 const feeds = new Map();
 const readyCache = new Map();
 let tokenCache = null;
-export const STOCK_QUERY = `query GrowthStock($ids: [ID!]!) { nodes(ids: $ids) { ... on ProductVariant { id title price inventoryQuantity inventoryItem { tracked inventoryLevels(first: 20) { nodes { location { id name } quantities(names: ["available"]) { name quantity } } pageInfo { hasNextPage endCursor } } } product { handle status onlineStoreUrl } } } }`;
+export const STOCK_QUERY = `query GrowthStock($ids: [ID!]!) { nodes(ids: $ids) { ... on ProductVariant { id title price inventoryQuantity inventoryItem { tracked inventoryLevels(first: 20) { nodes { location { id name } quantities(names: ["available"]) { name quantity } } pageInfo { hasNextPage endCursor } } } product { handle status onlineStoreUrl nowVariants: metafield(namespace: "custom", key: "sofie_hours_variants") { jsonValue } } } } }`;
+export const COLLECTION_QUERY = `query GrowthCollection($handle: String!, $after: String) { collectionByIdentifier(identifier: { handle: $handle }) { products(first: 40, after: $after, sortKey: BEST_SELLING) { nodes { handle title vendor productType tags description(truncateAt: 700) status onlineStoreUrl featuredImage { url } nowVariants: metafield(namespace: "custom", key: "sofie_hours_variants") { jsonValue } variants(first: 12) { nodes { id title price inventoryQuantity } pageInfo { hasNextPage endCursor } } } pageInfo { hasNextPage endCursor } } } }`;
 
 async function getToken() {
   if (process.env.SHOPIFY_ADMIN_TOKEN) return process.env.SHOPIFY_ADMIN_TOKEN;
@@ -36,10 +37,30 @@ export async function adminQuery(query, variables = {}) {
 async function feed(handle, step, fresh = false) {
   const hit = feeds.get(handle);
   if (!fresh && hit && Date.now() - hit.at < 180000) return normalizeFeed(hit.rows, step);
-  const r = await fetch(`${STORE}/collections/${handle}?view=sfm&sort_by=best-selling`, { signal: AbortSignal.timeout(12000), headers: { accept: 'application/json' } });
-  if (!r.ok) throw new Error('catalog_http_' + r.status);
-  const rows = JSON.parse(await r.text());
-  if (!Array.isArray(rows)) throw new Error('catalog_format');
+  // Prefer the authenticated data path: some hosting networks cannot read the
+  // storefront's public collection JSON even though the page works in-browser.
+  let rows = [];
+  try {
+    let after = null;
+    for (let page = 0; page < 3; page++) {
+      const products = (await adminQuery(COLLECTION_QUERY, { handle, after })).collectionByIdentifier?.products;
+      if (!products) break;
+      for (const p of products.nodes) {
+        if (p.status !== 'ACTIVE' || !p.onlineStoreUrl) continue;
+        const ready = Array.isArray(p.nowVariants?.jsonValue) ? p.nowVariants.jsonValue : [];
+        rows.push({ h:p.handle,t:p.title,v:p.vendor,y:p.productType,g:p.tags.join(','),d:p.description,i:p.featuredImage?.url || '',
+          n:ready.length ? 1 : 0,s:p.variants.nodes.map(v=>({id:v.id.replace(/^.*\//,''),t:v.title,p:Math.round(Number(v.price)*100),a:v.inventoryQuantity>0?1:0})) });
+      }
+      if (!products.pageInfo.hasNextPage) break;
+      after = products.pageInfo.endCursor;
+    }
+  } catch (error) {
+    console.warn('native catalog:', error.message);
+    const r = await fetch(`${STORE}/collections/${handle}?view=sfm&sort_by=best-selling`, { signal: AbortSignal.timeout(12000), headers: { accept: 'application/json' } });
+    if (!r.ok) throw new Error('catalog_http_' + r.status);
+    rows = JSON.parse(await r.text());
+    if (!Array.isArray(rows)) throw new Error('catalog_format');
+  }
   feeds.set(handle, { rows, at: Date.now() });
   return normalizeFeed(rows, step);
 }
@@ -60,7 +81,10 @@ export async function verifyStock(cards) {
       if (!v || v.product?.status !== 'ACTIVE' || !v.product?.onlineStoreUrl || !v.inventoryItem?.tracked || !(v.inventoryQuantity > 0)) return [];
       const local = !v.inventoryItem.inventoryLevels.pageInfo.hasNextPage && v.inventoryItem.inventoryLevels.nodes
         .some(l => l.location.id === localId && l.quantities.some(q => q.name === 'available' && q.quantity > 0));
-      return [{ ...card, price: Number(v.price), stockChecked: true, now: local && card.productNowSignal }];
+      const list = v.product.nowVariants?.jsonValue;
+      const hasList = Array.isArray(list) && list.length > 0;
+      const explicit = hasList && list.includes(v.id);
+      return [{ ...card, price: Number(v.price), stockChecked: true, now: local && (hasList ? explicit : card.productNowSignal), nowVerified:hasList }];
     }), verification: 'shopify_inventory' };
   } catch (error) {
     // Fail closed for physical-stock or fast-delivery assertions.
@@ -82,7 +106,13 @@ async function readyOptions(handle) {
 }
 
 export function markExactNow(cards, readyByHandle) {
-  return cards.map(c => ({ ...c, now: c.now && readyByHandle.get(c.handle)?.has(c.variantId) === true }));
+  return cards.map(c => ({ ...c, now: c.now && (c.nowVerified === true || readyByHandle.get(c.handle)?.has(c.variantId) === true) }));
+}
+
+export function boundCandidates(cards, limit = 160) {
+  const steps = [...new Set(cards.map(c => c.step))];
+  const perStep = Math.floor(limit / Math.max(steps.length, 1));
+  return steps.flatMap(step => cards.filter(c => c.step === step && c.price > 0).slice(0, perStep));
 }
 
 export async function loadCatalog(goal, { fresh = false, today = false, budget = 100000 } = {}) {
@@ -90,10 +120,10 @@ export async function loadCatalog(goal, { fresh = false, today = false, budget =
   const cards = sets.flatMap(s => s.status === 'fulfilled' ? s.value : []);
   if (!cards.length && sets.some(s => s.status === 'rejected')) throw new Error('catalog_unavailable');
   // Bound API cost without showing only one shade of every product.
-  const limited = cards.filter(c => c.price > 0).slice(0, 160);
+  const limited = boundCandidates(cards);
   const checked = await verifyStock(limited);
   if (today) {
-    const handles = [...new Set(checked.cards.filter(c => c.now && c.price <= budget).map(c => c.handle))].slice(0, 20);
+    const handles = [...new Set(checked.cards.filter(c => c.now && !c.nowVerified && c.price <= budget).map(c => c.handle))].slice(0, 20);
     const readyByHandle = new Map();
     await Promise.all(handles.map(async h => { try { readyByHandle.set(h, await readyOptions(h)); } catch { readyByHandle.set(h, new Set()); } }));
     checked.cards = markExactNow(checked.cards, readyByHandle);

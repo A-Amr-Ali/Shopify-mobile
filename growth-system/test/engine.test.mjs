@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { cleanProfile, normalizeFeed, chooseRoutine, medicalQuestion, campaignUrl } from '../src/engine.mjs';
-import { markExactNow } from '../src/catalog.mjs';
+import { markExactNow, boundCandidates } from '../src/catalog.mjs';
 const card = (id,price,step,extra={}) => ({variantId:String(id),handle:'product-'+id,title:'Product '+id,price,step,rank:0,text:'hydrating ceramide gentle fragrance-free',now:false,...extra});
 test('total budget applies to the basket, not separately to each product',()=>{
  const p=cleanProfile({goal:'prep',budget:6000,skin:'dry'});
@@ -25,6 +25,11 @@ test('sensitive skin excludes exfoliating actives and unsubstantiated gentle cla
  assert.deepEqual(r.items.map(x=>x.variantId),['3']);
 });
 test('no affordable option returns no invented fallback',()=>assert.equal(chooseRoutine([card(1,6001,'prep')],cleanProfile({budget:6000})).items.length,0));
+test('a large first category cannot crowd the next routine step out of the catalogue',()=>{
+ const cards=[...Array.from({length:200},(_,i)=>card(i+10,2000,'prep')),card(1,1000,'primer')];
+ const r=chooseRoutine(boundCandidates(cards),cleanProfile({budget:6000}));
+ assert.equal(r.items.length,2);assert.ok(r.items.some(c=>c.step==='primer'));
+});
 test('negative and non-numeric budgets and unknown goals are rejected',()=>{
  for(const budget of [-1,'NaN',0,100001])assert.throws(()=>cleanProfile({budget}));assert.throws(()=>cleanProfile({goal:'cure_acne'}));
 });
