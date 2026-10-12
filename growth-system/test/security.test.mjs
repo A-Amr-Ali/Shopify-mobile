@@ -8,9 +8,13 @@ test('webhooks require a matching signature over the raw bytes',()=>{
 });
 test('missing admin/cron secrets never authorize',()=>{assert.equal(secretMatches('',''),false);assert.equal(secretMatches('x','secret'),false);});
 test('attribution captures no customer names, contact details or addresses',()=>{
- const r=orderRecord({id:1,currency:'EGP',current_subtotal_price:'7000',financial_status:'paid',fulfillment_status:'fulfilled',email:'private@example.com',customer:{first_name:'Private'},shipping_address:{address1:'Private'},note_attributes:[{name:'sofie_campaign',value:'campaign'}]});
+ const r=orderRecord({id:1,currency:'EGP',current_subtotal_price:'7000',financial_status:'paid',fulfillment_status:'fulfilled',email:'private@example.com',customer:{first_name:'Private'},shipping_address:{address1:'Private'},note_attributes:[{name:'sofie_campaign',value:'sofie_knows_q4_2026'}]});
  assert.equal(r.net_value,7000);assert.equal(r.delivered_at,undefined);assert.equal(r.email,undefined);assert.equal(r.customer,undefined);assert.equal(r.shipping_address,undefined);
 });
 test('cancelled/refunded orders contribute zero net value',()=>{
- for(const x of [{cancelled_at:'2026-10-12T00:00:00Z'},{financial_status:'refunded'}])assert.equal(orderRecord({id:1,subtotal_price:'7000',note_attributes:[{name:'sofie_campaign',value:'campaign'}],...x}).net_value,0);
+ for(const x of [{cancelled_at:'2026-10-12T00:00:00Z'},{financial_status:'refunded'}])assert.equal(orderRecord({id:1,subtotal_price:'7000',note_attributes:[{name:'sofie_campaign',value:'sofie_knows_q4_2026'}],...x}).net_value,0);
+});
+test('unknown campaigns and malformed session identifiers cannot enter attribution',()=>{
+ assert.equal(orderRecord({id:1,note_attributes:[{name:'sofie_campaign',value:'unrelated'}]}),null);
+ assert.equal(orderRecord({id:1,note_attributes:[{name:'sofie_campaign',value:'sofie_knows_q4_2026'},{name:'sofie_match_session',value:'bad'}]}).session_id,null);
 });

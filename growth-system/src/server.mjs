@@ -7,10 +7,12 @@ import { explainRoutine } from './ai.mjs';
 import { db, configured, takeBudget } from './db.mjs';
 import { privateActor, secretMatches, validWebhook, orderRecord } from './security.mjs';
 import { runGrowth } from './jobs.mjs';
+import { ensureOrderWebhooks } from './webhooks.mjs';
 import { GOALS } from './config.mjs';
 const publicDir = fileURLToPath(new URL('../public/', import.meta.url));
 const assets = { '/': ['index.html', 'text/html; charset=utf-8'], '/app.js': ['app.js','text/javascript; charset=utf-8'],
   '/styles.css': ['styles.css','text/css; charset=utf-8'], '/nour.jpg': ['nour.jpg','image/jpeg'] };
+for (let i=1;i<=5;i++) assets['/launch-0'+i+'.png'] = ['launch-0'+i+'.png','image/png'];
 const allowedOrigins = new Set(['https://sofiestore.net', 'https://www.sofiestore.net']);
 if (process.env.PUBLIC_ORIGIN) allowedOrigins.add(process.env.PUBLIC_ORIGIN.replace(/\/$/, ''));
 function send(res, status, body) { res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control':'no-store' }); res.end(JSON.stringify(body)); }
@@ -66,7 +68,7 @@ export async function handler(req, res) {
     }
     if (url.pathname === '/webhooks/orders' && req.method === 'POST') {
       const raw = await bodyBytes(req, 1048576);
-      if (!validWebhook(raw, req.headers['x-shopify-hmac-sha256'], process.env.SHOPIFY_ADMIN_CLIENT_SECRET)) return send(res,401,{error:'unauthorized'});
+      if (req.headers['x-shopify-shop-domain'] !== process.env.SHOP_DOMAIN || !validWebhook(raw, req.headers['x-shopify-hmac-sha256'], process.env.SHOPIFY_ADMIN_CLIENT_SECRET)) return send(res,401,{error:'unauthorized'});
       const row = orderRecord(JSON.parse(raw));
       if (row) {
         // Insert once, then conditionally update atomically. A delayed webhook
@@ -99,6 +101,7 @@ export async function handler(req, res) {
 if (process.env.NODE_ENV !== 'test') {
   http.createServer(handler).listen(Number(process.env.PORT || 3000), '0.0.0.0', () => console.log('SOFIE Growth listening'));
   if (configured && process.env.RUN_JOBS === 'true') {
+    ensureOrderWebhooks().then(s => console.log('order webhook setup', JSON.stringify(s))).catch(e=>console.warn('order webhook setup unavailable:', e.message));
     setTimeout(() => runGrowth().then(s => console.log('growth queue', JSON.stringify(s))), 15000);
     setInterval(() => runGrowth().then(s => console.log('growth queue', JSON.stringify(s))), 30 * 60000).unref();
   }

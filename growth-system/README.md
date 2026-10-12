@@ -36,4 +36,6 @@ The initial generated portrait is an original fictional virtual educator called 
 
 The customer can opt in to anonymous interaction measurement. This does not subscribe them to marketing. With that consent, cart attributes connect the campaign, content and random session to the order. HMAC-verified Shopify order webhooks record attribution without customer names, addresses or contact details. `fulfilled` is never counted as `delivered`; delivery confirmations require carrier/POS evidence.
 
+On startup, the worker attempts to register create/update/cancel webhooks through the same existing app that verifies their signatures, selecting only attribution and order-state fields. Existing subscriptions are kept. The recorded `order_webhook_setup` result shows whether the app's current scopes allowed registration. No new scopes are granted.
+
 The registration of live Shopify webhooks, Metricool account verification and final asset scheduling each have separate evidence in the campaign HQ. A successful deploy does not imply that any of those integrations are active.
