@@ -14,7 +14,7 @@ export async function explainRoutine(profile, routine, actor) {
     if (!r.ok) throw new Error('ai_http_' + r.status);
     const result = await r.json();
     const text = result.content?.filter(c => c.type === 'text').map(c => c.text).join('\n').trim();
-    if (!text || text.length > 1600 || /https?:|guarantee|cure|clinically proven|100%|علاج|يشفي|مضمون|نتيجة مضمونة/i.test(text)) return fallback();
+    if (!text || text.length > 1600 || /https?:|guarantee|\bcure\b|clinically proven|100%|يشفي|نتيجة مضمونة/i.test(text)) { console.warn('AI explanation held:',!text?'empty':text.length>1600?'length':'claim_guard');return fallback(); }
     return { text, source: 'ai_grounded' };
   } catch (error) { console.warn('AI explanation:', error.message); return fallback(); }
 }

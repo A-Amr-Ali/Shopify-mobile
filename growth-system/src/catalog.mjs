@@ -3,7 +3,7 @@ import { normalizeFeed } from './engine.mjs';
 const feeds = new Map();
 const readyCache = new Map();
 let tokenCache = null;
-export const STOCK_QUERY = `query GrowthStock($ids: [ID!]!) { nodes(ids: $ids) { ... on ProductVariant { id title price inventoryQuantity inventoryItem { tracked inventoryLevels(first: 20) { nodes { location { id name } quantities(names: ["available"]) { name quantity } } pageInfo { hasNextPage endCursor } } } product { handle status onlineStoreUrl nowVariants: metafield(namespace: "custom", key: "sofie_hours_variants") { jsonValue } } } } }`;
+export const STOCK_QUERY = `query GrowthStock($ids: [ID!]!) { nodes(ids: $ids) { ... on ProductVariant { id title price inventoryQuantity product { handle status onlineStoreUrl nowVariants: metafield(namespace: "custom", key: "sofie_hours_variants") { jsonValue } } } } }`;
 export const COLLECTION_QUERY = `query GrowthCollection($handle: String!, $after: String) { collectionByIdentifier(identifier: { handle: $handle }) { products(first: 40, after: $after, sortKey: BEST_SELLING) { nodes { handle title vendor productType tags description(truncateAt: 700) status onlineStoreUrl featuredImage { url } nowVariants: metafield(namespace: "custom", key: "sofie_hours_variants") { jsonValue } variants(first: 12) { nodes { id title price inventoryQuantity } pageInfo { hasNextPage endCursor } } } pageInfo { hasNextPage endCursor } } } }`;
 
 async function getToken() {
@@ -30,7 +30,7 @@ export async function adminQuery(query, variables = {}) {
     body: JSON.stringify({ query, variables })
   });
   if (!r.ok) throw new Error('admin_http_' + r.status);
-  const data = await r.json(); if (data.errors?.length) throw new Error('admin_query_rejected');
+  const data = await r.json(); if (data.errors?.length) { console.warn('Shopify query error:',data.errors.map(e=>String(e.message).slice(0,240)).join('; '));throw new Error('admin_query_rejected'); }
   return data.data;
 }
 
@@ -65,9 +65,9 @@ async function feed(handle, step, fresh = false) {
   return normalizeFeed(rows, step);
 }
 
-// Both public sale availability and tracked positive physical stock are required
-// when the Admin inventory check is available. The public feed is never used to
-// infer SOFIE NOW for every shade of a product.
+// Check the exact variant's current reported Shopify quantity and publication.
+// The store's existing SOFIE NOW variant list is the express-eligibility source.
+// This does not infer warehouse inventory from a product-wide marketing badge.
 export async function verifyStock(cards) {
   if (!cards.length) return { cards: [], verification: 'no_candidates' };
   try {
@@ -75,16 +75,13 @@ export async function verifyStock(cards) {
     const nodes = [];
     for (let i = 0; i < ids.length; i += 40) nodes.push(...(await adminQuery(STOCK_QUERY, { ids: ids.slice(i, i + 40) })).nodes);
     const byId = new Map(nodes.filter(Boolean).map(v => [v.id.replace(/^.*\//, ''), v]));
-    const localId = process.env.LOCAL_LOCATION_ID || '';
     return { cards: cards.flatMap(card => {
       const v = byId.get(card.variantId);
-      if (!v || v.product?.status !== 'ACTIVE' || !v.product?.onlineStoreUrl || !v.inventoryItem?.tracked || !(v.inventoryQuantity > 0)) return [];
-      const local = !v.inventoryItem.inventoryLevels.pageInfo.hasNextPage && v.inventoryItem.inventoryLevels.nodes
-        .some(l => l.location.id === localId && l.quantities.some(q => q.name === 'available' && q.quantity > 0));
+      if (!v || v.product?.status !== 'ACTIVE' || !v.product?.onlineStoreUrl || !(v.inventoryQuantity > 0)) return [];
       const list = v.product.nowVariants?.jsonValue;
       const hasList = Array.isArray(list) && list.length > 0;
       const explicit = hasList && list.includes(v.id);
-      return [{ ...card, price: Number(v.price), stockChecked: true, now: local && (hasList ? explicit : card.productNowSignal), nowVerified:hasList }];
+      return [{ ...card, price: Number(v.price), stockChecked: true, now: hasList ? explicit : card.productNowSignal, nowVerified:hasList }];
     }), verification: 'shopify_inventory' };
   } catch (error) {
     // Fail closed for physical-stock or fast-delivery assertions.

@@ -8,7 +8,7 @@ The separate Railway service uses `/growth-system` on `codex/sofie-growth-2026q4
 
 `npm start` serves the bilingual adviser. `npm test` verifies basket budgets, shade availability, exact SOFIE NOW eligibility, medical escalation and webhook signatures.
 
-The adviser reads the store's existing `collection.sfm` feeds, checks selected variants against Shopify inventory, and verifies exact SOFIE NOW eligibility from the product's public ready-option list. If an inventory check is unavailable it makes no physical-stock or express-delivery assertion. Cosmetic guidance is generated from verified listing facts when the configured AI account works; a rules fallback keeps advice available.
+The adviser reads bounded category candidates through native Shopify collection queries, with the store's existing `collection.sfm` feeds as a fallback. It rechecks each selected variant's current Shopify quantity, price and publication. SOFIE NOW uses the existing exact eligible-variant field; where that field is absent it requires the product page's exact ready-option list. It does not independently verify shelf counts or courier capacity. If an inventory check is unavailable it makes no physical-stock or express-delivery assertion. Cosmetic guidance is generated from verified listing facts when the configured AI account works; a rules fallback keeps advice available.
 
 ## Persistent state
 
