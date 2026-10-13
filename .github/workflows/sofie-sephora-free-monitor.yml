@@ -1,0 +1,40 @@
+name: SOFIE authorized catalog monitor (read only)
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 5 * * *'
+permissions:
+  contents: read
+concurrency:
+  group: sofie-authorized-catalog
+  cancel-in-progress: false
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install PostgreSQL driver
+        run: pip install 'psycopg[binary]==3.2.12'
+      - name: Validate pricing and no-write rules
+        working-directory: integrations/sofie-sephora-free-monitor
+        run: python -m unittest discover -s tests -v
+      - name: Run feed watcher (never accesses Shopify)
+        working-directory: integrations/sofie-sephora-free-monitor
+        env:
+          FEED_US_URL: ${{ secrets.FEED_US_URL }}
+          FEED_UAE_URL: ${{ secrets.FEED_UAE_URL }}
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          AUTHORIZED_FEED_HOSTS: ${{ vars.AUTHORIZED_FEED_HOSTS }}
+          SOURCE_RIGHTS_CONFIRMED: ${{ vars.SOURCE_RIGHTS_CONFIRMED }}
+        run: python monitor.py
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-source-report
+          path: integrations/sofie-sephora-free-monitor/reports/latest.json
+          retention-days: 7
