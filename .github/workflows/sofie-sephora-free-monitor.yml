@@ -1,5 +1,8 @@
 name: SOFIE authorized catalog monitor (read only)
 on:
+  push:
+    branches:
+      - sofie-sephora-free-monitor
   workflow_dispatch:
   schedule:
     - cron: '17 5 * * *'
