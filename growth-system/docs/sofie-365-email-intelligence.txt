@@ -1,0 +1,9 @@
+SOFIE 365 email intelligence - development branch
+
+SAFE DRAFT ONLY. This branch derives from the existing growth service but does not modify its running jobs or credentials.
+
+Includes a pure decision module and dummy unit tests. It checks explicit marketing opt-in, suppression, stock at exact variant level, product price, verified sources for trends, holiday-date confirmation and promotional email frequency. It never guesses a profession from an email address.
+
+Run tests in growth-system using node --test test/sofie-email-intelligence.test.mjs.
+
+Current prerequisites: Klaviyo catalog currently returns no products; repair Shopify product catalog sync and install the selected Email plan. Three new Klaviyo templates and three segments exist; see the 78-event calendar in private Supabase sofie_email_calendar. No scheduled or automatic customer sends have been enabled. A separate worker integration, preview testing, safeguards, verified Klaviyo billing and SMTP domain validation are required before activation.
