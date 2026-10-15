@@ -39,3 +39,29 @@ test('medical questions route to a specialist instead of a cosmetic basket',()=>
 test('campaign links carry content and source attribution',()=>{
  const u=new URL(campaignUrl('W01-R1','store','prep'));assert.equal(u.searchParams.get('utm_content'),'W01-R1');assert.equal(u.searchParams.get('utm_medium'),'qr');assert.equal(u.pathname,'/pages/sofie-knows');
 });
+
+test('a missing or blank budget means no spending ceiling',()=>{
+  for (const budget of [undefined, null, '']) {
+    const p = cleanProfile({goal:'prep', budget});
+    assert.equal(p.budget, null);
+    const result = chooseRoutine([card(401, 125000, 'prep')], p);
+    assert.deepEqual(result.items.map(c => c.variantId), ['401']);
+    assert.equal(result.total, 125000);
+  }
+});
+test('face areas and concerns are normalized and validated',()=>{
+  const p = cleanProfile({faceAreas:['under-eyes','cheeks'],concerns:['dark-circles','dryness']});
+  assert.deepEqual(p.faceAreas,['under-eyes','cheeks']);
+  assert.deepEqual(p.concerns,['dark-circles','dryness']);
+  assert.throws(()=>cleanProfile({faceAreas:['unknown']}),/invalid_face_areas/);
+  assert.throws(()=>cleanProfile({concerns:['cure-disease']}),/invalid_concerns/);
+  assert.throws(()=>cleanProfile({faceAreas:['nose','cheeks','lips','forehead']}),/invalid_face_areas/);
+});
+test('choosing under-eye adds relevant eye-care while keeping available general steps',()=>{
+  const p=cleanProfile({goal:'prep',faceAreas:['under-eyes'],concerns:['dark-circles']});
+  const cards=[card(2,2000,'prep'),card(3,1400,'eye',{text:'under eye cream for dark circles with caffeine'})];
+  const result=chooseRoutine(cards,p);
+  assert.ok(result.items.some(c=>c.step==='eye'));
+  assert.ok(result.items.some(c=>c.step==='prep'));
+  assert.ok(result.items.find(c=>c.step==='eye').reasons.some(x=>x.includes('المنطقة')||x.includes('اهتمامك')));
+});
