@@ -112,15 +112,15 @@ export function boundCandidates(cards, limit = 160) {
   return steps.flatMap(step => cards.filter(c => c.step === step && c.price > 0).slice(0, perStep));
 }
 
-export async function loadCatalog(goal, { fresh = false, today = false, budget = 100000 } = {}) {
-  const sets = await Promise.allSettled(GOALS[goal].steps.map(([step, handle]) => feed(handle, step, fresh)));
+export async function loadCatalog(goal, { fresh = false, today = false, budget = null, faceAreas = [], concerns = [] } = {}) {
+  const sets = await Promise.allSettled(routineSteps({ goal, faceAreas, concerns }).map(([step, handle]) => feed(handle, step, fresh)));
   const cards = sets.flatMap(s => s.status === 'fulfilled' ? s.value : []);
   if (!cards.length && sets.some(s => s.status === 'rejected')) throw new Error('catalog_unavailable');
   // Bound API cost without showing only one shade of every product.
   const limited = boundCandidates(cards);
   const checked = await verifyStock(limited);
   if (today) {
-    const handles = [...new Set(checked.cards.filter(c => c.now && !c.nowVerified && c.price <= budget).map(c => c.handle))].slice(0, 20);
+    const handles = [...new Set(checked.cards.filter(c => c.now && !c.nowVerified && (budget === null || c.price <= budget)).map(c => c.handle))].slice(0, 20);
     const readyByHandle = new Map();
     await Promise.all(handles.map(async h => { try { readyByHandle.set(h, await readyOptions(h)); } catch { readyByHandle.set(h, new Set()); } }));
     checked.cards = markExactNow(checked.cards, readyByHandle);
