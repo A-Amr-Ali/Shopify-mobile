@@ -49,7 +49,7 @@ export async function handler(req, res) {
       if (configured && !(await takeBudget('match', actor, 30, 3600))) return send(res,429,{error:'too_many_requests'});
       const profile = cleanProfile(await bodyJSON(req));
       if (medicalQuestion(profile.note)) return send(res,200,{items:[],total:0,currency:'EGP',advice:ruleAdvice(profile,[]),source:'referral',needsSpecialist:true});
-      const catalog = await loadCatalog(profile.goal, { today: profile.today, budget: profile.budget });
+      const catalog = await loadCatalog(profile.goal, { today: profile.today, budget: profile.budget, faceAreas: profile.faceAreas });
       const routine = chooseRoutine(catalog.cards, profile);
       const advice = await explainRoutine(profile, routine, actor);
       return send(res,200,{...routine,advice:advice.text,source:advice.source,verification:catalog.verification,checkedAt:new Date().toISOString()});
