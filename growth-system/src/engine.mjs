@@ -1,13 +1,31 @@
 import { GOALS, SKINS, FINISHES, STEP_NAMES, STORE, CAMPAIGN } from './config.mjs';
+export const FACE_AREAS = ['forehead', 'under-eyes', 'around-eyes', 'cheeks', 'nose', 'lips', 'chin-jaw', 'whole-face'];
+export const CONCERNS = ['breakouts', 'dark-circles', 'dark-spots', 'dryness', 'fine-lines', 'pores', 'redness', 'texture', 'dullness', 'oiliness', 'puffiness'];
+function validateChoices(value, allowed, field) {
+  if (value == null) return [];
+  if (!Array.isArray(value) || value.length > 3 || value.some(x => typeof x !== 'string' || !allowed.includes(x))) throw new Error('invalid_' + field);
+  return [...new Set(value)];
+}
+export function routineSteps(p) {
+  const steps = [...GOALS[p.goal].steps];
+  if (p.goal === 'gift' || p.goal === 'scent') return steps;
+  if (p.faceAreas?.some(a => a === 'under-eyes' || a === 'around-eyes')) steps.push(['eye', 'eye-care']);
+  if (p.faceAreas?.includes('lips') && !steps.some(([s]) => s === 'lip')) steps.push(['lip', 'lip-balms-treatments-1']);
+  return steps;
+}
 
 export function cleanProfile(body = {}) {
-  const budget = Number(body.budget ?? 6000);
-  if (!Number.isFinite(budget) || budget < 100 || budget > 100000) throw new Error('invalid_budget');
+  const specified = body.budget !== undefined && body.budget !== null && String(body.budget).trim() !== '';
+  const budget = specified ? Number(body.budget) : null;
+  if (specified && (!Number.isFinite(budget) || budget < 100 || budget > 100000)) throw new Error('invalid_budget');
+  const faceAreas = validateChoices(body.faceAreas, FACE_AREAS, 'face_areas');
+  const concerns = validateChoices(body.concerns, CONCERNS, 'concerns');
   if (body.goal && !GOALS[body.goal]) throw new Error('invalid_goal');
   if (body.skin && !SKINS.includes(body.skin)) throw new Error('invalid_skin');
   if (body.finish && !FINISHES.includes(body.finish)) throw new Error('invalid_finish');
   return { goal: body.goal || 'prep', skin: body.skin || 'unsure', finish: body.finish || 'natural',
-    budget: Math.round(budget * 100) / 100, today: body.today === true, lang: body.lang === 'en' ? 'en' : 'ar',
+    budget: budget === null ? null : Math.round(budget * 100) / 100,
+    faceAreas, concerns, today: body.today === true, lang: body.lang === 'en' ? 'en' : 'ar',
     note: String(body.note || '').slice(0, 500).trim() };
 }
 
@@ -30,6 +48,28 @@ export function normalizeFeed(rows, step) {
   });
 }
 
+const AREA_MATCH = {
+  'forehead': /forehead|t.zone|face|complexion/,
+  'under-eyes': /under.eye|eye.cream|eye.serum|eye.patch|dark.circle|eye.area/,
+  'around-eyes': /eye|eyelid|lash|brow/,
+  'cheeks': /cheek|blush|face|complexion/,
+  'nose': /nose|t.zone|pore|face/,
+  'lips': /lip|balm|gloss/,
+  'chin-jaw': /jaw|chin|face|complexion/
+};
+const CONCERN_MATCH = {
+  'breakouts': /acne|blemish|breakout|spots?|salicylic/,
+  'dark-circles': /dark.circle|under.eye|brighten|caffeine/,
+  'dark-spots': /dark.spot|hyperpigment|uneven.tone|brighten/,
+  'dryness': /hydrat|dry.skin|moisturi|ceramide|glycerin/,
+  'fine-lines': /fine.line|wrinkl|plump|peptid/,
+  'pores': /pore|t.zone|oil.control/,
+  'redness': /redness|calm|sooth|centella/,
+  'texture': /textur|smooth|exfoliat/,
+  'dullness': /dull|glow|radiant|brighten/,
+  'oiliness': /oily|shine.control|matte|oil.free/,
+  'puffiness': /puff|eye.patch|caffeine/
+};
 export function scoreCard(card, p) {
   const text = card.text || '';
   let score = 15 + Math.max(0, 6 - card.rank / 5);
@@ -49,6 +89,22 @@ export function scoreCard(card, p) {
   }
   if (p.finish === 'radiant' && /glow|radiant|dewy|glaz/.test(text)) { score += 5; reasons.push(ar ? 'لمسة مضيئة حسب وصفه' : 'A radiant finish according to its listing'); }
   if (p.finish === 'matte' && /matte|mattif/.test(text)) { score += 5; reasons.push(ar ? 'لمسة مطفية حسب وصفه' : 'A matte finish according to its listing'); }
+  if (p.goal !== 'gift' && p.goal !== 'scent') {
+    const areas = (p.faceAreas || []).filter(a => a !== 'whole-face');
+    if (areas.some(a => AREA_MATCH[a]?.test(text))) {
+      score += 10;
+      reasons.push(ar ? 'وصف المنتج مناسب للمنطقة اللي اخترتيها' : 'The listing matches your chosen face area');
+    }
+    if (areas.includes('under-eyes') && card.step === 'eye') score += 12;
+    if (areas.includes('around-eyes') && card.step === 'eye') score += 12;
+    if (areas.includes('lips') && card.step === 'lip') score += 12;
+    for (const concern of p.concerns || []) {
+      if (CONCERN_MATCH[concern]?.test(text)) {
+        score += 9;
+        reasons.push(ar ? 'الوصف بيذكر نقطة مرتبطة باهتمامك' : 'The product listing mentions your concern');
+      }
+    }
+  }
   if (p.today && !card.now) return null;
   if (p.today && card.now) { score += 4; reasons.push(ar ? 'الخيار ده مؤهل لـ SOFIE NOW؛ أكّدي المنطقة والميعاد مع الفريق' : 'This option is eligible for SOFIE NOW; confirm area and timing with the team'); }
   if (/mini|travel|\b50\s?ml\b|\b34\s?ml\b/i.test(card.variantTitle)) reasons.push(ar ? 'حجم صغير؛ اتأكدي إنه الحجم اللي محتاجاه' : 'A smaller size; check that it suits what you need');
@@ -59,7 +115,8 @@ export function scoreCard(card, p) {
 // Enumerate small candidate groups so the TOTAL basket respects the budget.
 // Optional steps may be skipped; duplicate product/variant picks are excluded.
 export function chooseRoutine(cards, p) {
-  const groups = GOALS[p.goal].steps.map(([step]) => cards.filter(c => c.step === step && c.price <= p.budget)
+  const steps = routineSteps(p);
+  const groups = steps.map(([step]) => cards.filter(c => c.step === step && (p.budget === null || c.price <= p.budget))
     .map(c => scoreCard(c, p)).filter(Boolean).sort((a, b) => b.score - a.score || a.price - b.price).slice(0, 8));
   let best = { value: -1, cards: [], total: 0 };
   function explore(i, chosen, total, score) {
@@ -70,22 +127,23 @@ export function chooseRoutine(cards, p) {
     }
     explore(i + 1, chosen, total, score);
     for (const card of groups[i]) {
-      if (total + card.price > p.budget + 0.001 || chosen.some(c => c.handle === card.handle)) continue;
+      if ((p.budget !== null && total + card.price > p.budget + 0.001) || chosen.some(c => c.handle === card.handle)) continue;
       chosen.push(card); explore(i + 1, chosen, total + card.price, score + card.score); chosen.pop();
     }
   }
   explore(0, [], 0, 0);
   return { items: best.cards.map(({ text, score, rank, productNowSignal, ...c }) => ({ ...c, stepName: STEP_NAMES[c.step][p.lang === 'en' ? 1 : 0] })),
     total: Math.round(best.total * 100) / 100, currency: 'EGP', budget: p.budget,
-    missingSteps: GOALS[p.goal].steps.filter(([s]) => !best.cards.some(c => c.step === s)).map(([s]) => STEP_NAMES[s][p.lang === 'en' ? 1 : 0]) };
+    missingSteps: steps.filter(([s]) => !best.cards.some(c => c.step === s)).map(([s]) => STEP_NAMES[s][p.lang === 'en' ? 1 : 0]) };
 }
 
 export function ruleAdvice(p, items) {
   if (medicalQuestion(p.note)) return p.lang === 'en'
     ? 'This question needs advice from a qualified clinician. Our beauty matching tool can help with cosmetic preferences after you have that guidance.'
     : 'السؤال ده محتاج رأي مختص. نقدر نساعدك في اختيارات التجميل بعد ما تاخدي الإرشاد المناسب.';
-  if (!items.length) return p.lang === 'en' ? 'There is no confident available match within these choices today. Try a different budget or ask our team.'
-    : 'مفيش اختيار واضح متاح يناسب الاختيارات دي دلوقتي. جرّبي ميزانية مختلفة أو اسألي فريق صوفي.';
+  if (!items.length) return p.lang === 'en'
+    ? (p.budget === null ? 'There is no confidently available match for these preferences today. Try another preference or ask our team.' : 'There is no confident available match within these choices today. Try a different budget or ask our team.')
+    : (p.budget === null ? 'مفيش اختيار واضح متاح يناسب احتياجاتك دلوقتي. جرّبي تفضيل مختلف أو اسألي فريق صوفي.' : 'مفيش اختيار واضح متاح يناسب الاختيارات دي دلوقتي. جرّبي ميزانية مختلفة أو اسألي فريق صوفي.');
   const advice = {
     prep: ['جرّبي طبقات خفيفة من الترطيب قبل الميك أب، وسيبي كل طبقة تستقر. البرايمر خطوة اختيارية حسب احتياجك. خلي اختيارك على أساس بشرتك، مش شهرة المنتج.', 'Try light layers of hydration before makeup and let each layer settle. Primer is optional. Choose for your preferences, rather than the hype.'],
     lasting: ['طبقات خفيفة وتثبيت الأماكن اللي بتلمع ممكن يساعدوا اللوك. اتبعي طريقة استخدام المنتج؛ النتيجة بتختلف حسب التحضير والطقس.', 'Thin layers and setting the areas that get shiny may help your look. Follow the product directions; results depend on prep and conditions.'],
