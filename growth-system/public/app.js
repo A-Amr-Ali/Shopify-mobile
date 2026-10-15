@@ -22,16 +22,38 @@
   function choices(name, values, selected, cls) {
     return '<div class="'+cls+'">'+values.map(([v,a,b])=>'<label class="sg-choice"><input type="radio" name="'+name+'" value="'+v+'" '+(v===selected?'checked':'')+'><span>'+E(T(a,b))+'</span></label>').join('')+'</div>';
   }
+  function multiChoices(name, values) {
+    return '<div class="sg-chips sg-multi" data-multi="'+name+'">'+values.map(([value,ar,en]) =>
+      '<label class="sg-choice"><input type="checkbox" name="'+name+'" value="'+value+'"><span>'+E(T(ar,en))+'</span></label>'
+    ).join('')+'</div>';
+  }
+  const areaOptions = [
+    ['forehead','الجبهة','Forehead'],['under_eyes','تحت العين','Under eyes'],
+    ['around_eyes','حول العين','Around eyes'],['cheeks','الخدود','Cheeks'],
+    ['nose','الأنف','Nose'],['lips','الشفايف','Lips'],
+    ['chin_jaw','الدقن وخط الفك','Chin & jawline'],['entire_face','الوجه كله','Entire face']
+  ];
+  const concernOptions = [
+    ['breakouts','حبوب وشوائب','Breakouts'],['dark_circles','هالات تحت العين','Dark circles'],
+    ['puffiness','انتفاخ تحت العين','Under-eye puffiness'],['dark_spots','بقع غامقة','Dark spots'],
+    ['dryness','جفاف','Dryness'],['fine_lines','خطوط رفيعة','Fine lines'],
+    ['large_pores','مسام ظاهرة','Visible pores'],['redness','احمرار','Redness'],
+    ['oiliness','دهون ولمعان','Oiliness'],['dullness','بهتان','Dullness'],
+    ['uneven_texture','ملمس غير متساوي','Uneven texture'],['dry_lips','شفايف جافة','Dry lips']
+  ];
+  const needsFaceArea = goal => goal !== 'gift' && goal !== 'scent';
   function render() {
     root.setAttribute('dir',lang === 'ar' ? 'rtl' : 'ltr'); root.setAttribute('lang',lang);
     root.innerHTML = `<nav class="sg-nav" aria-label="SOFIE"><a class="sg-wordmark" href="https://sofiestore.net">SOFIE</a><div class="sg-navsmall"><a href="https://sofiestore.net/collections/fresh-at-sofie">${T('Fresh at SOFIE','Fresh at SOFIE')}</a><a href="https://sofiestore.net/pages/my-rewards">${T('مكافآتك','Your rewards')}</a><button type="button" class="sg-lang" data-lang>${T('English','العربية')}</button></div></nav><div class="sg-embedlang"><button type="button" class="sg-lang" data-lang>${T('English','العربية')}</button></div>
-    <section class="sg-hero"><div class="sg-hero-copy"><p class="sg-eyebrow">SOFIE KNOWS YOUR BEAUTY</p><h1>${T('جمالك.<br><em>باختيار أذكى.</em>','Your beauty.<br><em>A wiser choice.</em>')}</h1><p class="sg-lead">${T('مش كل تريند مناسب ليكي. قولي لنا محتاجة إيه، ونختار معاكي من منتجات متاحة، حسب تفضيلاتك وميزانيتك.','Not every trend fits your preferences. Tell us what you need and explore available options within your budget.')}</p><div class="sg-actions"><a class="sg-button" href="#sg-quiz">${T('اختاري روتينك','Find my routine')} ↗</a><a class="sg-button secondary" href="#sg-visit">${T('زورينا في ميفيدا','Visit us in Mivida')}</a></div><p class="sg-note">${T('اختيارات للتجميل والعناية العامة. كل بشرة مختلفة.','Cosmetic and general-care guidance. Every skin is different.')}</p></div><div class="sg-portrait"><img src="${E(base)}/nour.jpg" alt="${T('نور، شخصية صوفي الافتراضية للتوعية بالجمال','Nour, SOFIE’s fictional virtual beauty educator')}"><span class="sg-portrait-note">${T('نور · دليلتك الافتراضية من SOFIE','Nour · SOFIE’s virtual beauty guide')}</span></div></section>
-    <div class="sg-trust"><span>${T('اختيارات من كتالوج SOFIE الحقيقي','Real options from the SOFIE catalogue')}</span><span>${T('الروتين كله جوّه ميزانيتك','A total routine within your budget')}</span><span>${T('تعرفي ليه كل اختيار مناسب','A clear reason for every choice')}</span></div>
-    <section class="sg-section" id="sg-quiz"><div class="sg-section-head"><div><p class="sg-eyebrow">YOUR PERSONAL EDIT</p><h2>${T('نبدأ باحتياجك.','Start with what you need.')}</h2><p class="sg-note">${T('أربع اختيارات بسيطة، وتوصية واضحة.','Four simple choices. A clear recommendation.')}</p></div><a href="https://wa.me/201007488707" target="_blank" rel="noopener" class="sg-note">${T('اسألي فريق صوفي ↗','Ask the SOFIE team ↗')}</a></div>
+    <section class="sg-hero"><div class="sg-hero-copy"><p class="sg-eyebrow">SOFIE KNOWS YOUR BEAUTY</p><h1>${T('جمالك.<br><em>باختيار أذكى.</em>','Your beauty.<br><em>A wiser choice.</em>')}</h1><p class="sg-lead">${T('مش كل تريند مناسب ليكي. قولي لنا محتاجة إيه، ونختار معاكي من منتجات متاحة، حسب تفضيلاتك، حتى لو مش عايزة تحددي ميزانية.','Not every trend fits your preferences. Tell us what you need and explore available options with or without a budget.')}</p><div class="sg-actions"><a class="sg-button" href="#sg-quiz">${T('اختاري روتينك','Find my routine')} ↗</a><a class="sg-button secondary" href="#sg-visit">${T('زورينا في ميفيدا','Visit us in Mivida')}</a></div><p class="sg-note">${T('اختيارات للتجميل والعناية العامة. كل بشرة مختلفة.','Cosmetic and general-care guidance. Every skin is different.')}</p></div><div class="sg-portrait"><img src="${E(base)}/nour.jpg" alt="${T('نور، شخصية صوفي الافتراضية للتوعية بالجمال','Nour, SOFIE’s fictional virtual beauty educator')}"><span class="sg-portrait-note">${T('نور · دليلتك الافتراضية من SOFIE','Nour · SOFIE’s virtual beauty guide')}</span></div></section>
+    <div class="sg-trust"><span>${T('اختيارات من كتالوج SOFIE الحقيقي','Real options from the SOFIE catalogue')}</span><span>${T('الميزانية اختيارية','Budget is optional')}</span><span>${T('تعرفي ليه كل اختيار مناسب','A clear reason for every choice')}</span></div>
+    <section class="sg-section" id="sg-quiz"><div class="sg-section-head"><div><p class="sg-eyebrow">YOUR PERSONAL EDIT</p><h2>${T('نبدأ باحتياجك.','Start with what you need.')}</h2><p class="sg-note">${T('اختيارات بسيطة، وتوصية أوضح.','A few quick choices. Smarter recommendations.')}</p></div><a href="https://wa.me/201007488707" target="_blank" rel="noopener" class="sg-note">${T('اسألي فريق صوفي ↗','Ask the SOFIE team ↗')}</a></div>
     <form class="sg-form" data-form><fieldset><legend>1. ${T('محتاجة إيه النهارده؟','What would you like help with?')}</legend>${choices('goal',Object.entries(goals).map(([v,x])=>[v,...x]),selectedGoal,'sg-goals')}</fieldset>
     <fieldset><legend>2. ${T('بشرتك غالبًا...','Your skin usually feels...')}</legend>${choices('skin',[['unsure','مش متأكدة','Not sure'],['normal','عادية','Normal'],['dry','جافة','Dry'],['oily','دهنية','Oily'],['combo','مختلطة','Combination'],['sensitive','حساسة','Sensitive']],'unsure','sg-chips')}</fieldset>
     <fieldset><legend>3. ${T('اللمسة اللي بتحبيها','The finish you prefer')}</legend>${choices('finish',[['natural','طبيعية','Natural'],['radiant','مضيئة','Radiant'],['matte','مطفية','Matte']],'natural','sg-chips')}</fieldset>
-    <div class="sg-row"><div class="sg-field"><label for="sg-budget">4. ${T('ميزانية الروتين بالكامل (ج.م)','Your TOTAL routine budget (EGP)')}</label><input class="sg-input" id="sg-budget" name="budget" type="number" min="100" max="100000" step="100" value="6000" required inputmode="numeric"><p class="sg-note">${T('من غير مصاريف التوصيل. ممكن نختار خطوة واحدة لو دي الأنسب.','Delivery fees are separate. One step may be all you need.')}</p></div><div class="sg-field"><label for="sg-note">${T('تفضيل تحبي نقوله؟ (اختياري)','Any preferences? (optional)')}</label><textarea class="sg-input" id="sg-note" name="note" maxlength="500" placeholder="${T('مثلاً: بحب اللوك الخفيف، أو دي أول مرة أشتري برايمر','For example: I prefer a light look, or I’m new to primer')}"></textarea></div></div>
+    <fieldset data-face-fields ${needsFaceArea(selectedGoal) ? '' : 'hidden'}><legend>4. ${T('أنهي منطقة في وشّك حابة تركزي عليها؟','Which area of your face concerns you?')}</legend><p class="sg-note">${T('اختاري لحد 3 مناطق. ولو مفيش منطقة معينة تقدري تسيبيها فاضية.','Choose up to 3 areas, or leave blank if you have no specific area.')}</p>${multiChoices('faceAreas',areaOptions)}</fieldset>
+    <fieldset data-face-fields ${needsFaceArea(selectedGoal) ? '' : 'hidden'}><legend>5. ${T('إيه المشكلة اللي حابة تهتمي بيها؟','Which concerns would you like to focus on?')}</legend><p class="sg-note">${T('اختاري لحد 3 اهتمامات.','Choose up to 3 concerns.')}</p>${multiChoices('concerns',concernOptions)}</fieldset>
+    <div class="sg-row"><div class="sg-field"><label for="sg-budget">${T('ميزانية الروتين بالكامل (ج.م) — اختياري','Total routine budget (EGP) — optional')}</label><input class="sg-input" id="sg-budget" name="budget" type="number" min="100" max="100000" step="100" placeholder="6000" inputmode="numeric"><p class="sg-note">${T('سيبيها فاضية عشان نشوف أنسب الاختيارات من غير حد للسعر. التوصيل مش داخل في السعر.','Leave blank for recommendations at any price. Delivery fees are separate.')}</p></div><div class="sg-field"><label for="sg-note">${T('تفضيل تحبي نقوله؟ (اختياري)','Any preferences? (optional)')}</label><textarea class="sg-input" id="sg-note" name="note" maxlength="500" placeholder="${T('مثلاً: بحب اللوك الخفيف، أو دي أول مرة أشتري برايمر','For example: I prefer a light look, or I’m new to primer')}"></textarea></div></div>
     <label class="sg-check"><input type="checkbox" name="today"><span>${T('عايزة اختيارات مؤهلة لـ SOFIE NOW فقط. الفريق يؤكد المنطقة وميعاد التوصيل بعد تأكيد الطلب.','Show SOFIE NOW eligible options only. Our team confirms your area and delivery timing after order confirmation.')}</span></label>
     <label class="sg-check"><input type="checkbox" name="consent"><span>${T('أوافق على تسجيل تفاعلي مع التوصيات لقياس التجربة وتحسينها. الاختيار ده اختياري ومش اشتراك في رسائل تسويقية.','I agree to recording my recommendation interactions to measure and improve the experience. This is optional and does not subscribe me to marketing.')} <a href="https://sofiestore.net/policies/privacy-policy">${T('الخصوصية','Privacy')}</a></span></label>
     <div class="sg-submitbar"><button type="submit" class="sg-button" data-submit>${T('شوفي اختياراتي','Show my edit')} ↗</button><p class="sg-note">${T('محتاجة درجة فاونديشن؟','Need a foundation shade?')} <a href="https://sofiestore.net" ${onShop?'data-match-open="base"':''}>Find My Match</a></p></div><div class="sg-status" role="status" aria-live="polite" data-status></div></form><div class="sg-results" data-results aria-live="polite"></div></section>
@@ -46,20 +68,39 @@
   function showRoutine(data) {
     const r = root.querySelector('[data-results]'); routine = data;
     const cards = (data.items||[]).map(p=>`<article class="sg-card"><div class="sg-card-photo">${p.image?`<img src="${E(p.image)}" alt="${E(p.title)}" loading="lazy">`:''}</div><div class="sg-card-body"><p class="sg-step">${E(p.stepName)}</p><div class="sg-vendor">${E(p.brand)}</div><h3>${E(p.title)}</h3><p class="sg-variant">${E(p.variantTitle)}</p>${p.now?'<span class="sg-pill">SOFIE NOW</span>':''}<p class="sg-price">${price(p.price)}</p><p class="sg-reason">${E((p.reasons||[]).join(' · '))}</p><a class="sg-card-link" href="${E(p.url)}" target="_top" data-product="${E(p.variantId)}">${T('شوفي التفاصيل والدرجة','See details and shade')} ↗</a></div></article>`).join('');
-    r.innerHTML = `<div class="sg-advice"><p class="sg-kicker">${T('اختيارات صوفي ليكي','YOUR SOFIE EDIT')}</p><p>${E(data.advice)}</p></div><div class="sg-cards">${cards}</div>${data.items?.length?`<div class="sg-total"><div><p class="sg-note">${T('إجمالي اختياراتك - من غير التوصيل','Your edit total - excluding delivery')}</p><strong>${price(data.total)}</strong><p class="sg-note">${T('المقاسات والدرجات ظاهرة فوق؛ راجعيها قبل الإضافة.','Sizes and shades are shown above; review them before adding.')}</p></div><div><label class="sg-check"><input type="checkbox" data-confirm><span>${T('راجعت المقاسات والدرجات اللي ظاهرة','I have checked the listed sizes and shades')}</span></label><button type="button" class="sg-button" data-cart disabled>${T('ضيفي اختياراتي للسلة','Add my edit to bag')} +</button></div></div>`:''}${data.missingSteps?.length?`<p class="sg-note">${T('مضفناش خطوات خارج الميزانية أو من غير اختيار مناسب.','We left out steps without a suitable option within budget.')}</p>`:''}<p class="sg-note">${T('السعر والتوفر بيتغيروا؛ المراجعة النهائية عند الإضافة والسلة. مؤهلة لـ SOFIE NOW حسب الخيار والمنطقة وساعات التشغيل.','Prices and availability may change; we check again when adding. SOFIE NOW depends on the option, area and operating hours.')}</p>`;
+    r.innerHTML = `<div class="sg-advice"><p class="sg-kicker">${T('اختيارات صوفي ليكي','YOUR SOFIE EDIT')}</p><p>${E(data.advice)}</p></div><div class="sg-cards">${cards}</div>${data.items?.length?`<div class="sg-total"><div><p class="sg-note">${T('إجمالي اختياراتك — من غير التوصيل','Your edit total - excluding delivery')}</p><strong>${price(data.total)}</strong><p class="sg-note">${T('المقاسات والدرجات ظاهرة فوق؛ راجعيها قبل الإضافة.','Sizes and shades are shown above; review them before adding.')}</p></div><div><label class="sg-check"><input type="checkbox" data-confirm><span>${T('راجعت المقاسات والدرجات اللي ظاهرة','I have checked the listed sizes and shades')}</span></label><button type="button" class="sg-button" data-cart disabled>${T('ضيفي اختياراتي للسلة','Add my edit to bag')} +</button></div></div>`:''}${data.missingSteps?.length?`<p class="sg-note">${T('مضفناش خطوات من غير اختيار مناسب أو خارج الميزانية اللي حددتيها.','We left out steps without a suitable match or beyond your selected budget.')}</p>`:''}<p class="sg-note">${T('السعر والتوفر بيتغيروا؛ المراجعة النهائية عند الإضافة والسلة. مؤهلة لـ SOFIE NOW حسب الخيار والمنطقة وساعات التشغيل.','Prices and availability may change; we check again when adding. SOFIE NOW depends on the option, area and operating hours.')}</p>`;
     r.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});
   }
   root.addEventListener('submit', async ev => {
     if (!ev.target.matches('[data-form]')) return; ev.preventDefault();
     const form = new FormData(ev.target); const button = root.querySelector('[data-submit]'); const status = root.querySelector('[data-status]');
-    const profile = {goal:form.get('goal'),skin:form.get('skin'),finish:form.get('finish'),budget:Number(form.get('budget')),note:form.get('note'),today:form.get('today')==='on',lang};
+    const enteredBudget = String(form.get('budget') || '').trim();
+    const withFace = needsFaceArea(form.get('goal'));
+    const profile = {goal:form.get('goal'),skin:form.get('skin'),finish:form.get('finish'),
+      budget:enteredBudget === '' ? null : Number(enteredBudget),
+      faceAreas:withFace ? form.getAll('faceAreas') : [],
+      concerns:withFace ? form.getAll('concerns') : [],
+      note:form.get('note'),today:form.get('today')==='on',lang};
     selectedGoal=profile.goal; button.disabled=true; status.textContent='';
-    root.querySelector('[data-results]').innerHTML='<div class="sg-loading">'+T('بنراجع الاختيارات المتاحة وميزانيتك…','Checking available options and your budget…')+'</div>';
+    root.querySelector('[data-results]').innerHTML='<div class="sg-loading">'+T('بنراجع الاختيارات المتاحة حسب تفضيلاتك…','Checking available options for your preferences…')+'</div>';
     try { const r = await fetch(base+'/api/match',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(profile)}); if (!r.ok) throw new Error(r.status); const data = await r.json(); showRoutine(data); await event('match_complete',(data.items||[]).map(p=>p.variantId)); if(source==='store') await event('qr_scan'); }
     catch(err) { root.querySelector('[data-results]').innerHTML=''; status.textContent=String(err.message)==='429'?T('جرّبي تاني بعد شوية، أو اسألي فريق صوفي.','Try again a little later, or ask our team.'):T('مش قادرين نراجع الاختيارات دلوقتي. جرّبي تاني أو اسألي الفريق.','We cannot check options right now. Please try again or ask our team.'); }
     finally { button.disabled=false; }
   });
-  root.addEventListener('change', ev=>{if(ev.target.matches('[data-confirm]')) root.querySelector('[data-cart]').disabled=!ev.target.checked;});
+  root.addEventListener('change', ev=>{
+    if(ev.target.matches('[data-confirm]')) root.querySelector('[data-cart]').disabled=!ev.target.checked;
+    if(ev.target.matches('[name=goal]')) {
+      selectedGoal=ev.target.value;
+      root.querySelectorAll('[data-face-fields]').forEach(el=>{el.hidden=!needsFaceArea(selectedGoal);});
+    }
+    if(ev.target.matches('[data-multi] input[type=checkbox]') && ev.target.checked){
+      const checked=root.querySelectorAll('[data-multi="'+ev.target.name+'"] input:checked');
+      if(checked.length>3) {
+        ev.target.checked=false;
+        root.querySelector('[data-status]').textContent=T('اختاري لحد 3 بس من كل سؤال.','Choose up to 3 options per question.');
+      } else root.querySelector('[data-status]').textContent='';
+    }
+  });
   root.addEventListener('click', async ev => {
     if(ev.target.closest('[data-lang]')) {lang=lang==='ar'?'en':'ar';routine=null;render();return;}
     const product=ev.target.closest('[data-product]');if(product){event('product_click',[product.dataset.product]);return;}
