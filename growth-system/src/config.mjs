@@ -16,6 +16,7 @@ export const STEP_NAMES = {
   prep: ['تحضير البشرة', 'Skin prep'], primer: ['برايمر - خطوة اختيارية', 'Primer - optional'],
   set: ['تثبيت الميك أب', 'Set your makeup'], cheek: ['لون للخدود', 'Cheek colour'],
   lip: ['لمسة للشفايف', 'A lip finishing touch'], moisturize: ['ترطيب البشرة', 'Hydration'],
+  eye: ['عناية بمنطقة العين', 'Eye-area care'],
   gift: ['اختيار للهدية', 'A gift to consider'], scent: ['اختيار للعطر', 'A scent to explore']
 };
 export const SOURCES = [
