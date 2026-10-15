@@ -13,6 +13,7 @@ export const GOALS = {
 export const SKINS = ['unsure', 'normal', 'dry', 'oily', 'combo', 'sensitive'];
 export const FINISHES = ['natural', 'radiant', 'matte'];
 export const STEP_NAMES = {
+  eye: ['العناية بمحيط العين', 'Eye-area care'],
   prep: ['تحضير البشرة', 'Skin prep'], primer: ['برايمر - خطوة اختيارية', 'Primer - optional'],
   set: ['تثبيت الميك أب', 'Set your makeup'], cheek: ['لون للخدود', 'Cheek colour'],
   lip: ['لمسة للشفايف', 'A lip finishing touch'], moisturize: ['ترطيب البشرة', 'Hydration'],
