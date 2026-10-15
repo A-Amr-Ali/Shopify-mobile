@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cleanProfile, normalizeFeed, chooseRoutine, medicalQuestion, campaignUrl } from '../src/engine.mjs';
+import { cleanProfile, normalizeFeed, chooseRoutine, routineSteps, medicalQuestion, campaignUrl } from '../src/engine.mjs';
 import { markExactNow, boundCandidates } from '../src/catalog.mjs';
 const card = (id,price,step,extra={}) => ({variantId:String(id),handle:'product-'+id,title:'Product '+id,price,step,rank:0,text:'hydrating ceramide gentle fragrance-free',now:false,...extra});
 test('total budget applies to the basket, not separately to each product',()=>{
@@ -38,4 +38,31 @@ test('medical questions route to a specialist instead of a cosmetic basket',()=>
 });
 test('campaign links carry content and source attribution',()=>{
  const u=new URL(campaignUrl('W01-R1','store','prep'));assert.equal(u.searchParams.get('utm_content'),'W01-R1');assert.equal(u.searchParams.get('utm_medium'),'qr');assert.equal(u.pathname,'/pages/sofie-knows');
+});
+
+test('budget is optional and an unrestricted routine includes matches priced above 6000 EGP', () => {
+ const p=cleanProfile({goal:'prep',budget:null,skin:'normal'});
+ assert.equal(p.budget,null);
+ const r=chooseRoutine([card(1,8900,'prep'),card(2,7800,'primer')],p);
+ assert.deepEqual(r.items.map(c=>c.variantId),['1','2']);
+ assert.equal(r.total,16700);
+ assert.equal(cleanProfile({budget:''}).budget,null);
+});
+test('eye-area concern selects eye-safe category rather than generic face primer', () => {
+ const p=cleanProfile({goal:'prep',faceAreas:['under_eyes'],concerns:['dark_circles']});
+ assert.deepEqual(routineSteps(p),[['eye','eye-care']]);
+ const r=chooseRoutine([card(1,1000,'prep'),card(2,3000,'eye',{text:'under eye brightening dark circles'})],p);
+ assert.deepEqual(r.items.map(c=>c.variantId),['2']);
+ assert.match(r.items[0].reasons.join(' '),/العين|eye/i);
+});
+test('lip-only concern chooses lip care and mixed face areas include the eye category', () => {
+ const lip=cleanProfile({goal:'hydration',faceAreas:['lips'],concerns:['dry_lips']});
+ assert.deepEqual(routineSteps(lip),[['lip','lip-balms-treatments-1']]);
+ const both=cleanProfile({goal:'prep',faceAreas:['cheeks','under_eyes']});
+ assert.ok(routineSteps(both).some(([step])=>step==='eye'));
+});
+test('rejects unexpected concern identifiers and excessive selections',()=>{
+ assert.throws(()=>cleanProfile({faceAreas:['unknown']}),/invalid_face_areas/);
+ assert.throws(()=>cleanProfile({concerns:['unknown']}),/invalid_concerns/);
+ assert.throws(()=>cleanProfile({faceAreas:['forehead','cheeks','nose','lips']}),/invalid_face_areas/);
 });
