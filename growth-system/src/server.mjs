@@ -9,6 +9,8 @@ import { privateActor, secretMatches, validWebhook, orderRecord } from './securi
 import { runGrowth } from './jobs.mjs';
 import { ensureOrderWebhooks } from './webhooks.mjs';
 import { GOALS } from './config.mjs';
+import { procurementRoutes, startProcurementJobs } from './procurement-routes.mjs';
+import { syncOneOrder } from './procurement.mjs';
 const publicDir = fileURLToPath(new URL('../public/', import.meta.url));
 const assets = { '/': ['index.html', 'text/html; charset=utf-8'], '/app.js': ['app.js','text/javascript; charset=utf-8'],
   '/styles.css': ['styles.css','text/css; charset=utf-8'], '/routine-editor.js':['routine-editor.js','text/javascript; charset=utf-8'], '/nour.jpg': ['nour.jpg','image/jpeg'] };
@@ -34,6 +36,7 @@ export async function handler(req, res) {
   } else if (origin && url.pathname.startsWith('/api/')) return send(res,403,{error:'origin_not_allowed'});
   if (req.method === 'OPTIONS') { res.writeHead(204); return res.end(); }
   try {
+    if (await procurementRoutes(req,res,url)) return;
     if (req.method === 'GET' && assets[url.pathname]) {
       const [name, mime] = assets[url.pathname];
       res.writeHead(200, { 'content-type': mime, 'cache-control': name.endsWith('.jpg') ? 'public,max-age=86400' : 'public,max-age=300' });
@@ -80,7 +83,8 @@ export async function handler(req, res) {
     if (url.pathname === '/webhooks/orders' && req.method === 'POST') {
       const raw = await bodyBytes(req, 1048576);
       if (req.headers['x-shopify-shop-domain'] !== process.env.SHOP_DOMAIN || !validWebhook(raw, req.headers['x-shopify-hmac-sha256'], process.env.SHOPIFY_ADMIN_CLIENT_SECRET)) return send(res,401,{error:'unauthorized'});
-      const row = orderRecord(JSON.parse(raw));
+      const payload=JSON.parse(raw);
+      const row = orderRecord(payload);
       if (row) {
         // Insert once, then conditionally update atomically. A delayed webhook
         // cannot overwrite a newer Shopify update, even with concurrent requests.
@@ -90,6 +94,10 @@ export async function handler(req, res) {
             encodeURIComponent('(shopify_updated_at.is.null,shopify_updated_at.lte.' + row.shopify_updated_at + ')'),
             {method:'PATCH',prefer:'return=minimal',body:row});
       }
+      // Read the latest Shopify state after acknowledging the authenticated event.
+      // Periodic reconciliation also catches missed events and routing changes.
+      if(process.env.PROCUREMENT_ENABLED==='true'&&/^\d+$/.test(String(payload.id||'')))
+        setImmediate(()=>syncOneOrder('gid://shopify/Order/'+payload.id).catch(e=>console.warn('procurement webhook sync:',e.message)));
       return send(res,200,{accepted:true});
     }
     if (url.pathname === '/jobs/run' && req.method === 'POST') {
@@ -111,6 +119,7 @@ export async function handler(req, res) {
 }
 if (process.env.NODE_ENV !== 'test') {
   http.createServer(handler).listen(Number(process.env.PORT || 3000), '0.0.0.0', () => console.log('SOFIE Growth listening'));
+  startProcurementJobs();
   if (configured && process.env.RUN_JOBS === 'true') {
     ensureOrderWebhooks().then(s => console.log('order webhook setup', JSON.stringify(s))).catch(e=>console.warn('order webhook setup unavailable:', e.message));
     setTimeout(() => runGrowth().then(s => console.log('growth queue', JSON.stringify(s))), 15000);
