@@ -36,6 +36,7 @@
     const items=chosen(); const total=Math.round(items.reduce((n,p)=>n + p.price,0)*100)/100;
     root.querySelector('[data-selected-total]').textContent=money(total);
     const button=root.querySelector('[data-editor-cart]');if(button)button.disabled=busy || !checked || !items.length || items.some(p=>p.available===false);
+    root.querySelectorAll('[data-editor-save],[data-editor-check],[data-editor-option],[data-editor-swap]').forEach(n=>n.disabled=busy);
     const over=root.querySelector('[data-over-budget]');if(over)over.hidden=selectedProfile?.budget == null || total <= selectedProfile.budget;
   }
   function draw() {
@@ -51,7 +52,7 @@
     if(!products.has(item.handle))products.set(item.handle,fetch((onShop?'':'https://sofiestore.net')+'/products/'+item.handle+'.js',{headers:{accept:'application/json'}}).then(r=>{if(!r.ok)throw Error('product_unavailable');return r.json();}).catch(error=>{products.delete(item.handle);throw error;}));
     const p=await products.get(item.handle);const select=root.querySelector(`[data-editor-option="${index}"]`);
     if(!select || select.value!==item.variantId)return;
-    select.innerHTML=p.variants.map(v=>`<option value="${v.id}" ${String(v.id)===item.variantId?'selected':''} ${!v.available?'disabled':''}>${E(v.title)} · ${money(v.price/100)}${!v.available?' · '+T('غير متاح','Unavailable'):''}</option>`).join('');
+    select.innerHTML=p.variants.map(v=>`<option value="${v.id}" data-title="${E(v.title)}" data-price="${v.price}" ${String(v.id)===item.variantId?'selected':''} ${!v.available?'disabled':''}>${E(v.title)} · ${money(v.price/100)}${!v.available?' · '+T('غير متاح','Unavailable'):''}</option>`).join('');
   }
   async function check(ids=chosen().map(p=>p.variantId)) {
     if(!ids.length)throw Error('empty');
@@ -90,9 +91,9 @@
     if(e.target.matches('[data-routine-area]')){try{localStorage.setItem('sofie-area',JSON.stringify(e.target.value));window.dispatchEvent(new StorageEvent('storage',{key:'sofie-area'}));}catch{}root.querySelectorAll('[data-editor-delivery]').forEach(n=>n.textContent=delivery(data.items[Number(n.dataset.editorDelivery)]));return;}
     if(e.target.matches('[data-editor-include]')){data.items[Number(e.target.dataset.editorInclude)].included=e.target.checked;edited();checked=false;root.querySelector('[data-editor-confirm]').checked=false;totals();emit('routine_edit');return;}
     let index;
-    if(e.target.matches('[data-editor-option]')){index=Number(e.target.dataset.editorOption);const p=data.items[index];p.variantId=e.target.value;p.now=null;p.available=false;p.reasons=[];}
+    if(e.target.matches('[data-editor-option]')){index=Number(e.target.dataset.editorOption);const p=data.items[index];const option=e.target.selectedOptions[0];p.variantId=e.target.value;p.variantTitle=option.dataset.title || '';p.price=Number(option.dataset.price)/100;p.now=null;p.available=false;p.reasons=[];}
     if(e.target.matches('[data-editor-swap]') && e.target.value){index=Number(e.target.dataset.editorSwap);const v=data.alternatives.find(p=>p.variantId===e.target.value);if(v)data.items[index]={...v,included:true,available:false,now:null};}
-    if(index!==undefined){edited();busy=true;totals();try{await check([data.items[index].variantId]);busy=false;draw();emit('routine_edit');}catch{busy=false;message(T('مش قادرين نأكد التوفر. راجعي الاختيار قبل الإضافة.','We could not confirm availability. Recheck before adding.'));}}
+    if(index!==undefined){edited();busy=true;totals();try{await check([data.items[index].variantId]);busy=false;draw();emit('routine_edit');}catch{busy=false;totals();message(T('مش قادرين نأكد التوفر. راجعي الاختيار قبل الإضافة.','We could not confirm availability. Recheck before adding.'));}}
   });
   root.addEventListener('click',async e=>{
     if(e.target.closest('[data-lang]')){data=null;setTimeout(mountTools,0);return;}
