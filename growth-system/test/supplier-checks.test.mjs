@@ -19,6 +19,8 @@ test('trademarks do not break exact names; different sizes and products remain d
   assert.equal(titleMatches('Chubby Stick™ Sculpting Contour','chubby-stick-sculpting-contour'),true);
   assert.equal(titleMatches('FutureIQ™ biomimetic hair longevity serum','Future IQ Biomimetic Hair Longevity Serum'),true);
   assert.equal(titleMatches('Mini Example Powder','Example Powder'),false);
+  assert.equal(titleMatches('24Bottles Clima Stainless Steel Insulated Bottle 500ml(50\'s Style)','Clima 500ml Insulated Water Bottle'),true);
+  assert.equal(titleMatches('Barrier+ Treatment Repair & Rebuild','Barrier+ Treatment'),true);
 });
 test('US sourcing uses the matching SKU stock flag and exact option, never search availability',async()=>{
   const p={currentSku:{skuId:'11',variationValue:'Pink',size:'5g',isOutOfStock:false,listPrice:'$20.00'},regularChildSkus:[{skuId:'12',variationValue:'Red',size:'5g',isOutOfStock:true,listPrice:'$20.00'}]};

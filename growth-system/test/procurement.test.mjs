@@ -49,6 +49,8 @@ test('country priority is UAE, US, UK; stale, wrong-currency and approximate mat
 });
 test('only official hosts for the actual brand and correct Sephora market are allowed',()=>{
   assert.equal(allowedSource('https://www.rhodeskin.com/products/test','Rhode','US'),true);
+  assert.equal(allowedSource('https://byoma.com/products/barrier-treatment','Byoma','US'),true);
+  assert.equal(allowedSource('https://byoma.com/products/barrier-treatment','Rhode','US'),false);
   for(const url of ['https://rhodeskin.com.attacker.com/p','http://rhodeskin.com/p','https://u:p@rhodeskin.com/p','https://127.0.0.1/p','https://amazon.com/p'])assert.equal(allowedSource(url,'Rhode','US'),false);
   assert.equal(allowedSource('https://www.sephora.me/sa-en/p/a','Rhode','AE'),false);
   assert.equal(allowedSource('https://www.sephora.com/ca/en/product/a','Rhode','US'),false);

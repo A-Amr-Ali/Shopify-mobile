@@ -171,7 +171,7 @@ const BRANDS=[
   ['josie maran',['josiemaran.com']],['24bottle',['24bottles.com']],['fenty',['fentybeauty.com','fentyskin.com']],
   ['patrick ta',['patrickta.com']],['living proof',['livingproof.com']],['rare beauty',['rarebeauty.com']],['tower 28',['tower28beauty.com']],
   ['grande',['grandecosmetics.com']],['benefit',['benefitcosmetics.com']],['amika',['loveamika.com']],['color wow',['colorwowhair.com']],
-  ['smashbox',['smashbox.com','smashbox.co.uk']],['summer fridays',['summerfridays.com']],['saie',['saiehello.com']],['hourglass',['hourglasscosmetics.com']]
+  ['smashbox',['smashbox.com','smashbox.co.uk']],['summer fridays',['summerfridays.com']],['saie',['saiehello.com']],['hourglass',['hourglasscosmetics.com']],['byoma',['byoma.com']]
 ];
 export function allowedSource(url,brand,region) {
   let u;try{u=new URL(url);}catch{return false;}

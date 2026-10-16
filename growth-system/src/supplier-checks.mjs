@@ -36,7 +36,12 @@ const TITLE_ALIASES={
   'major dimension eye illusion eyeshadow duos':'major dimension eye illusion eyeshadow duo',
   'diorshow 5 couleurs couture eyeshadow palette':'diorshow 5 couleurs eye palette 5 eyeshadows high color and long wear',
   'travel size creaseless creamy concealer':'creaseless creamy full coverage concealer',
-  'creaseless creamy concealer':'creaseless creamy full coverage concealer'
+  'creaseless creamy concealer':'creaseless creamy full coverage concealer',
+  'fauxfilter under eye color corrector':'fauxfilter color corrector',
+  'mini fauxfilter luminous matte liquid concealer':'faux filter concealer mini',
+  '24bottles clima stainless steel insulated bottle 500ml':'clima 500ml insulated water bottle',
+  '24bottle urban stainless steel bottle 1000ml':'urban 1l water bottle',
+  'barrier treatment repair rebuild':'barrier treatment'
 };
 function titleKey(s){const base=norm(s).replace(/^(rhode|smeg) /,'').replace(/ 50 s style$/,'').replace('futureiq','future iq').replace(' cream blush for cheeks lips','');return (TITLE_ALIASES[base]||base).replace(/[^a-z0-9]/g,'');}
 export function titleMatches(wanted,actual){return titleKey(wanted)===titleKey(actual);}
@@ -131,5 +136,6 @@ async function discoverOfficialStore(line,base,region,fetcher){
   }
   return offers;
 }
-export async function discoverOfficialUS(line,fetcher=fetch){return discoverOfficialStore(line,SHOPS.find(([brand])=>norm(line.brand).includes(brand))?.[1],'US',fetcher);}
-export async function discoverOfficialUK(line,fetcher=fetch){const brand=norm(line.brand);const base=brand.includes('smeg')?'https://shop.smeguk.com':brand.includes('rhode')?'https://www.rhodeskin.com/en-gb':null;return discoverOfficialStore(line,base,'UK',fetcher);}
+const EXTRA_SHOPS=[['stanley','https://www.stanley1913.com'],['living proof','https://www.livingproof.com'],['byoma','https://byoma.com']];
+export async function discoverOfficialUS(line,fetcher=fetch){return discoverOfficialStore(line,[...SHOPS,...EXTRA_SHOPS].find(([brand])=>norm(line.brand).includes(brand))?.[1],'US',fetcher);}
+export async function discoverOfficialUK(line,fetcher=fetch){const brand=norm(line.brand);const base=brand.includes('smeg')?'https://shop.smeguk.com':brand.includes('rhode')?'https://www.rhodeskin.com/en-gb':brand.includes('stanley')?'https://uk.stanley1913.com':null;return discoverOfficialStore(line,base,'UK',fetcher);}
