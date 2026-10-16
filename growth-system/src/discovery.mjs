@@ -1,5 +1,5 @@
 export const discoveryPilot = Object.freeze({
-  id:'cheirosa62-discovery-20261016', enabled:false, creditEgp:250, maxParticipants:20, redeemWithinDays:30,
+  id:'cheirosa62-discovery-20261016', enabled:false, creditEgp:500, maxParticipants:20, redeemWithinDays:30,
   mini:{handle:'brazilian-crush-cheirosa-62-bum-bum-hair-body-fragrance-mist',variantId:'40432045654087',size:'90 mL'},
   full:{handle:'brazilian-crush-cheirosa-62-bum-bum-hair-body-fragrance-mist',variantId:'40432045621319',size:'240 mL'},
   locationId:'gid://shopify/Location/62367334471',

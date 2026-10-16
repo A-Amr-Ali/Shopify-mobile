@@ -20,9 +20,9 @@ The migration also extends the existing consent-aware event names. Its save/conf
 
 Cheirosa 62 90 mL option `40432045654087` → 240 mL option `40432045621319`. Reported availability in Shopify's New Cairo location was checked on 16 October. Neither is in SOFIE NOW; this implementation does not change that.
 
-Proposed terms: EGP 250 credit, 20 participants, one credit per verified customer after a paid mini is handed over locally, redeemable on the exact 240 mL option within 30 days. No stacking or cash value; delivery separate. Refunded/cancelled qualifying purchases do not qualify. Staff verify the receipt, local handover and stock before issuing a customer-specific one-use credit. Statutory return rights are unchanged. The pilot remains disabled in `growth-system/src/discovery.mjs`; no discount codes or financial commitments have been created.
+Proposed terms: EGP 500 credit, 20 participants, one credit per verified customer after a paid mini is handed over locally, redeemable on the exact 240 mL option within 30 days. No stacking or cash value; delivery separate. Refunded/cancelled qualifying purchases do not qualify. Staff verify the receipt, local handover and stock before issuing a customer-specific one-use credit. Statutory return rights are unchanged. The pilot remains disabled in `growth-system/src/discovery.mjs`; no discount codes or financial commitments have been created.
 
-The proposed credit economics and recorded cost inputs are kept in the merchant's private review. Maximum nominal credit exposure is EGP 5,000.
+The proposed credit economics and recorded cost inputs are kept in the merchant's private review. Maximum nominal credit exposure is EGP 10,000.
 
 ## Policy handoff
 
@@ -37,6 +37,8 @@ Deploy the loyalty endpoint before exposing the theme's account-saving controls.
 ## Verification
 
 - 36 loyalty tests pass, including signed owner, stale request, wrong shop, malformed option and privacy-field checks; Remix production build passes.
-- 22 growth tests pass, including exact-option stock/delivery, budgets, sensitive-skin filtering, attribution, refunds and disabled discovery-pilot safeguards.
+- 24 growth tests pass, including exact-option stock/delivery, budgets, sensitive-skin filtering, attribution, refunds and disabled discovery-pilot safeguards.
 - Shopify full-theme checks pass on the changed Liquid files. The only remaining tab warning concerns Shopify's dynamic section/block IDs.
 - Browser verification and deployment results are recorded below as they complete. A real signed-in customer's cross-device round trip requires an authenticated customer session; this browser currently has a guest storefront session.
+
+Cart QA found an active 5% automatic promotion. The discovery draft is therefore EGP 500 rather than EGP 250, so it can beat a 5% discount on the observed EGP 5,400 full size. Keep it non-stacking and recheck promotions before activation.
