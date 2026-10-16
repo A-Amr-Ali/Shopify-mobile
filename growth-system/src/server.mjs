@@ -2,7 +2,7 @@ import http from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { cleanProfile, chooseRoutine, ruleAdvice, medicalQuestion } from './engine.mjs';
-import { loadCatalog } from './catalog.mjs';
+import { loadCatalog, checkOptions } from './catalog.mjs';
 import { explainRoutine } from './ai.mjs';
 import { db, configured, takeBudget } from './db.mjs';
 import { privateActor, secretMatches, validWebhook, orderRecord } from './security.mjs';
@@ -11,7 +11,7 @@ import { ensureOrderWebhooks } from './webhooks.mjs';
 import { GOALS } from './config.mjs';
 const publicDir = fileURLToPath(new URL('../public/', import.meta.url));
 const assets = { '/': ['index.html', 'text/html; charset=utf-8'], '/app.js': ['app.js','text/javascript; charset=utf-8'],
-  '/styles.css': ['styles.css','text/css; charset=utf-8'], '/nour.jpg': ['nour.jpg','image/jpeg'] };
+  '/styles.css': ['styles.css','text/css; charset=utf-8'], '/routine-editor.js':['routine-editor.js','text/javascript; charset=utf-8'], '/nour.jpg': ['nour.jpg','image/jpeg'] };
 for (let i=1;i<=5;i++) assets['/launch-0'+i+'.png'] = ['launch-0'+i+'.png','image/png'];
 const allowedOrigins = new Set(['https://sofiestore.net', 'https://www.sofiestore.net']);
 if (process.env.PUBLIC_ORIGIN) allowedOrigins.add(process.env.PUBLIC_ORIGIN.replace(/\/$/, ''));
@@ -51,13 +51,27 @@ export async function handler(req, res) {
       if (medicalQuestion(profile.note)) return send(res,200,{items:[],total:0,currency:'EGP',advice:ruleAdvice(profile,[]),source:'referral',needsSpecialist:true});
       const catalog = await loadCatalog(profile.goal, { today: profile.today, budget: profile.budget, faceAreas: profile.faceAreas, concerns: profile.concerns });
       const routine = chooseRoutine(catalog.cards, profile);
+      routine.alternatives = routine.items.flatMap(item => {
+        const seen = new Set([item.handle]);
+        return catalog.cards.filter(c => c.step === item.step && !seen.has(c.handle) && seen.add(c.handle)).slice(0,5).map(c => ({step:c.step,variantId:c.variantId,handle:c.handle,title:c.title,variantTitle:c.variantTitle,price:c.price,image:c.image,brand:c.brand,url:c.url}));
+      });
+      if (routine.items.length) {
+        const checked = await checkOptions(routine.items.map(p => p.variantId));
+        routine.items = routine.items.flatMap(p => { const current = checked.items.find(v => v.variantId === p.variantId); return current?.available ? [{ ...p, ...current }] : []; });
+        routine.total = Math.round(routine.items.reduce((n,p) => n + p.price, 0) * 100) / 100;
+      }
       const advice = await explainRoutine(profile, routine, actor);
       return send(res,200,{...routine,advice:advice.text,source:advice.source,verification:catalog.verification,checkedAt:new Date().toISOString()});
+    }
+    if (url.pathname === '/api/routine/check' && req.method === 'POST') {
+      if (!(await takeBudget('routine_check', privateActor(req), 90, 3600))) return send(res,429,{error:'too_many_requests'});
+      const data = await bodyJSON(req);
+      return send(res,200,await checkOptions(data.variantIds));
     }
     if (url.pathname === '/api/events' && req.method === 'POST') {
       const data = await bodyJSON(req);
       if (data.consent !== true) return send(res,200,{recorded:false});
-      if (!uuid(data.eventId) || !uuid(data.sessionId) || !['match_complete','product_click','cart_add','qr_scan'].includes(data.event)) return send(res,400,{error:'invalid_event'});
+      if (!uuid(data.eventId) || !uuid(data.sessionId) || !['match_complete','product_click','cart_add','qr_scan','journey_view','product_view','cart_view','checkout_start','match_start','passport_save','routine_edit','routine_check','discovery_view'].includes(data.event)) return send(res,400,{error:'invalid_event'});
       if (!(await takeBudget('events', privateActor(req), 120, 3600))) return send(res,429,{error:'too_many_requests'});
       const ids = Array.isArray(data.variantIds) ? data.variantIds.filter(id => /^\d+$/.test(String(id))).slice(0,5).map(String) : [];
       await db('growth_events?on_conflict=event_id', {method:'POST',prefer:'resolution=ignore-duplicates,return=minimal',body:{

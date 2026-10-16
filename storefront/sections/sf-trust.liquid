@@ -1,0 +1,13 @@
+{%- assign s = section.settings -%}
+<div class="sf-trust sf-wrap"><div>{% render 'sf-icon',name:'check' %}<h2>{% if s.title_1 != blank %}{{ s.title_1 | escape }}{% else %}{{ 'sf.text.authentic' | t }}{% endif %}</h2><p>{% if s.text_1 != blank %}{{ s.text_1 | escape }}{% else %}{{ 'sf.text.authentic_text' | t }}{% endif %}</p></div><div>{% render 'sf-icon',name:'user' %}<h2>{% if s.title_2 != blank %}{{ s.title_2 | escape }}{% else %}{{ 'sf.text.expert' | t }}{% endif %}</h2><p>{% if s.text_2 != blank %}{{ s.text_2 | escape }}{% else %}{{ 'sf.text.expert_text' | t }}{% endif %}</p></div><div>{% render 'sf-icon',name:'bag' %}<h2>{% if s.title_3 != blank %}{{ s.title_3 | escape }}{% else %}{{ 'sf.text.secure' | t }}{% endif %}</h2><p>{% if s.text_3 != blank %}{{ s.text_3 | escape }}{% else %}{{ 'sf.text.secure_text' | t }}{% endif %}</p></div></div>
+{% schema %}
+{"name": "Sofie Trust", "settings": [
+ {"type": "paragraph", "content": "Leave fields blank to use the translated defaults."},
+ {"type": "text", "id": "title_1", "label": "Title 1"},
+ {"type": "text", "id": "text_1", "label": "Text 1"},
+ {"type": "text", "id": "title_2", "label": "Title 2"},
+ {"type": "text", "id": "text_2", "label": "Text 2"},
+ {"type": "text", "id": "title_3", "label": "Title 3"},
+ {"type": "text", "id": "text_3", "label": "Text 3"}
+], "presets": [{"name": "Sofie Trust"}]}
+{% endschema %}

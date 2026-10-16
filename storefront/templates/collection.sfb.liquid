@@ -1,0 +1,5 @@
+{%- layout none -%}
+{%- comment -%}Collage feed: /collections/<handle>?view=sfb returns the first three in-stock products that have a photo, in the collection's own order. Banner collages are filled from it after the page has loaded, so the page itself renders faster.{%- endcomment -%}
+{%- assign n = 0 -%}
+[{%- for p in collection.products limit: 12 -%}{%- if n >= 3 -%}{%- break -%}{%- endif -%}{%- if p.available and p.featured_image -%}{%- if n > 0 -%},{%- endif -%}{%- assign n = n | plus: 1 -%}{"u":{{ p.url | json }},"i":{{ p.featured_image | image_url: width: 700 | json }},"t":{{ p.title | json }},"v":{{ p.vendor | json }}}{%- endif -%}{%- endfor -%}]
+

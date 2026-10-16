@@ -1,0 +1,695 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "sf-slideshow",
+      "blocks": {
+        "s_ritual": {
+          "type": "slide",
+          "settings": {
+            "tone": "cream",
+            "eyebrow": "CURATED BEAUTY. EXCEPTIONAL EVERY DAY.",
+            "heading": "A little luxury.\nAll yours.",
+            "text": "The brands you love. The discoveries you will. Explore your next beauty obsession at SOFIE.",
+            "button_label": "Explore beauty",
+            "button_action": "link",
+            "button_link": "/collections/makeup",
+            "match_mode": "",
+            "link_label": "Shop SOFIE NOW",
+            "link_url": "/collections/sofie-hours",
+            "caption": "THE EVERYDAY BEAUTY RITUAL",
+            "footnote": "01 / THE SOFIE EDIT",
+            "image": "shopify://shop_images/IMG_5672.jpg",
+            "alt": "SOFIE beauty edit with Summer Fridays and Kayali"
+          }
+        },
+        "s_fresh": {
+          "type": "slide",
+          "settings": {
+            "tone": "blush",
+            "eyebrow": "JUST LANDED · VERIFIED WORLDWIDE LAUNCHES",
+            "heading": "The newest beauty\nin the world, in stock",
+            "text": "Fresh drops from rhode, Rare Beauty, KAYALI, Charlotte Tilbury and more — checked against each brand's official new-in.",
+            "button_label": "Shop new drops",
+            "button_action": "link",
+            "button_link": "/collections/fresh-at-sofie",
+            "match_mode": "",
+            "link_label": "How we pick them",
+            "link_url": "/collections/fresh-at-sofie",
+            "caption": "",
+            "footnote": "02 / FRESH AT SOFIE",
+            "collection": "fresh-at-sofie"
+          }
+        },
+        "s_now": {
+          "type": "slide",
+          "settings": {
+            "tone": "now",
+            "eyebrow": "SOFIE NOW",
+            "heading": "Beauty can't wait.",
+            "text": "Your favourites, delivered in up to 120 minutes in selected areas.",
+            "button_label": "Shop ready-to-go beauty",
+            "button_action": "link",
+            "button_link": "/collections/sofie-hours",
+            "match_mode": "",
+            "link_label": "",
+            "link_url": "",
+            "caption": "",
+            "footnote": "03 / UP TO 120 MINUTES",
+            "collection": "sofie-hours"
+          }
+        },
+        "s_match": {
+          "type": "slide",
+          "settings": {
+            "tone": "sage",
+            "eyebrow": "FIND MY MATCH",
+            "heading": "Your match,\nin about 60 seconds",
+            "text": "Shade, skincare routine or signature scent — matched to you from what is in stock today, with the reasons why.",
+            "button_label": "Start my match",
+            "button_action": "match",
+            "button_link": "",
+            "match_mode": "",
+            "link_label": "",
+            "link_url": "",
+            "caption": "",
+            "footnote": "04 / PERSONALISED BY SOFIE",
+            "collection": "best-sellers-makeup"
+          }
+        },
+        "s_home": {
+          "type": "slide",
+          "settings": {
+            "tone": "linen",
+            "eyebrow": "SOFIE HOME",
+            "heading": "Step into\nSOFIE Home",
+            "text": "Tableware, appliances and the little luxuries for the spaces you call home.",
+            "button_label": "Explore home & living",
+            "button_action": "link",
+            "button_link": "/pages/sofies-home",
+            "match_mode": "",
+            "link_label": "",
+            "link_url": "",
+            "caption": "",
+            "footnote": "05 / BEAUTIFUL LIVING",
+            "image": "shopify://shop_images/WhatsApp_Image_2026-06-05_at_18.51.11.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "s_ritual",
+        "s_fresh",
+        "s_now",
+        "s_match",
+        "s_home"
+      ],
+      "settings": {
+        "label": "SOFIE highlights",
+        "first_is_h1": true,
+        "autoplay": true,
+        "interval": 7
+      }
+    },
+    "now": {
+      "type": "sf-now-banner",
+      "settings": {
+        "world": "beauty"
+      }
+    },
+    "fresh": {
+      "type": "sf-fresh",
+      "settings": {
+        "collection": "fresh-at-sofie",
+        "limit": 16,
+        "show_chips": true
+      }
+    },
+    "categories": {
+      "type": "sf-categories",
+      "blocks": {
+        "c_makeup": {
+          "type": "category",
+          "settings": {
+            "collection": "makeup",
+            "label": "Makeup",
+            "product": "pocket-blush"
+          }
+        },
+        "c_skin": {
+          "type": "category",
+          "settings": {
+            "collection": "skincare",
+            "label": "Skincare",
+            "product": "glazing-milk"
+          }
+        },
+        "c_frag": {
+          "type": "category",
+          "settings": {
+            "collection": "fragrance",
+            "label": "Fragrance",
+            "product": "vanilla-28"
+          }
+        },
+        "c_hair": {
+          "type": "category",
+          "settings": {
+            "collection": "hair",
+            "label": "Hair",
+            "product": "mahamane™-detangling-leave-in-conditioner"
+          }
+        },
+        "c_lips": {
+          "type": "category",
+          "settings": {
+            "collection": "lip",
+            "label": "Lips",
+            "product": "peptide-lip-tint"
+          }
+        },
+        "c_eyes": {
+          "type": "category",
+          "settings": {
+            "collection": "eye",
+            "label": "Eyes",
+            "product": "lines-liberated-24h-waterproof-eyeliner"
+          }
+        },
+        "c_body": {
+          "type": "category",
+          "settings": {
+            "collection": "all-bath-body",
+            "label": "Bath & body",
+            "product": "hand-sanitizer"
+          }
+        },
+        "c_tools": {
+          "type": "category",
+          "settings": {
+            "collection": "tools-brushes",
+            "label": "Tools & brushes",
+            "product": "diffusing-cheek-brush"
+          }
+        }
+      },
+      "block_order": [
+        "c_makeup",
+        "c_skin",
+        "c_frag",
+        "c_hair",
+        "c_lips",
+        "c_eyes",
+        "c_body",
+        "c_tools"
+      ],
+      "settings": {
+        "show_bestseller": true,
+        "bestseller_label": "Best seller"
+      }
+    },
+    "match": {
+      "type": "sf-match",
+      "settings": {}
+    },
+    "best": {
+      "type": "sf-featured",
+      "settings": {
+        "collection": "best-sellers-makeup",
+        "eyebrow": "MOST LOVED AT SOFIE",
+        "heading": "The best sellers",
+        "text": "The products our clients come back for, again and again.",
+        "layout": "carousel",
+        "limit": 12,
+        "show_rank": true,
+        "hide_sold_out": true,
+        "tint": true,
+        "lazy": true
+      }
+    },
+    "brands": {
+      "type": "sf-brand-banners",
+      "blocks": {
+        "b_rhode": {
+          "type": "brand",
+          "settings": {
+            "collection": "rhode",
+            "title": "rhode",
+            "tagline": "Hailey Bieber's glazed-skin essentials",
+            "bg": "#e9e3dc",
+            "fg": "#1b1b1b",
+            "type_style": "lower"
+          }
+        },
+        "b_huda": {
+          "type": "brand",
+          "settings": {
+            "collection": "huda-beauty",
+            "title": "Huda Beauty",
+            "tagline": "Bold, iconic and made for the camera",
+            "bg": "#f4dcd6",
+            "fg": "#3b1f1a",
+            "type_style": "caps"
+          }
+        },
+        "b_ct": {
+          "type": "brand",
+          "settings": {
+            "collection": "charlotte-tilbury",
+            "title": "Charlotte Tilbury",
+            "tagline": "Pillow Talk and Hollywood magic",
+            "bg": "#f2dde0",
+            "fg": "#5e2233",
+            "type_style": "serif"
+          }
+        },
+        "b_rare": {
+          "type": "brand",
+          "settings": {
+            "collection": "rare-beauty",
+            "title": "Rare Beauty",
+            "tagline": "Soft Pinch blush, by Selena Gomez",
+            "bg": "#efe2db",
+            "fg": "#2c2420",
+            "type_style": "sans"
+          }
+        },
+        "b_dior": {
+          "type": "brand",
+          "settings": {
+            "collection": "dior",
+            "title": "Dior",
+            "tagline": "Couture colour and Forever skin",
+            "bg": "#ecebe8",
+            "fg": "#111111",
+            "type_style": "caps"
+          }
+        },
+        "b_kayali": {
+          "type": "brand",
+          "settings": {
+            "collection": "kayali",
+            "title": "KAYALI",
+            "tagline": "Layerable scents by Mona Kattan",
+            "bg": "#f1e5d4",
+            "fg": "#3a2a1c",
+            "type_style": "caps"
+          }
+        },
+        "b_ysl": {
+          "type": "brand",
+          "settings": {
+            "collection": "yves-saint-laurent",
+            "title": "YSL Beauty",
+            "tagline": "Loveshine, Lovenude and Libre",
+            "bg": "#e9e6e1",
+            "fg": "#111111",
+            "type_style": "caps"
+          }
+        },
+        "b_pta": {
+          "type": "brand",
+          "settings": {
+            "collection": "patrick-ta",
+            "title": "Patrick Ta",
+            "tagline": "Sculpt, blush and red-carpet glow",
+            "bg": "#ecdcd5",
+            "fg": "#2a1d18",
+            "type_style": "serif"
+          }
+        },
+        "b_sf": {
+          "type": "brand",
+          "settings": {
+            "collection": "summer-fridays",
+            "title": "Summer Fridays",
+            "tagline": "Jet Lag and the Lip Butter Balm cult",
+            "bg": "#e4ecf1",
+            "fg": "#1f2a33",
+            "type_style": "sans"
+          }
+        },
+        "b_fenty": {
+          "type": "brand",
+          "settings": {
+            "collection": "fenty-beauty",
+            "title": "Fenty Beauty",
+            "tagline": "Shades for everyone, by Rihanna",
+            "bg": "#ead7c8",
+            "fg": "#1a1411",
+            "type_style": "caps"
+          }
+        },
+        "b_mbm": {
+          "type": "brand",
+          "settings": {
+            "collection": "makeup-by-mario",
+            "title": "Makeup by Mario",
+            "tagline": "Artist-grade essentials",
+            "bg": "#ecebe9",
+            "fg": "#161616",
+            "type_style": "caps"
+          }
+        },
+        "b_sdj": {
+          "type": "brand",
+          "settings": {
+            "collection": "sol-de-janeiro",
+            "title": "Sol de Janeiro",
+            "tagline": "Brazilian body care and Cheirosa mists",
+            "bg": "#f7e7c4",
+            "fg": "#3b2a10",
+            "type_style": "sans"
+          }
+        }
+      },
+      "block_order": [
+        "b_rhode",
+        "b_huda",
+        "b_ct",
+        "b_rare",
+        "b_dior",
+        "b_kayali",
+        "b_ysl",
+        "b_pta",
+        "b_sf",
+        "b_fenty",
+        "b_mbm",
+        "b_sdj"
+      ],
+      "settings": {
+        "eyebrow": "OUR BEAUTY HOUSES",
+        "heading": "Shop by brand",
+        "text": "The names you know, the ones to discover — choose your favourite house.",
+        "link_label": "All brands A–Z",
+        "link_url": "/pages/brands",
+        "cta_prefix": "Shop"
+      }
+    },
+    "newin": {
+      "type": "sf-new-tabs",
+      "blocks": {
+        "t_makeup": {
+          "type": "tab",
+          "settings": {
+            "collection": "new-in-makeup-auto",
+            "label": "Makeup"
+          }
+        },
+        "t_skin": {
+          "type": "tab",
+          "settings": {
+            "collection": "skincare",
+            "label": "Skincare"
+          }
+        },
+        "t_frag": {
+          "type": "tab",
+          "settings": {
+            "collection": "all-fragrance-1",
+            "label": "Fragrance"
+          }
+        },
+        "t_hair": {
+          "type": "tab",
+          "settings": {
+            "collection": "all-hair",
+            "label": "Hair"
+          }
+        },
+        "t_body": {
+          "type": "tab",
+          "settings": {
+            "collection": "all-bath-body",
+            "label": "Bath & body"
+          }
+        },
+        "t_tools": {
+          "type": "tab",
+          "settings": {
+            "collection": "tools-brushes",
+            "label": "Tools"
+          }
+        }
+      },
+      "block_order": [
+        "t_makeup",
+        "t_skin",
+        "t_frag",
+        "t_hair",
+        "t_body",
+        "t_tools"
+      ],
+      "settings": {
+        "eyebrow": "NEW IN",
+        "heading": "Just arrived, by category",
+        "sort": "created-descending",
+        "limit": 12,
+        "lazy": true
+      }
+    },
+    "promos": {
+      "type": "sf-promo-grid",
+      "blocks": {
+        "p_gift": {
+          "type": "promo",
+          "settings": {
+            "tone": "blush",
+            "collection": "value-gift-sets",
+            "eyebrow": "GIFTING",
+            "heading": "Gift sets worth giving",
+            "text": "Value sets and minis from the brands everyone wants.",
+            "cta": "Shop gift sets"
+          }
+        },
+        "p_mini": {
+          "type": "promo",
+          "settings": {
+            "tone": "sage",
+            "collection": "mini-size",
+            "eyebrow": "TRY IT SMALL",
+            "heading": "Minis & travel sizes",
+            "text": "Discover new favourites — perfect for your bag.",
+            "cta": "Shop minis"
+          }
+        },
+        "p_trend": {
+          "type": "promo",
+          "settings": {
+            "tone": "cream",
+            "collection": "trending-now",
+            "eyebrow": "TRENDING",
+            "heading": "What everyone is talking about",
+            "text": "The viral picks flying off our shelves right now.",
+            "cta": "Shop trending"
+          }
+        }
+      },
+      "block_order": [
+        "p_gift",
+        "p_mini",
+        "p_trend"
+      ],
+      "settings": {
+        "eyebrow": "MORE TO LOVE",
+        "heading": "Shop the moment"
+      }
+    },
+    "shortlist": {
+      "type": "sf-featured",
+      "settings": {
+        "collection": "trending-viral",
+        "eyebrow": "YOUR NEXT OBSESSION",
+        "heading": "The beauty shortlist",
+        "layout": "grid",
+        "limit": 4,
+        "hide_sold_out": true
+      }
+    },
+    "home": {
+      "type": "sf-home-edit",
+      "settings": {
+        "image": "shopify://shop_images/WhatsApp_Image_2026-06-05_at_18.51.11.jpg",
+        "image_2": "shopify://shop_images/Frame_2147224371.webp",
+        "eyebrow": "SOFIE HOME",
+        "points": "Statement appliances by SMEG & more\nTableware, drinkware and table linens\nOur own SOFIE Home designs",
+        "link": "/pages/sofies-home"
+      }
+    },
+    "trust": {
+      "type": "sf-trust",
+      "settings": {}
+    },
+    "home_rooms": {
+      "type": "sf-categories",
+      "blocks": {
+        "hc_bed": {
+          "type": "category",
+          "settings": {
+            "collection": "bedding",
+            "label": "Bedding"
+          }
+        },
+        "hc_smeg": {
+          "type": "category",
+          "settings": {
+            "collection": "smeg",
+            "label": "SMEG"
+          }
+        },
+        "hc_kitchen": {
+          "type": "category",
+          "settings": {
+            "collection": "kitchen",
+            "label": "Kitchen"
+          }
+        },
+        "hc_flat": {
+          "type": "category",
+          "settings": {
+            "collection": "flatware",
+            "label": "Flatware"
+          }
+        },
+        "hc_table": {
+          "type": "category",
+          "settings": {
+            "collection": "tabletop",
+            "label": "Tabletop"
+          }
+        },
+        "hc_bath": {
+          "type": "category",
+          "settings": {
+            "collection": "bath",
+            "label": "Bath"
+          }
+        },
+        "hc_serve": {
+          "type": "category",
+          "settings": {
+            "collection": "serveware",
+            "label": "Serveware"
+          }
+        }
+      },
+      "block_order": [
+        "hc_bed",
+        "hc_smeg",
+        "hc_kitchen",
+        "hc_flat",
+        "hc_table",
+        "hc_bath",
+        "hc_serve"
+      ],
+      "settings": {
+        "eyebrow": "SOFIE HOME · ROOM BY ROOM",
+        "heading": "Shop the home",
+        "subheading": "Tableware, linens, appliances and our own SOFIE Home designs.",
+        "show_bestseller": false
+      }
+    },
+    "home_best": {
+      "type": "sf-featured",
+      "settings": {
+        "collection": "best-seller-home",
+        "eyebrow": "SOFIE HOME · MOST LOVED",
+        "heading": "Home best sellers",
+        "text": "The pieces our clients reach for first.",
+        "layout": "carousel",
+        "limit": 12,
+        "show_rank": true,
+        "hide_sold_out": true,
+        "tint": true,
+        "lazy": true
+      }
+    },
+    "home_new": {
+      "type": "sf-new-tabs",
+      "blocks": {
+        "ht_kitchen": {
+          "type": "tab",
+          "settings": {
+            "collection": "kitchen",
+            "label": "Kitchen"
+          }
+        },
+        "ht_table": {
+          "type": "tab",
+          "settings": {
+            "collection": "tabletop",
+            "label": "Tabletop"
+          }
+        },
+        "ht_drink": {
+          "type": "tab",
+          "settings": {
+            "collection": "drinkware-bar-tools",
+            "label": "Drinkware"
+          }
+        },
+        "ht_bed": {
+          "type": "tab",
+          "settings": {
+            "collection": "bedding",
+            "label": "Bedding"
+          }
+        },
+        "ht_app": {
+          "type": "tab",
+          "settings": {
+            "collection": "kitchen-appliances-electrics",
+            "label": "Appliances"
+          }
+        },
+        "ht_smeg": {
+          "type": "tab",
+          "settings": {
+            "collection": "smeg",
+            "label": "SMEG"
+          }
+        }
+      },
+      "block_order": [
+        "ht_kitchen",
+        "ht_table",
+        "ht_drink",
+        "ht_bed",
+        "ht_app",
+        "ht_smeg"
+      ],
+      "settings": {
+        "eyebrow": "SOFIE HOME · NEW IN",
+        "heading": "New for the home",
+        "sort": "created-descending",
+        "limit": 12,
+        "lazy": true
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "now",
+    "fresh",
+    "categories",
+    "match",
+    "best",
+    "brands",
+    "newin",
+    "promos",
+    "shortlist",
+    "home",
+    "home_rooms",
+    "home_best",
+    "home_new",
+    "trust"
+  ]
+}
+
