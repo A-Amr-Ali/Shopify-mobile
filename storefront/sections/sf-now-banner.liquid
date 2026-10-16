@@ -1,0 +1,54 @@
+{%- liquid
+  assign s = section.settings
+  assign url = s.collection.url
+  assign area_only = false
+  if url == blank
+    if s.world == 'home'
+      if settings.now_home_collection != blank
+        assign url = settings.now_home_collection.url
+      else
+        assign area_only = true
+      endif
+    else
+      assign url = settings.now_collection.url | default: '/collections/sofie-hours'
+    endif
+  endif
+  if s.kicker != blank
+    assign kicker = s.kicker | escape
+  else
+    assign kicker = 'sf.text.now_kicker' | t
+  endif
+  if s.heading != blank
+    assign heading = s.heading | escape
+  else
+    assign heading = 'sf.text.now_title' | t
+  endif
+  if s.text != blank
+    assign text = s.text | escape
+  else
+    assign text = 'sf.text.now_text' | t
+  endif
+  if s.cta != blank
+    assign cta = s.cta | escape
+  else
+    assign cta = 'sf.text.now_cta' | t
+  endif
+-%}
+<section class="sf-now-banner sf-wrap{% if s.world == 'home' %} is-home{% endif %}">
+<div class="sf-now-name"><span>SOFIE</span><em>NOW</em><i class="sf-pulse" aria-hidden="true"></i>{%- if s.world == 'home' -%}<small>{{ s.world_label | default: 'for home' | escape }}</small>{%- endif -%}</div>
+<div class="sf-now-copy"><p class="eyebrow">{{ kicker }}</p><h2>{{ heading }}</h2><p>{{ text }}</p><div class="sf-now-actions">{%- if area_only -%}<button class="button" data-dialog="sf-area">{{ 'sf.text.area' | t }} {% render 'sf-icon',name:'arrow' %}</button>{%- else -%}<a class="button" href="{{ url }}">{{ cta }} {% render 'sf-icon',name:'arrow' %}</a><button class="underlined" data-dialog="sf-area">{{ 'sf.text.area' | t }}</button>{%- endif -%}</div><small>{{ 'sf.text.now_terms' | t }} {% render 'sf-now-hours', mode: 'sentence' %}</small></div>
+<div class="sf-now-side"><div class="sf-now-clock"><span>{{ 'sf.text.now_max' | t }}</span><strong>{{ s.minutes | default: 120 }}</strong><span>{{ 'sf.text.now_minutes' | t }}</span></div>{% render 'sf-now-hours' %}</div>
+</section>
+{% schema %}
+{"name": "Sofie Now Banner", "settings": [
+ {"type": "select", "id": "world", "label": "World", "default": "beauty", "options": [{"value": "beauty", "label": "Beauty"}, {"value": "home", "label": "Home & living"}]},
+ {"type": "collection", "id": "collection", "label": "SOFIE NOW collection", "info": "Leave empty to use the theme setting (beauty or home)."},
+ {"type": "text", "id": "kicker", "label": "Eyebrow", "info": "Leave blank to use the translated default."},
+ {"type": "text", "id": "heading", "label": "Heading"},
+ {"type": "textarea", "id": "text", "label": "Text"},
+ {"type": "text", "id": "cta", "label": "Button"},
+ {"type": "text", "id": "world_label", "label": "Small label under SOFIE NOW (home)", "default": "for home"},
+ {"type": "number", "id": "minutes", "label": "Maximum minutes", "default": 120}
+], "presets": [{"name": "Sofie Now Banner"}]}
+{% endschema %}
+

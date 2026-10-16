@@ -1,0 +1,36 @@
+{% doc %}
+sf-now-hours
+Opening hours of SOFIE NOW and store pickup, taken from the theme settings.
+Renders either a live status pill (painted by sofie-claude.js from Cairo time) or a plain sentence.
+@param {string} [mode] - 'pill' (default), 'sentence', 'range' (just "10 am–10 pm") or 'json'
+{% enddoc %}
+{%- liquid
+  assign oh = settings.now_open_hour | default: 10
+  assign ch = settings.now_close_hour | default: 22
+  assign hours = oh | append: ',' | append: ch | split: ','
+  assign labels = ''
+  for h in hours
+    assign n = h | plus: 0
+    if n == 0 or n == 24
+      assign txt = '12 am'
+    elsif n == 12
+      assign txt = '12 pm'
+    elsif n > 12
+      assign txt = n | minus: 12 | append: ' pm'
+    else
+      assign txt = n | append: ' am'
+    endif
+    assign labels = labels | append: txt | append: '|'
+  endfor
+  assign labels = labels | split: '|'
+  assign open_txt = labels[0]
+  assign close_txt = labels[1]
+  assign range = open_txt | append: '–' | append: close_txt
+-%}
+{%- case mode -%}
+{%- when 'range' -%}{{ range }}
+{%- when 'json' -%}{"open":{{ oh }},"close":{{ ch }},"openText":{{ open_txt | json }},"closeText":{{ close_txt | json }}}
+{%- when 'sentence' -%}SOFIE NOW and store pickup run every day {{ range }}. Orders placed after {{ close_txt }} are confirmed and delivered from {{ open_txt }} the next morning.
+{%- else -%}<span class="sf-now-status" data-now-status data-open="{{ oh }}" data-close="{{ ch }}" data-open-text="{{ open_txt }}" data-close-text="{{ close_txt }}">Every day {{ range }}</span>
+{%- endcase -%}
+

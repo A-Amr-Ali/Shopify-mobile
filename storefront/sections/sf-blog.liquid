@@ -1,0 +1,5 @@
+<section class="sf-section sf-wrap"><p class="eyebrow">{{ 'sf.text.learn' | t }}</p><h1>{{ blog.title | escape }}</h1>{% paginate blog.articles by 12 %}<div class="sf-grid sf-article-grid">{% for article in blog.articles %}<article>{% if article.image %}<a href="{{ article.url }}">{{ article.image | image_url:width:700 | image_tag:loading:'lazy',alt:article.title }}</a>{% endif %}<p class="eyebrow">{{ article.published_at | date:'%d %B %Y' }}</p><h2><a href="{{ article.url }}">{{ article.title | escape }}</a></h2><p>{{ article.excerpt_or_content | strip_html | truncatewords:30 }}</p><a class="underlined" href="{{ article.url }}">{{ 'sf.text.read_more' | t }} ↗</a></article>{% endfor %}</div>{% render 'sf-pagination',paginate:paginate %}{% endpaginate %}</section>
+{% schema %}
+{"name": "Sofie Blog", "settings": []}
+{% endschema %}
+

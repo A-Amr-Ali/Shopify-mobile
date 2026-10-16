@@ -1,0 +1,66 @@
+{%- comment -%}
+SOFIE NOW dispatch (team page, not linked anywhere and hidden from search engines).
+When a SOFIE NOW order leaves the store, the team creates the customer's live tracking link here and sends it on WhatsApp.
+{%- endcomment -%}
+{%- assign tracker = pages['sofie-now-tracker'].url | default: '/pages/sofie-now-tracker' -%}
+<section class="sf-track sf-wrap sf-dispatch" data-dispatch data-tracker="{{ shop.url }}{{ tracker }}">
+<div class="sf-track-card">
+<p class="sf-nowp-badge"><i class="sf-pulse" aria-hidden="true"></i>SOFIE NOW · TEAM</p>
+<h1>Send a live tracking link</h1>
+<p class="sf-track-sub">Use this when a SOFIE NOW order leaves the store. The customer gets a page with a small SOFIE car driving to their door and a countdown for their area.</p>
+<form class="sf-dispatch-form" data-dispatch-form novalidate>
+<label>Order number<input name="o" required autocomplete="off" inputmode="text" placeholder="#1234" maxlength="17"></label>
+<label>Area<select name="a" required><option value="">Choose the delivery area</option><option value="new_cairo">New Cairo · 30 min</option><option value="nasr_city">Nasr City · 60 min</option><option value="madinaty">Madinaty · 60 min</option><option value="giza">Giza · 120 min</option><option value="zayed">Sheikh Zayed · 120 min</option><option value="october">6 October · 120 min</option><option value="shorouk">El Shorouk · 120 min</option><option value="obour">El Obour · 120 min</option></select></label>
+<fieldset><legend>The car carries</legend><label class="sf-check"><input type="radio" name="k" value="beauty" checked>A SOFIE beauty bag</label><label class="sf-check"><input type="radio" name="k" value="home">A SOFIE Home box</label></fieldset>
+<label>Left the store<select name="ago"><option value="0">Just now</option><option value="5">5 minutes ago</option><option value="10">10 minutes ago</option><option value="15">15 minutes ago</option><option value="20">20 minutes ago</option><option value="30">30 minutes ago</option></select></label>
+<label>Customer WhatsApp (optional)<input name="p" inputmode="tel" autocomplete="off" placeholder="01xxxxxxxxx"></label>
+<p class="sf-form-error" role="alert" data-dispatch-error hidden></p>
+<button class="button" type="submit">Create tracking link {% render 'sf-icon',name:'arrow' %}</button>
+</form>
+<div class="sf-dispatch-out" data-dispatch-out hidden>
+<label>Tracking link<input readonly data-dispatch-link></label>
+<div class="sf-track-actions"><a class="button" data-dispatch-wa href="#" target="_blank" rel="noopener">Send on WhatsApp {% render 'sf-icon',name:'arrow' %}</a><button type="button" class="button button-outline" data-dispatch-copy>Copy link</button><a class="underlined" data-dispatch-open href="#" target="_blank" rel="noopener">Open tracker</a></div>
+<p class="small">The link works for 24 hours. Only send it for SOFIE NOW orders.</p>
+</div>
+</div>
+</section>
+<script>
+(() => {
+  const root = document.querySelector('[data-dispatch]');
+  if (!root) return;
+  const form = root.querySelector('[data-dispatch-form]'), out = root.querySelector('[data-dispatch-out]'), err = root.querySelector('[data-dispatch-error]');
+  const linkBox = root.querySelector('[data-dispatch-link]');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const f = new FormData(form);
+    const o = String(f.get('o') || '').trim().replace(/\s+/g, '');
+    const a = String(f.get('a') || '');
+    err.hidden = true;
+    if (!/^#?[A-Za-z0-9-]{1,16}$/.test(o)) { err.textContent = 'Enter the order number, for example #1234.'; err.hidden = false; return; }
+    if (!a) { err.textContent = 'Choose the delivery area.'; err.hidden = false; return; }
+    const t = Math.round(Date.now() / 1000) - (parseInt(f.get('ago'), 10) || 0) * 60;
+    const url = new URL(root.dataset.tracker);
+    url.searchParams.set('o', o.replace(/^#/, ''));
+    url.searchParams.set('a', a);
+    url.searchParams.set('k', f.get('k') === 'home' ? 'home' : 'beauty');
+    url.searchParams.set('t', String(t));
+    let phone = String(f.get('p') || '').replace(/\D/g, '');
+    if (/^01\d{9}$/.test(phone)) phone = '2' + phone;
+    const text = 'Hello from SOFIE! Your SOFIE NOW order #' + o.replace(/^#/, '') + ' is on its way. Track it live: ' + url.href;
+    linkBox.value = url.href;
+    root.querySelector('[data-dispatch-wa]').href = 'https://wa.me/' + (/^\d{10,15}$/.test(phone) ? phone : '') + '?text=' + encodeURIComponent(text);
+    root.querySelector('[data-dispatch-open]').href = url.href;
+    out.hidden = false;
+    linkBox.focus(); linkBox.select();
+  });
+  root.querySelector('[data-dispatch-copy]').addEventListener('click', async e => {
+    try { await navigator.clipboard.writeText(linkBox.value); e.target.textContent = 'Copied'; }
+    catch (x) { linkBox.select(); document.execCommand && document.execCommand('copy'); e.target.textContent = 'Copied'; }
+    setTimeout(() => { e.target.textContent = 'Copy link'; }, 2000);
+  });
+})();
+</script>
+{% schema %}
+{"name": "Sofie NOW Dispatch", "settings": []}
+{% endschema %}
+

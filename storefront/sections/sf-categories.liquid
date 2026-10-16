@@ -1,0 +1,64 @@
+{%- liquid
+  assign used = '|'
+  if section.settings.heading != blank
+    assign heading = section.settings.heading | escape
+  else
+    assign heading = 'sf.text.categories' | t
+  endif
+  if section.settings.eyebrow != blank
+    assign eyebrow = section.settings.eyebrow | escape
+  else
+    assign eyebrow = 'sf.text.categories_kicker' | t
+  endif
+-%}
+<section class="sf-section sf-wrap sf-cats" data-cats>
+<div class="sf-section-head"><div><p class="eyebrow">{{ eyebrow }}</p><h2>{{ heading }}</h2>{%- if section.settings.subheading != blank -%}<p class="sf-section-sub">{{ section.settings.subheading | escape }}</p>{%- endif -%}</div></div>
+<div class="sf-category-grid sf-cat-grid-{{ section.blocks.size | at_most: 8 }}">
+{%- for block in section.blocks -%}
+{%- liquid
+  assign c = block.settings.collection
+  assign hero = nil
+  if block.settings.product != blank and block.settings.product.available
+    assign hero = block.settings.product
+  endif
+  if hero == nil and c != blank
+    for p in c.products limit: 24
+      assign key = '|' | append: p.id | append: '|'
+      if p.available and p.featured_image and used contains key
+        continue
+      endif
+      if p.available and p.featured_image
+        assign hero = p
+        break
+      endif
+    endfor
+  endif
+  if hero
+    assign used = used | append: hero.id | append: '|'
+  endif
+  assign pic = block.settings.image
+  if pic == blank and hero
+    assign pic = hero.featured_image
+  endif
+  if pic == blank and c != blank
+    assign pic = c.image
+  endif
+-%}
+<a href="{{ c.url | default: '#' }}" class="sf-category" {{ block.shopify_attributes }}><div class="sf-cat-disc"{% if block.settings.image == blank %} data-unify{% endif %}>{% if pic %}{{ pic | image_url: width: 600 | image_tag: loading: 'lazy', widths: '240,360,480,600', sizes: '(min-width: 900px) 15vw, 30vw', alt: '' }}{% endif %}</div><span class="sf-cat-name">{{ block.settings.label | default: c.title | escape }}</span>{%- if hero and section.settings.show_bestseller -%}<span class="sf-cat-best"><b>{{ section.settings.bestseller_label | default: 'Best seller' | escape }}</b> {{ hero.vendor | escape }} · {{ hero.title | truncate: 34 | escape }}</span>{%- endif -%}</a>
+{%- endfor -%}
+</div>
+</section>
+{% schema %}
+{"name": "Sofie Categories", "settings": [
+ {"type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "Leave blank to use the translated default."},
+ {"type": "text", "id": "heading", "label": "Heading", "info": "Leave blank to use the translated default."},
+ {"type": "text", "id": "subheading", "label": "Subheading"},
+ {"type": "checkbox", "id": "show_bestseller", "label": "Show the best seller under each category", "default": true},
+ {"type": "text", "id": "bestseller_label", "label": "Best seller label", "default": "Best seller"}
+], "blocks": [{"type": "category", "name": "Category", "settings": [
+ {"type": "collection", "id": "collection", "label": "Collection"},
+ {"type": "text", "id": "label", "label": "Label"},
+ {"type": "product", "id": "product", "label": "Best seller to show", "info": "Optional. When empty, the collection's top-selling available product is used (no repeats across categories)."},
+ {"type": "image_picker", "id": "image", "label": "Custom image", "info": "Optional. Overrides the best-seller photo."}
+]}], "presets": [{"name": "Sofie Categories"}]}
+{% endschema %}

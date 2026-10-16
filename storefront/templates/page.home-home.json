@@ -1,0 +1,464 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "sf-slideshow",
+      "blocks": {
+        "h_kitchen": {
+          "type": "slide",
+          "settings": {
+            "tone": "linen",
+            "eyebrow": "SOFIE HOME",
+            "heading": "Beautiful living,\ndown to the details.",
+            "text": "Considered pieces for the spaces you call home — from statement appliances to the everyday ritual of a beautiful table.",
+            "button_label": "Shop the kitchen",
+            "button_action": "link",
+            "button_link": "/collections/kitchen",
+            "match_mode": "",
+            "link_label": "Discover SMEG",
+            "link_url": "/collections/smeg",
+            "caption": "",
+            "footnote": "01 / THE HOME EDIT",
+            "image": "shopify://shop_images/Frame_2147224342.webp",
+            "alt": "A warm SOFIE Home kitchen with SMEG appliances"
+          }
+        },
+        "h_bed": {
+          "type": "slide",
+          "settings": {
+            "tone": "sage",
+            "eyebrow": "BEDDING",
+            "heading": "Sleep, beautifully",
+            "text": "Duvet covers, quilts and sheets in calm, natural tones.",
+            "button_label": "Shop bedding",
+            "button_action": "link",
+            "button_link": "/collections/bedding",
+            "match_mode": "",
+            "link_label": "",
+            "link_url": "",
+            "caption": "",
+            "footnote": "02 / SLOW MORNINGS",
+            "collection": "bedding"
+          }
+        },
+        "h_table": {
+          "type": "slide",
+          "settings": {
+            "tone": "cream",
+            "eyebrow": "TABLETOP",
+            "heading": "Set a table worth\ngathering around",
+            "text": "Dinnerware, flatware, serveware and linens for every occasion.",
+            "button_label": "Shop tabletop",
+            "button_action": "link",
+            "button_link": "/collections/tabletop",
+            "match_mode": "",
+            "link_label": "",
+            "link_url": "",
+            "caption": "",
+            "footnote": "03 / GATHER",
+            "collection": "tabletop"
+          }
+        },
+        "h_sip": {
+          "type": "slide",
+          "settings": {
+            "tone": "linen",
+            "eyebrow": "DRINKWARE",
+            "heading": "Sip in style",
+            "text": "Stanley, Owala and everyday glassware — hydration, made beautiful.",
+            "button_label": "Shop drinkware",
+            "button_action": "link",
+            "button_link": "/collections/drinkware-bar-tools",
+            "match_mode": "",
+            "link_label": "Shop Stanley",
+            "link_url": "/collections/stanley",
+            "caption": "",
+            "footnote": "04 / ON THE GO",
+            "collection": "drinkware-bar-tools"
+          }
+        }
+      },
+      "block_order": [
+        "h_kitchen",
+        "h_bed",
+        "h_table",
+        "h_sip"
+      ],
+      "settings": {
+        "label": "SOFIE Home highlights",
+        "first_is_h1": true,
+        "autoplay": true,
+        "interval": 7
+      }
+    },
+    "now": {
+      "type": "sf-now-banner",
+      "settings": {
+        "world": "home",
+        "kicker": "SOFIE NOW · HOME",
+        "heading": "Home, delivered today.",
+        "text": "Selected home essentials, delivered fast in selected areas. Check your area to see what can reach you today.",
+        "cta": "Shop SOFIE NOW home",
+        "world_label": "for home"
+      }
+    },
+    "categories": {
+      "type": "sf-categories",
+      "blocks": {
+        "hc_bed": {
+          "type": "category",
+          "settings": {
+            "collection": "bedding",
+            "label": "Bedding"
+          }
+        },
+        "hc_smeg": {
+          "type": "category",
+          "settings": {
+            "collection": "smeg",
+            "label": "SMEG"
+          }
+        },
+        "hc_kitchen": {
+          "type": "category",
+          "settings": {
+            "collection": "kitchen",
+            "label": "Kitchen"
+          }
+        },
+        "hc_flat": {
+          "type": "category",
+          "settings": {
+            "collection": "flatware",
+            "label": "Flatware"
+          }
+        },
+        "hc_table": {
+          "type": "category",
+          "settings": {
+            "collection": "tabletop",
+            "label": "Tabletop"
+          }
+        },
+        "hc_bath": {
+          "type": "category",
+          "settings": {
+            "collection": "bath",
+            "label": "Bath"
+          }
+        },
+        "hc_serve": {
+          "type": "category",
+          "settings": {
+            "collection": "serveware",
+            "label": "Serveware"
+          }
+        }
+      },
+      "block_order": [
+        "hc_bed",
+        "hc_smeg",
+        "hc_kitchen",
+        "hc_flat",
+        "hc_table",
+        "hc_bath",
+        "hc_serve"
+      ],
+      "settings": {
+        "eyebrow": "ROOM BY ROOM",
+        "heading": "Shop the home",
+        "show_bestseller": false
+      }
+    },
+    "best": {
+      "type": "sf-featured",
+      "settings": {
+        "collection": "best-seller-home",
+        "eyebrow": "MOST LOVED",
+        "heading": "Home best sellers",
+        "text": "The pieces our clients reach for first.",
+        "layout": "carousel",
+        "limit": 12,
+        "show_rank": true,
+        "hide_sold_out": true,
+        "tint": true,
+        "lazy": true
+      }
+    },
+    "brands": {
+      "type": "sf-brand-banners",
+      "blocks": {
+        "hb_smeg": {
+          "type": "brand",
+          "settings": {
+            "collection": "smeg",
+            "title": "SMEG",
+            "tagline": "Italian icons for the kitchen",
+            "bg": "#e6edf1",
+            "fg": "#1d2a33",
+            "type_style": "caps"
+          }
+        },
+        "hb_stanley": {
+          "type": "brand",
+          "settings": {
+            "collection": "stanley",
+            "title": "Stanley",
+            "tagline": "Built for life since 1913",
+            "bg": "#ebe5dc",
+            "fg": "#26231f",
+            "type_style": "caps"
+          }
+        },
+        "hb_mc": {
+          "type": "brand",
+          "settings": {
+            "collection": "mackenzie-childs",
+            "title": "MacKenzie-Childs",
+            "tagline": "Courtly check and handmade charm",
+            "bg": "#efebe4",
+            "fg": "#151515",
+            "type_style": "serif"
+          }
+        },
+        "hb_lenox": {
+          "type": "brand",
+          "settings": {
+            "collection": "lenox",
+            "title": "Lenox",
+            "tagline": "Heirloom tableware and the Spice Village",
+            "bg": "#eef0f2",
+            "fg": "#1d2430",
+            "type_style": "serif"
+          }
+        },
+        "hb_dyson": {
+          "type": "brand",
+          "settings": {
+            "collection": "dyson",
+            "title": "Dyson",
+            "tagline": "Engineering for a beautiful home",
+            "bg": "#ececec",
+            "fg": "#161616",
+            "type_style": "caps"
+          }
+        },
+        "hb_ninja": {
+          "type": "brand",
+          "settings": {
+            "collection": "ninja",
+            "title": "Ninja",
+            "tagline": "Kitchen appliances that do more",
+            "bg": "#e9ecef",
+            "fg": "#15191d",
+            "type_style": "caps"
+          }
+        },
+        "hb_ka": {
+          "type": "brand",
+          "settings": {
+            "collection": "kitchen-aid",
+            "title": "KitchenAid",
+            "tagline": "The stand mixer and its friends",
+            "bg": "#f3e3e1",
+            "fg": "#3b1c19",
+            "type_style": "sans"
+          }
+        },
+        "hb_emsan": {
+          "type": "brand",
+          "settings": {
+            "collection": "emsan",
+            "title": "Emsan",
+            "tagline": "Enamel and porcelain for everyday",
+            "bg": "#efe7dc",
+            "fg": "#2d241a",
+            "type_style": "serif"
+          }
+        },
+        "hb_eh": {
+          "type": "brand",
+          "settings": {
+            "collection": "english-home",
+            "title": "English Home",
+            "tagline": "Soft textiles and table linens",
+            "bg": "#f1ebe6",
+            "fg": "#2b241f",
+            "type_style": "serif"
+          }
+        }
+      },
+      "block_order": [
+        "hb_smeg",
+        "hb_stanley",
+        "hb_mc",
+        "hb_lenox",
+        "hb_dyson",
+        "hb_ninja",
+        "hb_ka",
+        "hb_emsan",
+        "hb_eh"
+      ],
+      "settings": {
+        "eyebrow": "OUR HOME HOUSES",
+        "heading": "Shop by brand",
+        "text": "From Italian icons to heirloom tableware — choose your house.",
+        "link_label": "",
+        "cta_prefix": "Shop"
+      }
+    },
+    "newin": {
+      "type": "sf-new-tabs",
+      "blocks": {
+        "ht_kitchen": {
+          "type": "tab",
+          "settings": {
+            "collection": "kitchen",
+            "label": "Kitchen"
+          }
+        },
+        "ht_table": {
+          "type": "tab",
+          "settings": {
+            "collection": "tabletop",
+            "label": "Tabletop"
+          }
+        },
+        "ht_drink": {
+          "type": "tab",
+          "settings": {
+            "collection": "drinkware-bar-tools",
+            "label": "Drinkware"
+          }
+        },
+        "ht_bed": {
+          "type": "tab",
+          "settings": {
+            "collection": "bedding",
+            "label": "Bedding"
+          }
+        },
+        "ht_app": {
+          "type": "tab",
+          "settings": {
+            "collection": "kitchen-appliances-electrics",
+            "label": "Appliances"
+          }
+        },
+        "ht_smeg": {
+          "type": "tab",
+          "settings": {
+            "collection": "smeg",
+            "label": "SMEG"
+          }
+        }
+      },
+      "block_order": [
+        "ht_kitchen",
+        "ht_table",
+        "ht_drink",
+        "ht_bed",
+        "ht_app",
+        "ht_smeg"
+      ],
+      "settings": {
+        "eyebrow": "NEW IN",
+        "heading": "Fresh for the home",
+        "sort": "created-descending",
+        "limit": 12,
+        "lazy": true
+      }
+    },
+    "own": {
+      "type": "sf-featured",
+      "settings": {
+        "collection": "sofies-home-brand-design",
+        "eyebrow": "OUR OWN COLLECTION",
+        "heading": "Designed by SOFIE",
+        "text": "Mugs, cups, bowls and plates from our own SOFIE Home studio.",
+        "layout": "carousel",
+        "limit": 12,
+        "hide_sold_out": true,
+        "lazy": true
+      }
+    },
+    "promos": {
+      "type": "sf-promo-grid",
+      "blocks": {
+        "hp_coffee": {
+          "type": "promo",
+          "settings": {
+            "tone": "linen",
+            "collection": "coffee-espresso",
+            "eyebrow": "THE COFFEE CORNER",
+            "heading": "Your morning ritual",
+            "text": "Espresso makers, grinders and the cups to match.",
+            "cta": "Shop coffee"
+          }
+        },
+        "hp_linens": {
+          "type": "promo",
+          "settings": {
+            "tone": "sage",
+            "collection": "table-linens",
+            "eyebrow": "TABLE LINENS",
+            "heading": "Dress the table",
+            "text": "Napkins, placemats and runners in soft, natural weaves.",
+            "cta": "Shop linens"
+          }
+        },
+        "hp_bath": {
+          "type": "promo",
+          "settings": {
+            "tone": "cream",
+            "collection": "bath-linens-towels",
+            "eyebrow": "BATH",
+            "heading": "A spa at home",
+            "text": "Towels, robes and bath mats with a hotel feel.",
+            "cta": "Shop bath"
+          }
+        }
+      },
+      "block_order": [
+        "hp_coffee",
+        "hp_linens",
+        "hp_bath"
+      ],
+      "settings": {
+        "eyebrow": "LITTLE RITUALS",
+        "heading": "Make it feel like home"
+      }
+    },
+    "trust": {
+      "type": "sf-trust",
+      "settings": {
+        "title_1": "Authentic brands",
+        "text_1": "Original pieces from the houses you know.",
+        "title_2": "Delivered with care",
+        "text_2": "Packed carefully and delivered to your door.",
+        "title_3": "Here to help",
+        "text_3": "Ask our team about sizes, sets and gifting."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "now",
+    "categories",
+    "best",
+    "brands",
+    "newin",
+    "own",
+    "promos",
+    "trust"
+  ]
+}
+

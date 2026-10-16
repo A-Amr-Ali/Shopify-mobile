@@ -1,0 +1,20 @@
+{%- layout none -%}
+{%- comment -%}Find My Match data feed: /collections/<handle>?view=sfm&sort_by=best-selling — compact JSON of in-stock products.{%- endcomment -%}
+{%- paginate collection.products by 250 -%}
+{%- assign emitted = 0 -%}
+[{%- for p in collection.products -%}{%- if p.available -%}
+{%- liquid
+  assign now = 0
+  capture p_ready
+    render 'sf-now-ready', product: p
+  endcapture
+  if p_ready != blank
+    assign now = 1
+  endif
+  assign d = p.description | strip_html | strip_newlines | truncate: 520
+-%}
+{%- if emitted > 0 -%},{%- endif -%}{%- assign emitted = emitted | plus: 1 -%}
+{"h":{{ p.handle | json }},"t":{{ p.title | json }},"v":{{ p.vendor | json }},"y":{{ p.type | json }},"g":{{ p.tags | join: ',' | json }},"p":{{ p.price }},"q":{{ p.price_max }},"c":{{ p.compare_at_price | default: 0 }},"i":{% if p.featured_image %}{{ p.featured_image | image_url: width: 420 | json }}{% else %}""{% endif %},"u":{{ p.url | json }},"d":{{ d | json }},"n":{{ now }},"o":{{ p.options | json }},"s":[{%- for v in p.variants limit: 70 -%}{"id":{{ v.id }},"t":{{ v.title | json }},"a":{% if v.available %}1{% else %}0{% endif %},"p":{{ v.price }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]}
+{%- endif -%}{%- endfor -%}]
+{%- endpaginate -%}
+

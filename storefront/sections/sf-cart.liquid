@@ -1,0 +1,211 @@
+{%- liquid
+  assign fee_handle = 'sofie-now-express-delivery'
+  assign fee_product = all_products[fee_handle]
+  assign fee30 = ''
+  assign fee60 = ''
+  assign fee120 = ''
+  assign fee30m = ''
+  assign fee60m = ''
+  assign fee120m = ''
+  assign feepick = ''
+  for fv in fee_product.variants
+    case fv.sku
+      when 'SOFIE-NOW-30'
+        assign fee30 = fv.id
+      when 'SOFIE-NOW-60'
+        assign fee60 = fv.id
+      when 'SOFIE-NOW-120'
+        assign fee120 = fv.id
+      when 'SOFIE-NOW-30M'
+        assign fee30m = fv.id
+      when 'SOFIE-NOW-60M'
+        assign fee60m = fv.id
+      when 'SOFIE-NOW-120M'
+        assign fee120m = fv.id
+      when 'SOFIE-PICKUP'
+        assign feepick = fv.id
+    endcase
+  endfor
+  assign fee_line = ''
+  assign fee_qty = 0
+  assign shop_count = 0
+  assign shop_lines = 0
+  for item in cart.items
+    if item.product.handle == fee_handle
+      assign fee_line = item.variant.id
+      assign fee_qty = fee_qty | plus: item.quantity
+    else
+      assign shop_count = shop_count | plus: item.quantity
+      assign shop_lines = shop_lines | plus: 1
+    endif
+  endfor
+  assign pickup_on = settings.pickup_enabled
+  if pickup_on == nil
+    assign pickup_on = true
+  endif
+  if feepick == blank
+    assign pickup_on = false
+  endif
+  assign pickup_name = settings.pickup_name | default: 'The Place Mall, Gate 8, Mivida, New Cairo'
+  assign pickup_min = settings.pickup_minutes | default: 10
+  assign std_fee = settings.now_standard_fee | default: 150
+  capture hours_range
+    render 'sf-now-hours', mode: 'range'
+  endcapture
+  assign hours_range = hours_range | strip
+-%}
+<style>.sf-cart-now.needs-area select{outline:2px solid #b33a3a;outline-offset:2px}.sf-cart-now.needs-area [data-cartnow-hint]{color:#b33a3a;font-weight:600}</style><section class="sf-cart-page sf-wrap"><p class="eyebrow">YOUR SOFIE SELECTION</p><h1>{{ 'sf.text.bag' | t }} <span>({{ shop_count }})</span></h1>{% if shop_count == 0 %}<p>{{ 'sf.text.empty_bag' | t }}</p><a class="button" href="{{ routes.all_products_collection_url }}">{{ 'sf.text.continue' | t }}</a>{% if fee_qty > 0 %}<script>fetch(((window.Shopify && Shopify.routes && Shopify.routes.root) || '/') + 'cart/update.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ updates: { {{ fee_line | json }}: 0 }, attributes: { 'SOFIE NOW requested': 'No', 'SOFIE NOW fee': '', 'SOFIE NOW items': '' } }) }).catch(() => {});</script>{% endif %}{% else %}<form action="{{ routes.cart_url }}" method="post" id="sf-cart-form"><div class="sf-cart-layout"><div>{% for item in cart.items %}{% if item.product.handle == fee_handle %}{%- liquid
+  assign fee_kind = 'express'
+  if item.sku == 'SOFIE-PICKUP'
+    assign fee_kind = 'pickup'
+  elsif item.sku contains 'M'
+    assign fee_kind = 'mixed'
+  endif
+-%}<article class="sf-cart-item sf-cart-fee{% if fee_kind == 'pickup' %} is-pickup{% endif %}"><span class="sf-cart-fee-mark" aria-hidden="true">{% if fee_kind == 'pickup' %}{% render 'sf-icon', name: 'pin' %}{% else %}<i class="sf-pulse"></i>{% endif %}</span><div><p class="sf-vendor">{% if fee_kind == 'pickup' %}SOFIE STORE PICKUP{% else %}SOFIE NOW{% endif %}</p>{% if fee_kind == 'pickup' %}<h2>Pick up at {{ pickup_name | escape }}</h2><p class="small">Free. Ready about {{ pickup_min }} minutes after we confirm your order, every day {{ hours_range }}. Choose “Store pickup” at checkout.</p>{% elsif fee_kind == 'mixed' %}<h2>Express delivery · {{ item.variant.title | split: ' + ' | first | escape }}</h2><p class="small">Your ready items come with SOFIE NOW; the rest of your bag ships with standard delivery (LE {{ std_fee }}). Both are charged together as one delivery line at checkout.</p>{% else %}<h2>Express delivery · {{ item.variant.title | escape }}</h2><p class="small">The SOFIE NOW fee for this area is added automatically as your delivery charge at checkout.</p>{% endif %}<input type="hidden" name="updates[]" value="1"></div><div class="sf-line-price"><small>{% if fee_kind == 'pickup' %}Free{% else %}Fee at checkout{% endif %}</small></div></article>{% continue %}{% endif %}<article class="sf-cart-item"><a href="{{ item.url }}">{% if item.image %}{{ item.image | image_url:width:200 | image_tag:loading:'lazy',alt:item.product.title }}{% endif %}</a><div><p class="sf-vendor">{{ item.vendor | escape }}</p><h2><a href="{{ item.url }}">{{ item.product.title | escape }}</a></h2>{% unless item.product.has_only_default_variant %}<p>{{ item.variant.title | escape }}</p>{% endunless %}{% if item.selling_plan_allocation %}<p>{{ item.selling_plan_allocation.selling_plan.name | escape }}</p>{% endif %}{% for property in item.properties %}{% assign first=property.first | slice:0 %}{% if property.last != blank and first != '_' %}<p class="small">{{ property.first | escape }}: {{ property.last | escape }}</p>{% endif %}{% endfor %}<label class="sr-only" for="cart-qty-{{ forloop.index }}">{{ 'sf.text.quantity' | t }} {{ item.title | escape }}</label><input id="cart-qty-{{ forloop.index }}" name="updates[]" type="number" min="0" value="{{ item.quantity }}"><a class="underlined" href="{{ item.url_to_remove }}">{{ 'sf.text.remove' | t }}</a></div><div class="sf-line-price">{{ item.final_line_price | money }}{% if item.original_line_price > item.final_line_price %}<s>{{ item.original_line_price | money }}</s>{% endif %}{% for discount in item.line_level_discount_allocations %}<small>{{ discount.discount_application.title | escape }}</small>{% endfor %}</div></article>{% endfor %}<button name="update" class="button button-outline">{{ 'sf.text.update' | t }}</button><label for="cart-note">{{ 'sf.text.note' | t }}</label><textarea id="cart-note" name="note">{{ cart.note | escape }}</textarea></div><aside class="sf-cart-summary"><div><h2>{{ 'sf.text.subtotal' | t }}</h2><strong>{{ cart.total_price | money }}</strong></div>{% for discount in cart.cart_level_discount_applications %}<p>{{ discount.title | escape }} — {{ discount.total_allocated_amount | money }}</p>{% endfor %}<p class="small">{{ 'sf.text.tax_shipping' | t }}</p>{%- liquid
+  assign now_lines = 0
+  assign now_names = ''
+  for item in cart.items
+    if item.product.handle == fee_handle
+      continue
+    endif
+    capture item_ready
+      render 'sf-now-ready', product: item.product
+    endcapture
+    assign item_probe = ',' | append: item.variant.id | append: ','
+    if item_ready contains item_probe
+      assign now_lines = now_lines | plus: 1
+      assign nm = item.product.title
+      unless item.product.has_only_default_variant
+        assign nm = nm | append: ' — ' | append: item.variant.title
+      endunless
+      assign now_names = now_names | append: nm | append: ' ×' | append: item.quantity | append: '; '
+    endif
+  endfor
+  assign other_lines = shop_lines | minus: now_lines
+  assign f30 = settings.now_fee_30 | default: 200
+  assign f60 = settings.now_fee_60 | default: 225
+  assign f120 = settings.now_fee_120 | default: 300
+  assign now_on = false
+  if fee_line != blank
+    assign now_on = true
+  endif
+  assign all_ready = false
+  if other_lines == 0
+    assign all_ready = true
+  endif
+-%}
+<div class="sf-cart-now{% if now_on %} is-on{% endif %}" data-cartnow data-ready="{{ now_lines }}" data-other="{{ other_lines }}" data-fee30="{{ fee30 }}" data-fee60="{{ fee60 }}" data-fee120="{{ fee120 }}" data-fee30m="{{ fee30m }}" data-fee60m="{{ fee60m }}" data-fee120m="{{ fee120m }}" data-feepick="{% if pickup_on %}{{ feepick }}{% endif %}" data-fee-line="{{ fee_line }}" data-fee-qty="{{ fee_qty }}" data-f30="{{ f30 }}" data-f60="{{ f60 }}" data-f120="{{ f120 }}" data-std="{{ std_fee }}" data-pickup-name="{{ pickup_name | escape }}" data-pickup-min="{{ pickup_min }}" data-hours='{% render 'sf-now-hours', mode: 'json' %}'><div class="sf-nowp-head"><p class="sf-nowp-badge"><i class="sf-pulse" aria-hidden="true"></i>SOFIE NOW</p>{% render 'sf-now-hours' %}</div>
+{%- if now_lines > 0 and fee30 != blank -%}
+<p class="sf-cart-now-lead"><strong>{{ now_lines }} of {{ shop_lines }}</strong> {% if shop_lines == 1 %}item{% else %}items{% endif %} in your bag {% if now_lines == 1 %}is{% else %}are{% endif %} ready for SOFIE NOW{% if all_ready %}.{% else %}. The other {% if other_lines == 1 %}item ships{% else %}{{ other_lines }} items ship{% endif %} with standard delivery (LE {{ std_fee }}) in the same order.{% endif %}</p>
+<label class="sf-cart-now-label" for="sf-cart-now-area">How do you want your ready items?</label><select id="sf-cart-now-area" data-cartnow-area><option value="">Choose your area</option>{%- if pickup_on and all_ready -%}<option value="pickup" data-min="pickup">Pick up at SOFIE · {{ pickup_name | split: ',' | first | escape }} — free, ready in {{ pickup_min }} min</option>{%- endif -%}<option value="new_cairo" data-min="30">New Cairo — 30 min · LE {{ f30 }}</option><option value="nasr_city" data-min="60">Nasr City — 60 min · LE {{ f60 }}</option><option value="madinaty" data-min="60">Madinaty — 60 min · LE {{ f60 }}</option><option value="giza" data-min="120">Giza — 120 min · LE {{ f120 }}</option><option value="zayed" data-min="120">Sheikh Zayed — 120 min · LE {{ f120 }}</option><option value="october" data-min="120">6 October — 120 min · LE {{ f120 }}</option><option value="shorouk" data-min="120">El Shorouk — 120 min · LE {{ f120 }}</option><option value="obour" data-min="120">El Obour — 120 min · LE {{ f120 }}</option><option value="other">Another area — standard delivery</option></select>
+<p class="small sf-cart-now-auto">Your ready items always come with SOFIE NOW. The delivery fee for your area is added automatically at checkout.</p>
+<p class="sf-cart-now-hint" data-cartnow-hint aria-live="polite"></p>
+{%- if pickup_on and all_ready == false -%}<p class="small">Free store pickup at {{ pickup_name | escape }} is available when every item in your bag is ready for SOFIE NOW.</p>{%- endif -%}
+<input type="hidden" name="attributes[SOFIE NOW requested]" data-cartnow-requested value="{% if now_on %}Yes{% else %}No{% endif %}"><input type="hidden" name="attributes[SOFIE NOW items]" data-cartnow-items value="{% if now_on %}{{ now_names | escape }}{% endif %}" data-names="{{ now_names | escape }}"><input type="hidden" name="attributes[SOFIE NOW fee]" data-cartnow-fee value="{{ cart.attributes['SOFIE NOW fee'] | escape }}">
+{%- elsif now_lines > 0 -%}
+<p class="sf-cart-now-lead"><strong>{{ now_lines }} of {{ shop_lines }}</strong> {% if shop_lines == 1 %}item{% else %}items{% endif %} in your bag {% if now_lines == 1 %}is{% else %}are{% endif %} ready for SOFIE NOW. Message us on WhatsApp after you order and we will arrange express delivery.</p><input type="hidden" name="attributes[SOFIE NOW requested]" value="No">
+{%- else -%}
+<p class="sf-cart-now-lead">Nothing in your bag is in the SOFIE NOW selection yet, so your order ships with standard delivery.</p><a class="underlined" href="{{ settings.now_collection.url | default: '/collections/sofie-hours' }}">Shop SOFIE NOW {% render 'sf-icon', name: 'arrow' %}</a><input type="hidden" name="attributes[SOFIE NOW requested]" value="No">
+{%- endif -%}
+<input type="hidden" name="attributes[SOFIE NOW area]" data-cart-area value="{{ cart.attributes['SOFIE NOW area'] | escape }}"></div><button type="submit" name="checkout" class="button" data-cart-checkout>{{ 'sf.text.checkout' | t }} {% render 'sf-icon',name:'arrow' %}</button><a href="{{ pages['shipping-policy'].url | default:shop.shipping_policy.url }}">{{ 'sf.text.shipping' | t }}</a></aside></div></form>{% endif %}</section>
+<script>
+(() => {
+  const box = document.querySelector('[data-cartnow]');
+  if (!box) return;
+  const root = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
+  const rawFetch = window.SofieRawFetch || window.fetch.bind(window);
+  const d = box.dataset;
+  const ids = { 30: d.fee30, 60: d.fee60, 120: d.fee120, '30m': d.fee30m, '60m': d.fee60m, '120m': d.fee120m, pickup: d.feepick };
+  const allIds = Object.values(ids).filter(Boolean);
+  const current = d.feeLine || '';
+  const feeQty = +d.feeQty || 0;
+  const mixed = (+d.other || 0) > 0;
+  const std = +d.std || 150;
+  let hours = { open: 10, close: 22, openText: '10 am', closeText: '10 pm' };
+  try { hours = Object.assign(hours, JSON.parse(d.hours)); } catch (e) {}
+  const cairoHour = () => { try { return +new Intl.DateTimeFormat('en-US', { timeZone: 'Africa/Cairo', hour: 'numeric', hour12: false }).format(new Date()) % 24; } catch (e) { return new Date().getHours(); } };
+  const isOpen = () => { const h = cairoHour(); return h >= hours.open && h < hours.close; };
+  const post = body => rawFetch(root + 'cart/update.js', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body) }).then(r => { if (!r.ok) throw new Error('cart'); return r.json(); });
+  const zeros = () => { const u = {}; allIds.forEach(id => { u[id] = 0; }); return u; };
+  const sel = box.querySelector('[data-cartnow-area]');
+  if (!sel) {
+    if (current) post({ updates: zeros(), attributes: { 'SOFIE NOW requested': 'No', 'SOFIE NOW fee': '', 'SOFIE NOW items': '', 'SOFIE NOW area': '' } }).then(() => location.reload()).catch(() => {});
+    return;
+  }
+  const hint = box.querySelector('[data-cartnow-hint]'), fee = box.querySelector('[data-cartnow-fee]'), area = box.querySelector('[data-cart-area]'), items = box.querySelector('[data-cartnow-items]'), requested = box.querySelector('[data-cartnow-requested]');
+  const form = document.getElementById('sf-cart-form'), checkout = form && form.querySelector('[data-cart-checkout]');
+  const fees = { 30: +d.f30, 60: +d.f60, 120: +d.f120 };
+  const method = { new_cairo: 'SOFIE NOW · New Cairo (30 min)', nasr_city: 'SOFIE NOW · Nasr City & Madinaty (60 min)', madinaty: 'SOFIE NOW · Nasr City & Madinaty (60 min)', giza: 'SOFIE NOW · Giza, Zayed & October (120 min)', zayed: 'SOFIE NOW · Giza, Zayed & October (120 min)', october: 'SOFIE NOW · Giza, Zayed & October (120 min)', shorouk: 'SOFIE NOW · El Shorouk (120 min)', obour: 'SOFIE NOW · El Obour (120 min)' };
+  let saved = '';
+  try { saved = JSON.parse(localStorage.getItem('sofie-area')) || ''; } catch (e) {}
+  if (saved && Array.from(sel.options).some(o => o.value === saved)) sel.value = saved;
+  if (current && !sel.value) {
+    const key = Object.keys(ids).find(k => ids[k] === current) || '';
+    const band = key.replace('m', '');
+    const o = Array.from(sel.options).find(x => x.dataset.min === band);
+    if (o) sel.value = o.value;
+  }
+  const minutes = () => { const o = sel.selectedOptions[0]; return o && o.dataset.min && o.dataset.min !== 'pickup' ? +o.dataset.min : 0; };
+  const label = () => { const o = sel.selectedOptions[0]; return o && o.value ? o.textContent.split(' — ')[0] : ''; };
+  const isPickup = () => sel.value === 'pickup';
+  const target = () => {
+    if (!sel.value || sel.value === 'other') return '';
+    if (isPickup()) return ids.pickup || '';
+    const min = minutes();
+    return min ? (ids[String(min) + (mixed ? 'm' : '')] || '') : '';
+  };
+  const money = n => 'LE ' + n;
+  const closedNote = () => isOpen() ? '' : ' SOFIE NOW is closed right now (' + hours.openText + '–' + hours.closeText + '), so we confirm and deliver from ' + hours.openText + '.';
+  function paint() {
+    const v = sel.value, min = minutes();
+    box.classList.remove('needs-area');
+    if (v === 'other') hint.textContent = 'SOFIE NOW doesn’t reach this area yet, so your order ships with standard delivery (' + money(std) + ').';
+    else if (!v) hint.textContent = 'Choose the area of your delivery address' + (sel.querySelector('option[value="pickup"]') ? ', or free store pickup,' : '') + ' and we add your SOFIE NOW delivery automatically.';
+    else if (isPickup()) hint.textContent = 'Reserved for pickup at ' + d.pickupName + ' — free. Your order is ready about ' + d.pickupMin + ' minutes after we confirm it (every day ' + hours.openText + '–' + hours.closeText + ').' + (isOpen() ? '' : ' We are closed right now, so it will be ready from ' + hours.openText + '.') + ' At checkout, choose “Store pickup” (LE 0).';
+    else {
+      const total = fees[min] + (mixed ? std : 0);
+      hint.textContent = 'Added automatically: ' + method[v] + ' — ' + money(fees[min]) + (mixed ? ' + ' + money(std) + ' standard delivery for your other items = ' + money(total) : '') + '. It is charged as your delivery at checkout, and your ready items arrive about ' + min + ' minutes after we confirm your order.' + closedNote() + ' Make sure your delivery address is in ' + label() + '.';
+    }
+    const on = !!target();
+    box.classList.toggle('is-on', on);
+    requested.value = on ? 'Yes' : 'No';
+    items.value = on ? items.dataset.names : '';
+    if (!on) fee.value = '';
+    else if (isPickup()) fee.value = 'Store pickup · free · ready in ' + d.pickupMin + ' min';
+    else fee.value = money(fees[min] + (mixed ? std : 0)) + ' · ' + min + ' min · ' + label() + (mixed ? ' (' + money(fees[min]) + ' SOFIE NOW + ' + money(std) + ' standard for other items)' : '');
+    area.value = isPickup() ? 'Store pickup · ' + d.pickupName : (label() || (v === 'other' ? 'Another area' : ''));
+  }
+  let pending = null;
+  function sync() {
+    paint();
+    try { localStorage.setItem('sofie-area', JSON.stringify(sel.value)); } catch (e) {}
+    const want = target();
+    const updates = zeros();
+    if (want) updates[want] = 1;
+    if (checkout) checkout.disabled = true;
+    pending = post({ updates, attributes: { 'SOFIE NOW area': area.value, 'SOFIE NOW requested': requested.value, 'SOFIE NOW fee': fee.value, 'SOFIE NOW items': items.value } })
+      .then(() => { if (want !== current || feeQty > 1) { location.reload(); return; } if (checkout) checkout.disabled = false; })
+      .catch(() => { hint.textContent = 'We could not update SOFIE NOW. Please check your connection and try again.'; if (checkout) checkout.disabled = false; })
+      .finally(() => { pending = null; });
+    return pending;
+  }
+  sel.addEventListener('change', sync);
+  if (form) form.addEventListener('submit', e => {
+    if (!(e.submitter && e.submitter.name === 'checkout')) return;
+    if (!sel.value) { e.preventDefault(); box.classList.add('needs-area'); hint.textContent = 'Choose your delivery area (or “Another area”) to continue to checkout.'; sel.focus(); box.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+    if (pending) { e.preventDefault(); pending.then(() => form.requestSubmit(e.submitter)); }
+  });
+  paint();
+  setInterval(paint, 60000);
+  let tries = 0;
+  try { tries = +sessionStorage.getItem('sf-now-sync') || 0; } catch (e) {}
+  if (target() !== current || feeQty > 1) {
+    if (tries < 2) { try { sessionStorage.setItem('sf-now-sync', String(tries + 1)); } catch (e) {} sync(); }
+    else hint.textContent = 'We could not add SOFIE NOW to your bag. Please message us on WhatsApp and we will arrange it for you.';
+  } else { try { sessionStorage.removeItem('sf-now-sync'); } catch (e) {} }
+})();
+</script>
+{% schema %}
+{"name": "Sofie Cart", "settings": []}
+{% endschema %}
+

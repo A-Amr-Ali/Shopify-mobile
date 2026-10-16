@@ -1,0 +1,46 @@
+{% doc %}
+sf-now-product
+SOFIE NOW panel on the product page. It only appears when at least one option of this product is in the SOFIE NOW selection and in stock, and it tells the customer in one line whether the option they picked can come today, how long it takes, what it costs for their area, when SOFIE NOW is open and that free store pickup is available.
+@param {product} product - Current product
+{% enddoc %}
+{%- capture ready_ids -%}{%- render 'sf-now-ready', product: product -%}{%- endcapture -%}
+{%- assign ready_ids = ready_ids | strip -%}
+{%- if ready_ids != blank -%}
+{%- liquid
+  assign current = product.selected_or_first_available_variant
+  assign probe = ',' | append: current.id | append: ','
+  assign current_ready = false
+  if ready_ids contains probe
+    assign current_ready = true
+  endif
+  assign single = product.has_only_default_variant
+  assign f30 = settings.now_fee_30 | default: 200
+  assign f60 = settings.now_fee_60 | default: 225
+  assign f120 = settings.now_fee_120 | default: 300
+  assign std_fee = settings.now_standard_fee | default: 150
+  assign id_list = ready_ids | remove_first: ',' | split: ','
+  assign pickup_on = settings.pickup_enabled
+  if pickup_on == nil
+    assign pickup_on = true
+  endif
+  assign pickup_name = settings.pickup_name | default: 'The Place Mall, Gate 8, Mivida, New Cairo'
+  assign pickup_min = settings.pickup_minutes | default: 10
+  capture hours_range
+    render 'sf-now-hours', mode: 'range'
+  endcapture
+  assign hours_range = hours_range | strip
+-%}
+<aside class="sf-nowp{% if current_ready %} is-ready{% endif %}" data-nowp aria-labelledby="sf-nowp-title">
+<div class="sf-nowp-head"><p class="sf-nowp-badge" id="sf-nowp-title"><i class="sf-pulse" aria-hidden="true"></i>SOFIE NOW</p>{% render 'sf-now-hours' %}</div>
+<p class="sf-nowp-state" data-nowp-state aria-live="polite">{% if current_ready %}{% if single %}Ready for express delivery today.{% else %}This option is ready for express delivery today.{% endif %} Choose your area to see the time and fee.{% else %}This option ships with standard delivery. Pick a ready option below to get it today.{% endif %}</p>
+{%- unless single -%}
+<div class="sf-nowp-ready"><p class="sf-nowp-label">Ready for SOFIE NOW</p><div class="sf-nowp-chips">{%- for v in product.variants -%}{%- assign vprobe = ',' | append: v.id | append: ',' -%}{%- if ready_ids contains vprobe -%}<button type="button" class="sf-nowp-chip" data-nowp-pick="{{ v.id }}" aria-pressed="{% if v.id == current.id %}true{% else %}false{% endif %}">{{ v.title | escape }}</button>{%- endif -%}{%- endfor -%}</div></div>
+{%- endunless -%}
+<div class="sf-nowp-area"><span>Deliver to</span><button type="button" class="sf-nowp-areabtn" data-dialog="sf-area">{% render 'sf-icon', name: 'pin' %}<span data-area-label>{{ 'sf.text.area' | t }}</span></button></div>
+{%- if pickup_on -%}<p class="sf-nowp-pickup">{% render 'sf-icon', name: 'pin' %}<span>Or pick it up free at <strong>SOFIE, {{ pickup_name | escape }}</strong> — ready in about {{ pickup_min }} minutes.{% if settings.pickup_map != blank %} <a class="underlined" href="{{ settings.pickup_map }}" target="_blank" rel="noopener">Map ↗</a>{% endif %}</span></p>{%- endif -%}
+<ol class="sf-nowp-steps"><li>Choose a ready {% if single %}item{% else %}shade or size{% endif %}</li><li>Choose your delivery area{% if pickup_on %} — or free store pickup in your bag{% endif %}</li><li>Your SOFIE NOW delivery is added automatically at checkout{% if pickup_on %}; pickup is free{% endif %}</li></ol>
+<details class="sf-nowp-more"><summary>Delivery times, fees &amp; hours</summary><table class="sf-nowp-fees"><tbody><tr><th scope="row">New Cairo</th><td>30 min</td><td>LE {{ f30 }}</td></tr><tr><th scope="row">Nasr City · Madinaty</th><td>60 min</td><td>LE {{ f60 }}</td></tr><tr><th scope="row">Giza · Sheikh Zayed · 6 October · El Shorouk · El Obour</th><td>120 min</td><td>LE {{ f120 }}</td></tr>{%- if pickup_on -%}<tr><th scope="row">Store pickup · {{ pickup_name | escape }}</th><td>{{ pickup_min }} min</td><td>Free</td></tr>{%- endif -%}</tbody></table><p>{% render 'sf-now-hours', mode: 'sentence' %} The timer starts once we confirm your order. If your bag also has items that are not ready for SOFIE NOW, they ship with standard delivery (LE {{ std_fee }}) in the same order, charged together with the SOFIE NOW fee. <a class="underlined" href="{{ pages['shipping-policy'].url | default: shop.shipping_policy.url }}">Delivery details</a></p></details>
+<script type="application/json" data-nowp-data>{"ready":[{{ id_list | join: ',' }}],"single":{{ single | json }},"fees":{"30":{{ f30 | json }},"60":{{ f60 | json }},"120":{{ f120 | json }}}}</script>
+</aside>
+{%- endif -%}
+

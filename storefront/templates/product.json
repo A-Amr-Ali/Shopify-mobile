@@ -1,0 +1,50 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "sf-product",
+      "settings": {}
+    },
+    "education": {
+      "type": "sf-education",
+      "settings": {},
+      "blocks": {
+        "glazing_tutorial": {
+          "type": "video",
+          "settings": {
+            "product": "glazing-milk",
+            "video": "https://www.youtube.com/watch?v=HZQVgCYIWq8",
+            "poster": "shopify://shop_images/pdp-desktop-2_1440x_1.webp",
+            "title": "Skin prep in Hailey’s summer makeup routine",
+            "credit": "Hailey Bieber · Full makeup routine with multiple products. The finished look is not a result of Glazing Milk alone. Packaging may differ."
+          }
+        }
+      },
+      "block_order": [
+        "glazing_tutorial"
+      ]
+    },
+    "recommendations": {
+      "type": "sf-recommendations",
+      "settings": {}
+    },
+    "also_love": {
+      "type": "sf-also-love",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "education",
+    "recommendations",
+    "also_love"
+  ]
+}

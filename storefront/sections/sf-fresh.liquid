@@ -1,0 +1,74 @@
+{%- liquid
+  assign c = section.settings.collection
+  if c == blank
+    assign c = settings.fresh_collection
+  endif
+  if c == blank
+    assign c = collections['fresh-at-sofie']
+  endif
+  assign lm = c.metafields.custom.launch_map.value
+  assign months = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec' | split: ','
+  assign limit = section.settings.limit | default: 16
+  assign shown = 0
+  assign vendors = '|'
+  assign vendor_list = ''
+  assign in_stock = 0
+-%}
+{%- assign in_stock = c.products_count -%}
+{%- if c != blank and in_stock > 0 -%}
+<section class="sf-section sf-fresh" data-fresh id="fresh-at-sofie">
+<div class="sf-wrap">
+<div class="sf-fresh-head"><div><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.heading | escape }}</h2>{%- if section.settings.text != blank -%}<p class="sf-section-sub">{{ section.settings.text | escape }}</p>{%- endif -%}</div><div class="sf-fresh-meta"><strong>{{ in_stock }}</strong><span>{{ section.settings.count_label | escape }}</span><a class="underlined" href="{{ c.url }}">{{ 'sf.text.view_all' | t }} {% render 'sf-icon',name:'arrow' %}</a></div></div>
+{%- capture items -%}
+{%- for product in c.products limit: 40 -%}
+{%- if shown >= limit -%}{%- break -%}{%- endif -%}
+{%- if product.available -%}
+{%- liquid
+  assign shown = shown | plus: 1
+  assign vkey = '|' | append: product.vendor | append: '|'
+  unless vendors contains vkey
+    assign vendors = vendors | append: product.vendor | append: '|'
+    assign vendor_list = vendor_list | append: product.vendor | append: '§'
+  endunless
+  assign label = section.settings.fallback_label
+  assign raw = lm[product.handle]
+  if raw != blank
+    assign parts = raw | split: '|'
+    assign ym = parts.first | split: '-'
+    assign mi = ym[1] | plus: 0 | minus: 1
+    if parts.size > 1
+      assign label = section.settings.shades_label | append: ' · ' | append: months[mi] | append: ' ' | append: ym[0]
+    else
+      assign label = section.settings.new_label | append: ' · ' | append: months[mi] | append: ' ' | append: ym[0]
+    endif
+  endif
+-%}
+<div class="sf-rail-item" data-brand="{{ product.vendor | handleize }}">{%- render 'sf-card', product: product, label: label, unify: true -%}</div>
+{%- endif -%}
+{%- endfor -%}
+{%- endcapture -%}
+{%- assign vlist = vendor_list | split: '§' -%}
+{%- if section.settings.show_chips and vlist.size > 2 -%}<div class="sf-chips" role="toolbar" aria-label="{{ section.settings.chips_label | escape }}"><button type="button" class="sf-chip" aria-pressed="true" data-chip="">{{ section.settings.all_label | escape }}</button>{%- for v in vlist limit: 9 -%}<button type="button" class="sf-chip" aria-pressed="false" data-chip="{{ v | handleize }}">{{ v | escape }}</button>{%- endfor -%}</div>{%- endif -%}
+<div class="sf-rail" data-rail><div class="sf-rail-track" data-rail-track>{{ items }}</div><button type="button" class="sf-rail-btn sf-rail-prev" data-rail-prev aria-label="{{ 'sf.text.previous' | t }}">{% render 'sf-icon',name:'arrow' %}</button><button type="button" class="sf-rail-btn sf-rail-next" data-rail-next aria-label="{{ 'sf.text.next' | t }}">{% render 'sf-icon',name:'arrow' %}</button></div>
+<p class="sf-fresh-note">{% render 'sf-icon',name:'check' %}<span>{{ section.settings.note | escape }}</span></p>
+</div>
+</section>
+{%- endif -%}
+{% schema %}
+{"name": "Sofie Fresh Drops", "settings": [
+ {"type": "collection", "id": "collection", "label": "Collection", "info": "Defaults to Fresh at SOFIE."},
+ {"type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "THE NEW EDIT · VERIFIED WORLDWIDE LAUNCHES"},
+ {"type": "text", "id": "heading", "label": "Heading", "default": "Fresh at SOFIE"},
+ {"type": "textarea", "id": "text", "label": "Intro", "default": "The newest launches from the brands you love — checked against each brand's official new-in, and in stock at SOFIE right now."},
+ {"type": "text", "id": "count_label", "label": "Counter label", "default": "new drops in stock"},
+ {"type": "range", "id": "limit", "label": "Products in the rail", "min": 4, "max": 32, "step": 1, "default": 16},
+ {"type": "checkbox", "id": "show_chips", "label": "Show brand filter chips", "default": true},
+ {"type": "text", "id": "chips_label", "label": "Chips label (accessibility)", "default": "Filter new drops by brand"},
+ {"type": "text", "id": "all_label", "label": "All chip", "default": "All new drops"},
+ {"type": "text", "id": "new_label", "label": "Launch label", "default": "New"},
+ {"type": "text", "id": "shades_label", "label": "New shades label", "default": "New shades"},
+ {"type": "text", "id": "fallback_label", "label": "Label when no launch date is stored", "default": "Just landed"},
+ {"type": "text", "id": "note", "label": "Footnote", "default": "Sold-out items leave this edit automatically, so everything you see here is ready to order."}
+], "presets": [{"name": "Sofie Fresh Drops"}]}
+{% endschema %}
+
