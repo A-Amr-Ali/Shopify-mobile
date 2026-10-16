@@ -53,6 +53,8 @@ test('only official hosts for the actual brand and correct Sephora market are al
   assert.equal(allowedSource('https://www.sephora.me/sa-en/p/a','Rhode','AE'),false);
   assert.equal(allowedSource('https://www.sephora.com/ca/en/product/a','Rhode','US'),false);
   assert.equal(allowedSource('https://www.dior.com/p','Rhode','AE'),false);
+  assert.equal(allowedSource('https://www.rhodeskin.com/','Rhode','US'),false);
+  assert.equal(allowedSource('https://www.sephora.me/ae-en/search?q=blush','Rhode','AE'),false);
 });
 test('exact supplier variant is rechecked against official product JSON and market currency',async()=>{
   const base=source('US',{url:'https://www.rhodeskin.com/products/pocket-blush?variant=23',supplier_variant_id:'23'});

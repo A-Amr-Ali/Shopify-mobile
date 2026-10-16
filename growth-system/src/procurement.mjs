@@ -176,6 +176,7 @@ const BRANDS=[
 export function allowedSource(url,brand,region) {
   let u;try{u=new URL(url);}catch{return false;}
   if(u.protocol!=='https:'||u.username||u.password||u.port||u.hash||!MARKETS[region])return false;
+  if(!/\/(?:products?|p)\//i.test(u.pathname)&&!/[.]html$/i.test(u.pathname))return false;
   const host=u.hostname.toLowerCase().replace(/^www\./,'');
   if(['sephora.me','sephora.ae'].includes(host))return region==='AE'&&(/^\/ae(?:-en|-ar)?(?:\/|$)/.test(u.pathname)||host==='sephora.ae');
   if(host==='sephora.com')return region==='US'&&!/^\/ca(?:\/|$)/.test(u.pathname);
