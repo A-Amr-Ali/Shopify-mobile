@@ -32,6 +32,8 @@ create table public.procurement_sources (
   stock_status text not null check (stock_status in ('in_stock','out_of_stock','unverified','not_found')),
   price numeric(12,2) check (price > 0),
   currency text check (currency in ('AED','USD','GBP')),
+  supplier_weight_kg numeric(10,4) check (supplier_weight_kg > 0 and supplier_weight_kg <= 100),
+  weight_evidence text,
   evidence text not null,
   verification_method text not null check (verification_method in ('official_page','official_json','staff_checked')),
   verified_at timestamptz not null,

@@ -1,6 +1,6 @@
 import { adminQuery } from './catalog.mjs';
 import { db } from './db.mjs';
-import { checkSephoraSource, discoverSephora, discoverOfficialUS } from './supplier-checks.mjs';
+import { checkSephoraSource, checkSephoraUSSource, discoverSephora, discoverSephoraUS, discoverOfficialUS, discoverOfficialUK } from './supplier-checks.mjs';
 
 export const MARKETS = Object.freeze({
   AE: { currency:'AED', exchange:15, shipping:900, label:'UAE' },
@@ -166,7 +166,7 @@ const BRANDS=[
   ['tarte',['tartecosmetics.com']],['briogeo',['briogeohair.com']],['charlotte tilbury',['charlottetilbury.com']],['huda beauty',['hudabeauty.com']],
   ['makeup by mario',['makeupbymario.com']],['milk makeup',['milkmakeup.com']],['kosas',['kosas.com']],['dior',['dior.com']],
   ['one size',['onesizebeauty.com']],['kiehl',['kiehls.com','kiehls.ae','kiehls.co.uk']],['stanley',['stanley1913.com','stanley1913.ae','uk.stanley1913.com']],
-  ['smeg',['smeg.com']],['blond amsterdam',['blond-amsterdam.com']],['beauty blender',['beautyblender.com','beautyblender.co.uk']],
+  ['smeg',['smeg.com','smeguk.com','smeggulf.com']],['blond amsterdam',['blond-amsterdam.com']],['beauty blender',['beautyblender.com','beautyblender.co.uk']],
   ['sol de janeiro',['soldejaneiro.com']],['ouai',['theouai.com','theouai.co.uk']],['owala',['owalalife.com']],['slip',['slip.com','slip.co.uk']],
   ['josie maran',['josiemaran.com']],['24bottle',['24bottles.com']],['fenty',['fentybeauty.com','fentyskin.com']],
   ['patrick ta',['patrickta.com']],['living proof',['livingproof.com']],['rare beauty',['rarebeauty.com']],['tower 28',['tower28beauty.com']],
@@ -206,18 +206,18 @@ export async function procurementDashboard() {
     const outstanding=Math.max(0,original.quantity-bought);
     const offers=sources.filter(s=>s.variant_id===original.variantId);
     const selected=chooseSource(offers,original.brand);
-    const weight=option?.weight_kg?Number(option.weight_kg):original.weightKg;
+    const weight=option?.weight_kg?Number(option.weight_kg):original.weightKg||Number(selected?.supplier_weight_kg)||null;
     const stale=Date.now()-Date.parse(order.scanned_at)>15*60000;
     const status=!order.active?'completed':source.kind==='sofie'?'local_stock':!outstanding?'purchased':original.hold?'on_hold':stale?'sync_needed':source.kind==='review'?'source_review':selected?'ready':'needs_sourcing';
     lines.push({...original,source,orderId:order.order_id,orderName:order.order_name,orderCreatedAt:order.created_at,scannedAt:order.scanned_at,active:order.active,
-      purchased:bought,outstanding,weightKg:weight,weightSource:option?.weight_kg?'Staff shipping weight':original.weightSource,status,
+      purchased:bought,outstanding,weightKg:weight,weightSource:option?.weight_kg?'Staff shipping weight':original.weightKg?original.weightSource:selected?.supplier_weight_kg?'Official supplier variant weight':'Missing shipping weight',status,
       selectedSource:selected,offers:offers.map(s=>({...s,currentlyVerified:validSource(s)&&allowedSource(s.url,original.brand,s.region)})),
       cost:selected?costEstimate(selected.region,selected.price,weight,outstanding||1):null});
   }
   const demand=new Map();
   for(const line of lines.filter(l=>l.active&&l.outstanding>0&&!['local_stock','on_hold'].includes(l.status))) {
     if(!demand.has(line.variantId))demand.set(line.variantId,{variantId:line.variantId,title:line.title,brand:line.brand,option:line.option,quantity:0,orders:[],status:line.status,
-      source:line.source,weightKg:line.weightKg,selectedSource:line.selectedSource,cost:line.cost});
+      source:line.source,weightKg:line.weightKg,weightSource:line.weightSource,selectedSource:line.selectedSource,cost:line.cost});
     const row=demand.get(line.variantId);row.quantity+=line.outstanding;row.orders.push({orderName:line.orderName,orderId:line.orderId,lineId:line.lineId,quantity:line.outstanding,status:line.status});
     if(line.status!=='ready')row.status=line.status;
   }
@@ -255,6 +255,7 @@ export async function saveSource(body) {
     supplier_variant_id:body.supplierVariantId||null,matched_title:line.title,matched_option:line.option,exact_match:body.exactMatch===true,
     stock_status:body.stockStatus,price,currency:MARKETS[body.region].currency,evidence:body.evidence,
     verification_method:['official_page','official_json','staff_checked'].includes(body.verificationMethod)?body.verificationMethod:'staff_checked',verified_at:at,checked_at:new Date().toISOString()};
+  if(body.supplierWeightKg!==undefined){const w=Number(body.supplierWeightKg);if(!Number.isFinite(w)||w<=0||w>100||typeof body.weightEvidence!=='string'||body.weightEvidence.length<10)throw new Error('invalid_supplier_weight');row.supplier_weight_kg=w;row.weight_evidence=body.weightEvidence.slice(0,500);}
   return db('procurement_sources?on_conflict=variant_id,region,url',{method:'POST',prefer:'resolution=merge-duplicates,return=representation',body:row});
 }
 export async function recordPurchase(body) {
@@ -275,6 +276,7 @@ export async function undoPurchase(id) {
 export async function recheckSource(source,brand,fetcher=fetch) {
   if(!allowedSource(source.url,brand,source.region))return {stock_status:'unverified',checked_at:new Date().toISOString()};
   if(new URL(source.url).hostname.endsWith('sephora.me'))return checkSephoraSource(source,fetcher);
+  if(new URL(source.url).hostname.replace(/^www\./,'')==='sephora.com')return checkSephoraUSSource(source,fetcher);
   const u=new URL(source.url);const m=u.pathname.match(/^(.*\/products\/[^/]+?)(?:\.js|\.json)?\/?$/);
   if(!m||!source.supplier_variant_id)return {checked_at:new Date().toISOString()};
   try{
@@ -289,6 +291,7 @@ export async function recheckSource(source,brand,fetcher=fetch) {
     const context=cart.ok?await cart.json():null;
     if(context?.currency!==source.currency) return {stock_status:'unverified',checked_at:at};
     return {stock_status:variant.available===true?'in_stock':'out_of_stock',price:Number(variant.price)/100,
+      ...(Number(variant.weight)>0&&Number(variant.weight)<=100000?{supplier_weight_kg:Number(variant.weight)/1000,weight_evidence:'Official Shopify product JSON exact variant weight: '+variant.weight+' grams.'}:{}),
       verified_at:at,checked_at:at,verification_method:'official_json',evidence:'Official product JSON exact variant '+variant.id+' ('+variant.title+'); availability='+variant.available+'; official cart currency='+context.currency};
   }catch{return {stock_status:'unverified',checked_at:new Date().toISOString()};}
 }
@@ -307,7 +310,9 @@ export async function discoverProcurementSources({limit=8}={}) {
   for(const group of data.demand.filter(r=>!r.selectedSource&&!seen.has(r.variantId)).slice(0,limit)){
     const line=data.lines.find(l=>l.variantId===group.variantId);const summary={variantId:group.variantId,regionsChecked:[],errors:[]};let offers=[];
     try{const ae=await discoverSephora(line);offers.push(...ae);summary.regionsChecked.push('AE');}catch(e){summary.errors.push('AE: '+e.message);}
-    if(!offers.some(o=>o.stock_status==='in_stock'))try{const us=await discoverOfficialUS(line);offers.push(...us);summary.regionsChecked.push('US');}catch(e){summary.errors.push('US: '+e.message);}
+    if(!offers.some(o=>o.stock_status==='in_stock'))try{const us=await discoverSephoraUS(line);offers.push(...us);summary.regionsChecked.push('US');}catch(e){summary.errors.push('Sephora US: '+e.message);}
+    if(!offers.some(o=>o.stock_status==='in_stock'))try{const us=await discoverOfficialUS(line);offers.push(...us);if(!summary.regionsChecked.includes('US'))summary.regionsChecked.push('US');}catch(e){summary.errors.push('Official US: '+e.message);}
+    if(!offers.some(o=>o.stock_status==='in_stock'))try{offers.push(...await discoverOfficialUK(line));summary.regionsChecked.push('UK');}catch(e){summary.errors.push('Official UK: '+e.message);}
     for(const offer of offers)if(allowedSource(offer.url,line.brand,offer.region))await db('procurement_sources?on_conflict=variant_id,region,url',{method:'POST',prefer:'resolution=merge-duplicates,return=minimal',body:offer});
     summary.offers=offers.length;summary.verified=offers.filter(o=>o.stock_status==='in_stock').length;summary.remaining='Unmatched options and UK fallbacks are researched in the morning brief.';
     await db('procurement_runs',{method:'POST',body:{kind:'source_discovery',summary}});checked++;verified+=summary.verified;

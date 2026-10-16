@@ -56,8 +56,8 @@ test('only official hosts for the actual brand and correct Sephora market are al
 });
 test('exact supplier variant is rechecked against official product JSON and market currency',async()=>{
   const base=source('US',{url:'https://www.rhodeskin.com/products/pocket-blush?variant=23',supplier_variant_id:'23'});
-  const fetcher=async url=>({ok:true,json:async()=>url.endsWith('/cart.js')?{currency:'USD'}:{variants:[{id:23,title:'Piggy',available:false,price:2400},{id:24,available:true,price:2400}]}});
-  assert.equal((await recheckSource(base,'Rhode',fetcher)).stock_status,'out_of_stock');
+  const fetcher=async url=>({ok:true,json:async()=>url.endsWith('/cart.js')?{currency:'USD'}:{variants:[{id:23,title:'Piggy',available:false,price:2400,weight:37},{id:24,available:true,price:2400}]}});
+  const checked=await recheckSource(base,'Rhode',fetcher);assert.equal(checked.stock_status,'out_of_stock');assert.equal(checked.supplier_weight_kg,0.037);
   const wrongCurrency=async url=>({ok:true,json:async()=>url.endsWith('/cart.js')?{currency:'GBP'}:{variants:[{id:23,available:true,price:2400}]}});
   assert.equal((await recheckSource(base,'Rhode',wrongCurrency)).stock_status,'unverified');
   const blocked=async()=>{throw new Error('blocked');};assert.equal((await recheckSource(base,'Rhode',blocked)).stock_status,'unverified');
