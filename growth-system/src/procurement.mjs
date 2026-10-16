@@ -1,5 +1,6 @@
 import { adminQuery } from './catalog.mjs';
 import { db } from './db.mjs';
+import { checkSephoraSource, discoverSephora, discoverOfficialUS } from './supplier-checks.mjs';
 
 export const MARKETS = Object.freeze({
   AE: { currency:'AED', exchange:15, shipping:900, label:'UAE' },
@@ -17,8 +18,16 @@ export const ORDER_DETAIL_QUERY = `query ProcurementOrder($id:ID!,$after:String)
     lineItems(first:50) { nodes { ${LINE_FIELDS} } pageInfo { hasNextPage endCursor } }
   } pageInfo { hasNextPage endCursor } } } }`;
 export const MORE_LINES_QUERY = `query ProcurementMoreLines($id:ID!,$after:String) { node(id:$id) { ... on FulfillmentOrder { lineItems(first:50,after:$after) { nodes { ${LINE_FIELDS} } pageInfo { hasNextPage endCursor } } } } }`;
+// The existing app can read orders but has no fulfillment-location scope. This
+// path reads Shopify's exact unfulfilledQuantity without requesting new access.
+export const ORDER_LINES_QUERY = `query ProcurementOrderLines($id:ID!,$after:String) { order(id:$id) { id name createdAt updatedAt cancelledAt closedAt displayFulfillmentStatus displayFinancialStatus test tags
+  lineItems(first:50,after:$after) { nodes { id title variantTitle vendor sku unfulfilledQuantity quantity customAttributes { key value }
+    discountedUnitPriceAfterAllDiscountsSet { shopMoney { amount currencyCode } }
+    product { id handle tags nowVariants:metafield(namespace:"custom",key:"sofie_hours_variants") { jsonValue } collections(first:30) { nodes { handle } pageInfo { hasNextPage endCursor } } }
+    variant { id barcode selectedOptions { name value } }
+  } pageInfo { hasNextPage endCursor } } } }`;
 
-export const normal = x => String(x||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+export const normal = x => String(x||'').replace(/[™®©]/g,'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const gid = v => /^gid:\/\/shopify\/(Order|ProductVariant)\/\d+$/.test(v||'');
 export function kilograms(weight) {
   const scale={KILOGRAMS:1,GRAMS:0.001,POUNDS:0.45359237,OUNCES:0.028349523125};
@@ -57,6 +66,7 @@ export function normalizeOrder(order, at=new Date().toISOString()) {
   const deliveredTag=(order?.tags||[]).some(t=>['delivered','out for delivery','in transit','shipped'].includes(normal(t)));
   const active=Boolean(order&&!order.cancelledAt&&!order.closedAt&&!order.test&&!deliveredTag&&!['FULFILLED'].includes(order.displayFulfillmentStatus)&&!['REFUNDED','VOIDED'].includes(order.displayFinancialStatus));
   const warnings=[]; const lines=[];
+  if(order.procurementSyncMode==='order_lines')warnings.push('Shopify remaining order quantities are synced directly; fulfillment-location details are not available to the existing app.');
   for(const fo of order?.fulfillmentOrders?.nodes||[]) {
     if(['CANCELLED','CLOSED','INCOMPLETE'].includes(fo.status)) continue;
     for(const item of fo.lineItems.nodes||[]) {
@@ -77,7 +87,8 @@ export function normalizeOrder(order, at=new Date().toISOString()) {
     fulfillment_status:order.displayFulfillmentStatus,lines,warnings};
 }
 
-async function loadOrder(id) {
+let fulfillmentAccess=null;
+async function loadOrderDetails(id) {
   let after=null; let order=null;
   do {
     const next=(await adminQuery(ORDER_DETAIL_QUERY,{id,after})).order;
@@ -96,6 +107,22 @@ async function loadOrder(id) {
     after=next.fulfillmentOrders.pageInfo.hasNextPage?next.fulfillmentOrders.pageInfo.endCursor:null;
   }while(after);
   return order;
+}
+async function loadOrderLines(id){
+  let after=null,order=null;const items=[];
+  do{
+    const page=(await adminQuery(ORDER_LINES_QUERY,{id,after})).order;if(!page)return null;
+    if(!order)order=page;items.push(...page.lineItems.nodes);after=page.lineItems.pageInfo.hasNextPage?page.lineItems.pageInfo.endCursor:null;
+  }while(after);
+  const status=order.displayFulfillmentStatus==='ON_HOLD'?'ON_HOLD':order.displayFulfillmentStatus==='SCHEDULED'?'SCHEDULED':'OPEN';
+  return {...order,procurementSyncMode:'order_lines',fulfillmentOrders:{nodes:[{id:'order-lines',status,requestStatus:'UNSUBMITTED',assignedLocation:{name:''},lineItems:{nodes:items.map(l=>({
+    id:l.id,productTitle:l.title,variantTitle:l.variantTitle,vendor:l.vendor,sku:l.sku,remainingQuantity:l.unfulfilledQuantity,totalQuantity:l.quantity,weight:null,lineItem:l,variant:l.variant
+  }))}}]}};
+}
+async function loadOrder(id){
+  if(fulfillmentAccess===false)return loadOrderLines(id);
+  try{const order=await loadOrderDetails(id);fulfillmentAccess=true;return order;}
+  catch(e){if(!/Access denied for fulfillmentOrders field/i.test(e.details||''))throw e;fulfillmentAccess=false;return loadOrderLines(id);}
 }
 
 export async function syncOneOrder(id) {
@@ -247,6 +274,7 @@ export async function undoPurchase(id) {
 // machine-readable, exact option evidence remain unverified; no stock is guessed.
 export async function recheckSource(source,brand,fetcher=fetch) {
   if(!allowedSource(source.url,brand,source.region))return {stock_status:'unverified',checked_at:new Date().toISOString()};
+  if(new URL(source.url).hostname.endsWith('sephora.me'))return checkSephoraSource(source,fetcher);
   const u=new URL(source.url);const m=u.pathname.match(/^(.*\/products\/[^/]+?)(?:\.js|\.json)?\/?$/);
   if(!m||!source.supplier_variant_id)return {checked_at:new Date().toISOString()};
   try{
@@ -270,6 +298,21 @@ export async function refreshProcurementSources() {
     const result=await recheckSource(source,group.brand);await db('procurement_sources?id=eq.'+source.id,{method:'PATCH',body:result});checked++;
   }}
   return {checked};
+}
+
+export async function discoverProcurementSources({limit=8}={}) {
+  const data=await procurementDashboard();
+  const recent=await db('procurement_runs?kind=eq.source_discovery&created_at=gte.'+encodeURIComponent(new Date(Date.now()-24*3600000).toISOString())+'&select=summary&limit=1000');
+  const seen=new Set(recent.map(r=>r.summary.variantId));let checked=0,verified=0;
+  for(const group of data.demand.filter(r=>!r.selectedSource&&!seen.has(r.variantId)).slice(0,limit)){
+    const line=data.lines.find(l=>l.variantId===group.variantId);const summary={variantId:group.variantId,regionsChecked:[],errors:[]};let offers=[];
+    try{const ae=await discoverSephora(line);offers.push(...ae);summary.regionsChecked.push('AE');}catch(e){summary.errors.push('AE: '+e.message);}
+    if(!offers.some(o=>o.stock_status==='in_stock'))try{const us=await discoverOfficialUS(line);offers.push(...us);summary.regionsChecked.push('US');}catch(e){summary.errors.push('US: '+e.message);}
+    for(const offer of offers)if(allowedSource(offer.url,line.brand,offer.region))await db('procurement_sources?on_conflict=variant_id,region,url',{method:'POST',prefer:'resolution=merge-duplicates,return=minimal',body:offer});
+    summary.offers=offers.length;summary.verified=offers.filter(o=>o.stock_status==='in_stock').length;summary.remaining='Unmatched options and UK fallbacks are researched in the morning brief.';
+    await db('procurement_runs',{method:'POST',body:{kind:'source_discovery',summary}});checked++;verified+=summary.verified;
+  }
+  return {checked,verified};
 }
 
 export function exportCsv(data) {

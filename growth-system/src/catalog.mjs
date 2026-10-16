@@ -31,7 +31,7 @@ export async function adminQuery(query, variables = {}) {
     body: JSON.stringify({ query, variables })
   });
   if (!r.ok) throw new Error('admin_http_' + r.status);
-  const data = await r.json(); if (data.errors?.length) { console.warn('Shopify query error:',data.errors.map(e=>String(e.message).slice(0,240)).join('; '));throw new Error('admin_query_rejected'); }
+  const data = await r.json(); if (data.errors?.length) { const details=data.errors.map(e=>String(e.message).slice(0,240)).join('; ');console.warn('Shopify query error:',details);const error=new Error('admin_query_rejected');error.details=details;throw error; }
   return data.data;
 }
 
