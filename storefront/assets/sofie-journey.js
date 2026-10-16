@@ -77,6 +77,32 @@
     if (!res.ok) throw Error(t(res.status === 409 ? 'conflict' : 'save_error'));
     const result = await res.json(); event('passport_save'); return result;
   }
+  function devicePassport() {
+    const value = read(deviceKey,null);
+    return value && (Object.keys(value.preferences || {}).length || value.routine?.length || value.saved?.length || value.match) ? value : null;
+  }
+  async function importDevice(options = {}) {
+    if (!cfg.loggedIn) throw Error(t('save_error'));
+    const device = devicePassport();
+    if (!device) throw Error(t('save_error'));
+    const current = await load();
+    if (options.expectedVersion !== undefined && options.expectedVersion !== current.version) throw Error(t('conflict'));
+    const account = current.passport || empty();
+    const saved = new Map();
+    [...(account.saved || []),...(device.saved || [])].filter(handles).forEach(item=>{
+      const key = item.handle + '|' + (item.variantId || '');
+      if (!saved.has(key)) saved.set(key,snapshotItem(item));
+    });
+    if (saved.size > 100) throw Error(t('import_limit'));
+    const result = await save({
+      preferences:{...device.preferences,...account.preferences},
+      saved:[...saved.values()],
+      routine:account.routine?.length ? account.routine : device.routine || [],
+      match:account.match || device.match || null
+    },{expectedVersion:current.version});
+    try { localStorage.removeItem(deviceKey); } catch {}
+    return result;
+  }
   const areas = ['new_cairo','nasr_city','madinaty','giza','shorouk','obour','zayed','october','other'];
   function matchPreferences(match) {
     const a = match?.a || {};
@@ -105,7 +131,8 @@
     if (!host) return;
     const passport = data.passport || empty(); const p = passport.preferences || {};
     const saved = (passport.saved || []).filter(handles); const routine = (passport.routine || []).filter(handles);
-    host.innerHTML = `<div class="sfjp-top"><div><p class="eyebrow">SOFIE</p><h1>${esc(t('passport'))}</h1><p>${esc(t('intro'))}</p><p class="small">${esc(t(cfg.loggedIn ? 'account_note' : 'device_note'))}</p></div><nav aria-label="${esc(t('passport'))}"><a href="${cfg.root}pages/sofie-knows?resume=passport">${esc(t('knows'))} ↗</a><button type="button" data-match-open="${passport.match ? 'resume' : ''}">${esc(t(passport.match ? 'resume_match' : 'match'))} ↗</button><a href="${cfg.root}pages/my-rewards">${esc(t('rewards'))} ↗</a>${!cfg.loggedIn ? `<a href="${cfg.root}account/login?return_url=${encodeURIComponent(cfg.passportUrl)}">${esc(t('save_account'))} ↗</a>` : ''}</nav></div>
+    host.innerHTML = `<div class="sfjp-top"><div><p class="eyebrow">SOFIE</p><h1>${esc(t('passport'))}</h1><p>${esc(t('intro'))}</p><p class="small">${esc(t(cfg.loggedIn ? 'account_note' : 'device_note'))}</p></div><nav aria-label="${esc(t('passport'))}"><a href="${cfg.root}pages/sofie-knows?resume=passport">${esc(t('knows'))} ↗</a><button type="button" data-match-open="${passport.match ? 'resume' : ''}">${esc(t(passport.match ? 'resume_match' : 'match'))} ↗</button><a href="${cfg.root}pages/my-rewards">${esc(t('rewards'))} ↗</a>${!cfg.loggedIn ? `<a href="${esc(cfg.loginUrl)}">${esc(t('save_account'))} ↗</a>` : ''}</nav></div>
+      ${cfg.loggedIn && devicePassport() ? `<section class="sfjp-profile"><h2>${esc(t('device_found'))}</h2><p>${esc(t('import_note'))}</p><button class="button button-outline" type="button" data-passport-import>${esc(t('import_device'))}</button><p role="status" data-import-status></p></section>` : ''}
       <form data-passport-form class="sfjp-form"><h2>${esc(t('preferences'))}</h2><div class="sfjp-fields">${options('skin',['unsure','normal','dry','oily','combo','sensitive'],p.skin || 'unsure')}${options('finish',['natural','radiant','matte'],p.finish || 'natural')}<label>${esc(t('budget'))}<input name="budget" type="number" min="100" max="100000" step="any" inputmode="decimal" value="${esc(p.budget ?? '')}" placeholder="${esc(t('no_budget'))}"></label>${options('area',areas,p.area,'choose_area')}</div><label class="sfjp-check"><input type="checkbox" name="includeSaved">${esc(t('save_hearts'))}</label><button class="button" type="submit">${esc(t(cfg.loggedIn ? 'save_account' : 'save_device'))}</button><p role="status" data-passport-status></p></form>
       <div class="sfjp-columns"><section><h2>${esc(t('routine'))}</h2>${routine.length ? `<ul>${routine.map(item=>`<li><a href="${esc(productURL(item))}">${esc(item.title)}${item.variantTitle ? ' · ' + esc(item.variantTitle) : ''}</a>${item.included === false ? ' · ' + esc(t('remove')) : ''}</li>`).join('')}</ul><a class="button button-outline" href="${cfg.root}pages/sofie-knows?resume=passport">${esc(t('edit_routine'))} ↗</a>` : `<p>${esc(t('no_saved'))}</p><a class="underlined" href="${cfg.root}pages/sofie-knows?resume=passport">${esc(t('knows'))} ↗</a>`}</section><section><h2>${esc(t('saved_products'))}</h2>${saved.length ? `<ul>${saved.map(item=>`<li><a href="${esc(productURL(item))}">${esc(item.title || item.handle)}${item.variantTitle ? ' · ' + esc(item.variantTitle) : ''}</a><button type="button" aria-label="${esc(t('remove_saved'))}: ${esc(item.title)}" data-passport-remove="${esc(item.handle)}" data-passport-variant="${esc(item.variantId || '')}">×</button></li>`).join('')}</ul>` : `<p>${esc(t('no_saved'))}</p>`}</section></div>
       ${data.beautyProfile ? `<section class="sfjp-profile"><h2>${esc(t('existing_profile'))}</h2><p>${esc(t('profile_from_rewards'))}</p><p>${[data.beautyProfile.skin_type,data.beautyProfile.undertone,data.beautyProfile.foundation_brand,data.beautyProfile.foundation_shade].filter(Boolean).map(esc).join(' · ')}</p><a class="underlined" href="${cfg.root}pages/my-rewards">${esc(t('update_profile'))} ↗</a></section>` : ''}
@@ -124,6 +151,11 @@
       } catch(error) { status.textContent = error.message; button.disabled = false; }
     });
     host.querySelector('[data-journey-consent]').addEventListener('change',e=>setConsent(e.target.checked));
+    host.querySelector('[data-passport-import]')?.addEventListener('click',async e=>{
+      e.target.disabled = true; host.querySelector('[data-import-status]').textContent = t('saving');
+      try { const next = await importDevice({expectedVersion:data.version}); render({...data,...next}); notify(t('saved')); }
+      catch(error) { host.querySelector('[data-import-status]').textContent = error.message; e.target.disabled = false; }
+    });
     host.querySelector('[data-passport-reload]').addEventListener('click',boot);
     host.querySelector('[data-passport-clear]').addEventListener('click',async e => {
       if (!confirm(t('clear_confirm'))) return;
@@ -141,7 +173,7 @@
     try { render(await load()); } catch(error) { host.replaceChildren(); const p=document.createElement('p');p.textContent=error.message;const button=document.createElement('button');button.className='button';button.textContent=t('retry');button.addEventListener('click',boot);host.append(p,button); }
   }
   window.SofieJourney = {event,cartAdded,consent,setConsent,t,config:cfg};
-  window.SofiePassport = {load,save,t,snapshotItem,saveMatch:async()=>{ const match=read('sofie-match',null);if(!match?.mode)throw Error(t('save_error'));return save({match,preferences:matchPreferences(match)}); }};
+  window.SofiePassport = {load,save,importDevice,t,snapshotItem,saveMatch:async()=>{ const match=read('sofie-match',null);if(!match?.mode)throw Error(t('save_error'));return save({match,preferences:matchPreferences(match)}); }};
   document.addEventListener('click',async e=>{
     const productButton=e.target.closest('[data-passport-product]'); const matchButton=e.target.closest('[data-match-passport]');
     if (productButton || matchButton) {

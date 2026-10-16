@@ -42,3 +42,13 @@ Deploy the loyalty endpoint before exposing the theme's account-saving controls.
 - Browser verification and deployment results are recorded below as they complete. A real signed-in customer's cross-device round trip requires an authenticated customer session; this browser currently has a guest storefront session.
 
 Cart QA found an active 5% automatic promotion. The discovery draft is therefore EGP 500 rather than EGP 250, so it can beat a 5% discount on the observed EGP 5,400 full size. Keep it non-stacking and recheck promotions before activation.
+
+## Continuation check — 17 October 2026
+
+The preview now uses Shopify's storefront sign-in route so a customer returns to the page they started from. After sign-in, an explicit import adds guest device saves to the account. Existing account preferences, routine and match take precedence; exact saved options are deduplicated. The device copy is removed only after a successful account save. Failed writes, concurrent edits and the 100-option limit preserve that copy for retry.
+
+Five client integration tests exercise first-account import, preservation of existing choices, save failure, concurrent edits, guest denial and save limits. All 45 current growth tests pass, including unrelated operations tests already on the shared branch. The unchanged loyalty deployment remains successful. Live customer authentication and the cross-device round trip remain pending; opening the sign-in screen is not proof of an account save.
+
+Shopify still reports Connected Journey as unpublished. The connected app still lacks write_legal_policies; no retry or partial policy publication was performed. The local discovery credit remains disabled.
+
+The changed Passport JavaScript and Liquid configuration pass Shopify checks. All Passport translation keys are present in English and Arabic and both JSON files parse. A full locale check also reports missing older Arabic translations outside Passport; these predate this patch and were not rewritten.

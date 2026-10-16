@@ -228,6 +228,11 @@
       "activate": "Activate account"
     },
     "journey": {
+      "import_limit": "Your combined saves exceed 100 options. Remove some saved products before importing; your device copy is still here.",
+      "device_found": "You have a Passport on this device",
+      "import_note": "Add your device saves to this account. Existing account preferences, routine and match stay in place; device details fill any gaps. The device copy is removed only after saving succeeds.",
+      "import_device": "Add device saves to my account",
+
       "passport": "Beauty Passport",
       "intro": "Keep your preferences, exact options and routine together.",
       "account_note": "Saved securely to your SOFIE account. Saving does not subscribe you to marketing.",
