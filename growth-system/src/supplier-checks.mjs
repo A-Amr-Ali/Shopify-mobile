@@ -112,7 +112,7 @@ export async function checkSephoraUSSource(source,fetcher=fetch){try{
   const at=new Date().toISOString();return {stock_status:sku.isOutOfStock?'out_of_stock':'in_stock',price,verified_at:at,checked_at:at,verification_method:'official_page',evidence:'Official Sephora US exact SKU '+sku.skuId+'; isOutOfStock='+sku.isOutOfStock+'; USD '+price};
 }catch{return {stock_status:'unverified',checked_at:new Date().toISOString()};}}
 async function discoverOfficialStore(line,base,region,fetcher){
-  if(!base)return [];const currency=region==='UK'?'GBP':'USD';
+  if(!base)return [];const currency={AE:'AED',US:'USD',UK:'GBP'}[region];
   const cart=JSON.parse(await read(base+'/cart.js',fetcher));if(cart.currency!==currency)return [];
   const shade=(line.options||[]).find(o=>['color','colour','shade'].includes(norm(o.name)));
   const shadeSlug=shade?coreShade(shade.value).replaceAll(' ','-'):'';
@@ -136,6 +136,7 @@ async function discoverOfficialStore(line,base,region,fetcher){
   }
   return offers;
 }
-const EXTRA_SHOPS=[['stanley','https://www.stanley1913.com'],['living proof','https://www.livingproof.com'],['byoma','https://byoma.com']];
+const EXTRA_SHOPS=[['stanley','https://www.stanley1913.com'],['living proof','https://www.livingproof.com'],['byoma','https://byoma.com'],['huda beauty','https://hudabeauty.com/en-us']];
+export async function discoverOfficialAE(line,fetcher=fetch){return discoverOfficialStore(line,norm(line.brand).includes('huda beauty')?'https://hudabeauty.com/en-ae':null,'AE',fetcher);}
 export async function discoverOfficialUS(line,fetcher=fetch){return discoverOfficialStore(line,[...SHOPS,...EXTRA_SHOPS].find(([brand])=>norm(line.brand).includes(brand))?.[1],'US',fetcher);}
-export async function discoverOfficialUK(line,fetcher=fetch){const brand=norm(line.brand);const base=brand.includes('smeg')?'https://shop.smeguk.com':brand.includes('rhode')?'https://www.rhodeskin.com/en-gb':brand.includes('stanley')?'https://uk.stanley1913.com':null;return discoverOfficialStore(line,base,'UK',fetcher);}
+export async function discoverOfficialUK(line,fetcher=fetch){const brand=norm(line.brand);const base=brand.includes('smeg')?'https://shop.smeguk.com':brand.includes('rhode')?'https://www.rhodeskin.com/en-gb':brand.includes('stanley')?'https://uk.stanley1913.com':brand.includes('huda beauty')?'https://hudabeauty.com/en-gb':null;return discoverOfficialStore(line,base,'UK',fetcher);}

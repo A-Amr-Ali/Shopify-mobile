@@ -1,6 +1,6 @@
 import { adminQuery } from './catalog.mjs';
 import { db } from './db.mjs';
-import { checkSephoraSource, checkSephoraUSSource, discoverSephora, discoverSephoraUS, discoverOfficialUS, discoverOfficialUK } from './supplier-checks.mjs';
+import { checkSephoraSource, checkSephoraUSSource, discoverSephora, discoverSephoraUS, discoverOfficialAE, discoverOfficialUS, discoverOfficialUK } from './supplier-checks.mjs';
 
 export const MARKETS = Object.freeze({
   AE: { currency:'AED', exchange:15, shipping:900, label:'UAE' },
@@ -211,7 +211,7 @@ export async function procurementDashboard() {
     const stale=Date.now()-Date.parse(order.scanned_at)>15*60000;
     const status=!order.active?'completed':source.kind==='sofie'?'local_stock':!outstanding?'purchased':original.hold?'on_hold':stale?'sync_needed':source.kind==='review'?'source_review':selected?'ready':'needs_sourcing';
     lines.push({...original,source,orderId:order.order_id,orderName:order.order_name,orderCreatedAt:order.created_at,scannedAt:order.scanned_at,active:order.active,
-      purchased:bought,outstanding,weightKg:weight,weightSource:option?.weight_kg?'Staff shipping weight':original.weightKg?original.weightSource:selected?.supplier_weight_kg?'Official supplier variant weight':'Missing shipping weight',status,
+      purchased:bought,outstanding,weightKg:weight,weightSource:option?.weight_kg?'Staff shipping weight':original.weightKg?original.weightSource:selected?.supplier_weight_kg?'Supplier reported weight estimate':'Missing shipping weight',status,
       selectedSource:selected,offers:offers.map(s=>({...s,currentlyVerified:validSource(s)&&allowedSource(s.url,original.brand,s.region)})),
       cost:selected?costEstimate(selected.region,selected.price,weight,outstanding||1):null});
   }
@@ -311,6 +311,7 @@ export async function discoverProcurementSources({limit=8}={}) {
   for(const group of data.demand.filter(r=>!r.selectedSource&&!seen.has(r.variantId)).slice(0,limit)){
     const line=data.lines.find(l=>l.variantId===group.variantId);const summary={variantId:group.variantId,regionsChecked:[],errors:[]};let offers=[];
     try{const ae=await discoverSephora(line);offers.push(...ae);summary.regionsChecked.push('AE');}catch(e){summary.errors.push('AE: '+e.message);}
+    if(!offers.some(o=>o.stock_status==='in_stock'))try{offers.push(...await discoverOfficialAE(line));}catch(e){summary.errors.push('Official AE: '+e.message);}
     if(!offers.some(o=>o.stock_status==='in_stock'))try{const us=await discoverSephoraUS(line);offers.push(...us);summary.regionsChecked.push('US');}catch(e){summary.errors.push('Sephora US: '+e.message);}
     if(!offers.some(o=>o.stock_status==='in_stock'))try{const us=await discoverOfficialUS(line);offers.push(...us);if(!summary.regionsChecked.includes('US'))summary.regionsChecked.push('US');}catch(e){summary.errors.push('Official US: '+e.message);}
     if(!offers.some(o=>o.stock_status==='in_stock'))try{offers.push(...await discoverOfficialUK(line));summary.regionsChecked.push('UK');}catch(e){summary.errors.push('Official UK: '+e.message);}

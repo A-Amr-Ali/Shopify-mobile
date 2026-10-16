@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {parseSephora,sephoraVerification,exactOption,titleMatches,parseSephoraUS,discoverSephoraUS,checkSephoraSource} from '../src/supplier-checks.mjs';
+import {parseSephora,sephoraVerification,exactOption,titleMatches,parseSephoraUS,discoverSephoraUS,checkSephoraSource,discoverOfficialAE} from '../src/supplier-checks.mjs';
 const product={id:'P1',name:'Example',currency:'AED',c_default_variant_id:'11',c_variantsInfo:[{product_id:'11',c_variation_attribute_name:'Pink'},{product_id:'12',c_variation_attribute_name:'Red'}]};
 const analytics={product_sku:'11',product_currency:'AED',product_instock:'y',product_price_ati:100};
 function html(){const flight='1:'+JSON.stringify({product,analytics})+'\n';return '<script type="application/ld+json">'+JSON.stringify({'@type':'Product',offers:{availability:'InStock'}})+'</script><script>self.__next_f.push('+JSON.stringify([1,flight])+')</script>';}
@@ -34,4 +34,11 @@ test('a live UI check of a non-default shade keeps its original expiry, never a 
   const mock=async()=>({ok:true,headers:new Headers(),text:async()=>html()});
   const result=await checkSephoraSource({url:'https://www.sephora.me/ae-en/p/example/P1?productVariantId=12',supplier_variant_id:'12',evidence:'Live Sephora UAE browser check: Red selected.'},mock);
   assert.equal(result.verified_at,undefined);assert.equal(result.stock_status,undefined);assert.ok(result.checked_at);
+});
+test('an official UAE store requires AED localization before its variant can qualify',async()=>{
+  const line={variantId:'v',brand:'Huda Beauty',title:'Easy Bake Powder Puff Duo',handle:'easy-bake-powder-puff-duo',options:[]};
+  const mock=currency=>async url=>({ok:true,headers:new Headers(),text:async()=>JSON.stringify(url.endsWith('/cart.js')?{currency}:url.includes('/search/')?{}:{title:line.title,handle:line.handle,vendor:'Huda Beauty',variants:[{id:5,title:'Default Title',available:true,price:6600}]})});
+  const offers=await discoverOfficialAE(line,mock('AED'));
+  assert.equal(offers[0].region,'AE');assert.equal(offers[0].currency,'AED');assert.equal(offers[0].price,66);
+  assert.deepEqual(await discoverOfficialAE(line,mock('USD')),[]);
 });
