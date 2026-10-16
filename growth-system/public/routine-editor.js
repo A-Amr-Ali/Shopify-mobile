@@ -27,6 +27,10 @@
     return prefix + (a ? T(a[0],a[1]) + ' · ' + a[2] + T(' دقيقة بعد تأكيد الطلب · ',' min after confirmation · ') + money(a[3]) + T(' رسوم التوصيل.',' delivery fee.') : T('اختاري المنطقة لمعرفة التقدير والرسوم.','Choose an area for an estimate and fee.'));
   }
   const chosen = () => (data?.items || []).filter(p=>p.included !== false);
+  function edited() {
+    data.advice=T('عدّلتي الروتين. راجعي تفاصيل وطريقة استخدام كل منتج مختار قبل الإضافة.','You edited this routine. Review each selected product’s details and directions before adding.');
+    const note=root.querySelector('.sg-advice p:last-child');if(note)note.textContent=data.advice;
+  }
   function message(value) { const node=root.querySelector('[data-editor-status]') || root.querySelector('[data-status]');if(node)node.textContent=value; }
   function totals() {
     const items=chosen(); const total=Math.round(items.reduce((n,p)=>n + p.price,0)*100)/100;
@@ -84,11 +88,11 @@
     if(e.target.matches('[name=consent]'))window.SofieJourney?.setConsent(e.target.checked);
     if(e.target.matches('[data-editor-confirm]')){checked=e.target.checked;totals();return;}
     if(e.target.matches('[data-routine-area]')){try{localStorage.setItem('sofie-area',JSON.stringify(e.target.value));window.dispatchEvent(new StorageEvent('storage',{key:'sofie-area'}));}catch{}root.querySelectorAll('[data-editor-delivery]').forEach(n=>n.textContent=delivery(data.items[Number(n.dataset.editorDelivery)]));return;}
-    if(e.target.matches('[data-editor-include]')){data.items[Number(e.target.dataset.editorInclude)].included=e.target.checked;checked=false;root.querySelector('[data-editor-confirm]').checked=false;totals();emit('routine_edit');return;}
+    if(e.target.matches('[data-editor-include]')){data.items[Number(e.target.dataset.editorInclude)].included=e.target.checked;edited();checked=false;root.querySelector('[data-editor-confirm]').checked=false;totals();emit('routine_edit');return;}
     let index;
-    if(e.target.matches('[data-editor-option]')){index=Number(e.target.dataset.editorOption);const p=data.items[index];p.variantId=e.target.value;p.now=null;p.available=false;}
+    if(e.target.matches('[data-editor-option]')){index=Number(e.target.dataset.editorOption);const p=data.items[index];p.variantId=e.target.value;p.now=null;p.available=false;p.reasons=[];}
     if(e.target.matches('[data-editor-swap]') && e.target.value){index=Number(e.target.dataset.editorSwap);const v=data.alternatives.find(p=>p.variantId===e.target.value);if(v)data.items[index]={...v,included:true,available:false,now:null};}
-    if(index!==undefined){busy=true;totals();try{await check([data.items[index].variantId]);busy=false;draw();emit('routine_edit');}catch{busy=false;message(T('مش قادرين نأكد التوفر. راجعي الاختيار قبل الإضافة.','We could not confirm availability. Recheck before adding.'));}}
+    if(index!==undefined){edited();busy=true;totals();try{await check([data.items[index].variantId]);busy=false;draw();emit('routine_edit');}catch{busy=false;message(T('مش قادرين نأكد التوفر. راجعي الاختيار قبل الإضافة.','We could not confirm availability. Recheck before adding.'));}}
   });
   root.addEventListener('click',async e=>{
     if(e.target.closest('[data-lang]')){data=null;setTimeout(mountTools,0);return;}

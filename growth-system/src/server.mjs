@@ -1,7 +1,7 @@
 import http from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { cleanProfile, chooseRoutine, ruleAdvice, medicalQuestion } from './engine.mjs';
+import { cleanProfile, chooseRoutine, routineAlternatives, ruleAdvice, medicalQuestion } from './engine.mjs';
 import { loadCatalog, checkOptions } from './catalog.mjs';
 import { explainRoutine } from './ai.mjs';
 import { db, configured, takeBudget } from './db.mjs';
@@ -51,15 +51,12 @@ export async function handler(req, res) {
       if (medicalQuestion(profile.note)) return send(res,200,{items:[],total:0,currency:'EGP',advice:ruleAdvice(profile,[]),source:'referral',needsSpecialist:true});
       const catalog = await loadCatalog(profile.goal, { today: profile.today, budget: profile.budget, faceAreas: profile.faceAreas, concerns: profile.concerns });
       const routine = chooseRoutine(catalog.cards, profile);
-      routine.alternatives = routine.items.flatMap(item => {
-        const seen = new Set([item.handle]);
-        return catalog.cards.filter(c => c.step === item.step && !seen.has(c.handle) && seen.add(c.handle)).slice(0,5).map(c => ({step:c.step,variantId:c.variantId,handle:c.handle,title:c.title,variantTitle:c.variantTitle,price:c.price,image:c.image,brand:c.brand,url:c.url}));
-      });
       if (routine.items.length) {
         const checked = await checkOptions(routine.items.map(p => p.variantId));
-        routine.items = routine.items.flatMap(p => { const current = checked.items.find(v => v.variantId === p.variantId); return current?.available ? [{ ...p, ...current }] : []; });
+        routine.items = routine.items.flatMap(p => { const current = checked.items.find(v => v.variantId === p.variantId); return current?.available && (!profile.today || current.now === true) ? [{ ...p, ...current }] : []; });
         routine.total = Math.round(routine.items.reduce((n,p) => n + p.price, 0) * 100) / 100;
       }
+      routine.alternatives = routineAlternatives(catalog.cards,profile,routine.items);
       const advice = await explainRoutine(profile, routine, actor);
       return send(res,200,{...routine,advice:advice.text,source:advice.source,verification:catalog.verification,checkedAt:new Date().toISOString()});
     }
