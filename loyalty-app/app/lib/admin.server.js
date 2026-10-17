@@ -3,7 +3,7 @@
 // a stored offline session (the modern managed-install flow doesn't persist one),
 // so instead of `unauthenticated.admin(shop)` we mint a short-lived Admin token
 // directly from the app's client_id + client_secret and call the GraphQL API.
-const API_VERSION = process.env.SHOPIFY_API_VERSION || "2024-10";
+const API_VERSION = process.env.SHOPIFY_API_VERSION || "2026-10";
 
 let cache = { token: null, shop: null, exp: 0 };
 

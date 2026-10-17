@@ -17,6 +17,7 @@ import { mergeInferred } from "../lib/profile.server.js";
 import { generateTips } from "../lib/tips.server.js";
 import { recordEvent } from "../lib/agent/insights.server.js";
 import { REFERRAL } from "../config/loyalty.js";
+import { purchaseMultiplier } from "../lib/rewards-core.js";
 
 const ledger = createLedger(createSupabaseStore());
 const gid = (id) => (String(id).startsWith("gid://") ? String(id) : `gid://shopify/Customer/${id}`);
@@ -64,7 +65,7 @@ export const action = async ({ request }) => {
 async function loadCustomer(customerId) {
   const { data } = await supabase
     .from("customers")
-    .select("tier, lifetime_spend_egp, rolling_spend_egp, tier_locked_until, email")
+    .select("tier, lifetime_spend_egp, rolling_spend_egp, tier_locked_until, email, birthday, birthday_opt_in")
     .eq("shopify_customer_id", customerId)
     .maybeSingle();
   return data;
@@ -85,6 +86,15 @@ async function onOrderPaid(order, admin) {
     { onConflict: "shopify_customer_id" }
   );
 
+  const usedCodes=(order.discount_codes || []).map(d=>String(d.code || '').toUpperCase()).filter(Boolean);
+  if (usedCodes.length) {
+    const [codes,birthday]=await Promise.all([
+      supabase.from('redemptions').update({status:'used'}).eq('customer_id',customerId).eq('channel','online').in('discount_code',usedCodes),
+      supabase.from('birthday_grants').update({status:'used_online'}).eq('customer_id',customerId).eq('channel','online').in('code',usedCodes)
+    ]);
+    if (codes.error || birthday.error) console.warn('reward_usage_sync_unavailable');
+  }
+
   // Feed the AI Sales Agent (idempotent by order id). Records taste signal even
   // for COD/0-point orders so post-purchase + win-back outreach can fire later.
   await recordEvent({
@@ -93,7 +103,7 @@ async function onOrderPaid(order, admin) {
   }).catch((e) => console.warn(`event purchase: ${e.message}`));
 
   const existing = await loadCustomer(customerId);
-  const multiplier = multiplierFor(existing?.tier ?? "insider");
+  const multiplier = purchaseMultiplier(existing);
 
   const res = await ledger.earnFromOrder({ customerId, order, multiplier });
   if (!res.applied) return; // already processed (idempotent) or 0 points

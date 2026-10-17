@@ -1,71 +1,37 @@
-// POST /jobs/birthday-daily — daily cron. Finds customers whose birthday is
-// today, mints a tier-appropriate gift code (once per year — the 365-day guard),
-// and emits a Klaviyo event so the birthday flow emails the code.
-// Auth: x-cron-key header == CRON_KEY.
-import { json } from "@remix-run/node";
-import { getAdmin } from "../lib/admin.server.js";
-import { supabase } from "../db.server.js";
-import { mintOpenCode } from "../lib/discounts.server.js";
-import { trackEvent } from "../lib/klaviyo.server.js";
-import { mailerConfigured, sendEmail } from "../lib/agent/mailer.server.js";
-import { renderBirthdayEmail } from "../lib/agent/email.server.js";
-import { CRON_KEY, SHOP_DOMAIN, BIRTHDAY } from "../config/loyalty.js";
+import { supabase } from '../db.server.js';
+import { CRON_KEY, BIRTHDAY } from '../config/loyalty.js';
+import { birthdayWindow, cairoDate } from '../lib/rewards-core.js';
+import { rewardsReply } from '../lib/rewards.server.js';
+import { mailerConfigured, sendEmail } from '../lib/agent/mailer.server.js';
+import { renderBirthdayEmail } from '../lib/agent/email.server.js';
 
-export const action = async ({ request }) => {
-  if (request.headers.get("x-cron-key") !== CRON_KEY || !CRON_KEY) {
-    return json({ error: "unauthorized" }, { status: 401 });
-  }
-  const now = new Date();
-  const year = now.getUTCFullYear();
-  const mmdd = `${String(now.getUTCMonth() + 1).padStart(2, "0")}-${String(now.getUTCDate()).padStart(2, "0")}`;
-
-  // birthday is a DATE; match on month-day regardless of birth year.
-  const { data: customers, error } = await supabase
-    .from("customers").select("shopify_customer_id, email, first_name, tier, birthday")
-    .not("birthday", "is", null);
-  if (error) return json({ error: error.message }, { status: 500 });
-
-  const todays = (customers ?? []).filter((c) => String(c.birthday).slice(5) === mmdd);
-  let admin = null;
-  try { admin = await getAdmin(SHOP_DOMAIN); } catch { /* code mint best-effort */ }
-
-  let granted = 0, skipped = 0;
-  for (const c of todays) {
-    // Safety 1: never email anyone whose birthday isn't actually today.
-    if (String(c.birthday).slice(5) !== mmdd) continue;
-    // Safety 2: must have a real email address to receive the gift.
-    if (!c.email || !c.email.includes("@")) { skipped++; continue; }
-
-    // 365-day guard: one grant per customer per calendar year.
-    const { error: insErr } = await supabase
-      .from("birthday_grants").insert({ customer_id: c.shopify_customer_id, year, tier: c.tier });
-    if (insErr) { if (insErr.code === "23505") skipped++; continue; } // already granted this year
-
-    const gift = BIRTHDAY[c.tier] ?? BIRTHDAY.insider;
-    let code = null;
-    if (gift.egp > 0 && admin) {
-      try {
-        const minted = await mintOpenCode(admin, { amountEgp: gift.egp, prefix: BIRTHDAY.codePrefix, days: 45 });
-        code = minted.code;
-      } catch (e) { console.warn(`bday code mint: ${e.message}`); }
+export async function action({ request }) {
+  if (request.method !== 'POST') return rewardsReply({ error:'method_not_allowed' },405);
+  if (!CRON_KEY || request.headers.get('x-cron-key') !== CRON_KEY) return rewardsReply({error:'unauthorized'},401);
+  const body=await request.json().catch(()=>({}));
+  if (cairoDate().hour<9 && !body.dryRun) return rewardsReply({ok:true,waitingForCairoMorning:true});
+  if (!body.dryRun && !mailerConfigured()) return rewardsReply({error:'birthday_mail_provider_unavailable'},503);
+  let eligible=0,granted=0,sent=0,failed=0;
+  for (let from=0;from<100000;from+=500) {
+    const result=await supabase.from('customers').select('shopify_customer_id,email,first_name,tier,birthday,birthday_opt_in').eq('birthday_opt_in',true).not('birthday','is',null).order('shopify_customer_id').range(from,from+499);
+    if (result.error) return rewardsReply({error:'temporarily_unavailable'},503);
+    for (const c of result.data || []) {
+      if (!birthdayWindow(c).eligible) continue;
+      eligible++;
+      if (body.dryRun) continue;
+      const gift=await supabase.rpc('sofie_birthday_grant',{p_customer_id:c.shopify_customer_id});
+      if (gift.error) { failed++;continue; }
+      granted++;
+      if (gift.data.status!=='available') continue;
+      if (!c.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email)) continue;
+      const claim=await supabase.rpc('sofie_take_birthday_email',{p_id:gift.data.id});
+      if (claim.error || !claim.data) continue;
+      const html=renderBirthdayEmail({firstName:c.first_name,egp:gift.data.egp_value,note:BIRTHDAY[c.tier]?.note,expiresAt:gift.data.expires_at});
+      const email=await sendEmail({to:c.email,subject:'Your SOFIE birthday gift is waiting',html});
+      const update=await supabase.from('birthday_grants').update({email_status:email.ok?'sent':'pending',...(email.ok?{emailed_at:new Date().toISOString()}:{})}).eq('id',gift.data.id);
+      if (email.ok && !update.error) sent++;else failed++;
     }
-    await supabase.from("birthday_grants")
-      .update({ code, egp_value: gift.egp })
-      .eq("customer_id", c.shopify_customer_id).eq("year", year);
-
-    // Email the gift to the customer. Prefer direct send via Brevo/Resend; fall
-    // back to a Klaviyo event if no mail provider is configured. The birthday_grants
-    // unique constraint already prevents double-sends.
-    if (mailerConfigured()) {
-      const html = renderBirthdayEmail({ firstName: c.first_name, code, egp: gift.egp, note: gift.note });
-      const r = await sendEmail({ to: c.email, subject: "Happy birthday from Sofie 🎉", html });
-      if (!r.ok) console.warn(`bday email: ${r.error}`);
-    } else {
-      await trackEvent("Loyalty Birthday Gift", c.email, {
-        tier: c.tier, gift_egp: gift.egp, code, note: gift.note, double_points: c.tier !== "insider",
-      });
-    }
-    granted++;
+    if ((result.data || []).length<500) break;
   }
-  return json({ ok: true, birthdays: todays.length, granted, already_granted: skipped });
-};
+  return rewardsReply({ok:true,dryRun:body.dryRun===true,eligible,granted,sent,failed});
+}

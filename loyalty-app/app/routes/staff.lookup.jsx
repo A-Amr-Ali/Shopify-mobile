@@ -1,54 +1,35 @@
-// POST /staff/lookup — staff console: find a customer by email and return their
-// loyalty summary. Protected by the STAFF_KEY password (sent in the body).
-import { json } from "@remix-run/node";
-import { getAdmin } from "../lib/admin.server.js";
-import { supabase } from "../db.server.js";
-import { REDEMPTION_TIERS, STAFF_KEY, SHOP_DOMAIN } from "../config/loyalty.js";
+import { getAdmin } from '../lib/admin.server.js';
+import { supabase } from '../db.server.js';
+import { rewardsReply,rewardsBody,staffAuthorized } from '../lib/rewards.server.js';
+import { birthdayWindow,rewardsRules } from '../lib/rewards-core.js';
+import { SHOP_DOMAIN } from '../config/loyalty.js';
 
-async function customerByEmail(admin, email) {
-  const res = await admin.graphql(
-    `query($q: String!){ customers(first: 1, query: $q){ edges { node { id firstName lastName email } } } }`,
-    { variables: { q: `email:${email}` } }
-  );
-  return (await res.json())?.data?.customers?.edges?.[0]?.node || null;
-}
-
-export const action = async ({ request }) => {
-  const body = await request.json().catch(() => ({}));
-  if (!STAFF_KEY) return json({ error: "staff_key_not_set" }, { status: 503 });
-  if (String(body.key ?? "").trim() !== STAFF_KEY.trim()) return json({ error: "unauthorized" }, { status: 401 });
-  const email = String(body.email || "").trim().toLowerCase();
-  if (!email || !email.includes("@")) return json({ error: "bad_email" }, { status: 400 });
-
-  let cust;
+export async function action({request}) {
+  if (request.method!=='POST') return rewardsReply({error:'method_not_allowed'},405);
   try {
-    const admin = await getAdmin(SHOP_DOMAIN);
-    cust = await customerByEmail(admin, email);
-  } catch (err) {
-    return json({ error: "lookup_failed", detail: String(err.message) }, { status: 502 });
-  }
-  if (!cust) return json({ found: false });
-
-  await supabase.from("customers").upsert(
-    { shopify_customer_id: cust.id, email: cust.email },
-    { onConflict: "shopify_customer_id", ignoreDuplicates: true }
-  );
-  const { data } = await supabase
-    .from("customers").select("points_balance, tier, lifetime_spend_egp")
-    .eq("shopify_customer_id", cust.id).maybeSingle();
-  const { data: gifts } = await supabase
-    .from("rewards_catalog").select("id, title, points_cost")
-    .eq("type", "product").eq("active", true).order("points_cost");
-
-  return json({
-    found: true,
-    customerId: cust.id,
-    name: [cust.firstName, cust.lastName].filter(Boolean).join(" ") || cust.email,
-    email: cust.email,
-    points: data?.points_balance ?? 0,
-    tier: data?.tier ?? "insider",
-    lifetime: data?.lifetime_spend_egp ?? 0,
-    rewards: REDEMPTION_TIERS,
-    gifts: (gifts ?? []).map((g) => ({ id: g.id, title: g.title, pointsCost: g.points_cost })),
-  });
-};
+    const body=await rewardsBody(request);
+    if (!staffAuthorized(body)) return rewardsReply({error:'unauthorized'},401);
+    const identity=String(body.identity||body.email||'').trim().toLowerCase();
+    const numeric=/^\d{1,20}$/.test(identity);
+    if (!numeric && !/^[^\s@"\\]+@[^\s@"\\]+\.[^\s@"\\]+$/.test(identity)) return rewardsReply({error:'bad_identity'},400);
+    const admin=await getAdmin(SHOP_DOMAIN);
+    const response=numeric
+      ? await admin.graphql('query StoreRewardMember($id:ID!){customer(id:$id){id firstName lastName email}}',{variables:{id:`gid://shopify/Customer/${identity}`}})
+      : await admin.graphql('query StoreRewardEmail($q:String!){customers(first:2,query:$q){nodes{id firstName lastName email} pageInfo{hasNextPage endCursor}}}',{variables:{q:`email:"${identity}"`}});
+    const data=await response.json();
+    if (!response.ok || data.errors) throw new Error('lookup_failed');
+    const customer=numeric?data.data?.customer:data.data?.customers?.nodes?.find(c=>c.email?.toLowerCase()===identity);
+    if (!customer) return rewardsReply({found:false});
+    const saved=await supabase.from('customers').upsert({shopify_customer_id:customer.id,email:customer.email,first_name:customer.firstName},{onConflict:'shopify_customer_id'});
+    if (saved.error) throw new Error('save_failed');
+    const [result,gift]=await Promise.all([
+      supabase.from('customers').select('tier,points_balance,lifetime_spend_egp,birthday,birthday_opt_in').eq('shopify_customer_id',customer.id).single(),
+      supabase.from('birthday_grants').select('year,status,channel,egp_value').eq('customer_id',customer.id).order('year',{ascending:false}).limit(1)
+    ]);
+    if (result.error||gift.error) throw new Error('lookup_failed');
+    const rules=rewardsRules(result.data);
+    const window=birthdayWindow(result.data);
+    const grant=gift.data?.find(g=>g.year===window.year)||null;
+    return rewardsReply({found:true,customerId:customer.id,memberId:customer.id.split('/').pop(),name:[customer.firstName,customer.lastName].filter(Boolean).join(' ')||customer.email,email:customer.email,points:result.data.points_balance,tier:result.data.tier,lifetime:result.data.lifetime_spend_egp,rewards:rules.rewards,multiplier:rules.multiplier,birthday:{enrolled:result.data.birthday_opt_in,date:result.data.birthday?.slice(5)||null,eligible:window.eligible && (!grant||grant.status==='available'),value:grant?.egp_value||rules.birthdayValues[result.data.tier],status:grant?.status||null}});
+  } catch {return rewardsReply({error:'lookup_failed'},503);}
+}
