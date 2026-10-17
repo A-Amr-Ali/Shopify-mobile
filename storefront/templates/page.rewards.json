@@ -1,0 +1,31 @@
+{
+  "sections": {
+    "sofie_rewards_hub": {
+      "type": "sf-rewards",
+      "settings": {}
+    },
+    "178118988496c3e084": {
+      "type": "sf-apps",
+      "blocks": {
+        "sofie_loyalty_loyalty_quiz_9TDV9W": {
+          "type": "shopify://apps/sofie-loyalty/blocks/loyalty-quiz/019eb499-3607-73f4-8692-ccd8ed2ca108",
+          "settings": {
+            "proxy_base": "/apps/loyalty",
+            "eyebrow": "Earn 250 points",
+            "heading": "Build Your Beauty Profile",
+            "subheading": "Tell us about your skin and we will tailor recommendations just for you.",
+            "cta": "Save & earn 250 points"
+          }
+        }
+      },
+      "block_order": [
+        "sofie_loyalty_loyalty_quiz_9TDV9W"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "sofie_rewards_hub",
+    "178118988496c3e084"
+  ]
+}

@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "shopify app dev",
     "build": "remix vite:build",
-    "start": "remix-serve ./build/server/index.js",
+    "start": "node scripts/start.js",
     "deploy": "shopify app deploy",
     "test": "node --test",
     "verify": "node scripts/verify-lifecycle.js"
