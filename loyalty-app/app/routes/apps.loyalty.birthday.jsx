@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 import { supabase } from '../db.server.js';
-import { normalizeBirthday } from '../lib/rewards-core.js';
+import { normalizeBirthday } from '../lib/rewards-core.server.js';
 import { rewardsReply, rewardsAuth, rewardsBody, syncRewardCustomer } from '../lib/rewards.server.js';
 import { getAdmin } from '../lib/admin.server.js';
 import { mintDiscountCode } from '../lib/discounts.server.js';

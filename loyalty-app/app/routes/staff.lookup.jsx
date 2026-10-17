@@ -1,7 +1,7 @@
 import { getAdmin } from '../lib/admin.server.js';
 import { supabase } from '../db.server.js';
 import { rewardsReply,rewardsBody,staffAuthorized } from '../lib/rewards.server.js';
-import { birthdayWindow,rewardsRules } from '../lib/rewards-core.js';
+import { birthdayWindow,rewardsRules } from '../lib/rewards-core.server.js';
 import { SHOP_DOMAIN } from '../config/loyalty.js';
 
 export async function action({request}) {

@@ -1,6 +1,6 @@
 import { supabase } from '../db.server.js';
 import { CRON_KEY, BIRTHDAY } from '../config/loyalty.js';
-import { birthdayWindow, cairoDate } from '../lib/rewards-core.js';
+import { birthdayWindow, cairoDate } from '../lib/rewards-core.server.js';
 import { rewardsReply } from '../lib/rewards.server.js';
 import { mailerConfigured, sendEmail } from '../lib/agent/mailer.server.js';
 import { renderBirthdayEmail } from '../lib/agent/email.server.js';

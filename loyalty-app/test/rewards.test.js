@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {normalizeBirthday,cairoDate,birthdayWindow,purchaseMultiplier,estimatePoints,staffReceipt} from '../app/lib/rewards-core.js';
+import {normalizeBirthday,cairoDate,birthdayWindow,purchaseMultiplier,estimatePoints,staffReceipt} from '../app/lib/rewards-core.server.js';
 
 test('birthday saves only month/day, validates calendar dates, permits leap birthdays',()=>{
  assert.equal(normalizeBirthday({month:2,day:29}),'2000-02-29');

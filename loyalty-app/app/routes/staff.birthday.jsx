@@ -1,5 +1,5 @@
 import { supabase } from '../db.server.js';
-import { staffReceipt } from '../lib/rewards-core.js';
+import { staffReceipt } from '../lib/rewards-core.server.js';
 import { rewardsReply,rewardsBody,staffAuthorized } from '../lib/rewards.server.js';
 
 export async function action({ request }) {

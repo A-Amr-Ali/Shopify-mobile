@@ -1,6 +1,6 @@
 import { supabase } from '../db.server.js';
 import { rewardsReply, rewardsAuth } from '../lib/rewards.server.js';
-import { rewardsRules, birthdayWindow } from '../lib/rewards-core.js';
+import { rewardsRules, birthdayWindow } from '../lib/rewards-core.server.js';
 import { tierProgress } from '../lib/tier.server.js';
 
 export async function loader({ request }) {
