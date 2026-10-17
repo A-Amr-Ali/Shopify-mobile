@@ -1,0 +1,62 @@
+{%- capture sf_world -%}{%- render 'sf-world' -%}{%- endcapture -%}
+{%- liquid
+  assign sf_world = sf_world | strip
+  assign now_url = settings.now_collection.url | default: '/collections/sofie-hours'
+  if sf_world == 'home' and settings.now_home_collection != blank
+    assign now_url = settings.now_home_collection.url
+  endif
+  assign beauty_url = pages['sofies-makeup'].url | default: routes.root_url
+  assign home_url = pages['sofies-home'].url | default: '/collections/sofies-home'
+  assign home_menu = settings.home_nav_menu | default: settings.home_menu
+  assign logo_w = settings.logo_width | default: 154
+  assign logo_w_mb = settings.logo_width_mobile | default: 116
+  assign sf_bag_count = cart.item_count
+  for item in cart.items
+    if item.product.handle == 'sofie-now-express-delivery'
+      assign sf_bag_count = sf_bag_count | minus: item.quantity
+    endif
+  endfor
+-%}
+<div class="sf-announcement{% if sf_world == 'home' %} is-home{% endif %}"><a href="{{ now_url }}"><strong class="sf-now-mark"><i class="sf-pulse" aria-hidden="true"></i>SOFIE NOW</strong><span>{% if sf_world == 'home' %}{{ settings.now_home_text | default: 'Selected home essentials, delivered fast in selected areas.' | escape }}{% else %}{{ 'sf.text.now_text' | t }}{% endif %}</span>{% render 'sf-icon',name:'arrow' %}</a></div>
+<header class="sf-header" data-world="{{ sf_world }}" style="--logo-w:{{ logo_w }}px;--logo-w-mb:{{ logo_w_mb }}px">
+<div class="sf-topline sf-wrap"><div class="sf-worlds"><a href="{{ beauty_url }}"{% if sf_world == 'beauty' %} aria-current="true"{% endif %}>{{ 'sf.text.beauty' | t }}</a><span>/</span><a href="{{ home_url }}"{% if sf_world == 'home' %} aria-current="true"{% endif %}>{{ 'sf.text.home_living' | t }}</a></div><button class="text-button" data-dialog="sf-area">{% render 'sf-icon',name:'pin' %}<span data-area-label>{{ 'sf.text.area' | t }}</span></button><a href="{{ routes.root_url }}pages/beauty-passport">{{ 'sf.journey.passport' | t }}</a><a href="{{ pages['my-rewards'].url | default: '/pages/sofie-rewards' }}">{{ 'sf.text.rewards' | t }}</a></div>
+<div class="sf-header-main sf-wrap"><button class="icon-button sf-mobile-menu" data-dialog="sf-menu" aria-label="{{ 'sf.text.menu' | t }}">{% render 'sf-icon',name:'menu' %}</button><a class="sf-logo" href="{% if sf_world == 'home' %}{{ home_url }}{% else %}{{ routes.root_url }}{% endif %}" aria-label="{{ shop.name | escape }}{% if sf_world == 'home' %} Home{% endif %}">{%- if settings.logo -%}<img class="sf-logo-img" src="{{ settings.logo | image_url: width: 480 }}" srcset="{{ settings.logo | image_url: width: 240 }} 240w, {{ settings.logo | image_url: width: 360 }} 360w, {{ settings.logo | image_url: width: 480 }} 480w, {{ settings.logo | image_url: width: 720 }} 720w, {{ settings.logo | image_url: width: 960 }} 960w" sizes="(max-width: 800px) {{ logo_w_mb }}px, {{ logo_w }}px" width="{{ logo_w }}" height="{{ logo_w | divided_by: settings.logo.aspect_ratio | round }}" alt="{{ shop.name | escape }}" fetchpriority="high" decoding="async">{%- else -%}SOFIE{%- endif -%}{% if sf_world == 'home' %}<span class="sf-logo-world">Home</span>{% endif %}</a>{%- if sf_world == 'home' -%}{%- render 'sf-search',context:'header',placeholder: settings.home_search_hint -%}{%- else -%}{%- render 'sf-search',context:'header' -%}{%- endif -%}<div class="sf-header-actions"><a class="icon-button sf-account" href="{{ routes.root_url }}apps/loyalty/account" aria-label="{{ 'sf.text.account' | t }}">{% render 'sf-icon',name:'user' %}</a><button class="icon-button" data-dialog="sf-wishlist" aria-label="{{ 'sf.text.saved' | t }}">{% render 'sf-icon',name:'heart' %}</button><a class="icon-button" href="{{ routes.cart_url }}" aria-label="{{ 'sf.text.bag' | t }}" data-cart-open>{% render 'sf-icon',name:'bag' %}<span class="sf-cart-count" data-cart-count>{{ sf_bag_count }}</span></a></div></div>
+<nav class="sf-nav sf-wrap{% if sf_world == 'home' %} sf-nav-home{% endif %}" aria-label="{{ 'sf.text.menu' | t }}"><a class="sf-nav-now" href="{{ now_url }}"><i class="sf-pulse" aria-hidden="true"></i>SOFIE NOW</a>
+{%- if sf_world == 'home' -%}
+{%- for link in home_menu.links limit: 9 -%}{%- liquid
+  assign label = link.title | strip
+  assign up = label | upcase
+  assign key = '|' | append: up | append: '|'
+  if label == up and label.size > 3
+    unless '|SMEG|' contains key
+      assign label = label | capitalize
+    endunless
+  endif
+-%}{%- if link.links.size > 0 -%}<details class="sf-mega"><summary>{{ label | escape }}</summary><div class="sf-mega-panel"><a class="sf-mega-heading" href="{{ link.url }}">{{ 'sf.text.shop_all' | t }} {{ label | escape }} {% render 'sf-icon',name:'arrow' %}</a><div class="sf-mega-cols">{%- for child in link.links -%}<div class="sf-mega-col"><a class="sf-mega-col-title" href="{{ child.url }}">{{ child.title | escape }}</a>{%- for g in child.links -%}<a href="{{ g.url }}">{{ g.title | escape }}</a>{%- endfor -%}</div>{%- endfor -%}</div></div></details>{%- else -%}<a href="{{ link.url }}">{{ label | escape }}</a>{%- endif -%}
+{%- endfor -%}
+<a class="sf-world-switch" href="{{ beauty_url }}">{{ settings.beauty_switch_label | default: 'SOFIE Makeup' | escape }} {% render 'sf-icon',name:'arrow' %}</a>
+{%- else -%}
+{%- assign has_match = false -%}
+{%- for link in settings.beauty_menu.links -%}{%- liquid
+  assign t = link.title | downcase | strip
+  assign label = link.title | strip
+  if label == t
+    assign label = label | capitalize
+  endif
+  assign href = link.url
+  if t == 'new in' and settings.fresh_collection != blank
+    assign href = settings.fresh_collection.url
+  endif
+-%}{%- if link.url contains 'sofie-hours' or t contains 'reward' -%}{%- continue -%}{%- endif -%}
+{%- if t contains 'match' or link.url contains '#sfm' -%}{%- assign has_match = true -%}<button type="button" class="sf-nav-match" data-match-open>{{ link.title | escape }}</button>{%- continue -%}{%- endif -%}
+{%- if link.links.size > 0 -%}<details class="sf-mega"><summary>{% if t contains 'brand' %}Brands{% else %}{{ label | escape }}{% endif %}</summary><div class="sf-mega-panel">{%- if t contains 'brand' -%}<a class="sf-mega-heading" href="{{ pages['brands'].url | default: routes.collections_url }}">{{ 'sf.text.all_brands' | t }} A–Z {% render 'sf-icon',name:'arrow' %}</a><div class="sf-mega-links sf-mega-brands">{%- for child in link.links -%}<a href="{{ child.url }}">{{ child.title | escape }}</a>{%- endfor -%}</div>{%- else -%}<a class="sf-mega-heading" href="{{ href }}">{{ 'sf.text.shop_all' | t }} {{ label | escape }} {% render 'sf-icon',name:'arrow' %}</a><div class="sf-mega-links">{%- for child in link.links -%}<a href="{{ child.url }}">{{ child.title | strip | escape }}</a>{%- endfor -%}</div>{%- endif -%}</div></details>{%- else -%}<a href="{{ href }}">{{ label | escape }}</a>{%- endif -%}
+{%- endfor -%}
+{%- unless has_match -%}<button type="button" class="sf-nav-match" data-match-open>Find My Match</button>{%- endunless -%}
+{%- endif -%}
+</nav>
+</header>
+{% schema %}
+{"name": "Sofie Header", "settings": []}
+{% endschema %}
+
+
