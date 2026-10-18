@@ -1,0 +1,12 @@
+{%- if section.settings.enabled -%}
+{%- assign quest_url = pages['beauty-quest'].url | default: '/pages/beauty-quest' -%}
+<section class="sfqp-banner sf-wrap" aria-labelledby="sfqp-banner-title-{{ section.id }}">
+  <div class="sfqp-banner-inner">
+    <div class="sfqp-banner-copy"><p class="sfqp-kicker">{{ 'sf.quest.kicker' | t }}</p><h2 id="sfqp-banner-title-{{ section.id }}">{{ 'sf.quest.banner_title' | t }}</h2><p class="sfqp-description">{{ 'sf.quest.banner_text' | t }}</p><div class="sfqp-banner-actions"><a class="sfqp-cta" href="{{ quest_url }}?utm_source=sofie_storefront&amp;utm_medium=homepage_banner&amp;utm_campaign=beauty_quest">{{ 'sf.quest.cta' | t }} <span aria-hidden="true">↗</span></a><span class="sfqp-time">{{ 'sf.quest.time' | t }}</span></div><p class="sfqp-note">{{ 'sf.quest.no_signup' | t }}</p></div>
+    <div class="sfqp-banner-art">{% render 'sf-quest-art' %}<span class="sfqp-banner-stamp">{{ 'sf.quest.clue_label' | t }}</span></div>
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{"name":"SOFIE Beauty Quest banner","settings":[{"type":"checkbox","id":"enabled","label":"Show Beauty Quest banner","default":true}],"presets":[{"name":"SOFIE Beauty Quest banner"}]}
+{% endschema %}

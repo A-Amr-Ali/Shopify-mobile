@@ -1,0 +1,65 @@
+{
+  "theme_id": "160472006727",
+  "theme_name": "SOFIE • Beauty Quest • Popup + Banner",
+  "installation": "unpublished",
+  "behavioral_checks": 14,
+  "behavioral_status": "passed",
+  "liquid_validation": [
+    {
+      "file": "layout/theme.liquid",
+      "status": "success",
+      "errors": 0
+    },
+    {
+      "file": "sections/sf-quest-invite.liquid",
+      "status": "success",
+      "errors": 0
+    },
+    {
+      "file": "sections/sf-quest-banner.liquid",
+      "status": "success",
+      "errors": 0
+    },
+    {
+      "file": "snippets/sf-quest-art.liquid",
+      "status": "success",
+      "errors": 0
+    },
+    {
+      "file": "assets/sofie-quest-promo.css",
+      "status": "success",
+      "errors": 0
+    },
+    {
+      "file": "assets/sofie-quest-promo.js",
+      "status": "success",
+      "errors": 0
+    },
+    {
+      "file": "locales/en.default.json",
+      "status": "success",
+      "errors": 0
+    },
+    {
+      "file": "locales/ar.json",
+      "status": "failed",
+      "errors": 716,
+      "new_quest_errors": [],
+      "note": "Existing Arabic/default locale mismatches outside the newly added sf.quest subtree."
+    },
+    {
+      "file": "templates/index.json",
+      "status": "success",
+      "errors": 0
+    },
+    {
+      "file": "templates/page.home-makeup.json",
+      "status": "success",
+      "errors": 0
+    }
+  ],
+  "preservation": {
+    "locales": "all prior keys and values preserved; 12 sf.quest strings added per locale",
+    "templates": "all prior sections and settings preserved; quest_banner inserted immediately after hero"
+  }
+}

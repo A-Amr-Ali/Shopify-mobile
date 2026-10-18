@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "checks": 14,
+  "passes": [
+    "New visitors get an eight-second invitation delay",
+    "The popup opens and focuses the play link",
+    "Displaying the invitation marks this session as seen",
+    "Dismissal closes the popup, restores focus and exposes a reopen button",
+    "Customers can deliberately reopen the invitation",
+    "Navigating in the same session does not trigger another automatic popup",
+    "Another open dialog postpones the invitation",
+    "The invitation resumes after another dialog closes",
+    "Typing in a field postpones the invitation",
+    "The invitation can open after the shopper leaves the field",
+    "No invitation on the cart page",
+    "No invitation on the account page",
+    "No invitation on the game page",
+    "Unsupported dialog browsers fail without disrupting the store"
+  ]
+}
