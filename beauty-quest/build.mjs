@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const here=path.dirname(fileURLToPath(import.meta.url));
+const get=name=>fs.readFileSync(path.join(here,'src',name),'utf8');
+const shell=get('shell.html'),css=get('style.css'),js=get('rules.js')+'\n'+get('game.js');
+if(/<\/script/i.test(js)||/<\/style/i.test(css))throw Error('Unsafe inline closing tag');
+const body='<style>'+css+'</style>\n'+shell+'\n<script>'+js+'</script>';
+fs.mkdirSync(path.join(here,'dist'),{recursive:true});
+fs.writeFileSync(path.join(here,'dist/page-body.html'),body);
+fs.writeFileSync(path.join(here,'dist/index.html'),'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SOFIE Beauty Quest</title><style>body{margin:0;font-family:Arial,sans-serif}</style></head><body>'+body+'</body></html>');
+console.log(JSON.stringify({bytes:Buffer.byteLength(body),output:'beauty-quest/dist/page-body.html'}));

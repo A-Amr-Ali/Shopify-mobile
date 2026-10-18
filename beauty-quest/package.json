@@ -1,0 +1,1 @@
+{"name":"sofie-beauty-quest","version":"1.0.0","private":true,"scripts":{"build":"node build.mjs","test":"node build.mjs && node test.cjs"},"devDependencies":{"jsdom":"30.1.1"},"engines":{"node":">=20.19"}}

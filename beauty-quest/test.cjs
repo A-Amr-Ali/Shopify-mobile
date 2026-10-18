@@ -1,0 +1,87 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const R=require('./src/rules.js');
+const {JSDOM}=require('jsdom');
+const passes=[];
+function check(name,fn){fn();passes.push(name);}
+const variant=(id,t,p=250000,a=1)=>({id,t,p,a});
+const foundation={h:'test-foundation',t:'Natural Hydrating Foundation',v:'Example',d:'Natural finish foundation for dry skin.',s:[variant(11,'30 mL / Fair with cool undertones'),variant(12,'30 mL / Medium with warm undertones'),variant(13,'30 mL / Deep with warm undertones'),variant(14,'30 mL / Light with neutral undertones',600000),variant(15,'30 mL / Fair with cool undertones',200000,0)],i:''};
+check('Shade depth comes from descriptions; size and bare numbers cannot become skin depth',()=>{assert.equal(R.shadeInfo('30 mL / 330W').depth,null);assert.equal(R.shadeInfo('32 ml / 140 - LIGHT WITH WARM UNDERTONES').depth,1);assert.equal(R.shadeInfo('28 g / Rich').depth,6);});
+check('Fair/cool excludes medium/warm and sold-out options',()=>{const rows=R.complexionRows([foundation],{kind:'foundation',depth:'fair',tone:'cool'});assert.deepEqual(rows[0].variants.map(v=>v.id),[11]);});
+check('Known incompatible shades cannot fall back to a random available shade',()=>assert.equal(R.complexionRows([foundation],{kind:'foundation',depth:'tan',tone:'warm'}).length,0));
+check('Budget filters the selected variant, not the product minimum',()=>assert.equal(R.complexionRows([foundation],{kind:'foundation',depth:'light',tone:'neutral',budget:'b1'}).length,0));
+check('Accessories in the foundation collection are excluded',()=>assert.equal(R.complexionRows([{...foundation,t:'Foundation Pump'}],{kind:'foundation'}).length,0));
+check('Depth phrases are parsed before undertone adjectives',()=>{assert.equal(R.shadeInfo('Dune - medium with light golden undertones').depth,3);assert.equal(R.shadeInfo('1.7 oz / 50 g / 6N - Medium to deep skin with neutral undertones').depth,4.5);});
+check('A neutral profile does not list known warm options as suggested shades',()=>{const rows=R.complexionRows([{...foundation,s:[variant(91,'Medium with warm undertones'),variant(92,'Medium with neutral undertones')]}],{kind:'foundation',depth:'medium',tone:'neutral'});assert.deepEqual(rows[0].variants.map(v=>v.id),[92]);});
+check('Numeric-only shades remain explicitly unverified formula discoveries',()=>assert.equal(R.complexionRows([{...foundation,s:[variant(17,'200N')]}],{kind:'foundation',depth:'fair'})[0].shadeSuggested,false));
+const product=(h,t,d)=>({h,t,d,v:'Example',s:[variant(21,'50 ml')],i:''});
+const gentle=product('gentle','Gentle Face Cleanser','Fragrance-free hydrating gentle cleanser for dry skin.');
+const cream=product('cream','Ceramide Moisturizer','Fragrance-free cream. Moisturizes dry skin and supports the barrier.');
+const acid=product('acid','Glycolic Cleansing Gel','Exfoliating glycolic acid for dull skin.');
+const body=product('body','Hydrating Body Cream','Fragrance-free hydration for dry skin.');
+const spf=product('spf','Broad Spectrum SPF 50 Sunscreen','Fragrance-free broad-spectrum SPF 50 sunscreen for all skin types.');
+check('Sensitive-skin results require explicit fragrance-free details',()=>{const rows=R.skinRows({moisturizer:[{...cream,d:'Hydration for dry skin'}]}, {skin:'dry',sensitivity:'yes'});assert.equal(rows.find(r=>r.key==='moisturizer').item,null);});
+check('Gentle routine excludes acid cleansers and body creams',()=>{const rows=R.skinRows({cleanser:[acid,gentle],moisturizer:[body,cream],spf:[spf]}, {skin:'dry',sensitivity:'yes',concerns:['dryness']});assert.deepEqual(rows.map(r=>r.item.p.h),['gentle','cream','spf']);});
+check('SPF is not recommended unless broad-spectrum details are present',()=>assert.equal(R.skinRows({spf:[{...spf,t:'SPF 50 Sunscreen',d:'Hydrating sun cream SPF 50'}]},{skin:'dry'}).find(r=>r.key==='spf').item,null));
+check('Broad-spectrum SPF below 30 is excluded',()=>assert.equal(R.skinRows({spf:[{...spf,t:'SPF 15 Sunscreen',d:'Hydrating broad-spectrum SPF 15'}]},{skin:'dry'}).find(r=>r.key==='spf').item,null));
+check('The moisturizer step does not duplicate sunscreen recommendations',()=>assert.equal(R.skinRows({moisturizer:[{...cream,t:'Hydrating Moisturizer SPF 30'}]},{skin:'dry'}).find(r=>r.key==='moisturizer').item,null));
+check('Eye-area choices never create a full-face active routine',()=>{const eye=product('eye','Hydrating Eye Cream','Fragrance-free hydration for dry skin.');const rows=R.skinRows({eye:[eye],cleanser:[gentle],moisturizer:[cream]}, {area:'undereyes',skin:'dry'});assert.equal(rows.length,1);assert.equal(rows[0].item.p.h,'eye');});
+check('Lips exclude plumpers and tinted colour products',()=>assert.equal(R.skinRows({balm:[product('plump','Lip Plumping Balm','Hydrating lip care')]},{area:'lips',skin:'dry'})[0].item,null));
+check('No match preserves budget with no silent relaxation',()=>assert.equal(R.skinRows({moisturizer:[{...cream,s:[variant(22,'50 ml',900000)]}]},{skin:'dry',budget:'b1'}).find(r=>r.key==='moisturizer').item,null));
+const html=fs.readFileSync(path.join(__dirname,'dist/index.html'),'utf8');
+const dom=new JSDOM(html,{url:'https://sofiestore.net/pages/beauty-quest',runScripts:'outside-only'});
+const w=dom.window,document=w.document;
+w.matchMedia=()=>({matches:true});w.HTMLElement.prototype.scrollIntoView=()=>{};
+let offline=false,stock=true,price=250000,posted=[];
+const liveFoundation={handle:foundation.h,title:foundation.t,vendor:foundation.v,description:foundation.d,variants:foundation.s.map(v=>({id:v.id,title:v.t,price:v.p,available:!!v.a}))};
+const firstCream={...cream,h:'first-cream'};
+const fixtures={gentle,cream,spf,'first-cream':{...firstCream,d:'A retinol moisturizing cream for dry skin.'}};
+w.fetch=async (url,options={})=>{
+  if(offline)throw Error('offline');
+  if(String(url).includes('/cart/add.js')){posted.push(JSON.parse(options.body));return{ok:true,json:async()=>({items:[]})};}
+  if(String(url).includes('/cart.js'))return{ok:true,json:async()=>({currency:'EGP',item_count:1})};
+  if(String(url).includes('/products/')){
+    const h=String(url).split('/products/')[1].replace('.js','');const fixture=fixtures[h];
+    if(fixture)return{ok:true,json:async()=>({title:fixture.t,vendor:fixture.v,description:fixture.d,variants:fixture.s.map(v=>({id:v.id,title:v.t,price:v.p,available:!!v.a}))})};
+    return{ok:true,json:async()=>({...liveFoundation,variants:liveFoundation.variants.map(v=>({...v,available:v.id===11?stock:v.available,price:v.id===11?price:v.price}))})};
+  }
+  if(options.headers?.accept==='application/json')return{ok:true,json:async()=>({collection:{title:'Foundation'}})};
+  if(String(url).includes('/collections/cleansers'))return{ok:true,json:async()=>[gentle]};
+  if(String(url).includes('/collections/moisturizers-1'))return{ok:true,json:async()=>[firstCream,cream]};
+  if(String(url).includes('/collections/sunscreen'))return{ok:true,json:async()=>[spf]};
+  return {ok:true,json:async()=>[foundation]};
+};
+w.eval(fs.readFileSync(path.join(__dirname,'src/rules.js'),'utf8'));
+w.eval(fs.readFileSync(path.join(__dirname,'src/game.js'),'utf8'));
+const q=s=>document.querySelector(s),click=s=>{const n=q(s);assert.ok(n,'Missing '+s);n.click();};
+const tick=()=>new Promise(r=>setTimeout(r,5));
+const choose=v=>{click('.sbq-options [data-v="'+v+'"]');click('[data-action=next]');};
+async function shadeJourney(){click('[data-action=start][data-v=shade]');choose('foundation');choose('fair');choose('cool');choose('natural');choose('dry');click('[data-action=next]');await tick();await tick();}
+(async()=>{
+  await shadeJourney();
+  check('Full shade journey completes with skipped optional budget',()=>{assert.match(q('[data-quest-focus]').textContent,/colour discoveries/);assert.equal(q('[data-add-form] button').disabled,true);});
+  check('Custom Liquid feeds use HTML negotiation rather than Shopify collection JSON',()=>assert.equal(document.querySelectorAll('[data-card]').length,1));
+  check('No answers are saved automatically',()=>assert.equal(w.localStorage.getItem('sofie-beauty-quest-v1'),null));
+  const select=q('[data-variant]');select.value='11';select.dispatchEvent(new w.Event('change',{bubbles:true}));
+  check('Selecting a shade updates the product URL and enables add',()=>{assert.match(q('[data-product-link]').href,/variant=11/);assert.equal(q('[data-add-form] button').disabled,false);});
+  price=275000;q('[data-add-form]').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));await tick();
+  check('Changed prices require reconfirmation before adding',()=>{assert.equal(posted.length,0);assert.match(q('[data-card-status]').textContent,/price has changed/);});
+  stock=false;q('[data-add-form]').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));await tick();
+  check('An option sold out after results cannot be added',()=>{assert.equal(posted.length,0);assert.match(q('[data-card-status]').textContent,/no longer available/);});
+  stock=true;q('[data-add-form]').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));await tick();await tick();
+  check('Add-to-bag submits only the selected variant and quantity',()=>assert.deepEqual(posted,[{items:[{id:11,quantity:1}]}]));
+  click('[data-action=save]');
+  check('Explicit device save stores the quest',()=>assert.equal(JSON.parse(w.localStorage.getItem('sofie-beauty-quest-v1')).path,'shade'));
+  click('[data-action=home]');click('[data-action=forget]');
+  check('Forget clears the saved quest',()=>assert.equal(w.localStorage.getItem('sofie-beauty-quest-v1'),null));
+  click('[data-action=start][data-v=skin]');choose('cheeks');
+  click('.sbq-options [data-v=dryness]');click('.sbq-options [data-v=dull]');click('.sbq-options [data-v=shine]');
+  check('Concern selection is limited to two without silently replacing a choice',()=>assert.equal(document.querySelectorAll('.sbq-options [aria-pressed=true]').length,2));
+  click('[data-action=next]');choose('dry');choose('yes');click('[data-action=next]');await tick();await tick();
+  check('Full skincare journey completes and backfills a candidate rejected by full product details',()=>{assert.equal(document.querySelectorAll('[data-card]').length,3);assert.ok(q('[data-product-link][href="/products/cream?variant=21"]'));assert.equal(q('[data-product-link][href*="first-cream"]'),null);});
+  click('[data-action=home]');offline=true;await shadeJourney();
+  check('Network failure has a retry state instead of fake recommendations',()=>assert.match(q('[data-quest-focus]').textContent,/connection pause/));
+  const summary={status:'passed',checks:passes.length,passes};
+  fs.writeFileSync(path.join(__dirname,'test-results.json'),JSON.stringify(summary,null,2));console.log(JSON.stringify(summary,null,2));w.close();
+})().catch(e=>{console.error(e);w.close();process.exitCode=1;});
