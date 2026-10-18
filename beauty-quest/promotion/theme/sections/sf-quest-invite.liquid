@@ -1,0 +1,24 @@
+{%- unless request.page_type == 'cart' or request.page_type == 'customers/account' or request.page_type == 'customers/login' or request.page_type == 'password' or page.handle == 'beauty-quest' -%}
+{%- if section.settings.enabled -%}
+{%- assign quest_url = pages['beauty-quest'].url | default: '/pages/beauty-quest' -%}
+<div data-quest-invite data-delay="{{ section.settings.delay | times: 1000 }}" data-path="{{ request.path | escape }}">
+  <dialog class="sfqp-dialog" data-quest-popup aria-labelledby="sfqp-title" aria-describedby="sfqp-description">
+    <button class="sfqp-close" type="button" data-quest-dismiss aria-label="{{ 'sf.quest.close' | t }}"><span aria-hidden="true">×</span></button>
+    <div class="sfqp-popup-art">{% render 'sf-quest-art' %}<span class="sfqp-art-caption">{{ 'sf.quest.brand' | t }}</span></div>
+    <div class="sfqp-popup-copy">
+      <p class="sfqp-kicker">{{ 'sf.quest.kicker' | t }}</p>
+      <h2 id="sfqp-title">{{ 'sf.quest.popup_title' | t }}</h2>
+      <p id="sfqp-description" class="sfqp-description">{{ 'sf.quest.popup_text' | t }}</p>
+      <p class="sfqp-time">{{ 'sf.quest.time' | t }}</p>
+      <a class="sfqp-cta" data-quest-play href="{{ quest_url }}?utm_source=sofie_storefront&amp;utm_medium=popup&amp;utm_campaign=beauty_quest">{{ 'sf.quest.cta' | t }} <span aria-hidden="true">↗</span></a>
+      <button type="button" class="sfqp-later" data-quest-dismiss>{{ 'sf.quest.later' | t }}</button>
+      <p class="sfqp-note">{{ 'sf.quest.no_signup' | t }}</p>
+    </div>
+  </dialog>
+  <button type="button" class="sfqp-launcher" data-quest-reopen hidden aria-haspopup="dialog"><span aria-hidden="true">✧</span> {{ 'sf.quest.brand' | t }}</button>
+</div>
+{%- endif -%}
+{%- endunless -%}
+{% schema %}
+{"name":"SOFIE Quest invitation","settings":[{"type":"checkbox","id":"enabled","label":"Show game invitation","default":true},{"type":"range","id":"delay","label":"Delay before invitation","min":5,"max":30,"step":1,"unit":"s","default":8},{"type":"paragraph","content":"Shown once per browser session. Customers can dismiss the invitation or reopen it using the Beauty Quest button. It pauses while another dialog is open or a customer is typing."}]}
+{% endschema %}
