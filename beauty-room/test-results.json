@@ -1,0 +1,57 @@
+{
+  "passed": 13,
+  "checks": [
+    {
+      "name": "Eight real product links remain usable without JavaScript",
+      "passed": true
+    },
+    {
+      "name": "Size or shade must be chosen before adding",
+      "passed": true
+    },
+    {
+      "name": "Selected size sets its exact price and product URL",
+      "passed": true
+    },
+    {
+      "name": "Double submits generate only one cart request",
+      "passed": true
+    },
+    {
+      "name": "Successful cart add exposes bag link and updates count",
+      "passed": true
+    },
+    {
+      "name": "Inventory rejection is visible and the form recovers",
+      "passed": true
+    },
+    {
+      "name": "Closing restores focus to the selected product",
+      "passed": true
+    },
+    {
+      "name": "Sold-out variants cannot be added",
+      "passed": true
+    },
+    {
+      "name": "A touch first reveals a short product card",
+      "passed": true
+    },
+    {
+      "name": "Touch card opens the correct product options",
+      "passed": true
+    },
+    {
+      "name": "Four distinct product characters move without a pause control",
+      "passed": true
+    },
+    {
+      "name": "All eight beauty departments link to real collections",
+      "passed": true
+    },
+    {
+      "name": "All eight shelf products use isolated assets and short notes",
+      "passed": true
+    }
+  ]
+}

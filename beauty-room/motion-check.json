@@ -1,0 +1,11 @@
+{
+  "characters": [
+    "milk",
+    "pocket",
+    "tint",
+    "oil"
+  ],
+  "verified_in_native_browser": true,
+  "while_product_dialog_open": "all four animation play states are running",
+  "has_pause_control": false
+}

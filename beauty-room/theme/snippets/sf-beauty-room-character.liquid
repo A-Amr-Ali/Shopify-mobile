@@ -1,0 +1,17 @@
+{% doc %}
+  A tiny product character with native CSS limbs and continuous motion.
+  @param {image} image - Transparent product cutout.
+  @param {string} character - Product identity used for image alignment.
+  @param {number} index - Motion phase, starting at one.
+  @param {string} [mode] - Use entry for the invitation banner.
+{% enddoc %}
+{%- if image != blank -%}
+  <div class="sfbr-mini-guide sfbr-mini-guide--{{ character | escape }}" style="--sfbr-guide-index:{{ index }}"{% unless mode == 'entry' %} data-sfbr-mascot{% endunless %}>
+    <div class="sfbr-mini-body">
+      {{ image | image_url: width: 200 | image_tag: loading: 'eager', alt: '', class: 'sfbr-mini-product' }}
+      <span class="sfbr-mini-eyes"></span><span class="sfbr-mini-smile"></span>
+      <span class="sfbr-mini-arm sfbr-mini-arm--left"></span><span class="sfbr-mini-arm sfbr-mini-arm--right"></span>
+      <span class="sfbr-mini-leg sfbr-mini-leg--left"></span><span class="sfbr-mini-leg sfbr-mini-leg--right"></span>
+    </div>
+  </div>
+{%- endif -%}

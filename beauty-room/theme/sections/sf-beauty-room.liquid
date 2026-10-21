@@ -1,0 +1,331 @@
+{%- liquid
+  assign room_count = 0
+  for block in section.blocks
+    if block.settings.product != blank
+      assign room_count = room_count | plus: 1
+    endif
+  endfor
+  assign room_zones = 'glow,colour,finish' | split: ','
+-%}
+<sofie-beauty-room class="sfbr sfbr-cutout-room" data-root="{{ routes.root_url }}" data-adding="{{ 'sf.room.adding' | t | escape }}" data-added="{{ 'sf.room.added' | t | escape }}" data-error="{{ 'sf.room.error' | t | escape }}" data-choose="{{ 'sf.room.choose' | t | escape }}" data-available="{{ 'sf.room.available' | t | escape }}" data-sold-out="{{ 'sf.room.sold_out' | t | escape }}">
+  <div class="sfbr-intro">
+    <div class="sfbr-edition"><span>{{ 'sf.room.edition' | t }}</span><span>{{ 'sf.room.pieces' | t: count: room_count }}</span></div>
+    <p class="sfbr-eyebrow">{{ 'sf.room.name' | t }}</p>
+    <h1>{{ 'sf.room.title' | t }} <em>{{ 'sf.room.title_em' | t }}</em></h1>
+    <p class="sfbr-intro-copy">{{ 'sf.room.intro' | t }}</p>
+    <nav class="sfbr-nav" aria-label="{{ 'sf.room.shelf_navigation' | t }}">
+      <button type="button" data-sfbr-zone="all" aria-pressed="true">{{ 'sf.room.all' | t }}</button>
+      {%- for zone in room_zones -%}
+        {%- assign zone_key = 'sf.room.' | append: zone -%}
+        <button type="button" data-sfbr-zone="{{ zone }}" aria-pressed="false">{{ zone_key | t }}</button>
+      {%- endfor -%}
+    </nav>
+    <div class="sfbr-room-meta"><span>{{ 'sf.room.branch' | t }}</span><span aria-hidden="true">✧</span></div>
+  </div>
+  <div class="sfbr-room">
+    <div class="sfbr-bays" data-sfbr-bays>
+      {%- for zone in room_zones -%}
+        {%- liquid
+          assign zone_key = 'sf.room.' | append: zone
+          assign zone_text = 'sf.room.' | append: zone | append: '_text'
+          assign zone_count = 0
+          for block in section.blocks
+            if block.settings.zone == zone and block.settings.product != blank
+              assign zone_count = zone_count | plus: 1
+            endif
+          endfor
+          assign shelf_position = 0
+        -%}
+        <section class="sfbr-bay sfbr-bay--{{ zone }}" data-sfbr-bay="{{ zone }}" aria-labelledby="sfbr-{{ section.id }}-{{ zone }}">
+          <div class="sfbr-bay-top"><span>0{{ forloop.index }}</span><h2 id="sfbr-{{ section.id }}-{{ zone }}">{{ zone_key | t }}</h2><span>{{ 'sf.room.pieces' | t: count: zone_count }}</span></div>
+          <div class="sfbr-alcove">
+            <span class="sfbr-light" aria-hidden="true"></span>
+            <span class="sfbr-real-shelf sfbr-real-shelf--one" aria-hidden="true"></span>
+            <span class="sfbr-real-shelf sfbr-real-shelf--two" aria-hidden="true"></span>
+            <div class="sfbr-shelf-grid sfbr-shelf-grid--{{ zone_count }}">
+              {%- for block in section.blocks -%}
+                {%- if block.settings.zone == zone and block.settings.product != blank -%}
+                  {%- liquid
+                    assign shelf_position = shelf_position | plus: 1
+                    assign room_product = block.settings.product
+                    assign room_label = block.settings.label | default: room_product.title
+                    assign image_index = block.settings.image_position | default: 1 | minus: 1
+                    assign room_image = room_product.images[image_index] | default: room_product.featured_image
+                    assign room_cutout = block.settings.cutout_image | default: room_image
+                    assign benefit_key = 'sf.room.benefit_' | append: block.settings.benefit
+                    assign image_loading = 'lazy'
+                    assign image_priority = 'auto'
+                    if zone == 'glow'
+                      assign image_loading = 'eager'
+                      if forloop.first
+                        assign image_priority = 'high'
+                      endif
+                    endif
+                  -%}
+                  <article class="sfbr-piece sfbr-piece--{{ shelf_position }}" {{ block.shopify_attributes }}>
+                    <a class="sfbr-piece-link" href="{{ room_product.url }}" data-sfbr-open="{{ block.id }}" aria-describedby="sfbr-tip-{{ section.id }}-{{ block.id }}" aria-label="{{ 'sf.room.explore_product' | t: product: room_label | escape }}">
+                      <span class="sfbr-piece-image">{{ room_cutout | image_url: width: 600 | image_tag: widths: '200, 320, 480, 600', sizes: '(min-width: 1000px) 140px, 120px', loading: image_loading, fetchpriority: image_priority, alt: room_label }}<span class="sfbr-plus" aria-hidden="true">+</span></span>
+                      <span class="sfbr-piece-caption"><span>{{ room_product.vendor | escape }}</span><span>{{ room_label | escape }}</span><span>{% if room_product.price_varies %}{{ 'sf.room.from' | t }} {% endif %}{{ room_product.price | money_with_currency }}</span></span>
+                    </a>
+                    <div class="sfbr-peek" data-sfbr-peek="{{ block.id }}">
+                      <span class="sfbr-peek-icon" aria-hidden="true">{{ block.settings.icon | default: '✧' | escape }}</span>
+                      <div><strong>{{ room_label | escape }}</strong><p id="sfbr-tip-{{ section.id }}-{{ block.id }}">{{ benefit_key | t }}</p><span>{% if room_product.price_varies %}{{ 'sf.room.from' | t }} {% endif %}{{ room_product.price | money_with_currency }}</span></div>
+                      <button type="button" data-sfbr-peek-open="{{ block.id }}">{{ 'sf.room.explore_options' | t }} <span aria-hidden="true">↗</span></button>
+                    </div>
+                  </article>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+          <p class="sfbr-bay-note">{{ zone_text | t }}</p>
+        </section>
+      {%- endfor -%}
+      <div class="sfbr-mascot-layer" aria-hidden="true">
+        {%- assign guide_index = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.character != blank -%}
+            {%- assign guide_index = guide_index | plus: 1 -%}
+            {% render 'sf-beauty-room-character', image: block.settings.cutout_image, character: block.settings.character, index: guide_index %}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+  <div class="sfbr-after"><p><span class="sfbr-spark" aria-hidden="true">✧</span> {{ 'sf.room.instruction' | t }}</p><a href="{{ routes.cart_url }}">{{ 'sf.room.bag' | t }} (<span data-sfbr-cart-count>{{ cart.item_count }}</span>) <span aria-hidden="true">↗</span></a></div>
+  <p class="sfbr-mobile-hint">{{ 'sf.room.swipe' | t }} <span aria-hidden="true">↔</span></p>
+  <div class="sfbr-footer-note"><p>{{ 'sf.room.footer' | t }}</p><a href="{{ routes.root_url }}pages/sofies-makeup">{{ 'sf.room.continue' | t }} <span aria-hidden="true">↗</span></a></div>
+  <nav class="sfbr-departments" aria-labelledby="sfbr-departments-{{ section.id }}">
+    <h2 id="sfbr-departments-{{ section.id }}">{{ 'sf.room.departments_title' | t }}</h2>
+    <p>{{ 'sf.room.departments_text' | t }}</p>
+    <div class="sfbr-department-links">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'department' and block.settings.collection != blank -%}
+          {%- assign department_label = block.settings.label | default: block.settings.collection.title -%}
+          {%- if request.locale.iso_code == 'ar' and block.settings.label_ar != blank -%}{%- assign department_label = block.settings.label_ar -%}{%- endif -%}
+          <a href="{{ block.settings.collection.url }}" {{ block.shopify_attributes }}><span aria-hidden="true">{{ block.settings.icon | escape }}</span><span>{{ department_label | escape }}</span><span aria-hidden="true">↗</span></a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </nav>
+  <dialog class="sfbr-dialog" aria-labelledby="sfbr-dialog-title-{{ section.id }}" data-sfbr-dialog>
+    <button type="button" class="sfbr-close" data-sfbr-close aria-label="{{ 'sf.room.close' | t }}">×</button>
+    <div data-sfbr-content></div>
+  </dialog>
+  {%- for block in section.blocks -%}
+    {%- if block.settings.product != blank -%}
+      {%- liquid
+        assign room_product = block.settings.product
+        assign room_label = block.settings.label | default: room_product.title
+                    assign image_index = block.settings.image_position | default: 1 | minus: 1
+                    assign room_image = room_product.images[image_index] | default: room_product.featured_image
+        assign one_variant = false
+        if room_product.variants.size == 1
+          assign one_variant = true
+        endif
+      -%}
+      <template data-sfbr-product="{{ block.id }}">
+        <div class="sfbr-detail">
+          <div class="sfbr-detail-media">{% if block.settings.cutout_image != blank %}{{ block.settings.cutout_image | image_url: width: 800 | image_tag: widths: '400, 600, 800', sizes: '(min-width: 760px) 420px, 80vw', loading: 'lazy', alt: room_label, class: 'sfbr-detail-image' }}{% else %}{{ room_image | image_url: width: 800 | image_tag: widths: '400, 600, 800', sizes: '(min-width: 760px) 420px, 80vw', loading: 'lazy', alt: room_label, class: 'sfbr-detail-image' }}{% endif %}</div>
+          <div class="sfbr-detail-info">
+            <p class="sfbr-eyebrow">{{ room_product.vendor | escape }}</p>
+            <h2 id="sfbr-dialog-title-{{ section.id }}">{{ room_product.title | escape }}</h2>
+            {%- if block.settings.note != blank -%}<p class="sfbr-detail-note">{{ block.settings.note | escape }}</p>{%- endif -%}
+            <p class="sfbr-detail-price" data-sfbr-price>{% if room_product.price_varies %}{{ 'sf.room.from' | t }} {% endif %}{{ room_product.price | money_with_currency }}</p>
+            <form action="{{ routes.cart_add_url }}" method="post" class="sfbr-form" data-handle="{{ room_product.handle }}">
+              <input type="hidden" name="quantity" value="1">
+              <label for="sfbr-option-{{ section.id }}-{{ block.id }}">{{ 'sf.room.option' | t }}</label>
+              <select id="sfbr-option-{{ section.id }}-{{ block.id }}" name="id" required data-sfbr-select>
+                {%- unless one_variant -%}<option value="" selected disabled>{{ 'sf.room.choose' | t }}</option>{%- endunless -%}
+                {%- for variant in room_product.variants -%}
+                  {%- liquid
+                    assign variant_image = variant.featured_image | default: room_image
+                    if variant_image.id == room_product.featured_image.id
+                      assign variant_image = room_image
+                    endif -%}
+                  <option value="{{ variant.id }}" data-price="{{ variant.price | money_with_currency | escape }}" data-available="{{ variant.available }}" data-image="{{ variant_image | image_url: width: 800, height: 1000, crop: 'center' }}"{% unless variant.available %} disabled{% endunless %}{% if one_variant %} selected{% endif %}>{% if variant.title == 'Default Title' %}{{ 'sf.room.standard_option' | t }}{% else %}{{ variant.title | escape }}{% endif %} — {{ variant.price | money_with_currency }}{% unless variant.available %} · {{ 'sf.room.sold_out' | t }}{% endunless %}</option>
+                {%- endfor -%}
+              </select>
+              <p class="sfbr-availability" data-sfbr-availability>{% if room_product.available %}{{ 'sf.room.choose_availability' | t }}{% else %}{{ 'sf.room.sold_out' | t }}{% endif %}</p>
+              <button type="submit" class="sfbr-add"{% unless room_product.available %} disabled{% endunless %} data-label="{{ 'sf.room.add' | t }}">{{ 'sf.room.add' | t }} <span aria-hidden="true">↗</span></button>
+              <p class="sfbr-status" role="status" aria-live="polite" data-sfbr-status></p>
+              <a class="sfbr-view-bag" href="{{ routes.cart_url }}" data-sfbr-view-bag hidden>{{ 'sf.room.view_bag' | t }} <span aria-hidden="true">→</span></a>
+            </form>
+            <p class="sfbr-delivery-note">{{ 'sf.room.delivery' | t }}</p>
+            <a class="sfbr-full-details" href="{{ room_product.url }}" data-sfbr-details>{{ 'sf.room.details' | t }} <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </template>
+    {%- endif -%}
+  {%- endfor -%}
+</sofie-beauty-room>
+{% schema %}
+{
+  "name": "SOFIE Beauty Room",
+  "tag": "section",
+  "class": "sfbr-section",
+  "max_blocks": 16,
+  "settings": [],
+  "blocks": [
+    {
+      "type": "piece",
+      "name": "Beauty piece",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Short shelf label"
+        },
+        {
+          "type": "range",
+          "id": "image_position",
+          "label": "Product gallery image",
+          "min": 1,
+          "max": 50,
+          "step": 1,
+          "default": 1
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Product note"
+        },
+        {
+          "type": "select",
+          "id": "zone",
+          "label": "Shelf",
+          "default": "glow",
+          "options": [
+            {
+              "value": "glow",
+              "label": "Glow ritual"
+            },
+            {
+              "value": "colour",
+              "label": "Colour wardrobe"
+            },
+            {
+              "value": "finish",
+              "label": "Finishing touches"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "cutout_image",
+          "label": "Transparent product cutout"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Benefit icon",
+          "default": "✧"
+        },
+        {
+          "type": "select",
+          "id": "benefit",
+          "label": "Short product benefit",
+          "default": "hydrating",
+          "options": [
+            {
+              "value": "hydrating",
+              "label": "Hydrating skin prep"
+            },
+            {
+              "value": "radiance",
+              "label": "Radiant finish"
+            },
+            {
+              "value": "blush",
+              "label": "A soft flush"
+            },
+            {
+              "value": "cheeks_lips",
+              "label": "Cheeks and lips"
+            },
+            {
+              "value": "lip_care",
+              "label": "Tinted lip care"
+            },
+            {
+              "value": "matte",
+              "label": "Matte lips"
+            },
+            {
+              "value": "gloss",
+              "label": "Glossy lip finish"
+            },
+            {
+              "value": "mist",
+              "label": "Hair and body mist"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "character",
+          "label": "Animate a small character",
+          "options": [
+            {
+              "value": "",
+              "label": "No character"
+            },
+            {
+              "value": "pocket",
+              "label": "Rhode Pocket Blush"
+            },
+            {
+              "value": "milk",
+              "label": "Rhode Glazing Milk"
+            },
+            {
+              "value": "tint",
+              "label": "Rhode Lip Tint"
+            },
+            {
+              "value": "oil",
+              "label": "Dior Lip Oil"
+            }
+          ],
+          "default": ""
+        }
+      ]
+    },
+    {
+      "type": "department",
+      "name": "Beauty department",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "English label"
+        },
+        {
+          "type": "text",
+          "id": "label_ar",
+          "label": "Arabic label"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Small icon"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SOFIE Beauty Room"
+    }
+  ]
+}
+{% endschema %}

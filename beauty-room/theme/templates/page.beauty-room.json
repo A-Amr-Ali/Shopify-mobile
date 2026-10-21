@@ -1,0 +1,196 @@
+{
+  "sections": {
+    "beauty_room": {
+      "type": "sf-beauty-room",
+      "blocks": {
+        "milk": {
+          "type": "piece",
+          "settings": {
+            "product": "glazing-milk",
+            "label": "Glazing Milk",
+            "zone": "glow",
+            "image_position": 7,
+            "benefit": "hydrating",
+            "icon": "💧",
+            "cutout_image": "shopify://shop_images/sofie-beauty-room-milk-v1.webp",
+            "character": "milk"
+          }
+        },
+        "filter": {
+          "type": "piece",
+          "settings": {
+            "product": "hollywood-flawless-filter",
+            "label": "Flawless Filter",
+            "zone": "glow",
+            "benefit": "radiance",
+            "icon": "✨",
+            "cutout_image": "shopify://shop_images/sofie-beauty-room-filter-v1.webp"
+          }
+        },
+        "rare": {
+          "type": "piece",
+          "settings": {
+            "product": "soft-pinch-liquid-blush",
+            "label": "Soft Pinch Blush",
+            "zone": "glow",
+            "benefit": "blush",
+            "icon": "🌸",
+            "cutout_image": "shopify://shop_images/sofie-beauty-room-rare-v1.webp"
+          }
+        },
+        "pocket": {
+          "type": "piece",
+          "settings": {
+            "product": "pocket-blush",
+            "label": "Pocket Blush",
+            "zone": "colour",
+            "benefit": "cheeks_lips",
+            "icon": "🌷",
+            "cutout_image": "shopify://shop_images/sofie-beauty-room-pocket-v1.webp",
+            "character": "pocket"
+          }
+        },
+        "tint": {
+          "type": "piece",
+          "settings": {
+            "product": "peptide-lip-tint",
+            "label": "Peptide Lip Tint",
+            "zone": "colour",
+            "benefit": "lip_care",
+            "icon": "💋",
+            "cutout_image": "shopify://shop_images/sofie-beauty-room-tint-v1.webp",
+            "character": "tint"
+          }
+        },
+        "matte": {
+          "type": "piece",
+          "settings": {
+            "product": "matte-revolution",
+            "label": "Matte Revolution",
+            "zone": "colour",
+            "benefit": "matte",
+            "icon": "💄",
+            "cutout_image": "shopify://shop_images/sofie-beauty-room-matte-v1.webp"
+          }
+        },
+        "oil": {
+          "type": "piece",
+          "settings": {
+            "product": "dior-addict-lip-glow-oil",
+            "label": "Lip Glow Oil",
+            "zone": "finish",
+            "benefit": "gloss",
+            "icon": "✨",
+            "cutout_image": "shopify://shop_images/sofie-beauty-room-oil-v1.webp",
+            "character": "oil"
+          }
+        },
+        "mist": {
+          "type": "piece",
+          "settings": {
+            "product": "brazilian-crush-cheirosa-40-bom-dia-hair-body-fragrance-mist",
+            "label": "Cheirosa 40",
+            "zone": "finish",
+            "benefit": "mist",
+            "icon": "🌺",
+            "cutout_image": "shopify://shop_images/sofie-beauty-room-mist-v1.webp"
+          }
+        },
+        "dept_makeup": {
+          "type": "department",
+          "settings": {
+            "collection": "makeup",
+            "label": "Makeup",
+            "label_ar": "الميكاب",
+            "icon": "💄"
+          }
+        },
+        "dept_skincare": {
+          "type": "department",
+          "settings": {
+            "collection": "skincare",
+            "label": "Skincare",
+            "label_ar": "العناية بالبشرة",
+            "icon": "💧"
+          }
+        },
+        "dept_fragrance": {
+          "type": "department",
+          "settings": {
+            "collection": "fragrance",
+            "label": "Fragrance",
+            "label_ar": "العطور",
+            "icon": "🌸"
+          }
+        },
+        "dept_hair": {
+          "type": "department",
+          "settings": {
+            "collection": "hair",
+            "label": "Hair",
+            "label_ar": "العناية بالشعر",
+            "icon": "🎀"
+          }
+        },
+        "dept_lip": {
+          "type": "department",
+          "settings": {
+            "collection": "lip",
+            "label": "Lips",
+            "label_ar": "الشفايف",
+            "icon": "💋"
+          }
+        },
+        "dept_eye": {
+          "type": "department",
+          "settings": {
+            "collection": "eye",
+            "label": "Eyes",
+            "label_ar": "العيون",
+            "icon": "👁️"
+          }
+        },
+        "dept_all_bath_body": {
+          "type": "department",
+          "settings": {
+            "collection": "all-bath-body",
+            "label": "Bath & body",
+            "label_ar": "الجسم والاستحمام",
+            "icon": "🫧"
+          }
+        },
+        "dept_tools_brushes": {
+          "type": "department",
+          "settings": {
+            "collection": "tools-brushes",
+            "label": "Tools & brushes",
+            "label_ar": "الأدوات والفرش",
+            "icon": "🖌️"
+          }
+        }
+      },
+      "block_order": [
+        "milk",
+        "filter",
+        "rare",
+        "pocket",
+        "tint",
+        "matte",
+        "oil",
+        "mist",
+        "dept_makeup",
+        "dept_skincare",
+        "dept_fragrance",
+        "dept_hair",
+        "dept_lip",
+        "dept_eye",
+        "dept_all_bath_body",
+        "dept_tools_brushes"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "beauty_room"
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "filter": {
+    "multiply": 1.0738,
+    "bottom": -0.0349,
+    "opaque_bbox": [
+      154,
+      29,
+      379,
+      774
+    ],
+    "canvas": [
+      533,
+      800
+    ]
+  },
+  "matte": {
+    "multiply": 1.0724,
+    "bottom": -0.0349,
+    "opaque_bbox": [
+      188,
+      28,
+      357,
+      774
+    ],
+    "canvas": [
+      533,
+      800
+    ]
+  },
+  "milk": {
+    "multiply": 1.3072,
+    "bottom": -0.1471,
+    "opaque_bbox": [
+      169,
+      98,
+      365,
+      710
+    ],
+    "canvas": [
+      533,
+      800
+    ]
+  },
+  "mist": {
+    "multiply": 1.0753,
+    "bottom": -0.0457,
+    "opaque_bbox": [
+      162,
+      22,
+      372,
+      766
+    ],
+    "canvas": [
+      533,
+      800
+    ]
+  },
+  "oil": {
+    "multiply": 1.1111,
+    "bottom": -0.0694,
+    "opaque_bbox": [
+      161,
+      30,
+      367,
+      750
+    ],
+    "canvas": [
+      533,
+      800
+    ]
+  },
+  "pocket": {
+    "multiply": 1.1962,
+    "bottom": -0.1007,
+    "opaque_bbox": [
+      141,
+      55,
+      459,
+      631
+    ],
+    "canvas": [
+      600,
+      689
+    ]
+  },
+  "rare": {
+    "multiply": 1.1628,
+    "bottom": -0.0785,
+    "opaque_bbox": [
+      208,
+      58,
+      381,
+      746
+    ],
+    "canvas": [
+      591,
+      800
+    ]
+  },
+  "tint": {
+    "multiply": 1.0884,
+    "bottom": -0.0422,
+    "opaque_bbox": [
+      185,
+      34,
+      348,
+      769
+    ],
+    "canvas": [
+      533,
+      800
+    ]
+  }
+}

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "milk",
+    "mode": "RGBA",
+    "size": [
+      1024,
+      1536
+    ],
+    "transparent_fraction": 0.716,
+    "opaque_fraction": 0.0,
+    "alpha_range": [
+      0,
+      254
+    ]
+  },
+  {
+    "id": "filter",
+    "mode": "RGBA",
+    "size": [
+      1024,
+      1536
+    ],
+    "transparent_fraction": 0.599,
+    "opaque_fraction": 0.0,
+    "alpha_range": [
+      0,
+      254
+    ]
+  },
+  {
+    "id": "rare",
+    "mode": "RGBA",
+    "size": [
+      1078,
+      1460
+    ],
+    "transparent_fraction": 0.754,
+    "opaque_fraction": 0.0,
+    "alpha_range": [
+      0,
+      255
+    ]
+  },
+  {
+    "id": "pocket",
+    "mode": "RGBA",
+    "size": [
+      1170,
+      1344
+    ],
+    "transparent_fraction": 0.595,
+    "opaque_fraction": 0.0,
+    "alpha_range": [
+      0,
+      255
+    ]
+  },
+  {
+    "id": "tint",
+    "mode": "RGBA",
+    "size": [
+      1024,
+      1536
+    ],
+    "transparent_fraction": 0.793,
+    "opaque_fraction": 0.0,
+    "alpha_range": [
+      0,
+      254
+    ]
+  },
+  {
+    "id": "matte",
+    "mode": "RGBA",
+    "size": [
+      1024,
+      1536
+    ],
+    "transparent_fraction": 0.743,
+    "opaque_fraction": 0.0,
+    "alpha_range": [
+      0,
+      254
+    ]
+  },
+  {
+    "id": "oil",
+    "mode": "RGBA",
+    "size": [
+      1024,
+      1536
+    ],
+    "transparent_fraction": 0.665,
+    "opaque_fraction": 0.0,
+    "alpha_range": [
+      0,
+      254
+    ]
+  },
+  {
+    "id": "mist",
+    "mode": "RGBA",
+    "size": [
+      1024,
+      1536
+    ],
+    "transparent_fraction": 0.643,
+    "opaque_fraction": 0.0,
+    "alpha_range": [
+      0,
+      254
+    ]
+  }
+]

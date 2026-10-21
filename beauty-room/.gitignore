@@ -1,0 +1,12 @@
+/base/
+/source-images/
+/build.py
+/upgrade-room.py
+/validation-summary.json
+/mivida-validation-summary.json
+/gallery-check.json
+/qa/*
+!/qa/final-preview.jpg
+!/qa/first-banner.jpg
+/theme/assets/sfbr-store-arch.png
+/theme/assets/sfbr-store-arch.webp

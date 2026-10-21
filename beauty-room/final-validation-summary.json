@@ -1,0 +1,79 @@
+[
+  {
+    "file": "snippets/sf-beauty-room-character.liquid",
+    "revision": 5,
+    "result": "passed",
+    "error_count": 0,
+    "new_room_error_count": 0
+  },
+  {
+    "file": "sections/sf-beauty-room.liquid",
+    "revision": 5,
+    "result": "passed",
+    "error_count": 0,
+    "new_room_error_count": 0
+  },
+  {
+    "file": "sections/sf-beauty-room-entry.liquid",
+    "revision": 5,
+    "result": "passed",
+    "error_count": 0,
+    "new_room_error_count": 0
+  },
+  {
+    "file": "templates/page.beauty-room.json",
+    "revision": 5,
+    "result": "passed",
+    "error_count": 0,
+    "new_room_error_count": 0
+  },
+  {
+    "file": "templates/index.json",
+    "revision": 5,
+    "result": "passed",
+    "error_count": 0,
+    "new_room_error_count": 0
+  },
+  {
+    "file": "templates/page.home-makeup.json",
+    "revision": 5,
+    "result": "passed",
+    "error_count": 0,
+    "new_room_error_count": 0
+  },
+  {
+    "file": "templates/page.beauty-room-preview.liquid",
+    "revision": 5,
+    "result": "passed",
+    "error_count": 0,
+    "new_room_error_count": 0
+  },
+  {
+    "file": "locales/en.default.json",
+    "revision": 5,
+    "result": "passed",
+    "error_count": 0,
+    "new_room_error_count": 0
+  },
+  {
+    "file": "locales/ar.json",
+    "revision": 5,
+    "result": "pre-existing-base-locale-issues",
+    "error_count": 716,
+    "new_room_error_count": 0
+  },
+  {
+    "file": "assets/sofie-beauty-room.js",
+    "revision": 6,
+    "result": "passed",
+    "error_count": 0,
+    "new_room_error_count": 0
+  },
+  {
+    "file": "assets/sofie-beauty-room.css",
+    "revision": 7,
+    "result": "passed",
+    "error_count": 0,
+    "new_room_error_count": 0
+  }
+]

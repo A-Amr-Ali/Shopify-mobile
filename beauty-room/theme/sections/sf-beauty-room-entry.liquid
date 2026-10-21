@@ -1,0 +1,103 @@
+{%- if section.settings.enabled -%}
+{{ 'sofie-beauty-room.css' | asset_url | stylesheet_tag }}
+{%- assign heading_tag = 'h2' -%}
+{%- if section.settings.primary -%}{%- assign heading_tag = 'h1' -%}{%- endif -%}
+<section class="sfbr-entry" aria-labelledby="sfbr-entry-{{ section.id }}">
+  <div class="sfbr-entry-copy"><p class="sfbr-eyebrow">{{ 'sf.room.name' | t }} · 01</p><{{ heading_tag }} id="sfbr-entry-{{ section.id }}">{{ 'sf.room.entry_title' | t }} <em>{{ 'sf.room.entry_em' | t }}</em></{{ heading_tag }}><p>{{ 'sf.room.entry_text' | t }}</p><a class="sfbr-entry-link" href="{{ routes.root_url }}pages/sofie-beauty-room?utm_source=storefront&amp;utm_medium=beauty_room&amp;utm_content=beauty_room_entry">{{ 'sf.room.enter' | t }} <span aria-hidden="true">↗</span></a></div>
+  <a class="sfbr-entry-scene" href="{{ routes.root_url }}pages/sofie-beauty-room?utm_source=storefront&amp;utm_medium=beauty_room&amp;utm_content=beauty_room_scene" aria-label="{{ 'sf.room.enter' | t }}">
+    <span class="sfbr-entry-arch" aria-hidden="true"></span>
+      {%- for index in (1..3) -%}
+        {%- liquid
+          assign setting_id = 'product_' | append: index
+          assign image_id = 'cutout_' | append: index
+          assign piece = section.settings[setting_id]
+          assign piece_image = section.settings[image_id] | default: piece.featured_image
+        -%}
+        {%- if piece_image != blank -%}<span class="sfbr-entry-piece sfbr-entry-piece--{{ index }}">{{ piece_image | image_url: width: 400 | image_tag: widths: '200, 300, 400', sizes: '100px', loading: 'lazy', alt: '' }}</span>{%- endif -%}
+      {%- endfor -%}
+    <span class="sfbr-entry-plinth" aria-hidden="true"></span>
+    <span class="sfbr-entry-characters" aria-hidden="true">
+      {%- assign character_ids = 'pocket,milk,tint,oil' | split: ',' -%}
+      {%- for character in character_ids -%}
+        {%- assign image_key = 'character_cutout_' | append: forloop.index -%}
+        {% render 'sf-beauty-room-character', image: section.settings[image_key], character: character, index: forloop.index, mode: 'entry' %}
+      {%- endfor -%}
+    </span>
+    <span class="sfbr-entry-caption">{{ 'sf.room.entry_caption' | t }}</span>
+  </a>
+</section>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Beauty Room invitation",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Show invitation",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "primary",
+      "label": "Use as the primary page banner",
+      "default": false
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Left display product"
+    },
+    {
+      "type": "image_picker",
+      "id": "cutout_1",
+      "label": "Left product cutout"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Centre display product"
+    },
+    {
+      "type": "image_picker",
+      "id": "cutout_2",
+      "label": "Centre product cutout"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Right display product"
+    },
+    {
+      "type": "image_picker",
+      "id": "cutout_3",
+      "label": "Right product cutout"
+    },
+    {
+      "type": "image_picker",
+      "id": "character_cutout_1",
+      "label": "Rhode Pocket Blush character"
+    },
+    {
+      "type": "image_picker",
+      "id": "character_cutout_2",
+      "label": "Rhode Glazing Milk character"
+    },
+    {
+      "type": "image_picker",
+      "id": "character_cutout_3",
+      "label": "Rhode Lip Tint character"
+    },
+    {
+      "type": "image_picker",
+      "id": "character_cutout_4",
+      "label": "Dior Lip Oil character"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Beauty Room invitation"
+    }
+  ]
+}
+{% endschema %}
