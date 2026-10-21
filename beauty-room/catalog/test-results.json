@@ -1,0 +1,33 @@
+{
+  "passed": 7,
+  "checks": [
+    {
+      "name": "Full catalog and 23 native brand destinations replace the fixed eight-product limit",
+      "passed": true
+    },
+    {
+      "name": "Repeated loading is guarded until the first request completes",
+      "passed": true
+    },
+    {
+      "name": "The next twelve real products append without duplicates and keep native pagination",
+      "passed": true
+    },
+    {
+      "name": "Existing characters keep their DOM nodes while new shelves receive characters and image processing",
+      "passed": true
+    },
+    {
+      "name": "An appended product opens its own live variant form and preserves exact variant links",
+      "passed": true
+    },
+    {
+      "name": "A network error preserves products and offers the real next page as a fallback",
+      "passed": true
+    },
+    {
+      "name": "Modified clicks keep normal browser navigation",
+      "passed": true
+    }
+  ]
+}

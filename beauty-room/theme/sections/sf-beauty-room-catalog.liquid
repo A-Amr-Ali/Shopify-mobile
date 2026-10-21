@@ -1,0 +1,94 @@
+{%- liquid
+  assign room_collection = section.settings.catalog_collection
+  if request.page_type == 'collection'
+    assign room_collection = collection
+  endif
+  assign selected_need = blank
+  assign brand_count = 0
+  assign current_brand = 'sf.room.all_brands' | t
+  for block in section.blocks
+    if block.type == 'need' and block.settings.collection.id == room_collection.id
+      assign selected_need = block
+      assign current_brand = block.settings.label
+    endif
+    if block.type == 'brand' and block.settings.collection != blank
+      assign brand_count = brand_count | plus: 1
+      if block.settings.collection.id == room_collection.id
+        assign current_brand = block.settings.label | default: block.settings.collection.title
+      endif
+    endif
+  endfor
+  assign is_all = false
+  if room_collection.id == section.settings.catalog_collection.id
+    assign is_all = true
+  endif
+  assign selected_sort = room_collection.sort_by | default: room_collection.default_sort_by
+-%}
+{% paginate room_collection.products by 12 %}
+  {%- liquid
+    assign first_product = paginate.current_offset | plus: 1
+    assign last_product = paginate.current_offset | plus: room_collection.products.size
+    if paginate.items == 0
+      assign first_product = 0
+    endif
+  -%}
+  <sofie-beauty-room class="sfbr sfbr-cutout-room sfbr-catalog{% if selected_need != blank %} sfbr-need-catalog{% endif %}" data-sfbr-catalog data-sfbr-total="{{ paginate.items }}" data-sfbr-start="{{ paginate.current_offset }}" data-root="{{ routes.root_url }}" data-adding="{{ 'sf.room.adding' | t | escape }}" data-added="{{ 'sf.room.added' | t | escape }}" data-error="{{ 'sf.room.error' | t | escape }}" data-choose="{{ 'sf.room.choose' | t | escape }}" data-available="{{ 'sf.room.available' | t | escape }}" data-sold-out="{{ 'sf.room.sold_out' | t | escape }}" data-loading="{{ 'sf.room.loading_shelves' | t | escape }}" data-load-error="{{ 'sf.room.shelves_error' | t | escape }}">
+    <div class="sfbr-intro">
+      <div class="sfbr-edition"><span>{{ 'sf.room.edition' | t }}</span><span>{{ 'sf.room.catalog_total' | t: count: paginate.items }} · {{ 'sf.room.brand_total' | t: count: brand_count }}</span></div>
+      <p class="sfbr-eyebrow">{{ 'sf.room.name' | t }}</p>
+      {% if is_all %}<h1>{{ 'sf.room.title' | t }} <em>{{ 'sf.room.title_em' | t }}</em></h1>{% else %}<h1>{{ current_brand | escape }} <em>{{ 'sf.room.at_sofie' | t }}</em></h1>{% endif %}
+      <p class="sfbr-intro-copy">{% if selected_need != blank %}{{ selected_need.settings.copy | escape }}{% else %}{{ 'sf.room.catalog_intro' | t }}{% endif %}</p>
+      <a class="sfbr-guided-back" href="{{ routes.root_url }}pages/sofie-beauty-room">← {{ 'sf.room.guided_shelves' | t }}</a><nav class="sfbr-need-nav" aria-label="{{ 'sf.room.choose_need' | t }}">{% for block in section.blocks %}{% if block.type == 'need' and block.settings.collection != blank %}<a href="{{ block.settings.collection.url }}?view=beauty-room"{% if block.settings.collection.id == room_collection.id %} aria-current="page"{% endif %}>{{ block.settings.label | escape }}</a>{% endif %}{% endfor %}</nav><div class="sfbr-catalog-toolbar">
+        <details class="sfbr-brand-picker">
+          <summary><span>{{ 'sf.room.choose_brand' | t }}</span><strong>{{ current_brand | escape }}</strong><span aria-hidden="true">⌄</span></summary>
+          <nav class="sfbr-brand-options" aria-label="{{ 'sf.room.choose_brand' | t }}">
+            <a href="{{ section.settings.catalog_collection.url }}?view=beauty-room"{% if is_all %} aria-current="page"{% endif %}>{{ 'sf.room.all_brands' | t }}</a>
+            {% for block in section.blocks %}{% if block.type == 'brand' and block.settings.collection != blank %}<a href="{{ block.settings.collection.url }}?view=beauty-room"{% if block.settings.collection.id == room_collection.id %} aria-current="page"{% endif %}>{{ block.settings.label | default: block.settings.collection.title | escape }}</a>{% endif %}{% endfor %}
+          </nav>
+        </details>
+        {% if request.page_type == 'collection' %}<form class="sfbr-catalog-sort" action="{{ request.path }}" method="get"><input type="hidden" name="view" value="beauty-room"><label for="sfbr-sort-{{ section.id }}">{{ 'sf.room.sort' | t }}</label><select id="sfbr-sort-{{ section.id }}" name="sort_by">{% for option in room_collection.sort_options %}<option value="{{ option.value }}"{% if option.value == selected_sort %} selected{% endif %}>{{ option.name | escape }}</option>{% endfor %}</select><button type="submit">{{ 'sf.room.apply' | t }} ↗</button></form>{% endif %}
+      </div>
+      <div class="sfbr-room-meta"><span>{{ 'sf.room.branch' | t }}</span><span>{{ 'sf.room.catalog_total' | t: count: paginate.items }}</span></div>
+    </div>
+    <div data-sfbr-pages>
+      <div class="sfbr-room sfbr-catalog-page-row" data-sfbr-page-row>
+        <div class="sfbr-bays" data-sfbr-bays>
+          {%- for room_product in room_collection.products -%}
+            {%- liquid
+              assign position = forloop.index0 | modulo: 4 | plus: 1
+              assign bay_number = forloop.index0 | divided_by: 4
+              assign global_bay = paginate.current_offset | divided_by: 4 | plus: bay_number | plus: 1
+              assign bay_tone = bay_number | modulo: 3
+              assign bay_start = bay_number | times: 4
+              assign bay_size = room_collection.products.size | minus: bay_start | at_most: 4
+            -%}
+            {%- if position == 1 -%}
+              <section class="sfbr-bay {% if bay_tone == 1 %}sfbr-bay--colour{% elsif bay_tone == 2 %}sfbr-bay--finish{% endif %}" data-sfbr-catalog-bay aria-label="{{ 'sf.room.shelf_number' | t: number: global_bay }}">
+                <div class="sfbr-bay-top"><span>{% if global_bay < 10 %}0{% endif %}{{ global_bay }}</span><h2>{{ 'sf.room.shelf_number' | t: number: global_bay }}</h2><span>{{ 'sf.room.pieces' | t: count: bay_size }}</span></div>
+                <div class="sfbr-alcove">{% if selected_need != blank %}<div class="sfbr-need-note"><h3>{{ selected_need.settings.prompt | escape }}</h3><p>{{ selected_need.settings.copy | escape }}</p></div>{% endif %}<span class="sfbr-light" aria-hidden="true"></span><span class="sfbr-real-shelf sfbr-real-shelf--one" aria-hidden="true"></span><span class="sfbr-real-shelf sfbr-real-shelf--two" aria-hidden="true"></span><div class="sfbr-shelf-grid sfbr-shelf-grid--{{ bay_size }}">
+            {%- endif -%}
+            {% render 'sf-beauty-room-product', room_product: room_product, cutouts: section.blocks, position: position, section_id: section.id %}
+            {%- if position == 4 or forloop.last -%}</div></div></section>{%- endif -%}
+          {%- else -%}<p class="sfbr-catalog-empty">{{ 'sf.room.catalog_empty' | t }}</p>{%- endfor -%}
+          <div class="sfbr-mascot-layer" aria-hidden="true">
+            {%- assign character_ids = 'pocket,milk,tint,oil' | split: ',' -%}
+            {%- for character in character_ids -%}{%- assign character_key = 'character_cutout_' | append: forloop.index -%}{% render 'sf-beauty-room-character', image: section.settings[character_key], character: character, index: forloop.index %}{%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sfbr-after"><p><span class="sfbr-spark" aria-hidden="true">✧</span> {{ 'sf.room.instruction' | t }}</p><a href="{{ routes.cart_url }}">{{ 'sf.room.bag' | t }} (<span data-sfbr-cart-count>{{ cart.item_count }}</span>) ↗</a></div>
+    {% if room_collection.products.size > 4 %}<p class="sfbr-mobile-hint">{{ 'sf.room.swipe' | t }} ↔</p>{% endif %}
+    <div class="sfbr-catalog-paging" data-sfbr-paging>
+      <p class="sfbr-catalog-range"><span data-sfbr-range-start>{{ first_product }}</span>–<span data-sfbr-range-end>{{ last_product }}</span> {{ 'sf.room.of_products' | t: count: paginate.items }}</p>
+      {% if paginate.next %}{%- assign next_href = paginate.next.url -%}{%- unless next_href contains 'view=' -%}{%- assign next_href = next_href | append: '&view=beauty-room' -%}{%- endunless -%}<a class="sfbr-more-shelves" href="{{ next_href }}" rel="next" data-sfbr-load>{{ 'sf.room.more_shelves' | t }} <span aria-hidden="true">↓</span></a>{% endif %}
+      {% if paginate.pages > 1 %}<nav class="sfbr-page-numbers" aria-label="{{ 'sf.room.shelf_pages' | t }}">{% if paginate.previous %}<a href="{{ paginate.previous.url }}{% unless paginate.previous.url contains 'view=' %}&amp;view=beauty-room{% endunless %}" rel="prev" aria-label="{{ 'sf.room.previous' | t }}">←</a>{% endif %}{% for part in paginate.parts %}{% if part.is_link %}<a href="{{ part.url }}{% unless part.url contains 'view=' %}&amp;view=beauty-room{% endunless %}">{{ part.title }}</a>{% else %}<span{% if part.title == paginate.current_page %} aria-current="page"{% endif %}>{{ part.title }}</span>{% endif %}{% endfor %}{% if paginate.next %}<a href="{{ next_href }}" aria-label="{{ 'sf.room.next' | t }}">→</a>{% endif %}</nav>{% endif %}
+      <p class="sfbr-catalog-load-status" data-sfbr-load-status role="status" aria-live="polite"></p>
+    </div>
+    <nav class="sfbr-departments" aria-labelledby="sfbr-departments-{{ section.id }}"><h2 id="sfbr-departments-{{ section.id }}">{{ 'sf.room.departments_title' | t }}</h2><div class="sfbr-department-links">{% for block in section.blocks %}{% if block.type == 'department' and block.settings.collection != blank %}{% assign department_label = block.settings.label | default: block.settings.collection.title %}{% if request.locale.iso_code == 'ar' and block.settings.label_ar != blank %}{% assign department_label = block.settings.label_ar %}{% endif %}<a href="{{ block.settings.collection.url }}"><span aria-hidden="true">{{ block.settings.icon | escape }}</span><span>{{ department_label | escape }}</span><span aria-hidden="true">↗</span></a>{% endif %}{% endfor %}</div></nav>
+    <dialog class="sfbr-dialog" aria-labelledby="sfbr-dialog-title-{{ section.id }}" data-sfbr-dialog><button type="button" class="sfbr-close" data-sfbr-close aria-label="{{ 'sf.room.close' | t }}">×</button><div data-sfbr-content></div></dialog>
+  </sofie-beauty-room>
+{% endpaginate %}
+{% schema %}
+{"name":"Beauty Room · Catalog","max_blocks":50,"settings":[{"type":"collection","id":"catalog_collection","label":"All best selling beauty brands"},{"type":"image_picker","id":"character_cutout_1","label":"Pocket Blush character"},{"type":"image_picker","id":"character_cutout_2","label":"Glazing Milk character"},{"type":"image_picker","id":"character_cutout_3","label":"Lip Tint character"},{"type":"image_picker","id":"character_cutout_4","label":"Dior Lip Oil character"}],"blocks":[{"type":"brand","name":"Brand · full catalog","settings":[{"type":"collection","id":"collection","label":"Complete brand collection"},{"type":"text","id":"label","label":"Brand name"}]},{"type":"cutout","name":"Isolated product image","settings":[{"type":"product","id":"product","label":"Product"},{"type":"image_picker","id":"image","label":"Transparent product image"},{"type":"text","id":"crop","label":"Optional crop · x,y,width,height (0–1)"}]},{"type":"department","name":"Beauty department","settings":[{"type":"collection","id":"collection","label":"Collection"},{"type":"text","id":"label","label":"English label"},{"type":"text","id":"label_ar","label":"Arabic label"},{"type":"text","id":"icon","label":"Small icon"}]},{"type":"need","name":"Beauty need","settings":[{"type":"collection","id":"collection","label":"Complete edit"},{"type":"text","id":"label","label":"Short label"},{"type":"text","id":"prompt","label":"Question inside the arch"},{"type":"text","id":"copy","label":"Short beauty note"},{"type":"text","id":"icon","label":"Small icon"}]}],"presets":[{"name":"Beauty Room · Catalog"}]}
+{% endschema %}

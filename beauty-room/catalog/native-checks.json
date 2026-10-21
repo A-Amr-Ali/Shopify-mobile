@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-21",
+  "published_products": 1460,
+  "best_seller_brands": 23,
+  "guided_needs": 6,
+  "featured_products": 17,
+  "need_counts": {
+    "hydration": 71,
+    "glow": 123,
+    "cheeks": 154,
+    "lips": 264,
+    "base": 101,
+    "eyes": 187
+  },
+  "all_products_view": {
+    "products_per_page": 12,
+    "native_brand_links": 23,
+    "need_links": 6
+  },
+  "load_more": {
+    "shown_before": 12,
+    "shown_after": 24,
+    "unique_products": 24,
+    "characters_running": 8
+  },
+  "rhode_last_page": {
+    "page": 9,
+    "range": "97–106",
+    "products": 10,
+    "next_page": false
+  },
+  "givenchy": {
+    "products": 1,
+    "arches": 1
+  },
+  "treatment": {
+    "cutout": "sofie-room-peptide-treatment-cutout-v2.png",
+    "options": 5,
+    "price_egp": 3040
+  },
+  "responsive": {
+    "mobile_width": 375,
+    "tablet_width": 753,
+    "product_collisions": 0,
+    "copy_collisions": 0
+  },
+  "qa_template": "Restored to inert noindex link",
+  "publishing": "Unpublished draft; activation requires merchant Publish"
+}

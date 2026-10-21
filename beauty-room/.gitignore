@@ -10,3 +10,13 @@
 !/qa/first-banner.jpg
 /theme/assets/sfbr-store-arch.png
 /theme/assets/sfbr-store-arch.webp
+
+/catalog/base/
+/catalog/qa/
+
+/catalog/needs-research.json
+/catalog/needs-collections-refined.json
+/catalog/need-lip-exclusions.json
+/catalog/needs-plan.json
+
+!/qa/guided-needs-final.jpg

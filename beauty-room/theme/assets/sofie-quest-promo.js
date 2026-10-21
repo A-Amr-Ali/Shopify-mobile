@@ -7,7 +7,7 @@
   const launcher=host.querySelector('[data-quest-reopen]');
   if(!dialog||typeof dialog.showModal!=='function')return;
   const path=(host.dataset.path||location.pathname).replace(/\/$/,'');
-  if(/\/(?:cart|checkout|checkouts|account|password)(?:\/|$)/.test(path)||/\/pages\/(?:beauty-quest|sofie-beauty-room)$/.test(path))return;
+  if(/\/(?:cart|checkout|checkouts|account|password)(?:\/|$)/.test(path)||/\/pages\/(?:beauty-quest|sofie-beauty-room)$/.test(path)||new URLSearchParams(location.search).get('view')==='beauty-room')return;
   const key='sofie-beauty-quest-invited-v1';
   let seen=false,timer=null,opener=null;
   try{seen=sessionStorage.getItem(key)==='1';}catch{}

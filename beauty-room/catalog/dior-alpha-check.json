@@ -1,0 +1,18 @@
+{
+  "mode": "RGBA",
+  "size": [
+    1024,
+    1536
+  ],
+  "alpha_range": [
+    0,
+    254
+  ],
+  "opaque_powder_samples": [
+    253,
+    253,
+    253,
+    253
+  ],
+  "transparent_exterior": true
+}

@@ -1,0 +1,15 @@
+{
+  "catalog_revision_2": "All changed code passed; Arabic baseline has 716 inherited mismatches outside sf.room",
+  "catalog_revision_3": "All five changed files passed",
+  "needs_revision_1": "All code passed; same inherited Arabic mismatches",
+  "needs_revision_2": "All three final changed files passed",
+  "checks": {
+    "legacy_interactions": 13,
+    "catalog_interactions": 7,
+    "image_matte": 8,
+    "guided_needs": 6,
+    "repaired_alpha_cores": "100% opaque, transparent exterior"
+  },
+  "native": "17 guided product images visibly rendered as complete cutouts; six need pages and all 1460 products remain reachable",
+  "needs_revision_3": "Both final templates with the complete Dior palette asset passed"
+}

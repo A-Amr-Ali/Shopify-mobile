@@ -1,0 +1,80 @@
+{% doc %}
+  A real catalog product standing on a shelf, with its native variant form.
+  @param {product} room_product - Product from the paginated collection.
+  @param {object} cutouts - Optional manually isolated product image blocks.
+  @param {number} position - Position on the shelf, from one to four.
+  @param {string} section_id - Section identity for accessible labels.
+{% enddoc %}
+{%- liquid
+  assign room_image = room_product.featured_image
+  assign isolated = false
+  assign room_crop = blank
+  for item in cutouts
+    if item.type == 'cutout' and item.settings.product.id == room_product.id and item.settings.image != blank
+      assign room_image = item.settings.image
+      assign isolated = true
+      assign room_crop = item.settings.crop
+      break
+    endif
+  endfor
+  assign room_label = room_product.title
+  assign one_variant = false
+  if room_product.variants.size == 1
+    assign one_variant = true
+  endif
+  assign product_type = room_product.type | downcase
+  assign icon = '✧'
+  if product_type contains 'lip'
+    assign icon = '💋'
+  elsif product_type contains 'blush'
+    assign icon = '🌷'
+  elsif product_type contains 'fragrance' or product_type contains 'perfume'
+    assign icon = '🌸'
+  elsif product_type contains 'skin' or product_type contains 'cleanser'
+    assign icon = '💧'
+  elsif product_type contains 'brush' or product_type contains 'tool'
+    assign icon = '🖌️'
+  endif
+-%}
+{%- capture gallery -%}[{%- for image in room_product.images limit: 6 -%}{{ image | image_url: width: 640 | json }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]{%- endcapture -%}
+<article class="sfbr-piece sfbr-piece--{{ position }}" data-sfbr-handle="{{ room_product.handle }}">
+  <a class="sfbr-piece-link" href="{{ room_product.url }}" data-sfbr-open="{{ room_product.id }}" aria-describedby="sfbr-tip-{{ section_id }}-{{ room_product.id }}" aria-label="{{ 'sf.room.explore_product' | t: product: room_label | escape }}">
+    <span class="sfbr-piece-image" data-sfbr-matte data-sfbr-gallery="{{ gallery | strip | escape }}"{% if isolated %} data-sfbr-isolated{% endif %}{% if room_crop != blank %} data-sfbr-crop="{{ room_crop | escape }}"{% endif %}>
+      {%- if room_image != blank -%}{{ room_image | image_url: width: 640 | image_tag: widths: '320, 480, 640', sizes: '(min-width: 1000px) 240px, 200px', loading: 'lazy', crossorigin: 'anonymous', alt: room_label }}{%- else -%}<span class="sfbr-no-image">{{ room_label | escape }}</span>{%- endif -%}
+      <span class="sfbr-plus" aria-hidden="true">+</span>
+    </span>
+    <span class="sfbr-piece-caption">{{ room_product.vendor | escape }} · {{ room_label | escape }} · {{ room_product.price | money_with_currency }}</span>
+  </a>
+  <div class="sfbr-peek" data-sfbr-peek="{{ room_product.id }}">
+    <span class="sfbr-peek-icon" aria-hidden="true">{{ icon }}</span>
+    <div><strong>{{ room_label | escape }}</strong><p id="sfbr-tip-{{ section_id }}-{{ room_product.id }}">{{ room_product.vendor | escape }} · {{ 'sf.room.catalog_options' | t: count: room_product.variants.size }}</p><span>{% if room_product.price_varies %}{{ 'sf.room.from' | t }} {% endif %}{{ room_product.price | money_with_currency }}{% unless room_product.available %} · {{ 'sf.room.sold_out' | t }}{% endunless %}</span></div>
+    <button type="button" data-sfbr-peek-open="{{ room_product.id }}">{{ 'sf.room.explore_options' | t }} <span aria-hidden="true">↗</span></button>
+  </div>
+</article>
+<template data-sfbr-product="{{ room_product.id }}">
+  <div class="sfbr-detail">
+    <div class="sfbr-detail-media">{% if room_image != blank %}{{ room_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: room_label, class: 'sfbr-detail-image' }}{% endif %}</div>
+    <div class="sfbr-detail-info">
+      <p class="sfbr-eyebrow">{{ room_product.vendor | escape }}</p>
+      <h2 id="sfbr-dialog-title-{{ section_id }}">{{ room_label | escape }}</h2>
+      <p class="sfbr-detail-price" data-sfbr-price>{% if room_product.price_varies %}{{ 'sf.room.from' | t }} {% endif %}{{ room_product.price | money_with_currency }}</p>
+      <form action="{{ routes.cart_add_url }}" method="post" class="sfbr-form" data-handle="{{ room_product.handle }}">
+        <input type="hidden" name="quantity" value="1">
+        <label for="sfbr-option-{{ section_id }}-{{ room_product.id }}">{{ 'sf.room.option' | t }}</label>
+        <select id="sfbr-option-{{ section_id }}-{{ room_product.id }}" name="id" required data-sfbr-select>
+          {% unless one_variant %}<option value="" selected disabled>{{ 'sf.room.choose' | t }}</option>{% endunless %}
+          {%- for variant in room_product.variants -%}
+            {%- assign variant_image = variant.featured_image | default: room_product.featured_image -%}
+            <option value="{{ variant.id }}" data-price="{{ variant.price | money_with_currency | escape }}" data-available="{{ variant.available }}"{% if variant_image != blank %} data-image="{{ variant_image | image_url: width: 800 }}"{% endif %}{% unless variant.available %} disabled{% endunless %}{% if one_variant %} selected{% endif %}>{% if variant.title == 'Default Title' %}{{ 'sf.room.standard_option' | t }}{% else %}{{ variant.title | escape }}{% endif %} — {{ variant.price | money_with_currency }}{% unless variant.available %} · {{ 'sf.room.sold_out' | t }}{% endunless %}</option>
+          {%- endfor -%}
+        </select>
+        <p class="sfbr-availability" data-sfbr-availability>{{ 'sf.room.choose_availability' | t }}</p>
+        <button type="submit" class="sfbr-add"{% unless room_product.available %} disabled{% endunless %} data-label="{{ 'sf.room.add' | t }}">{{ 'sf.room.add' | t }} <span aria-hidden="true">↗</span></button>
+        <p class="sfbr-status" role="status" aria-live="polite" data-sfbr-status></p>
+        <a class="sfbr-view-bag" href="{{ routes.cart_url }}" data-sfbr-view-bag hidden>{{ 'sf.room.view_bag' | t }} <span aria-hidden="true">→</span></a>
+      </form>
+      <p class="sfbr-delivery-note">{{ 'sf.room.delivery' | t }}</p>
+      <a class="sfbr-full-details" href="{{ room_product.url }}" data-sfbr-details>{{ 'sf.room.details' | t }} <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</template>

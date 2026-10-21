@@ -1,0 +1,173 @@
+{
+  "created_at": "2026-10-21",
+  "source_best_sellers_collection": "gid://shopify/Collection/269406994503",
+  "brands": [
+    {
+      "vendor": "Benefit Cosmetics",
+      "label": "Benefit Cosmetics",
+      "id": "gid://shopify/Collection/350855757895",
+      "handle": "benefit-cosmetics-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "Charlotte Tilbury",
+      "label": "Charlotte Tilbury",
+      "id": "gid://shopify/Collection/350855626823",
+      "handle": "charlotte-tilbury-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "DIOR",
+      "label": "Dior",
+      "id": "gid://shopify/Collection/350855725127",
+      "handle": "dior-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "elf",
+      "label": "e.l.f.",
+      "id": "gid://shopify/Collection/350855823431",
+      "handle": "e-l-f-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "Fenty Beauty by Rihanna",
+      "label": "Fenty Beauty",
+      "id": "gid://shopify/Collection/295396900935",
+      "handle": "fenty-beauty",
+      "reused": true
+    },
+    {
+      "vendor": "givenchy",
+      "label": "Givenchy",
+      "id": "gid://shopify/Collection/350856052807",
+      "handle": "givenchy-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "GXVE BY GWEN STEFANI",
+      "label": "GXVE by Gwen Stefani",
+      "id": "gid://shopify/Collection/350855921735",
+      "handle": "gxve-by-gwen-stefani-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "HAUS LABS BY LADY GAGA",
+      "label": "Haus Labs",
+      "id": "gid://shopify/Collection/350855790663",
+      "handle": "haus-labs-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "Hourglass",
+      "label": "Hourglass",
+      "id": "gid://shopify/Collection/350855528519",
+      "handle": "hourglass-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "HUDA BEAUTY",
+      "label": "Huda Beauty",
+      "id": "gid://shopify/Collection/350855462983",
+      "handle": "huda-beauty-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "Kosas",
+      "label": "Kosas",
+      "id": "gid://shopify/Collection/350855659591",
+      "handle": "kosas-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "LAWLESS",
+      "label": "LAWLESS",
+      "id": "gid://shopify/Collection/350855987271",
+      "handle": "lawless-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "MAKEUP BY MARIO",
+      "label": "Makeup by Mario",
+      "id": "gid://shopify/Collection/350855594055",
+      "handle": "makeup-by-mario-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "MERIT",
+      "label": "MERIT",
+      "id": "gid://shopify/Collection/350855954503",
+      "handle": "merit-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "NARS",
+      "label": "NARS",
+      "id": "gid://shopify/Collection/350855561287",
+      "handle": "nars-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "PATRICK TA",
+      "label": "Patrick Ta",
+      "id": "gid://shopify/Collection/350855397447",
+      "handle": "patrick-ta-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "Rare Beauty by Selena Gomez",
+      "label": "Rare Beauty",
+      "id": "gid://shopify/Collection/295396933703",
+      "handle": "rare-beauty",
+      "reused": true
+    },
+    {
+      "vendor": "Rhode",
+      "label": "Rhode",
+      "id": "gid://shopify/Collection/350855299143",
+      "handle": "rhode-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "saie",
+      "label": "Saie",
+      "id": "gid://shopify/Collection/350855430215",
+      "handle": "saie-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "tarte",
+      "label": "tarte",
+      "id": "gid://shopify/Collection/350855856199",
+      "handle": "tarte-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "TOM FORD",
+      "label": "Tom Ford",
+      "id": "gid://shopify/Collection/350855888967",
+      "handle": "tom-ford-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "Too Faced",
+      "label": "Too Faced",
+      "id": "gid://shopify/Collection/350855495751",
+      "handle": "too-faced-beauty-room",
+      "reused": false
+    },
+    {
+      "vendor": "Tower 28 Beauty",
+      "label": "Tower 28 Beauty",
+      "id": "gid://shopify/Collection/350855692359",
+      "handle": "tower-28-beauty-beauty-room",
+      "reused": false
+    }
+  ],
+  "aggregate": {
+    "id": "gid://shopify/Collection/350856085575",
+    "handle": "the-sofie-beauty-room",
+    "title": "The SOFIE Beauty Room"
+  },
+  "published_product_count_at_audit": 1448
+}

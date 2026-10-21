@@ -1,40 +1,57 @@
 # SOFIE Beauty Room
 
-Eight real Shopify products sit on the original soft sage and blush arches. Transparent product assets sit directly on two continuous shelves. Hover or keyboard focus reveals a short emoji note and current price; the first touch reveals the card, and a second touch opens product options. Four tiny product characters bring the room and its invitation banner to life.
+Six needs, written inside the original sage and blush arches, replace the shuffled opening shelf. Seventeen reviewed products introduce hydration, glow, cheeks, lips, complexion and eyes. Every arch opens its complete edit. A prominent link preserves the full 1,460-product catalog and all 23 best-seller brands.
 
 ## Installed draft
 
 - Store: sofiestore.net
-- Draft theme: `160596656199`, **SOFIE • Beauty Room • First Experience**
-- Base live theme at creation: `160472006727`, **SOFIE • Beauty Quest • Popup + Banner**
-- Page: `136827633735`, handle `sofie-beauty-room`, template suffix `beauty-room`
+- Theme: `160596656199`, **SOFIE • Beauty Room • First Experience**, unpublished
+- Base theme: `160472006727`, **SOFIE • Beauty Quest • Popup + Banner**
+- Guided page: `136827633735`, handle `sofie-beauty-room`, suffix `beauty-room`
+- Catalog: `350856085575`, handle `the-sofie-beauty-room`
 - Preview: https://sofiestore.net/pages/sofie-beauty-room?preview_theme_id=160596656199
 
-The files in `theme/` are an overlay for that exact base theme. The layout conditionally loads the room's CSS/JS on its page. The invitation is the first banner on the Makeup landing page, with its primary H1. On the store index it follows the existing categories section. Eight department links lead to the full existing beauty catalog. The existing Beauty Quest popup is excluded only on the room page, so it does not interrupt discovery. Other homepage content and previous translations are preserved.
+`theme/` overlays the base theme. The room invitation remains the first Makeup banner; the index invitation follows categories. Collection views use `?view=beauty-room` and retain brand selection, sorting, numbered pages and “More shelves”.
 
-The connected Shopify tool permits draft theme edits but blocks publishing and live-theme writes. To activate, open Online Store → Themes and publish **SOFIE • Beauty Room • First Experience**. The former live theme remains the rollback option. Review any concurrent live theme edits before publishing this draft.
+The Shopify connector permits unpublished-theme edits and blocks publishing/live-theme writes. Activate by publishing **SOFIE • Beauty Room • First Experience** in Online Store → Themes. The former live theme remains the rollback option; review concurrent theme edits before activation.
 
-## Assets and character
+## Complete need edits
 
-Eight alpha-preserving WebP cutouts are in `theme/assets/sfbr-*-cutout.webp`; `hosted-assets.json` records their Shopify Files references. No product background rectangles are drawn. `cutout-geometry.json` aligns the opaque base of each image to its shelf.
+| English arch prompt | Products at verification |
+| --- | ---: |
+| Feeling dry? | 71 |
+| Want more glow? | 123 |
+| A fresh flush? | 154 |
+| Your lip wardrobe. | 264 |
+| An even finish? | 101 |
+| Eyes, defined. | 187 |
 
-The four characters reuse the Pocket Blush, Glazing Milk, Lip Tint and Dior Lip Oil cutouts. CSS supplies their little faces, arms and legs; routes are recalculated from the arch geometry. Pocket Blush explores the arch crowns while the others use separate lower lanes, keeping the product displays clear. Motion continues during hover, focus and open product dialogs, with no pause control. Reduced-motion preferences slow the path while preserving gentle continuous movement. This revision restores the first CSS arches and does not render the earlier wooden arch image.
+`catalog/needs-collections.json` records collection IDs, membership and featured handles. These edits were formed from the published best-seller-brand catalog, then refined to exclude unrelated brushes, cases and accessories. Products can belong to several appropriate edits. The six edits are curated manual collections and can be refreshed when new merchandise arrives. The aggregate and full brand collections use vendor rules and automatically include newly published products.
 
-## Product flow
+English prompts, short notes and featured products are editable through theme settings. Product placement follows verified store descriptions; no treatment claims are added.
 
-Variant selection controls the exact current Shopify price, availability, product link and cart variant. A choice is required before adding; sold-out variants are disabled. Native Ajax cart errors are shown and repeated submissions are prevented. Delivery is checked through the product's existing details; no SOFIE NOW collection or eligibility was changed. Measurement uses the store's existing consent gate.
+## Images and interaction
+
+Peptide Lip Treatment, Patrick Ta Blush Duo and the Dior palette now use complete transparent assets with opaque pale packaging. The official Rhode lip-shape PNG supplies one real stick through a native presentation crop. `hosted-assets.json` records Shopify references; `ASSET-BRIEFS.md` records prompts and project asset paths.
+
+Other packshots are masked locally in a small worker for shelf presentation. Original catalog photographs are unchanged. The renderer prefers the primary packshot, avoids obvious swatches/model alternates and rejects uncertain or fragmented masks. It retains the original photograph if extraction is uncertain. All seventeen guided products were visually checked as complete cutouts.
+
+Products occupy separate areas on two shelves; English guidance sits above them. Hover, focus or first touch reveals a short product card. Native dialogs preserve exact variant prices, availability, product links and cart IDs. Sold-out choices stay disabled; duplicate submissions and cart errors recover correctly. SOFIE NOW eligibility is unchanged.
+
+Eight product characters animate across the two guided rows. Pocket Blush follows the crowns while the others use separate lower routes. Added catalog shelves preserve existing character nodes and receive their own characters. Hover, focus and product dialogs do not pause movement; reduced-motion preferences slow it.
 
 ## Verification
 
-- `test-results.json`: 13 interaction checks passed, including required variant selection, double-submit protection, inventory failure recovery, focus restoration, touch cards, continuously moving characters and all eight department links.
-- Real browser: Glazing Milk 124ml was added to the actual bag, its variant and price were verified, then the test item was removed. Bag returned to zero. No checkout was submitted.
-- Real browser after this revision: Pocket Blush shade selection enables add and generates its exact variant link; homepage invitation returns to the room.
-- `layout-check.json`: all eight opaque product bounds were checked at desktop, 390px mobile and 768px tablet. Zero overlaps; minimum gaps were 14.91px, 11.55px and 16.21px respectively.
-- `final-validation-summary.json`: changed theme files pass Shopify validation. The Arabic locale retains 716 pre-existing translation mismatches outside `sf.room`; this change introduces no room translation errors.
-- `qa/first-banner.jpg`: native storefront proof that the new invitation is the first Makeup banner.
-- `qa/final-preview.jpg`: native storefront screenshot of the restored arches, four characters and department navigation.
-- `motion-check.json`: all four animations remained running while product details were open; native mobile/tablet previews also verified the first banner.
+- 13 legacy product/cart interaction checks passed.
+- Seven catalog checks cover 12→24 unique products, appended-product variants, duplicate-load protection, native failure fallback and preserved characters.
+- Six guided checks cover English arch guidance, appropriate membership, complete edit links, repaired treatment and exact variant flow.
+- Eight image checks preserve product colors, opaque packaging, existing alpha and original source pixels.
+- Both repaired product cores are 100% opaque with transparent exterior pixels.
+- Native browser: 1,460 products, 23 brands and six need links remain reachable. Hydration loads 12→24 products while all eight characters keep running. Rhode's last page reaches products 97–106; a one-product brand uses one arch.
+- Native Peptide Lip Treatment dialog uses the complete corrected image, its five actual variants and EGP 3,040 price. Earlier native cart add/remove verification remains valid; no checkout was submitted.
+- Mobile/tablet content widths 375px/753px: zero product or copy collisions, no page overflow, all eight characters running.
+- Changed code/templates pass Shopify validation. The Arabic locale retains 716 inherited mismatches outside `sf.room`; new room keys are complete.
 
-The unlinked `page.beauty-room-preview.liquid` was used for responsive visual QA and is now an inert, noindex link to the real room; no static product/price snapshot remains in it.
+The temporary responsive preview template has been restored to an inert, noindex link without static products or prices. Results are in `catalog/*check.json`, `catalog/*results.json` and `catalog/validation-summary.json`.
 
-Run the interaction checks with Node.js and `jsdom` available: `node beauty-room/test.cjs`. `fixtures/room.html` is the isolated rendered component used by these checks.
+With `jsdom` available: run `node beauty-room/test.cjs`, `node beauty-room/catalog/test.cjs`, `node beauty-room/catalog/guided-test.cjs`, and `node beauty-room/catalog/matte-test.cjs`. Fixtures are dated verification data, not production catalog sources.

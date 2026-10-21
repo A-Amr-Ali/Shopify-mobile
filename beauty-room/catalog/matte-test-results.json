@@ -1,0 +1,37 @@
+{
+  "passed": 8,
+  "checks": [
+    {
+      "name": "Outside white backdrop becomes transparent",
+      "passed": true
+    },
+    {
+      "name": "White packaging inside its contour stays opaque",
+      "passed": true
+    },
+    {
+      "name": "Product colors are preserved",
+      "passed": true
+    },
+    {
+      "name": "Original source pixels are never mutated",
+      "passed": true
+    },
+    {
+      "name": "A flat colored backdrop also becomes transparent",
+      "passed": true
+    },
+    {
+      "name": "A light label on a colored bottle stays intact",
+      "passed": true
+    },
+    {
+      "name": "Existing isolated assets retain their alpha and colors",
+      "passed": true
+    },
+    {
+      "name": "Blank photos are rejected rather than inventing a product",
+      "passed": true
+    }
+  ]
+}

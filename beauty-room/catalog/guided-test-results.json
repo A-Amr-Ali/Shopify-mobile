@@ -1,0 +1,29 @@
+{
+  "passed": 6,
+  "checks": [
+    {
+      "name": "Six English needs are written inside the arches",
+      "passed": true
+    },
+    {
+      "name": "Every featured product belongs to its relevant complete need edit",
+      "passed": true
+    },
+    {
+      "name": "Each need opens its full product collection and all products remain reachable",
+      "passed": true
+    },
+    {
+      "name": "The damaged treatment is replaced with the whole isolated tube",
+      "passed": true
+    },
+    {
+      "name": "The guided treatment keeps its exact variant, price and product link",
+      "passed": true
+    },
+    {
+      "name": "Both rows retain four continuously moving product characters",
+      "passed": true
+    }
+  ]
+}

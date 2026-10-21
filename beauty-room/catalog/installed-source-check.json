@@ -1,0 +1,64 @@
+{
+  "themeId": "gid://shopify/OnlineStoreTheme/160596656199",
+  "themeName": "SOFIE \u2022 Beauty Room \u2022 First Experience",
+  "role": "UNPUBLISHED",
+  "checks": [
+    {
+      "file": "assets/sofie-beauty-room-catalog.css",
+      "matches": true
+    },
+    {
+      "file": "assets/sofie-beauty-room.js",
+      "matches": true
+    },
+    {
+      "file": "assets/sofie-quest-promo.js",
+      "matches": true
+    },
+    {
+      "file": "assets/sofie-room-cutouts.js",
+      "matches": true
+    },
+    {
+      "file": "layout/theme.liquid",
+      "matches": true
+    },
+    {
+      "file": "locales/ar.json",
+      "matches": true
+    },
+    {
+      "file": "locales/en.default.json",
+      "matches": true
+    },
+    {
+      "file": "sections/sf-beauty-room-catalog.liquid",
+      "matches": true
+    },
+    {
+      "file": "sections/sf-beauty-room-needs.liquid",
+      "matches": true
+    },
+    {
+      "file": "snippets/sf-beauty-room-product.liquid",
+      "matches": true
+    },
+    {
+      "file": "templates/collection.beauty-room.json",
+      "matches": true
+    },
+    {
+      "file": "templates/page.beauty-room-preview.liquid",
+      "matches": true
+    },
+    {
+      "file": "templates/page.beauty-room.json",
+      "matches": true
+    }
+  ],
+  "last_asset_update": {
+    "product": "Dior Backstage Glow Maximizer",
+    "draft_upsert": "Both templates returned no userErrors",
+    "native_image": "sofie-room-dior-palette-cutout-v2.png"
+  }
+}

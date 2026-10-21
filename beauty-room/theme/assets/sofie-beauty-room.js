@@ -25,6 +25,7 @@
         }
       });
       this.setupGuide();
+      if(this.hasAttribute('data-sfbr-catalog'))this.cutouts=window.SofieRoomCutouts?.observe(this);
       if (document.readyState === 'complete') this.measure('room_view');
       else window.addEventListener('load', () => this.measure('room_view'), {once:true});
     }
@@ -36,50 +37,73 @@
       requestAnimationFrame(this.resizeGuide);
       if (typeof ResizeObserver === 'function') {
         this.guideObserver = new ResizeObserver(this.resizeGuide);
-        this.guideObserver.observe(this.querySelector('[data-sfbr-bays]'));
+        this.querySelectorAll('[data-sfbr-bays]').forEach(board=>this.guideObserver.observe(board));
       }
     }
     disconnectedCallback() {
       this.guideObserver?.disconnect();
+      this.cutouts?.disconnect();
       window.removeEventListener('resize', this.resizeGuide);
     }
     layoutGuide() {
       if (!this.guides?.length) return;
-      const board = this.querySelector('[data-sfbr-bays]');
-      const origin = board.getBoundingClientRect();
-      const arches = [...this.querySelectorAll('.sfbr-alcove')].map(el => {
-        const r = el.getBoundingClientRect();
-        return {x:r.left-origin.left+board.scrollLeft,y:r.top-origin.top,w:r.width,h:r.height};
+      const p=n=>Number(n.toFixed(1));
+      this.querySelectorAll('[data-sfbr-bays]').forEach(board=>{
+        const guides=[...board.querySelectorAll('[data-sfbr-mascot]')],origin=board.getBoundingClientRect();
+        const arches=[...board.querySelectorAll('.sfbr-alcove')].map(el=>{const r=el.getBoundingClientRect();return{x:r.left-origin.left+board.scrollLeft,y:r.top-origin.top,w:r.width,h:r.height};});
+        if(!arches.length||arches[0].w<1)return;
+        let path='';
+        arches.forEach((a,i)=>{
+          const lx=p(a.x+a.w*.01),rx=p(a.x+a.w*.99),cx=p(a.x+a.w*.5),crown=p(a.y+a.h*.006),shoulder=p(a.y+a.h*.32);
+          if(!i)path+=`M ${lx} ${shoulder}`;
+          else path+=` C ${p(a.x-a.w*.16)} ${p(a.y-a.h*.02)} ${p(a.x+a.w*.02)} ${p(a.y-a.h*.02)} ${lx} ${shoulder}`;
+          path+=` C ${lx} ${p(a.y+a.h*.16)} ${p(a.x+a.w*.3)} ${crown} ${cx} ${crown} C ${p(a.x+a.w*.7)} ${crown} ${rx} ${p(a.y+a.h*.16)} ${rx} ${shoulder}`;
+        });
+        const lowerCount=guides.filter(g=>!g.classList.contains('sfbr-mini-guide--pocket')).length;let lane=0;
+        guides.forEach(guide=>{
+          let guidePath=path;
+          if(!guide.classList.contains('sfbr-mini-guide--pocket')){
+            const archIndex=lane%arches.length,a=arches[archIndex],slot=Math.floor(lane/arches.length),slots=Math.ceil((lowerCount-archIndex)/arches.length);lane++;
+            const start=.12+slot*.76/slots,end=.12+(slot+1)*.76/slots-.04,y=p(a.y+a.h*.99);
+            guidePath=`M ${p(a.x+a.w*start)} ${y} C ${p(a.x+a.w*(start+(end-start)/3))} ${p(y-3)} ${p(a.x+a.w*(end-(end-start)/3))} ${p(y-3)} ${p(a.x+a.w*end)} ${y}`;
+          }
+          guide.style.setProperty('--sfbr-guide-path',`path("${guidePath}")`);guide.classList.add('has-path');
+        });
+        if(guides[0])guides[0].parentElement.style.width=`${board.scrollWidth}px`;
       });
-      if (!arches.length || arches[0].w < 1) return;
-      let path = '';
-      const p = n => Number(n.toFixed(1));
-      arches.forEach((a,i) => {
-        const lx=p(a.x+a.w*.01), rx=p(a.x+a.w*.99), cx=p(a.x+a.w*.5);
-        const crown=p(a.y+a.h*.006), shoulder=p(a.y+a.h*.32);
-        if (!i) path += `M ${lx} ${shoulder}`;
-        else path += ` C ${p(a.x-a.w*.16)} ${p(a.y-a.h*.02)} ${p(a.x+a.w*.02)} ${p(a.y-a.h*.02)} ${lx} ${shoulder}`;
-        path += ` C ${lx} ${p(a.y+a.h*.16)} ${p(a.x+a.w*.3)} ${crown} ${cx} ${crown}`;
-        path += ` C ${p(a.x+a.w*.7)} ${crown} ${rx} ${p(a.y+a.h*.16)} ${rx} ${shoulder}`;
-      });
-      let lowerLane = 0;
-      this.guides.forEach(guide => {
-        let guidePath = path;
-        if (!guide.classList.contains('sfbr-mini-guide--pocket')) {
-          const a = arches[lowerLane++ % arches.length];
-          const y = p(a.y + a.h * .99);
-          guidePath = `M ${p(a.x+a.w*.14)} ${y} C ${p(a.x+a.w*.36)} ${p(y-3)} ${p(a.x+a.w*.64)} ${p(y-3)} ${p(a.x+a.w*.86)} ${y}`;
-        }
-        guide.style.setProperty('--sfbr-guide-path', `path("${guidePath}")`);
-        guide.classList.add('has-path');
-      });
-      this.guides[0].parentElement.style.width = `${board.scrollWidth}px`;
+    }
+    async loadShelves(link) {
+      if(this.loadingShelves||this.busy)return;
+      const url=new URL(link.href,location.href);if(url.origin!==location.origin){location.assign(link.href);return;}
+      this.loadingShelves=true;link.setAttribute('aria-disabled','true');link.setAttribute('aria-busy','true');
+      const status=this.querySelector('[data-sfbr-load-status]');status.textContent=this.dataset.loading;
+      try {
+        const response=await fetch(url.href,{credentials:'same-origin'});if(!response.ok)throw new Error('Unable to load shelves');
+        const documentNext=new DOMParser().parseFromString(await response.text(),'text/html'),next=documentNext.querySelector('sofie-beauty-room[data-sfbr-catalog]'),row=next?.querySelector('[data-sfbr-page-row]');
+        if(!row)throw new Error('Shelves unavailable');
+        const existing=new Set([...this.querySelectorAll('[data-sfbr-open]')].map(a=>a.dataset.sfbrOpen));
+        row.querySelectorAll('[data-sfbr-open]').forEach(a=>{if(existing.has(a.dataset.sfbrOpen)){const template=row.querySelector(`[data-sfbr-product="${a.dataset.sfbrOpen}"]`);template?.remove();a.closest('.sfbr-piece')?.remove();}});
+        const imported=document.importNode(row,true);this.querySelector('[data-sfbr-pages]').append(imported);
+        const pager=document.importNode(next.querySelector('[data-sfbr-paging]'),true);this.querySelector('[data-sfbr-paging]').replaceWith(pager);
+        this.dataset.sfbrTotal=next.dataset.sfbrTotal;
+        const first=Number(this.dataset.sfbrStart||0),count=this.querySelectorAll('[data-sfbr-open]').length;
+        pager.querySelector('[data-sfbr-range-start]').textContent=String(first+1);pager.querySelector('[data-sfbr-range-end]').textContent=String(first+count);
+        this.cutouts?.add(imported);this.guides=[...this.querySelectorAll('[data-sfbr-mascot]')];
+        imported.querySelectorAll('[data-sfbr-bays]').forEach(board=>this.guideObserver?.observe(board));this.layoutGuide();
+        imported.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+        imported.querySelector('[data-sfbr-open]')?.focus({preventScroll:true});
+        this.measure('shelves_load',{shown:count,collection:url.pathname});
+      }catch{
+        status.textContent=this.dataset.loadError;link.dataset.sfbrNative='true';
+      }finally{this.loadingShelves=false;link.removeAttribute('aria-disabled');link.removeAttribute('aria-busy');}
     }
     measure(action, detail = {}) {
       if (window.SofieJourney?.consent?.() !== true) return;
       try { window.Shopify?.analytics?.publish?.('sofie_beauty_room', {action, edition: '01', ...detail}); } catch {}
     }
     onClick(e) {
+      const more=e.target.closest('[data-sfbr-load]');
+      if(more&&!more.dataset.sfbrNative&&!e.ctrlKey&&!e.metaKey&&!e.shiftKey&&!e.altKey&&e.button<1){e.preventDefault();this.loadShelves(more);return;}
       const close = e.target.closest('[data-sfbr-close]');
       if (close) { this.dialog.close(); return; }
       const zoneButton = e.target.closest('[data-sfbr-zone]');

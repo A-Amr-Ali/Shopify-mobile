@@ -1,0 +1,2074 @@
+{
+  "vendors": [
+    {
+      "vendor": "Rhode",
+      "publishedCount": 106,
+      "id": "gid://shopify/Collection/271477342279",
+      "title": "Rhode",
+      "handle": "rhode",
+      "updatedAt": "2026-10-20T12:21:18Z",
+      "image": null,
+      "productsCount": {
+        "count": 110
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "PATRICK TA",
+      "publishedCount": 45,
+      "id": "gid://shopify/Collection/267809259591",
+      "title": "PATRICK TA",
+      "handle": "patrick-ta",
+      "updatedAt": "2026-10-20T13:21:20Z",
+      "image": null,
+      "productsCount": {
+        "count": 54
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "saie",
+      "publishedCount": 55,
+      "id": "gid://shopify/Collection/267810046023",
+      "title": "Saie",
+      "handle": "saie",
+      "updatedAt": "2026-10-15T16:03:04Z",
+      "image": null,
+      "productsCount": {
+        "count": 64
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "HUDA BEAUTY",
+      "publishedCount": 72,
+      "id": "gid://shopify/Collection/267769774151",
+      "title": "HUDA BEAUTY",
+      "handle": "huda-beauty",
+      "updatedAt": "2026-10-21T13:32:00Z",
+      "image": null,
+      "productsCount": {
+        "count": 225
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "Rare Beauty by Selena Gomez",
+      "publishedCount": 122,
+      "id": "gid://shopify/Collection/295396933703",
+      "title": "Rare Beauty",
+      "handle": "rare-beauty",
+      "updatedAt": "2026-10-19T12:50:20Z",
+      "image": {
+        "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/collections/ECOMM-RARE-ALBUM-ANNIVERSARY-KIT-SP-LIQUID-BLUSH-DUO-STYLIZED.webp?v=1786324102"
+      },
+      "productsCount": {
+        "count": 188
+      },
+      "ruleSet": {
+        "appliedDisjunctively": false,
+        "rules": [
+          {
+            "column": "VENDOR",
+            "relation": "EQUALS",
+            "condition": "Rare Beauty by Selena Gomez"
+          }
+        ]
+      },
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "Too Faced",
+      "publishedCount": 48,
+      "id": "gid://shopify/Collection/267811389511",
+      "title": "Too Faced",
+      "handle": "too-faced",
+      "updatedAt": "2026-10-18T11:19:06Z",
+      "image": null,
+      "productsCount": {
+        "count": 104
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "Hourglass",
+      "publishedCount": 78,
+      "id": "gid://shopify/Collection/267769708615",
+      "title": "Hourglass",
+      "handle": "hourglass",
+      "updatedAt": "2026-08-19T22:21:00Z",
+      "image": null,
+      "productsCount": {
+        "count": 125
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "NARS",
+      "publishedCount": 98,
+      "id": "gid://shopify/Collection/267772461127",
+      "title": "NARS",
+      "handle": "nars",
+      "updatedAt": "2026-09-09T22:32:17Z",
+      "image": null,
+      "productsCount": {
+        "count": 143
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "MAKEUP BY MARIO",
+      "publishedCount": 53,
+      "id": "gid://shopify/Collection/267771838535",
+      "title": "MAKEUP BY MARIO",
+      "handle": "makeup-by-mario",
+      "updatedAt": "2026-10-20T13:04:58Z",
+      "image": null,
+      "productsCount": {
+        "count": 80
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "Charlotte Tilbury",
+      "publishedCount": 111,
+      "id": "gid://shopify/Collection/267766923335",
+      "title": "Charlotte Tilbury",
+      "handle": "charlotte-tilbury",
+      "updatedAt": "2026-10-20T11:24:23Z",
+      "image": null,
+      "productsCount": {
+        "count": 234
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "Kosas",
+      "publishedCount": 44,
+      "id": "gid://shopify/Collection/267771052103",
+      "title": "Kosas",
+      "handle": "kosas",
+      "updatedAt": "2026-10-19T11:21:44Z",
+      "image": null,
+      "productsCount": {
+        "count": 51
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "Tower 28 Beauty",
+      "publishedCount": 31
+    },
+    {
+      "vendor": "DIOR",
+      "publishedCount": 91,
+      "id": "gid://shopify/Collection/267767742535",
+      "title": "Dior",
+      "handle": "dior",
+      "updatedAt": "2026-10-20T09:31:40Z",
+      "image": null,
+      "productsCount": {
+        "count": 172
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "Benefit Cosmetics",
+      "publishedCount": 83
+    },
+    {
+      "vendor": "HAUS LABS BY LADY GAGA",
+      "publishedCount": 21
+    },
+    {
+      "vendor": "elf",
+      "publishedCount": 7
+    },
+    {
+      "vendor": "tarte",
+      "publishedCount": 230,
+      "id": "gid://shopify/Collection/267811258439",
+      "title": "tarte",
+      "handle": "tarte",
+      "updatedAt": "2026-10-16T11:18:45Z",
+      "image": null,
+      "productsCount": {
+        "count": 278
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "TOM FORD",
+      "publishedCount": 1,
+      "id": "gid://shopify/Collection/267811356743",
+      "title": "TOM FORD",
+      "handle": "tom-ford",
+      "updatedAt": "2026-02-09T11:25:13Z",
+      "image": null,
+      "productsCount": {
+        "count": 1
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "GXVE BY GWEN STEFANI",
+      "publishedCount": 1
+    },
+    {
+      "vendor": "Fenty Beauty by Rihanna",
+      "publishedCount": 106,
+      "id": "gid://shopify/Collection/295396900935",
+      "title": "Fenty Beauty",
+      "handle": "fenty-beauty",
+      "updatedAt": "2026-10-21T11:20:50Z",
+      "image": null,
+      "productsCount": {
+        "count": 220
+      },
+      "ruleSet": {
+        "appliedDisjunctively": false,
+        "rules": [
+          {
+            "column": "VENDOR",
+            "relation": "EQUALS",
+            "condition": "Fenty Beauty by Rihanna"
+          }
+        ]
+      },
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "MERIT",
+      "publishedCount": 20,
+      "id": "gid://shopify/Collection/267772133447",
+      "title": "MERIT",
+      "handle": "merit",
+      "updatedAt": "2026-08-25T16:27:10Z",
+      "image": null,
+      "productsCount": {
+        "count": 39
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "LAWLESS",
+      "publishedCount": 24,
+      "id": "gid://shopify/Collection/267771412551",
+      "title": "LAWLESS",
+      "handle": "lawless",
+      "updatedAt": "2026-04-18T11:22:46Z",
+      "image": null,
+      "productsCount": {
+        "count": 39
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    },
+    {
+      "vendor": "givenchy",
+      "publishedCount": 1,
+      "id": "gid://shopify/Collection/267768987719",
+      "title": "Givenchy",
+      "handle": "givenchy",
+      "updatedAt": "2026-02-09T11:24:32Z",
+      "image": null,
+      "productsCount": {
+        "count": 1
+      },
+      "ruleSet": null,
+      "sortOrder": "BEST_SELLING"
+    }
+  ],
+  "samples": [
+    {
+      "vendor": "Rhode",
+      "handle": "pocket-blush",
+      "id": "gid://shopify/Product/7080419852359",
+      "title": "Rhode Pocket Blush — Cream Blush for Cheeks & Lips",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/IMG-4644.webp?v=1752527289",
+          "altText": "Rhode Pocket Blush — Cream Blush for Cheeks & Lips, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/23743852904519"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/WhatsAppImage2024-06-17at15.43.17_94142843.jpg?v=1722745781",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22677901213767"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/WhatsAppImage2024-06-17at15.43.17_2c6c9077.jpg?v=1722745778",
+          "altText": "pocket blush — Rhode, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/22677901180999"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/WhatsApp_Image_2024-06-17_at_15.47.24_a6db3cb5.jpg?v=1722745784",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22677905506375"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/WhatsApp_Image_2024-06-17_at_15.47.21_ba211659.jpg?v=1722745790",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22677905604679"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/WhatsApp_Image_2024-06-17_at_15.47.22_2c07b4e6.jpg?v=1722745793",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22677905539143"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/WhatsApp_Image_2024-06-17_at_15.47.22_a7f8302d.jpg?v=1722745796",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22677905637447"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/WhatsApp_Image_2024-06-17_at_15.47.23_0e8319ee.jpg?v=1722745798",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22677905571911"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/IMG-4644.webp?v=1752527289"
+    },
+    {
+      "vendor": "PATRICK TA",
+      "handle": "major-headlines-double-take-creme-powder-blush-duo",
+      "id": "gid://shopify/Product/7104049807431",
+      "title": "Major Headlines Double-Take Crème & Powder Blush Duo",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2742492-main-zoom.jpg?v=1722785689",
+          "altText": "Major Headlines Double-Take Crème & Powder Blush Duo — PATRICK TA, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/22792645378119"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2742492-av-2-zoom.jpg?v=1722785691",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22792645279815"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2742492-av-3-zoom.jpg?v=1722785695",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22792645312583"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2742492-av-6-zoom.jpg?v=1722785702",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22792645345351"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2742500-main-zoom.jpg?v=1722785705",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22792645509191"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2742500-av-2-zoom.jpg?v=1722785708",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22792645410887"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2742500-av-3-zoom.jpg?v=1722785711",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22792645443655"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2742500-av-6-zoom.jpg?v=1722785714",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22792645476423"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2742492-main-zoom.jpg?v=1722785689"
+    },
+    {
+      "vendor": "saie",
+      "handle": "glowy-super-gel-multipurpose-illuminator",
+      "id": "gid://shopify/Product/7115303780423",
+      "title": "Glowy Super™ Gel Multipurpose Illuminator",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2414027-main-zoom.jpg?v=1724440504",
+          "altText": "Glowy Super™ Gel Multipurpose Illuminator — saie, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/22852184965191"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2414027-av-20-zoom.jpg?v=1724440505",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22852184997959"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2414035-main-zoom.jpg?v=1724440505",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22852184899655"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2679066-av-9-zoom.jpg?v=1724440505",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22852184932423"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2763894-main-zoom.png?v=1724440505",
+          "altText": "glowy super gel rose glow — saie, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/22852184834119"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2787562-av-2-zoom.jpg?v=1724440504",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22852184866887"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2414035-av-22-zoom.jpg?v=1724440504",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22852184670279"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2834943-main-zoom.jpg?v=1737984198",
+          "altText": "glowy super gel warmglow — saie, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/23314232180807"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2414027-main-zoom.jpg?v=1724440504"
+    },
+    {
+      "vendor": "HUDA BEAUTY",
+      "handle": "fauxfilter-luminous-matte-concealer",
+      "id": "gid://shopify/Product/7148292833351",
+      "title": "#FauxFilter Luminous Matte Concealer",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/PDP-SECTION1-FFCONCEALER-WHIPPEDCREAM-TILE1_5942bef6-3b5c-498d-a70d-246dfc360369.webp?v=1777545076",
+          "altText": "#FauxFilter Luminous Matte Concealer — HUDA BEAUTY, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/25303921393735"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/PDP-SECTION1-FFCONCEALER-WHIPPEDCREAM-TILE2.webp?v=1777545076",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/25303921426503"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/PDP-SECTION1-FFCONCEALER-ROYALICING-TILE1_42ed3b76-1ee9-47a6-b135-20a05525d2db.webp?v=1777545076",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/25303921459271"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/PDP-SECTION1-FFCONCEALER-ROYALICING-TILE2.webp?v=1777545076",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/25303921492039"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/PDP-SECTION1-FFCONCEALER-MARSHMALLOW-TILE1_a8756d00-5223-47a7-8c17-672ddf3761b7.webp?v=1777545076",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/25303921524807"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/PDP-SECTION1-FFCONCEALER-MARSHMALLOW-TILE2.webp?v=1777545076",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/25303921557575"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/PDP-SECTION1-FFCONCEALER-YOGHURTDROPS-TILE1.webp?v=1777545076",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/25303921590343"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/PDP-SECTION1-FFCONCEALER-YOGURTDROPS-TILE2.webp?v=1777545076",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/25303921623111"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/PDP-SECTION1-FFCONCEALER-WHIPPEDCREAM-TILE1_5942bef6-3b5c-498d-a70d-246dfc360369.webp?v=1777545076"
+    },
+    {
+      "vendor": "Rare Beauty by Selena Gomez",
+      "handle": "soft-pinch-liquid-blush",
+      "id": "gid://shopify/Product/6891997298759",
+      "title": "Soft Pinch Liquid Blush",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/ECOMM-SP-LIQUID-BLUSH-DEWY-HOPE.webp?v=1765879831",
+          "altText": "Soft Pinch Liquid Blush - Rare Beauty by Selena Gomez | Sofie Store",
+          "mediaId": "gid://shopify/MediaImage/24429639467079"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/SWATCH-SP-LIQUID-BLUSH-DEWY-HOPE.webp?v=1765879831",
+          "altText": "Soft Pinch Liquid Blush - Rare Beauty by Selena Gomez | Sofie Store",
+          "mediaId": "gid://shopify/MediaImage/24429639499847"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/SHADE-GRIDS-SP-LIQUID-BLUSH-DEWY-HOPE.webp?v=1765879831",
+          "altText": "Soft Pinch Liquid Blush - Rare Beauty by Selena Gomez | Sofie Store",
+          "mediaId": "gid://shopify/MediaImage/24429639532615"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/ECOMM-SP-LIQUID-BLUSH-DEWY-GRATEFUL.webp?v=1765879831",
+          "altText": "Soft Pinch Liquid Blush - Rare Beauty by Selena Gomez | Sofie Store",
+          "mediaId": "gid://shopify/MediaImage/24429639565383"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/SWATCH-SP-LIQUID-BLUSH-DEWY-GRATEFUL.webp?v=1765879831",
+          "altText": "Soft Pinch Liquid Blush - Rare Beauty by Selena Gomez | Sofie Store",
+          "mediaId": "gid://shopify/MediaImage/24429639598151"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/SHADE-GRIDS-SP-LIQUID-BLUSH-DEWY-GRATEFUL.webp?v=1765879831",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24429639630919"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/ECOMM-SP-LIQUID-BLUSH-DEWY-HAPPY.webp?v=1765879831",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24429639663687"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/SWATCH-SP-LIQUID-BLUSH-DEWY-HAPPY_71375dc1-ce9e-41fe-bc2b-1443c299fb94.webp?v=1765879831",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24429639696455"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/ECOMM-SP-LIQUID-BLUSH-DEWY-HOPE.webp?v=1765879831"
+    },
+    {
+      "vendor": "Too Faced",
+      "handle": "lip-injection-extreme-lip-plumper",
+      "id": "gid://shopify/Product/7083730141255",
+      "title": "Lip Injection Extreme Lip Plumper",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2307528-main-zoom.jpg?v=1734627270",
+          "altText": "Lip Injection Extreme Lip Plumper — Too Faced, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/23165734715463"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2307528-av-16-zoom.jpg?v=1734627270",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23165734584391"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2307528-av-15-zoom.jpg?v=1734627270",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23165734649927"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2307528-av-17-zoom.jpg?v=1734627270",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23165734682695"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2307528-av-14-zoom.jpg?v=1734627270",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23165734617159"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s1494004-main-zoom.jpg?v=1734627270",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23165734748231"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s1494004-av-13-zoom.jpg?v=1734627270",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23165734813767"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s1494004-av-14-zoom.jpg?v=1734627270",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23165734846535"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2307528-main-zoom.jpg?v=1734627270"
+    },
+    {
+      "vendor": "Hourglass",
+      "handle": "mini-vanish™-airbrush-concealer",
+      "id": "gid://shopify/Product/6953168699463",
+      "title": "Vanish™ Airbrush Concealer",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/2000x2000-72dpi_VAC_ECOMM-Pacshot_0000s_0013_Summer2025_PPage_VAC_ECOMM-Pacshot_0018_2000x2000-300dpi_Birch.webp?v=1772891889",
+          "altText": "Vanish™ Airbrush Concealer — Hourglass, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/24935704887367"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/2000X2000_72DPI__0000_SPRING26_VAC-ECOMM-SWATCH-BIRCH1.webp?v=1772891890",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24935704920135"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/2000x2000_72dpi_0031_HG_SHADEFINDER_B_A_VAC_SHADE_EXT_SPRING26.webp?v=1772891889",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24935704952903"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/2000x2000-72dpi_VAC_ECOMM-Pacshot_0000s_0006_Summer2025_PPage_VAC_ECOMM-Pacshot_0025_2000x2000-300dpi_Stone.webp?v=1772891889",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24935704985671"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/2000X2000_72DPI__0002_SPRING26_VAC-ECOMM-SWATCH-STONE1.3.webp?v=1772891890",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24935705018439"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/2000x2000_72dpi_0030_HG_SHADEFINDER_B_A_VAC_SHADE_EXT_SPRING262.webp?v=1772891889",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24935705051207"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/2000x2000-72dpi_VAC_ECOMM-Pacshot_0000s_0005_Summer2025_PPage_VAC_ECOMM-Pacshot_0026_2000x2000-300dpi_Sand.webp?v=1772891890",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24935705083975"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/2000X2000_72DPI__0004_SPRING26_VAC-ECOMM-SWATCH-SAND1.45.webp?v=1772891889",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24935705116743"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/2000x2000-72dpi_VAC_ECOMM-Pacshot_0000s_0013_Summer2025_PPage_VAC_ECOMM-Pacshot_0018_2000x2000-300dpi_Birch.webp?v=1772891889"
+    },
+    {
+      "vendor": "NARS",
+      "handle": "total-seduction-eyeshadow-stick",
+      "id": "gid://shopify/Product/7158793240647",
+      "title": "Total Seduction Eyeshadow Stick",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/0194251142791_TotalSeductionEyeshadowStick_AdultsOnly_1.webp?v=1752565416",
+          "altText": "Total Seduction Eyeshadow Stick — NARS, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/23745418625095"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/0194251142791_TotalSeductionEyeshadowStick_OnModelGrid_AdultsOnly_12_3e746a7c-d497-4e34-89b8-96030e690572.jpg?v=1752565416",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23745418657863"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/0194251143002_TotalSeductionEyeshadowStick_DontTouch_1.webp?v=1752565416",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23745418690631"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/0194251143002_TotalSeductionEyeshadowStick_OnModelGrid_DontTouch_2_c1d5e202-1937-4276-9f1a-d83754ee733d.jpg?v=1752565416",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23745418723399"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/0194251143019_TotalSeductionEyeshadowStick_Oblivion_1.webp?v=1752565416",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23745418756167"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/0194251143019_TotalSeductionEyeshadowStick_OnModelGrid_Oblivion_2_63e66420-a4c5-4755-827b-eed389b432e9.jpg?v=1752565416",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23745418788935"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/0194251143026_TotalSeductionEyeshadowStick_StripDown_1.webp?v=1752565416",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23745418821703"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/0194251143026_TotalSeductionEyeshadowStick_OnModelGrid_2_faee3b2f-92c8-47b0-bfcf-581754666ccd.jpg?v=1752565416",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23745418854471"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/0194251142791_TotalSeductionEyeshadowStick_AdultsOnly_1.webp?v=1752565416"
+    },
+    {
+      "vendor": "MAKEUP BY MARIO",
+      "handle": "soft-pop-plumping-blush-veil",
+      "id": "gid://shopify/Product/7115967561799",
+      "title": "Soft Pop Plumping Blush Veil",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2679553-main-zoom.jpg?v=1724615253",
+          "altText": "Soft Pop Plumping Blush Veil — MAKEUP BY MARIO, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/22855522156615"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2679553-av-10-zoom.jpg?v=1724615253",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22855522123847"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2679603-main-zoom.jpg?v=1724615253",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22855522222151"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2679603-av-10-zoom.jpg?v=1724615253",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22855522189383"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2679595-main-zoom.jpg?v=1724615253",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22855522287687"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2679595-av-10-zoom.jpg?v=1724615253",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22855522254919"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2679587-main-zoom.jpg?v=1724615253",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22855522353223"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2679587-av-10-zoom.jpg?v=1724615253",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22855522320455"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2679553-main-zoom.jpg?v=1724615253"
+    },
+    {
+      "vendor": "Charlotte Tilbury",
+      "handle": "hollywood-flawless-filter",
+      "id": "gid://shopify/Product/7129754828871",
+      "title": "HOLLYWOOD FLAWLESS FILTER",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2116010-main-zoom.jpg?v=1726848301",
+          "altText": "HOLLYWOOD FLAWLESS FILTER — Charlotte Tilbury, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/22924725813319"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2116010-av-15-zoom.jpg?v=1726848301",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22924725780551"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2116010-av-12-zoom.jpg?v=1726848301",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22924725846087"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2116028-main-zoom.jpg?v=1726848302",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22924725878855"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2116028-av-16-zoom.jpg?v=1726848302",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22924725944391"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2116028-av-13-zoom.jpg?v=1726848301",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22924725911623"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2419786-main-zoom.jpg?v=1726848302",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22924725977159"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2419786-av-15-zoom.jpg?v=1726848302",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22924726009927"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2116010-main-zoom.jpg?v=1726848301"
+    },
+    {
+      "vendor": "Kosas",
+      "handle": "revealer-super-creamy-brightening-concealer-with-caffeine-and-hyaluronic-acid",
+      "id": "gid://shopify/Product/7147074650183",
+      "title": "Revealer Concealer Super Creamy + Brightening Concealer",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2429454-main-zoom.jpg?v=1730815698",
+          "altText": "Revealer Concealer Super Creamy + Brightening Concealer — Kosas, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/23032650006599"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2429454-av-30-zoom.jpg?v=1730815698",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23032649973831"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2737328-main-zoom.jpg?v=1730815698",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23032650268743"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2737328-av-2-zoom.jpg?v=1730815698",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23032650235975"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2333722-main-zoom.jpg?v=1730815698",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23032649809991"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2333722-av-30-zoom.jpg?v=1730815698",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23032649777223"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2429462-main-zoom.jpg?v=1730815698",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23032650072135"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2429462-av-30-zoom.jpg?v=1730815698",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23032650039367"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2429454-main-zoom.jpg?v=1730815698"
+    },
+    {
+      "vendor": "Tower 28 Beauty",
+      "handle": "swipe-all-over-hydrating-serum-concealer",
+      "id": "gid://shopify/Product/6939639414855",
+      "title": "Swipe Serum Concealer®",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2697480-main-zoom_1.jpg?v=1722719191",
+          "altText": "Swipe Serum Concealer® — Tower 28 Beauty, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/22263561257031"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2697480-av-13-zoom_1.jpg?v=1722719195",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22263561224263"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2697480-av-12-zoom_1.jpg?v=1722719198",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22263561289799"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2697480-av-15-zoom_1.jpg?v=1722719201",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22263561322567"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2697498-main-zoom_1.jpg?v=1722719204",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22263561584711"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2697498-av-12-zoom_1.jpg?v=1722719208",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22263561650247"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2697498-av-11-zoom_1.jpg?v=1722719211",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22263561683015"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2697498-av-14-zoom_1.jpg?v=1722719214",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22263561617479"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2697480-main-zoom_1.jpg?v=1722719191"
+    },
+    {
+      "vendor": "DIOR",
+      "handle": "forever-skin-perfect-24h-multi-use-foundation-stick",
+      "id": "gid://shopify/Product/7204945887303",
+      "title": "Forever Skin Perfect 24H Multi-Use Foundation Stick",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2789105-main-zoom.jpg?v=1745269075",
+          "altText": "Forever Skin Perfect 24H Multi-Use Foundation Stick — DIOR, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/23524131176519"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2789105-av-7-zoom.jpg?v=1745269075",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23524131110983"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2789105-av-12-zoom.jpg?v=1745269075",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23524131143751"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2789113-main-zoom.jpg?v=1745269075",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23524131274823"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2789113-av-12-zoom.jpg?v=1745269075",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23524131242055"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2789113-av-13-zoom.jpg?v=1745269075",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23524131209287"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2789139-main-zoom.jpg?v=1745269075",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23524131373127"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2789139-av-7-zoom.jpg?v=1745269075",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23524131307591"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2789105-main-zoom.jpg?v=1745269075"
+    },
+    {
+      "vendor": "Benefit Cosmetics",
+      "handle": "fluff-up-brow-flexible-brow-texturizing-wax",
+      "id": "gid://shopify/Product/7112383234119",
+      "title": "Fluff Up Brow Wax",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2641751-main-zoom.jpg?v=1723718577",
+          "altText": "Fluff Up Brow Wax — Benefit Cosmetics, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/22834129240135"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2711216-av-5-zoom.jpg?v=1723718580",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22834129207367"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2641751-av-10-zoom.jpg?v=1723718583",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22834129305671"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2641751-av-9-zoom.jpg?v=1723718586",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22834129338439"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2641751-av-8-zoom.jpg?v=1723718589",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22834129371207"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2641751-av-6-zoom.jpg?v=1723718593",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22834129403975"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2641751-av-7-zoom.jpg?v=1723718596",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22834129436743"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2641751-av-5-zoom.jpg?v=1723718599",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22834129469511"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2641751-main-zoom.jpg?v=1723718577"
+    },
+    {
+      "vendor": "HAUS LABS BY LADY GAGA",
+      "handle": "triclone™-skin-tech-hydrating-de-puffing-concealer",
+      "id": "gid://shopify/Product/7181444808775",
+      "title": "Triclone™ Skin Tech Hydrating + De-Puffing Concealer",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/new-54_Deep_Neutral_900x_63a6059b-15d8-4553-8a3c-aae2c823bf6e.webp?v=1739276602",
+          "altText": "Triclone™ Skin Tech Hydrating + De-Puffing Concealer — HAUS LABS BY LADY GAGA, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/23350104227911"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/hxtdjesaeaf_54_DeepNeutral_1400x_45d12d96-8c36-4882-857a-924003f36bd4.webp?v=1739276847",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23350105342023"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/BA_stigjozsrt_54_1400x_7346945a-9434-4d02-a8d7-2a4ed903cd05.webp?v=1739276847",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23350105374791"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/sgsae_1DEEP_54DeepNeutral_1400x_5565909d-5466-4c0b-a5a6-da576c292d8d.webp?v=1739276847",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23350105407559"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/hxtdjesaeaf_53_DeepNeutral_1400x_545926d2-a8c8-459b-861b-6f5e48edbcf2.webp?v=1739276847",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23350105440327"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/BA_stigjozsrt_53_1400x_0b9cce2d-76ed-4b1c-b7f7-42ce22b34a30.webp?v=1739276847",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23350105473095"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/sgsae_1DEEP_53DeepNeutral_1400x_32d5a971-cc93-4713-be8d-800609282d94.webp?v=1739276847",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23350105505863"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/hxtdjesaeaf_52_DeepNeutral_1400x_dfda6654-857b-460e-a1c1-79488d8b59ac.webp?v=1739276847",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23350105538631"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/new-54_Deep_Neutral_900x_63a6059b-15d8-4553-8a3c-aae2c823bf6e.webp?v=1739276602"
+    },
+    {
+      "vendor": "elf",
+      "handle": "halo-glow-highlight-beauty-wand-copy",
+      "id": "gid://shopify/Product/7117941112903",
+      "title": "Halo Glow Liquid Filter",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/83565_OpenA_V2_R_d02ae91d-8a71-4bba-bfbb-ab663a9b18f0.png?v=1791732980",
+          "altText": "Halo Glow Liquid Filter – 0 Fair",
+          "mediaId": "gid://shopify/MediaImage/34331795914823"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/611Buwawk6L._SX466.jpg?v=1724836554",
+          "altText": "Halo Glow Liquid Filter — elf, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/22862803959879"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/71CZh4zCjVL._SX466.jpg?v=1724836554",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22862803828807"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/71GpWKOBaJL._SX466.jpg?v=1724836554",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22862803861575"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/81lgzQ_oriL._SX466.jpg?v=1724836554",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22862803894343"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/91OXC-O2YsL._SX466.jpg?v=1724836554",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22862803927111"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/812rkoKkhTL._SX466.jpg?v=1724836554",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22862803992647"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/61p_tdb0gQL._SX466.jpg?v=1724837049",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22862823784519"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/83565_OpenA_V2_R_d02ae91d-8a71-4bba-bfbb-ab663a9b18f0.png?v=1791732980"
+    },
+    {
+      "vendor": "tarte",
+      "handle": "maneater™-mascara",
+      "id": "gid://shopify/Product/6910632263751",
+      "title": "maneater™ mascara",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/856-maneater-mascara-black-MAIN2-0_1.jpg?v=1722731726",
+          "altText": "maneater™ mascara — tarte, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/22144866058311"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/856-maneater-voluptuous-mascara-black-DDB_ALT-6_1.jpg?v=1722731731",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22144865992775"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/856-maneater-voluptuous-mascara-black-DDB_ALT-2_1.jpg?v=1722731737",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22144866025543"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/856-maneater-voluptuous-mascara-black-DDB_ALT-1_1.jpg?v=1722731742",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22144866091079"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/856-maneater-voluptuous-mascara-black-DDB_ALT-5_2.jpg?v=1722739919",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22144866123847"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/856-maneater-voluptuous-mascara-black-DDB_ALT-5_1_1.jpg?v=1722739923",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22144866156615"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/856-maneater-voluptuous-mascara-black-DDB_ALT-4_1.jpg?v=1722739927",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22144866189383"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/856-maneater-mascara-brown-MAIN2-0.jpg?v=1731498981",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/23058330124359"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/856-maneater-mascara-black-MAIN2-0_1.jpg?v=1722731726"
+    },
+    {
+      "vendor": "TOM FORD",
+      "handle": "tom-ford-eye-color-quad-eyeshadow-palette",
+      "id": "gid://shopify/Product/7119861022791",
+      "title": "TOM FORD Eye Color Quad Eyeshadow Palette",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/SousLeSable.webp?v=1725108936",
+          "altText": "TOM FORD Eye Color Quad Eyeshadow Palette, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/22873339396167"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2335743-av-02-zoom.webp?v=1725108936",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22873339330631"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2335743-av-01-zoom.webp?v=1725108936",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22873339297863"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2335743-av-03-zoom.webp?v=1725108936",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22873339363399"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/20_Disco_Dust_22707bbc-f530-4e4a-b0fc-ea4308ed32ca.webp?v=1725109234",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22873345097799"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s1987833-av-02-zoom.webp?v=1725109235",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22873345130567"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s1987833-av-01-zoom.webp?v=1725109235",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22873345163335"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/29_Desert_Fox.webp?v=1725109388",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22873347850311"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/SousLeSable.webp?v=1725108936"
+    },
+    {
+      "vendor": "GXVE BY GWEN STEFANI",
+      "handle": "gxve-by-gwen-stefani-original-me-clean-high-performance-matte-lipstick",
+      "id": "gid://shopify/Product/7115726651463",
+      "title": "GXVE BY GWEN STEFANI Original Me Clean High-Performance Matte Lipstick",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2568285-main-zoom.webp?v=1724584237",
+          "altText": "GXVE BY GWEN STEFANI Original Me Clean High-Performance Matte Lipstick, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/22854900777031"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2568285-av-03-zoom.jpg?v=1724584238",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22854900547655"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2568285-av-04-zoom.webp?v=1724584237",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22854900580423"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2568285-av-06-zoom.webp?v=1724584237",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22854900613191"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2568285-av-08-zoom.webp?v=1724584238",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22854900645959"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2568285-av-09-zoom.webp?v=1724584237",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22854900678727"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2568285-av-10-zoom.webp?v=1724584238",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22854900711495"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2568285-av-11-zoom.webp?v=1724584237",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22854900744263"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2568285-main-zoom.webp?v=1724584237"
+    },
+    {
+      "vendor": "Fenty Beauty by Rihanna",
+      "handle": "gloss-bomb-ice-cooling-lip-luminizer",
+      "id": "gid://shopify/Product/7085127467079",
+      "title": "GLOSS BOMB ICE COOLING LIP LUMINIZER",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/FB_HOL22_T2PRODUCT_CONCRETE_GLOSS_BOMB_ICE_INSTANT_COOLING_LIP_LUMINIZER_CLOSED_1200x1500_e4978753-3cb9-4f55-8b8a-9deec67f9fc5_1.jpg?v=1722753075",
+          "altText": "GLOSS BOMB ICE COOLING LIP LUMINIZER — Fenty Beauty by Rihanna, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/22701286064199"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/FB_HOL22_T2_BEAUTY_GB-ICE_LIGHT_KRYSTEN_1200x1500_72DPI_1.webp?v=1722753079",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22701286031431"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/FB_HOL22_T1_BEAUTY_GB-ICE_MED_RUBY_1200x1500_72DPI_1.webp?v=1722753084",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22701286096967"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/FB_HOL22_T1_BEAUTY_GB-ICE_DEEP_SOLO_1200x1500_72DPI_1.webp?v=1722753088",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22701286129735"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/FB_HOL22_T2PRODUCT_ARMSWATCH_GLOSS_BOMB_ICE_1200x1200_488bf2d4-14a8-4a4e-aa88-fc99f0f0d662_1.webp?v=1722753092",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22701286162503"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/FB_HOL22_T2PRODUCT_SMEAR_GLOSS_BOMB_ICE_1200x1500_3dd75b55-4ed6-42dc-95ee-fcc1e5b326bf_1.webp?v=1722753097",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22701286195271"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/FB275767_FB_Gloss_Bomb_Ice_Launch_090822_PDP_INFOGRAPHIC_1200x1500_a4b651c3-d209-4dc8-afea-b40560f83e45_1.webp?v=1722753104",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22701286228039"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/FB22_HOLIDAY_T2_PRODUCT_GB_ICE_HEAT-CHERRY_1200x1500_72DPI_1.webp?v=1722753108",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22701286260807"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/FB_HOL22_T2PRODUCT_CONCRETE_GLOSS_BOMB_ICE_INSTANT_COOLING_LIP_LUMINIZER_CLOSED_1200x1500_e4978753-3cb9-4f55-8b8a-9deec67f9fc5_1.jpg?v=1722753075"
+    },
+    {
+      "vendor": "MERIT",
+      "handle": "solo-shadow-matte-eye-color",
+      "id": "gid://shopify/Product/7080404451399",
+      "title": "Solo Shadow",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/MERIT25-SoloShadowSheen-Hero-Iris_162d453e-6e09-4362-83aa-7c8e09d207c3.webp?v=1774704298",
+          "altText": "Solo Shadow MATTE EYE COLOR — MERIT, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/25116415426631"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/MERIT25-SoloShadowSheen-Swatch-IRis.webp?v=1774704298",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/25116415459399"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/MERIT25-SoloShadowSheen-Iris-Milano_cbb4abfc-666e-478e-a46c-3b780bcadba5.webp?v=1774704298",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/25116415492167"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/MERIT25-SoloShadowSheen-Hero-Glace_1742c3c5-735c-4ca0-8c92-6f6ff151565a.webp?v=1774704298",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/25116415524935"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/MERIT25-SoloShadowSheen-Swatch-Glace.webp?v=1774704298",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/25116415557703"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/MERIT25-SoloShadowSheen-Glace-Sylke_ab2686a3-0ff6-4174-bf11-2870ae9a5a1c.webp?v=1774704298",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/25116415590471"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/MERIT25-SoloShadowSheen-Hero-Matchbook_197576e0-a50a-42eb-b8bc-207539e0934b.webp?v=1774704298",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/25116415623239"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/MERIT25-SoloShadowSheen-Swatch-Matchbook.jpg?v=1774704298",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/25116415656007"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/MERIT25-SoloShadowSheen-Hero-Iris_162d453e-6e09-4362-83aa-7c8e09d207c3.webp?v=1774704298"
+    },
+    {
+      "vendor": "LAWLESS",
+      "handle": "forget-the-filler-lip-plumping-line-smoothing-satin-cream-lipstick",
+      "id": "gid://shopify/Product/7416276156487",
+      "title": "Forget The Filler Lip-Plumping Line-Smoothing Satin Cream Lipstick",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/lawless-ftflipstick-platinum_1080x_f64104dc-bc7a-427d-8fcf-bad9dca1c8de.webp?v=1769974291",
+          "altText": "Forget The Filler Lip-Plumping Line-Smoothing Satin Cream Lipstick — LAWLESS, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/24667801223239"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/1-Platinum_B_1080x_ab6111a4-16a2-4ec4-919b-59c844af2d93.webp?v=1769974291",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24667801256007"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/1-Platinum_C_1080x_2cb9345e-7234-4f2d-9187-ccc6eed6caac.webp?v=1769974292",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24667801288775"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/1-Platinum_D_1080x_fc9b9a9f-8423-4dda-a468-35cc99da48bd.webp?v=1769974291",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24667801321543"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/1-Platinum_E_1080x_d2ed9605-0c53-4cdb-9c4d-0342891bb81a.webp?v=1769974291",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24667801354311"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/1-Platinum_F_1080x_00ae3250-6374-4310-b066-b8ed98b8d47f.webp?v=1769974291",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24667801387079"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/lawless-ftflipstick-annie_900x_a4b2cb73-c3a7-481e-8e59-7e20ddcb3b72.webp?v=1769974291",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24667801419847"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/2-Annie_B_1080x_214b83be-ef50-47bb-a856-d4bbd9d97ffa.webp?v=1769974291",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/24667801452615"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/lawless-ftflipstick-platinum_1080x_f64104dc-bc7a-427d-8fcf-bad9dca1c8de.webp?v=1769974291"
+    },
+    {
+      "vendor": "givenchy",
+      "handle": "givenchy-prisme-libre-loose-powder-blush-12h-radiance",
+      "id": "gid://shopify/Product/7114486808647",
+      "title": "Givenchy Prisme Libre Loose Powder Blush 12H Radiance",
+      "images": [
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2691178-main-zoom_48ce096c-4796-43e7-a0af-159ba99d3dcb.webp?v=1724243991",
+          "altText": "Givenchy Prisme Libre Loose Powder Blush 12H Radiance, authentic at Sofie's Makeup Store Egypt",
+          "mediaId": "gid://shopify/MediaImage/22845081583687"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2691178-av-10-zoom_e3051c31-090f-4efc-9b17-cb95d7c59bad.webp?v=1724243990",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22845081485383"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2691178-av-9-zoom_e30627d8-2c73-416a-b80f-eee9dcb151aa.webp?v=1724243990",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22845081452615"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2691178-av-5-zoom_8d7213d1-b0e7-47c1-a0ae-3450a7f497dd.webp?v=1724243990",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22845081387079"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2691178-av-2-zoom_d6181862-89ed-404d-b74f-8e99b850731b.webp?v=1724243990",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22845081354311"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2691178-av-6-zoom_ef2f6970-3a5a-4d22-87da-40ee2550a821.webp?v=1724243990",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22845081419847"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2691178-av-11-zoom_d583a00b-8604-4bbc-b490-9d160deb9fde.webp?v=1724243990",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22845081518151"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2691178-av-12-zoom_129920af-a4b4-433f-9c3b-66641b68d1f9.webp?v=1724243990",
+          "altText": "",
+          "mediaId": "gid://shopify/MediaImage/22845081550919"
+        }
+      ],
+      "featured": "https://cdn.shopify.com/s/files/1/0559/8986/2471/files/s2691178-main-zoom_48ce096c-4796-43e7-a0af-159ba99d3dcb.webp?v=1724243991"
+    }
+  ],
+  "bestSellers": {
+    "id": "gid://shopify/Collection/269406994503",
+    "title": "BEST SELLERS MAKEUP",
+    "handle": "best-sellers-makeup",
+    "templateSuffix": "",
+    "productsCount": {
+      "count": 79
+    },
+    "products": {
+      "nodes": [
+        {
+          "id": "gid://shopify/Product/7080419852359",
+          "title": "Rhode Pocket Blush — Cream Blush for Cheeks & Lips",
+          "handle": "pocket-blush",
+          "vendor": "Rhode",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/pocket-blush"
+        },
+        {
+          "id": "gid://shopify/Product/7104049807431",
+          "title": "Major Headlines Double-Take Crème & Powder Blush Duo",
+          "handle": "major-headlines-double-take-creme-powder-blush-duo",
+          "vendor": "PATRICK TA",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/major-headlines-double-take-creme-powder-blush-duo"
+        },
+        {
+          "id": "gid://shopify/Product/7115303780423",
+          "title": "Glowy Super™ Gel Multipurpose Illuminator",
+          "handle": "glowy-super-gel-multipurpose-illuminator",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/glowy-super-gel-multipurpose-illuminator"
+        },
+        {
+          "id": "gid://shopify/Product/7148292833351",
+          "title": "#FauxFilter Luminous Matte Concealer",
+          "handle": "fauxfilter-luminous-matte-concealer",
+          "vendor": "HUDA BEAUTY",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/fauxfilter-luminous-matte-concealer"
+        },
+        {
+          "id": "gid://shopify/Product/6891997298759",
+          "title": "Soft Pinch Liquid Blush",
+          "handle": "soft-pinch-liquid-blush",
+          "vendor": "Rare Beauty by Selena Gomez",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/soft-pinch-liquid-blush"
+        },
+        {
+          "id": "gid://shopify/Product/7115311546439",
+          "title": "Dew Blush™ Blendable Liquid Cheek Flush",
+          "handle": "dew-blush-blendable-liquid-cheek-flush",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/dew-blush-blendable-liquid-cheek-flush"
+        },
+        {
+          "id": "gid://shopify/Product/7083730141255",
+          "title": "Lip Injection Extreme Lip Plumper",
+          "handle": "lip-injection-extreme-lip-plumper",
+          "vendor": "Too Faced",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/lip-injection-extreme-lip-plumper"
+        },
+        {
+          "id": "gid://shopify/Product/6953168699463",
+          "title": "Vanish™ Airbrush Concealer",
+          "handle": "mini-vanish™-airbrush-concealer",
+          "vendor": "Hourglass",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/mini-vanish%E2%84%A2-airbrush-concealer"
+        },
+        {
+          "id": "gid://shopify/Product/7158793240647",
+          "title": "Total Seduction Eyeshadow Stick",
+          "handle": "total-seduction-eyeshadow-stick",
+          "vendor": "NARS",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/total-seduction-eyeshadow-stick"
+        },
+        {
+          "id": "gid://shopify/Product/7119864627271",
+          "title": "Dew Bronze™ Soft-Focus Effortless Liquid Bronzer",
+          "handle": "dew-bronze-soft-focus-effortless-liquid-bronzer",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/dew-bronze-soft-focus-effortless-liquid-bronzer"
+        },
+        {
+          "id": "gid://shopify/Product/7115967561799",
+          "title": "Soft Pop Plumping Blush Veil",
+          "handle": "soft-pop-plumping-blush-veil",
+          "vendor": "MAKEUP BY MARIO",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/soft-pop-plumping-blush-veil"
+        },
+        {
+          "id": "gid://shopify/Product/7248257220679",
+          "title": "Radiant Creamy Concealer",
+          "handle": "radiant-creamy-concealer",
+          "vendor": "NARS",
+          "status": "ARCHIVED",
+          "onlineStoreUrl": null
+        },
+        {
+          "id": "gid://shopify/Product/7129754828871",
+          "title": "HOLLYWOOD FLAWLESS FILTER",
+          "handle": "hollywood-flawless-filter",
+          "vendor": "Charlotte Tilbury",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/hollywood-flawless-filter"
+        },
+        {
+          "id": "gid://shopify/Product/7087725215815",
+          "title": "AMBIENT™ LIGHTING BRONZER",
+          "handle": "ambient™-lighting-bronzer",
+          "vendor": "Hourglass",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/ambient%E2%84%A2-lighting-bronzer"
+        },
+        {
+          "id": "gid://shopify/Product/7147074650183",
+          "title": "Revealer Concealer Super Creamy + Brightening Concealer",
+          "handle": "revealer-super-creamy-brightening-concealer-with-caffeine-and-hyaluronic-acid",
+          "vendor": "Kosas",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/revealer-super-creamy-brightening-concealer-with-caffeine-and-hyaluronic-acid"
+        },
+        {
+          "id": "gid://shopify/Product/7126847324231",
+          "title": "Easy Blur Natural Airbrush Foundation with Niacinamide",
+          "handle": "easy-blur-natural-airbrush-foundation-with-niacinamide",
+          "vendor": "HUDA BEAUTY",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/easy-blur-natural-airbrush-foundation-with-niacinamide"
+        },
+        {
+          "id": "gid://shopify/Product/6939639414855",
+          "title": "Swipe Serum Concealer®",
+          "handle": "swipe-all-over-hydrating-serum-concealer",
+          "vendor": "Tower 28 Beauty",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/swipe-all-over-hydrating-serum-concealer"
+        },
+        {
+          "id": "gid://shopify/Product/7204945887303",
+          "title": "Forever Skin Perfect 24H Multi-Use Foundation Stick",
+          "handle": "forever-skin-perfect-24h-multi-use-foundation-stick",
+          "vendor": "DIOR",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/forever-skin-perfect-24h-multi-use-foundation-stick"
+        },
+        {
+          "id": "gid://shopify/Product/7115442159687",
+          "title": "Glow Sculpt™ Multi-Use Cream Highlighting Blush",
+          "handle": "glow-sculpt-multi-use-cream-highlighting-blush",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/glow-sculpt-multi-use-cream-highlighting-blush"
+        },
+        {
+          "id": "gid://shopify/Product/7114461970503",
+          "title": "Backstage Glow Maximizer Face Palette",
+          "handle": "dior-backstage-glow-face-palette",
+          "vendor": "DIOR",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/dior-backstage-glow-face-palette"
+        },
+        {
+          "id": "gid://shopify/Product/7112383234119",
+          "title": "Fluff Up Brow Wax",
+          "handle": "fluff-up-brow-flexible-brow-texturizing-wax",
+          "vendor": "Benefit Cosmetics",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/fluff-up-brow-flexible-brow-texturizing-wax"
+        },
+        {
+          "id": "gid://shopify/Product/7109575704647",
+          "title": "Full Frontal Volume, Lift & Curl Mascara",
+          "handle": "full-frontal-volume-lift-curl-mascara",
+          "vendor": "Fenty Beauty by Rihanna",
+          "status": "ARCHIVED",
+          "onlineStoreUrl": null
+        },
+        {
+          "id": "gid://shopify/Product/7087912091719",
+          "title": "AMBIENT™ LIGHTING FINISHING POWDER",
+          "handle": "ambient™-lighting-finishing-powder",
+          "vendor": "Hourglass",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/ambient%E2%84%A2-lighting-finishing-powder"
+        },
+        {
+          "id": "gid://shopify/Product/6892267864135",
+          "title": "Warm Wishes Effortless Bronzer Sticks",
+          "handle": "warm-wishes-effortless-bronzer-sticks",
+          "vendor": "Rare Beauty by Selena Gomez",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/warm-wishes-effortless-bronzer-sticks"
+        },
+        {
+          "id": "gid://shopify/Product/7202034548807",
+          "title": "Forever Nude Jumbo Bronzer",
+          "handle": "forever-nude-jumbo-bronzer",
+          "vendor": "DIOR",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/forever-nude-jumbo-bronzer"
+        },
+        {
+          "id": "gid://shopify/Product/7181444808775",
+          "title": "Triclone™ Skin Tech Hydrating + De-Puffing Concealer",
+          "handle": "triclone™-skin-tech-hydrating-de-puffing-concealer",
+          "vendor": "HAUS LABS BY LADY GAGA",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/triclone%E2%84%A2-skin-tech-hydrating-de-puffing-concealer"
+        },
+        {
+          "id": "gid://shopify/Product/7133353934919",
+          "title": "Fenty's Most Want'd: 3-Piece Lip, Face + Eye Kit",
+          "handle": "fentys-most-wantd-3-piece-lip-face-eye-kit",
+          "vendor": "Fenty Beauty by Rihanna",
+          "status": "ARCHIVED",
+          "onlineStoreUrl": null
+        },
+        {
+          "id": "gid://shopify/Product/7129744474183",
+          "title": "Unreal Skin Sheer Glow Tint Hydrating Foundation Stick",
+          "handle": "unreal-skin-sheer-glow-tint-hydrating-foundation-stick",
+          "vendor": "Charlotte Tilbury",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/unreal-skin-sheer-glow-tint-hydrating-foundation-stick"
+        },
+        {
+          "id": "gid://shopify/Product/7119839658055",
+          "title": "Ultra Suede® Lipstick",
+          "handle": "ultra-suede®-lipstick",
+          "vendor": "MAKEUP BY MARIO",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/ultra-suede%C2%AE-lipstick"
+        },
+        {
+          "id": "gid://shopify/Product/7117941112903",
+          "title": "Halo Glow Liquid Filter",
+          "handle": "halo-glow-highlight-beauty-wand-copy",
+          "vendor": "elf",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/halo-glow-highlight-beauty-wand-copy"
+        },
+        {
+          "id": "gid://shopify/Product/7087891513415",
+          "title": "VOYEUR EYESHADOW STICK",
+          "handle": "voyeur-eyeshadow-stick",
+          "vendor": "Hourglass",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/voyeur-eyeshadow-stick"
+        },
+        {
+          "id": "gid://shopify/Product/6910632263751",
+          "title": "maneater™ mascara",
+          "handle": "maneater™-mascara",
+          "vendor": "tarte",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/maneater%E2%84%A2-mascara"
+        },
+        {
+          "id": "gid://shopify/Product/6893651689543",
+          "title": "All of the Above Weightless Eyeshadow Stick",
+          "handle": "all-of-the-above-weightless-eyeshadow-stick",
+          "vendor": "Rare Beauty by Selena Gomez",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/all-of-the-above-weightless-eyeshadow-stick"
+        },
+        {
+          "id": "gid://shopify/Product/7147585536071",
+          "title": "FAUXFILLER Extra Shine Lip Gloss",
+          "handle": "faux-filler-extra-shine-lip-gloss-1",
+          "vendor": "HUDA BEAUTY",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/faux-filler-extra-shine-lip-gloss-1"
+        },
+        {
+          "id": "gid://shopify/Product/7129771311175",
+          "title": "EXAGGER-EYES VOLUME MASCARA",
+          "handle": "exagger-eyes-volume-mascara",
+          "vendor": "Charlotte Tilbury",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/exagger-eyes-volume-mascara"
+        },
+        {
+          "id": "gid://shopify/Product/7119861022791",
+          "title": "TOM FORD Eye Color Quad Eyeshadow Palette",
+          "handle": "tom-ford-eye-color-quad-eyeshadow-palette",
+          "vendor": "TOM FORD",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/tom-ford-eye-color-quad-eyeshadow-palette"
+        },
+        {
+          "id": "gid://shopify/Product/7082930569287",
+          "title": "Travel Size Better Than Sex Mascara Dramatic Volume & Longer Lashes",
+          "handle": "travel-size-better-than-sex-mascara-dramatic-volume-longer-lashes",
+          "vendor": "Too Faced",
+          "status": "ARCHIVED",
+          "onlineStoreUrl": null
+        },
+        {
+          "id": "gid://shopify/Product/7082926866503",
+          "title": "Better Than Sex Volumizing Mascara Dramatic Volume & Longer Lashes",
+          "handle": "better-than-sex-volumizing-mascara",
+          "vendor": "Too Faced",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/better-than-sex-volumizing-mascara"
+        },
+        {
+          "id": "gid://shopify/Product/7047483981895",
+          "title": "Sunshine Skin Tint Clean SPF 30 Foundation",
+          "handle": "sunshine-skin-tint-clean-spf-30-foundation",
+          "vendor": "MILK MAKEUP",
+          "status": "ARCHIVED",
+          "onlineStoreUrl": null
+        },
+        {
+          "id": "gid://shopify/Product/7181447594055",
+          "title": "Triclone™ Skin Tech Medium Coverage Foundation",
+          "handle": "triclone™-skin-tech-medium-coverage-foundation",
+          "vendor": "HAUS LABS BY LADY GAGA",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/triclone%E2%84%A2-skin-tech-medium-coverage-foundation"
+        },
+        {
+          "id": "gid://shopify/Product/7162239385671",
+          "title": "Cocoa Bold Lipstick",
+          "handle": "cocoa-bold-lipstick-1",
+          "vendor": "Too Faced",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/cocoa-bold-lipstick-1"
+        },
+        {
+          "id": "gid://shopify/Product/7130966327367",
+          "title": "LIP LUSTRE",
+          "handle": "lip-lustre",
+          "vendor": "Charlotte Tilbury",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/lip-lustre"
+        },
+        {
+          "id": "gid://shopify/Product/7119874326599",
+          "title": "Glowy Super Skin Tint Foundation Lightweight Medium Coverage",
+          "handle": "glowy-super-skin-tint-foundation-lightweight-medium-coverage-1",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/glowy-super-skin-tint-foundation-lightweight-medium-coverage-1"
+        },
+        {
+          "id": "gid://shopify/Product/7115726651463",
+          "title": "GXVE BY GWEN STEFANI Original Me Clean High-Performance Matte Lipstick",
+          "handle": "gxve-by-gwen-stefani-original-me-clean-high-performance-matte-lipstick",
+          "vendor": "GXVE BY GWEN STEFANI",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/gxve-by-gwen-stefani-original-me-clean-high-performance-matte-lipstick"
+        },
+        {
+          "id": "gid://shopify/Product/7113935388743",
+          "title": "Benefit Cosmetics Benetint Liquid Lip + Cheek Blush Stain",
+          "handle": "benefit-cosmetics-benetint-liquid-lip-cheek-blush-stain",
+          "vendor": "Benefit Cosmetics",
+          "status": "ARCHIVED",
+          "onlineStoreUrl": null
+        },
+        {
+          "id": "gid://shopify/Product/7085127467079",
+          "title": "GLOSS BOMB ICE COOLING LIP LUMINIZER",
+          "handle": "gloss-bomb-ice-cooling-lip-luminizer",
+          "vendor": "Fenty Beauty by Rihanna",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/gloss-bomb-ice-cooling-lip-luminizer"
+        },
+        {
+          "id": "gid://shopify/Product/7080404451399",
+          "title": "Solo Shadow",
+          "handle": "solo-shadow-matte-eye-color",
+          "vendor": "MERIT",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/solo-shadow-matte-eye-color"
+        },
+        {
+          "id": "gid://shopify/Product/7080043380807",
+          "title": "The Minimalist PERFECTING COMPLEXION STICK",
+          "handle": "the-minimalist-perfecting-complexion-stick",
+          "vendor": "MERIT",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/the-minimalist-perfecting-complexion-stick"
+        },
+        {
+          "id": "gid://shopify/Product/7013901664327",
+          "title": "Power Bullet Cream Glow Hydrating Lipstick",
+          "handle": "power-bullet-cream-glow-hydrating-lipstick",
+          "vendor": "HUDA BEAUTY",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/power-bullet-cream-glow-hydrating-lipstick"
+        },
+        {
+          "id": "gid://shopify/Product/7490555740231",
+          "title": "Signature Lip Blush Lightweight Lip Blush",
+          "handle": "signature-lip-blush-lightweight-lip-blush",
+          "vendor": "MERIT",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/signature-lip-blush-lightweight-lip-blush"
+        },
+        {
+          "id": "gid://shopify/Product/7416276156487",
+          "title": "Forget The Filler Lip-Plumping Line-Smoothing Satin Cream Lipstick",
+          "handle": "forget-the-filler-lip-plumping-line-smoothing-satin-cream-lipstick",
+          "vendor": "LAWLESS",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/forget-the-filler-lip-plumping-line-smoothing-satin-cream-lipstick"
+        },
+        {
+          "id": "gid://shopify/Product/9101525123143",
+          "title": "liquid blusher 75ml  virtue",
+          "handle": "liquid-blusher-75ml-virtue",
+          "vendor": "Rare Beauty by Selena Gomez",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/liquid-blusher-75ml-virtue"
+        },
+        {
+          "id": "gid://shopify/Product/9101425475655",
+          "title": "bronzer stick always sunny",
+          "handle": "bronzer-stick-always-sunny",
+          "vendor": "Rare Beauty by Selena Gomez",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/bronzer-stick-always-sunny"
+        },
+        {
+          "id": "gid://shopify/Product/9101392052295",
+          "title": "bronzer stick happy sol",
+          "handle": "bronzer-stick-happy-sol",
+          "vendor": "Rare Beauty by Selena Gomez",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/bronzer-stick-happy-sol"
+        },
+        {
+          "id": "gid://shopify/Product/9095671513159",
+          "title": "saie glowy super gel 15ml star glow",
+          "handle": "saie-glowy-super-gel-15ml-star-glow",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/saie-glowy-super-gel-15ml-star-glow"
+        },
+        {
+          "id": "gid://shopify/Product/9095660503111",
+          "title": "saie glowy super gel 15ml warmglow",
+          "handle": "saie-glowy-super-gel-duo-15ml-warm-glow",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/saie-glowy-super-gel-duo-15ml-warm-glow"
+        },
+        {
+          "id": "gid://shopify/Product/9095641661511",
+          "title": "dew bronze swim",
+          "handle": "dew-bronze-swim",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/dew-bronze-swim"
+        },
+        {
+          "id": "gid://shopify/Product/9093374967879",
+          "title": "liquid blusher 75ml  grateful",
+          "handle": "liquid-blusher-grateful",
+          "vendor": "Rare Beauty by Selena Gomez",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/liquid-blusher-grateful"
+        },
+        {
+          "id": "gid://shopify/Product/9093316247623",
+          "title": "liquid blusher 75ml  happy",
+          "handle": "liquid-blusher-happy",
+          "vendor": "Rare Beauty by Selena Gomez",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/liquid-blusher-happy"
+        },
+        {
+          "id": "gid://shopify/Product/9093217550407",
+          "title": "Glowy Super™ Gel Multipurpose Illuminator beachglow",
+          "handle": "glowy-super™-gel-multipurpose-illuminator-beachglow",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/glowy-super%E2%84%A2-gel-multipurpose-illuminator-beachglow"
+        },
+        {
+          "id": "gid://shopify/Product/9092987093063",
+          "title": "liquid bronzer sand",
+          "handle": "liquid-bronzer-sand-1",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/liquid-bronzer-sand-1"
+        },
+        {
+          "id": "gid://shopify/Product/9092035608647",
+          "title": "glowy super gel rose glow",
+          "handle": "glowy-super-gel-rose-glow",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/glowy-super-gel-rose-glow"
+        },
+        {
+          "id": "gid://shopify/Product/9092028104775",
+          "title": "glowy super gel warmglow",
+          "handle": "glowy-super-gel-warmglow",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/glowy-super-gel-warmglow"
+        },
+        {
+          "id": "gid://shopify/Product/9091800039495",
+          "title": "liquid blush hottie",
+          "handle": "liquid-blush-hottie",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/liquid-blush-hottie"
+        },
+        {
+          "id": "gid://shopify/Product/9091781034055",
+          "title": "liquid blush flirty",
+          "handle": "liquid-blush-flirty",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/liquid-blush-flirty"
+        },
+        {
+          "id": "gid://shopify/Product/9091740926023",
+          "title": "liquid blush lady",
+          "handle": "liquid-blush-lady",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/liquid-blush-lady"
+        },
+        {
+          "id": "gid://shopify/Product/9091671425095",
+          "title": "liquid blush baby",
+          "handle": "liquid-blush-baby",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/liquid-blush-baby"
+        },
+        {
+          "id": "gid://shopify/Product/9091639017543",
+          "title": "liquid blush poppy",
+          "handle": "liquid-blush-poppy",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/liquid-blush-poppy"
+        },
+        {
+          "id": "gid://shopify/Product/9091629613127",
+          "title": "liquid blush sweetie",
+          "handle": "liquid-blush-sweetie",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/liquid-blush-sweetie"
+        },
+        {
+          "id": "gid://shopify/Product/9091615883335",
+          "title": "liquid blush cutie",
+          "handle": "liquid-bronzer-sand",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/liquid-bronzer-sand"
+        },
+        {
+          "id": "gid://shopify/Product/9091601924167",
+          "title": "liquid blush spicy",
+          "handle": "liquid-blush-spicy",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/liquid-blush-spicy"
+        },
+        {
+          "id": "gid://shopify/Product/9091586457671",
+          "title": "liquid blush rosy",
+          "handle": "liquid-blush-rosy-1",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/liquid-blush-rosy-1"
+        },
+        {
+          "id": "gid://shopify/Product/9091540975687",
+          "title": "Saie Glowy Super gel ( Highlighter ) StarGlow",
+          "handle": "saie-glowy-super-gel-highlighter-starglow",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/saie-glowy-super-gel-highlighter-starglow"
+        },
+        {
+          "id": "gid://shopify/Product/7647473958983",
+          "title": "Mini Glowy Super™ Gel Multipurpose Illuminator",
+          "handle": "mini-glowy-super™-gel-multipurpose-illuminator",
+          "vendor": "saie",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/mini-glowy-super%E2%84%A2-gel-multipurpose-illuminator"
+        },
+        {
+          "id": "gid://shopify/Product/7131390115911",
+          "title": "True to Myself Tinted Pressed Talc-Free Finishing Powder",
+          "handle": "true-to-myself-tinted-pressed-talc-free-finishing-powder",
+          "vendor": "Rare Beauty by Selena Gomez",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/true-to-myself-tinted-pressed-talc-free-finishing-powder"
+        },
+        {
+          "id": "gid://shopify/Product/7127040852039",
+          "title": "Benefit Cosmetics Soup'd Up Beauty - Benetint, Hoola Bronzer and Mini BADgal BANG! Trio",
+          "handle": "benefit-cosmetics-the-gorgeous-grocer-beauty-advent-calendar-value-set-copy",
+          "vendor": "Benefit Cosmetics",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/benefit-cosmetics-the-gorgeous-grocer-beauty-advent-calendar-value-set-copy"
+        },
+        {
+          "id": "gid://shopify/Product/7127040819271",
+          "title": "Benefit Cosmetics The Gorgeous Grocer Beauty Advent Calendar Value Set",
+          "handle": "benefit-cosmetics-the-gorgeous-grocer-beauty-advent-calendar-value-set",
+          "vendor": "Benefit Cosmetics",
+          "status": "ARCHIVED",
+          "onlineStoreUrl": null
+        },
+        {
+          "id": "gid://shopify/Product/7114486808647",
+          "title": "Givenchy Prisme Libre Loose Powder Blush 12H Radiance",
+          "handle": "givenchy-prisme-libre-loose-powder-blush-12h-radiance",
+          "vendor": "givenchy",
+          "status": "ACTIVE",
+          "onlineStoreUrl": "https://sofiestore.net/products/givenchy-prisme-libre-loose-powder-blush-12h-radiance"
+        },
+        {
+          "id": "gid://shopify/Product/7113987719239",
+          "title": "Benefit 2 Brow Bigshots Set",
+          "handle": "benefit-2-brow-bigshots-set",
+          "vendor": "Benefit Cosmetics",
+          "status": "ARCHIVED",
+          "onlineStoreUrl": null
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MTEzOTg3NzE5MjM5LCJsYXN0X3ZhbHVlIjoiMCJ9"
+      }
+    }
+  }
+}

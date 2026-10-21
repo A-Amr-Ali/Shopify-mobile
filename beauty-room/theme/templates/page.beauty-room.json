@@ -1,193 +1,199 @@
 {
   "sections": {
     "beauty_room": {
-      "type": "sf-beauty-room",
+      "type": "sf-beauty-room-needs",
+      "settings": {
+        "catalog_collection": "the-sofie-beauty-room",
+        "character_cutout_1": "shopify://shop_images/sofie-beauty-room-pocket-v1.webp",
+        "character_cutout_2": "shopify://shop_images/sofie-beauty-room-milk-v1.webp",
+        "character_cutout_3": "shopify://shop_images/sofie-beauty-room-tint-v1.webp",
+        "character_cutout_4": "shopify://shop_images/sofie-beauty-room-oil-v1.webp"
+      },
       "blocks": {
-        "milk": {
-          "type": "piece",
+        "need_hydration": {
+          "type": "need",
+          "settings": {
+            "collection": "beauty-room-hydration",
+            "label": "Hydration",
+            "prompt": "Feeling dry?",
+            "copy": "A little hydration for skin and lips.",
+            "icon": "💧",
+            "product_1": "glazing-milk",
+            "product_2": "peptide-lip-treatment"
+          }
+        },
+        "need_glow": {
+          "type": "need",
+          "settings": {
+            "collection": "beauty-room-glow",
+            "label": "Glow",
+            "prompt": "Want more glow?",
+            "copy": "Meet your next luminous layer.",
+            "icon": "✨",
+            "product_1": "hollywood-flawless-filter",
+            "product_2": "glowy-super-gel-multipurpose-illuminator",
+            "product_3": "dior-backstage-glow-face-palette"
+          }
+        },
+        "need_flush": {
+          "type": "need",
+          "settings": {
+            "collection": "beauty-room-cheeks",
+            "label": "Cheeks",
+            "prompt": "A fresh flush?",
+            "copy": "A little colour, a brighter mood.",
+            "icon": "🌷",
+            "product_1": "pocket-blush",
+            "product_2": "soft-pinch-liquid-blush",
+            "product_3": "major-headlines-double-take-creme-powder-blush-duo"
+          }
+        },
+        "need_lips": {
+          "type": "need",
+          "settings": {
+            "collection": "beauty-room-lips",
+            "label": "Lips",
+            "prompt": "Your lip wardrobe.",
+            "copy": "Care, colour and a glossy finish.",
+            "icon": "💋",
+            "product_1": "peptide-lip-tint",
+            "product_2": "dior-addict-lip-glow-oil",
+            "product_3": "peptide-lip-shape-the-contouring-lip-shaper"
+          }
+        },
+        "need_base": {
+          "type": "need",
+          "settings": {
+            "collection": "beauty-room-your-base",
+            "label": "Your base",
+            "prompt": "An even finish?",
+            "copy": "Blendable coverage, from fresh to matte.",
+            "icon": "🪞",
+            "product_1": "fauxfilter-luminous-matte-concealer",
+            "product_2": "revealer-super-creamy-brightening-concealer-with-caffeine-and-hyaluronic-acid",
+            "product_3": "swipe-all-over-hydrating-serum-concealer"
+          }
+        },
+        "need_eyes": {
+          "type": "need",
+          "settings": {
+            "collection": "beauty-room-eyes",
+            "label": "Eyes",
+            "prompt": "Eyes, defined.",
+            "copy": "Swipe on colour. Dial up your lashes.",
+            "icon": "👁️",
+            "product_1": "maneater™-mascara",
+            "product_2": "total-seduction-eyeshadow-stick",
+            "product_3": "solo-shadow-matte-eye-color"
+          }
+        },
+        "cutout_milk": {
+          "type": "cutout",
           "settings": {
             "product": "glazing-milk",
-            "label": "Glazing Milk",
-            "zone": "glow",
-            "image_position": 7,
-            "benefit": "hydrating",
-            "icon": "💧",
-            "cutout_image": "shopify://shop_images/sofie-beauty-room-milk-v1.webp",
-            "character": "milk"
+            "image": "shopify://shop_images/sofie-beauty-room-milk-v1.webp"
           }
         },
-        "filter": {
-          "type": "piece",
+        "cutout_filter": {
+          "type": "cutout",
           "settings": {
             "product": "hollywood-flawless-filter",
-            "label": "Flawless Filter",
-            "zone": "glow",
-            "benefit": "radiance",
-            "icon": "✨",
-            "cutout_image": "shopify://shop_images/sofie-beauty-room-filter-v1.webp"
+            "image": "shopify://shop_images/sofie-beauty-room-filter-v1.webp"
           }
         },
-        "rare": {
-          "type": "piece",
+        "cutout_rare": {
+          "type": "cutout",
           "settings": {
             "product": "soft-pinch-liquid-blush",
-            "label": "Soft Pinch Blush",
-            "zone": "glow",
-            "benefit": "blush",
-            "icon": "🌸",
-            "cutout_image": "shopify://shop_images/sofie-beauty-room-rare-v1.webp"
+            "image": "shopify://shop_images/sofie-beauty-room-rare-v1.webp"
           }
         },
-        "pocket": {
-          "type": "piece",
+        "cutout_pocket": {
+          "type": "cutout",
           "settings": {
             "product": "pocket-blush",
-            "label": "Pocket Blush",
-            "zone": "colour",
-            "benefit": "cheeks_lips",
-            "icon": "🌷",
-            "cutout_image": "shopify://shop_images/sofie-beauty-room-pocket-v1.webp",
-            "character": "pocket"
+            "image": "shopify://shop_images/sofie-beauty-room-pocket-v1.webp"
           }
         },
-        "tint": {
-          "type": "piece",
+        "cutout_tint": {
+          "type": "cutout",
           "settings": {
             "product": "peptide-lip-tint",
-            "label": "Peptide Lip Tint",
-            "zone": "colour",
-            "benefit": "lip_care",
-            "icon": "💋",
-            "cutout_image": "shopify://shop_images/sofie-beauty-room-tint-v1.webp",
-            "character": "tint"
+            "image": "shopify://shop_images/sofie-beauty-room-tint-v1.webp"
           }
         },
-        "matte": {
-          "type": "piece",
+        "cutout_matte": {
+          "type": "cutout",
           "settings": {
             "product": "matte-revolution",
-            "label": "Matte Revolution",
-            "zone": "colour",
-            "benefit": "matte",
-            "icon": "💄",
-            "cutout_image": "shopify://shop_images/sofie-beauty-room-matte-v1.webp"
+            "image": "shopify://shop_images/sofie-beauty-room-matte-v1.webp"
           }
         },
-        "oil": {
-          "type": "piece",
+        "cutout_oil": {
+          "type": "cutout",
           "settings": {
             "product": "dior-addict-lip-glow-oil",
-            "label": "Lip Glow Oil",
-            "zone": "finish",
-            "benefit": "gloss",
-            "icon": "✨",
-            "cutout_image": "shopify://shop_images/sofie-beauty-room-oil-v1.webp",
-            "character": "oil"
+            "image": "shopify://shop_images/sofie-beauty-room-oil-v1.webp"
           }
         },
-        "mist": {
-          "type": "piece",
+        "cutout_mist": {
+          "type": "cutout",
           "settings": {
             "product": "brazilian-crush-cheirosa-40-bom-dia-hair-body-fragrance-mist",
-            "label": "Cheirosa 40",
-            "zone": "finish",
-            "benefit": "mist",
-            "icon": "🌺",
-            "cutout_image": "shopify://shop_images/sofie-beauty-room-mist-v1.webp"
+            "image": "shopify://shop_images/sofie-beauty-room-mist-v1.webp"
           }
         },
-        "dept_makeup": {
-          "type": "department",
+        "lip_shape_packshot": {
+          "type": "cutout",
           "settings": {
-            "collection": "makeup",
-            "label": "Makeup",
-            "label_ar": "الميكاب",
-            "icon": "💄"
+            "product": "peptide-lip-shape-the-contouring-lip-shaper",
+            "image": "shopify://shop_images/sofie-room-lip-shape-reference-v1.png",
+            "crop": "0.18,0,0.16,1"
           }
         },
-        "dept_skincare": {
-          "type": "department",
+        "treatment_packshot": {
+          "type": "cutout",
           "settings": {
-            "collection": "skincare",
-            "label": "Skincare",
-            "label_ar": "العناية بالبشرة",
-            "icon": "💧"
+            "product": "peptide-lip-treatment",
+            "image": "shopify://shop_images/sofie-room-peptide-treatment-cutout-v2.png"
           }
         },
-        "dept_fragrance": {
-          "type": "department",
+        "patrick_packshot": {
+          "type": "cutout",
           "settings": {
-            "collection": "fragrance",
-            "label": "Fragrance",
-            "label_ar": "العطور",
-            "icon": "🌸"
+            "product": "major-headlines-double-take-creme-powder-blush-duo",
+            "image": "shopify://shop_images/sofie-room-patrick-blush-cutout-v2.png",
+            "crop": "0,0.03,1,0.97"
           }
         },
-        "dept_hair": {
-          "type": "department",
+        "dior_palette_packshot": {
+          "type": "cutout",
           "settings": {
-            "collection": "hair",
-            "label": "Hair",
-            "label_ar": "العناية بالشعر",
-            "icon": "🎀"
-          }
-        },
-        "dept_lip": {
-          "type": "department",
-          "settings": {
-            "collection": "lip",
-            "label": "Lips",
-            "label_ar": "الشفايف",
-            "icon": "💋"
-          }
-        },
-        "dept_eye": {
-          "type": "department",
-          "settings": {
-            "collection": "eye",
-            "label": "Eyes",
-            "label_ar": "العيون",
-            "icon": "👁️"
-          }
-        },
-        "dept_all_bath_body": {
-          "type": "department",
-          "settings": {
-            "collection": "all-bath-body",
-            "label": "Bath & body",
-            "label_ar": "الجسم والاستحمام",
-            "icon": "🫧"
-          }
-        },
-        "dept_tools_brushes": {
-          "type": "department",
-          "settings": {
-            "collection": "tools-brushes",
-            "label": "Tools & brushes",
-            "label_ar": "الأدوات والفرش",
-            "icon": "🖌️"
+            "product": "dior-backstage-glow-face-palette",
+            "image": "shopify://shop_images/sofie-room-dior-palette-cutout-v2.png"
           }
         }
       },
       "block_order": [
-        "milk",
-        "filter",
-        "rare",
-        "pocket",
-        "tint",
-        "matte",
-        "oil",
-        "mist",
-        "dept_makeup",
-        "dept_skincare",
-        "dept_fragrance",
-        "dept_hair",
-        "dept_lip",
-        "dept_eye",
-        "dept_all_bath_body",
-        "dept_tools_brushes"
-      ],
-      "settings": {}
+        "need_hydration",
+        "need_glow",
+        "need_flush",
+        "need_lips",
+        "need_base",
+        "need_eyes",
+        "cutout_milk",
+        "cutout_filter",
+        "cutout_rare",
+        "cutout_pocket",
+        "cutout_tint",
+        "cutout_matte",
+        "cutout_oil",
+        "cutout_mist",
+        "lip_shape_packshot",
+        "treatment_packshot",
+        "patrick_packshot",
+        "dior_palette_packshot"
+      ]
     }
   },
   "order": [

@@ -1,0 +1,449 @@
+{
+  "sections": {
+    "beauty_room": {
+      "type": "sf-beauty-room-catalog",
+      "settings": {
+        "catalog_collection": "the-sofie-beauty-room",
+        "character_cutout_1": "shopify://shop_images/sofie-beauty-room-pocket-v1.webp",
+        "character_cutout_2": "shopify://shop_images/sofie-beauty-room-milk-v1.webp",
+        "character_cutout_3": "shopify://shop_images/sofie-beauty-room-tint-v1.webp",
+        "character_cutout_4": "shopify://shop_images/sofie-beauty-room-oil-v1.webp"
+      },
+      "blocks": {
+        "brand_00": {
+          "type": "brand",
+          "settings": {
+            "collection": "benefit-cosmetics-beauty-room",
+            "label": "Benefit Cosmetics"
+          }
+        },
+        "brand_01": {
+          "type": "brand",
+          "settings": {
+            "collection": "charlotte-tilbury-beauty-room",
+            "label": "Charlotte Tilbury"
+          }
+        },
+        "brand_02": {
+          "type": "brand",
+          "settings": {
+            "collection": "dior-beauty-room",
+            "label": "Dior"
+          }
+        },
+        "brand_03": {
+          "type": "brand",
+          "settings": {
+            "collection": "e-l-f-beauty-room",
+            "label": "e.l.f."
+          }
+        },
+        "brand_04": {
+          "type": "brand",
+          "settings": {
+            "collection": "fenty-beauty",
+            "label": "Fenty Beauty"
+          }
+        },
+        "brand_05": {
+          "type": "brand",
+          "settings": {
+            "collection": "givenchy-beauty-room",
+            "label": "Givenchy"
+          }
+        },
+        "brand_06": {
+          "type": "brand",
+          "settings": {
+            "collection": "gxve-by-gwen-stefani-beauty-room",
+            "label": "GXVE by Gwen Stefani"
+          }
+        },
+        "brand_07": {
+          "type": "brand",
+          "settings": {
+            "collection": "haus-labs-beauty-room",
+            "label": "Haus Labs"
+          }
+        },
+        "brand_08": {
+          "type": "brand",
+          "settings": {
+            "collection": "hourglass-beauty-room",
+            "label": "Hourglass"
+          }
+        },
+        "brand_09": {
+          "type": "brand",
+          "settings": {
+            "collection": "huda-beauty-beauty-room",
+            "label": "Huda Beauty"
+          }
+        },
+        "brand_10": {
+          "type": "brand",
+          "settings": {
+            "collection": "kosas-beauty-room",
+            "label": "Kosas"
+          }
+        },
+        "brand_11": {
+          "type": "brand",
+          "settings": {
+            "collection": "lawless-beauty-room",
+            "label": "LAWLESS"
+          }
+        },
+        "brand_12": {
+          "type": "brand",
+          "settings": {
+            "collection": "makeup-by-mario-beauty-room",
+            "label": "Makeup by Mario"
+          }
+        },
+        "brand_13": {
+          "type": "brand",
+          "settings": {
+            "collection": "merit-beauty-room",
+            "label": "MERIT"
+          }
+        },
+        "brand_14": {
+          "type": "brand",
+          "settings": {
+            "collection": "nars-beauty-room",
+            "label": "NARS"
+          }
+        },
+        "brand_15": {
+          "type": "brand",
+          "settings": {
+            "collection": "patrick-ta-beauty-room",
+            "label": "Patrick Ta"
+          }
+        },
+        "brand_16": {
+          "type": "brand",
+          "settings": {
+            "collection": "rare-beauty",
+            "label": "Rare Beauty"
+          }
+        },
+        "brand_17": {
+          "type": "brand",
+          "settings": {
+            "collection": "rhode-beauty-room",
+            "label": "Rhode"
+          }
+        },
+        "brand_18": {
+          "type": "brand",
+          "settings": {
+            "collection": "saie-beauty-room",
+            "label": "Saie"
+          }
+        },
+        "brand_19": {
+          "type": "brand",
+          "settings": {
+            "collection": "tarte-beauty-room",
+            "label": "tarte"
+          }
+        },
+        "brand_20": {
+          "type": "brand",
+          "settings": {
+            "collection": "tom-ford-beauty-room",
+            "label": "Tom Ford"
+          }
+        },
+        "brand_21": {
+          "type": "brand",
+          "settings": {
+            "collection": "too-faced-beauty-room",
+            "label": "Too Faced"
+          }
+        },
+        "brand_22": {
+          "type": "brand",
+          "settings": {
+            "collection": "tower-28-beauty-beauty-room",
+            "label": "Tower 28 Beauty"
+          }
+        },
+        "cutout_milk": {
+          "type": "cutout",
+          "settings": {
+            "product": "glazing-milk",
+            "image": "shopify://shop_images/sofie-beauty-room-milk-v1.webp"
+          }
+        },
+        "cutout_filter": {
+          "type": "cutout",
+          "settings": {
+            "product": "hollywood-flawless-filter",
+            "image": "shopify://shop_images/sofie-beauty-room-filter-v1.webp"
+          }
+        },
+        "cutout_rare": {
+          "type": "cutout",
+          "settings": {
+            "product": "soft-pinch-liquid-blush",
+            "image": "shopify://shop_images/sofie-beauty-room-rare-v1.webp"
+          }
+        },
+        "cutout_pocket": {
+          "type": "cutout",
+          "settings": {
+            "product": "pocket-blush",
+            "image": "shopify://shop_images/sofie-beauty-room-pocket-v1.webp"
+          }
+        },
+        "cutout_tint": {
+          "type": "cutout",
+          "settings": {
+            "product": "peptide-lip-tint",
+            "image": "shopify://shop_images/sofie-beauty-room-tint-v1.webp"
+          }
+        },
+        "cutout_matte": {
+          "type": "cutout",
+          "settings": {
+            "product": "matte-revolution",
+            "image": "shopify://shop_images/sofie-beauty-room-matte-v1.webp"
+          }
+        },
+        "cutout_oil": {
+          "type": "cutout",
+          "settings": {
+            "product": "dior-addict-lip-glow-oil",
+            "image": "shopify://shop_images/sofie-beauty-room-oil-v1.webp"
+          }
+        },
+        "cutout_mist": {
+          "type": "cutout",
+          "settings": {
+            "product": "brazilian-crush-cheirosa-40-bom-dia-hair-body-fragrance-mist",
+            "image": "shopify://shop_images/sofie-beauty-room-mist-v1.webp"
+          }
+        },
+        "dept_makeup": {
+          "type": "department",
+          "settings": {
+            "collection": "makeup",
+            "label": "Makeup",
+            "label_ar": "الميكاب",
+            "icon": "💄"
+          }
+        },
+        "dept_skincare": {
+          "type": "department",
+          "settings": {
+            "collection": "skincare",
+            "label": "Skincare",
+            "label_ar": "العناية بالبشرة",
+            "icon": "💧"
+          }
+        },
+        "dept_fragrance": {
+          "type": "department",
+          "settings": {
+            "collection": "fragrance",
+            "label": "Fragrance",
+            "label_ar": "العطور",
+            "icon": "🌸"
+          }
+        },
+        "dept_hair": {
+          "type": "department",
+          "settings": {
+            "collection": "hair",
+            "label": "Hair",
+            "label_ar": "العناية بالشعر",
+            "icon": "🎀"
+          }
+        },
+        "dept_lip": {
+          "type": "department",
+          "settings": {
+            "collection": "lip",
+            "label": "Lips",
+            "label_ar": "الشفايف",
+            "icon": "💋"
+          }
+        },
+        "dept_eye": {
+          "type": "department",
+          "settings": {
+            "collection": "eye",
+            "label": "Eyes",
+            "label_ar": "العيون",
+            "icon": "👁️"
+          }
+        },
+        "dept_all_bath_body": {
+          "type": "department",
+          "settings": {
+            "collection": "all-bath-body",
+            "label": "Bath & body",
+            "label_ar": "الجسم والاستحمام",
+            "icon": "🫧"
+          }
+        },
+        "dept_tools_brushes": {
+          "type": "department",
+          "settings": {
+            "collection": "tools-brushes",
+            "label": "Tools & brushes",
+            "label_ar": "الأدوات والفرش",
+            "icon": "🖌️"
+          }
+        },
+        "lip_shape_packshot": {
+          "type": "cutout",
+          "settings": {
+            "product": "peptide-lip-shape-the-contouring-lip-shaper",
+            "image": "shopify://shop_images/sofie-room-lip-shape-reference-v1.png",
+            "crop": "0.18,0,0.16,1"
+          }
+        },
+        "treatment_packshot": {
+          "type": "cutout",
+          "settings": {
+            "product": "peptide-lip-treatment",
+            "image": "shopify://shop_images/sofie-room-peptide-treatment-cutout-v2.png"
+          }
+        },
+        "need_hydration": {
+          "type": "need",
+          "settings": {
+            "collection": "beauty-room-hydration",
+            "label": "Hydration",
+            "prompt": "Feeling dry?",
+            "copy": "A little hydration for skin and lips.",
+            "icon": "💧"
+          }
+        },
+        "need_glow": {
+          "type": "need",
+          "settings": {
+            "collection": "beauty-room-glow",
+            "label": "Glow",
+            "prompt": "Want more glow?",
+            "copy": "Meet your next luminous layer.",
+            "icon": "✨"
+          }
+        },
+        "need_flush": {
+          "type": "need",
+          "settings": {
+            "collection": "beauty-room-cheeks",
+            "label": "Cheeks",
+            "prompt": "A fresh flush?",
+            "copy": "A little colour, a brighter mood.",
+            "icon": "🌷"
+          }
+        },
+        "need_lips": {
+          "type": "need",
+          "settings": {
+            "collection": "beauty-room-lips",
+            "label": "Lips",
+            "prompt": "Your lip wardrobe.",
+            "copy": "Care, colour and a glossy finish.",
+            "icon": "💋"
+          }
+        },
+        "need_base": {
+          "type": "need",
+          "settings": {
+            "collection": "beauty-room-your-base",
+            "label": "Your base",
+            "prompt": "An even finish?",
+            "copy": "Blendable coverage, from fresh to matte.",
+            "icon": "🪞"
+          }
+        },
+        "need_eyes": {
+          "type": "need",
+          "settings": {
+            "collection": "beauty-room-eyes",
+            "label": "Eyes",
+            "prompt": "Eyes, defined.",
+            "copy": "Swipe on colour. Dial up your lashes.",
+            "icon": "👁️"
+          }
+        },
+        "patrick_packshot": {
+          "type": "cutout",
+          "settings": {
+            "product": "major-headlines-double-take-creme-powder-blush-duo",
+            "image": "shopify://shop_images/sofie-room-patrick-blush-cutout-v2.png",
+            "crop": "0,0.03,1,0.97"
+          }
+        },
+        "dior_palette_packshot": {
+          "type": "cutout",
+          "settings": {
+            "product": "dior-backstage-glow-face-palette",
+            "image": "shopify://shop_images/sofie-room-dior-palette-cutout-v2.png"
+          }
+        }
+      },
+      "block_order": [
+        "brand_00",
+        "brand_01",
+        "brand_02",
+        "brand_03",
+        "brand_04",
+        "brand_05",
+        "brand_06",
+        "brand_07",
+        "brand_08",
+        "brand_09",
+        "brand_10",
+        "brand_11",
+        "brand_12",
+        "brand_13",
+        "brand_14",
+        "brand_15",
+        "brand_16",
+        "brand_17",
+        "brand_18",
+        "brand_19",
+        "brand_20",
+        "brand_21",
+        "brand_22",
+        "cutout_milk",
+        "cutout_filter",
+        "cutout_rare",
+        "cutout_pocket",
+        "cutout_tint",
+        "cutout_matte",
+        "cutout_oil",
+        "cutout_mist",
+        "dept_makeup",
+        "dept_skincare",
+        "dept_fragrance",
+        "dept_hair",
+        "dept_lip",
+        "dept_eye",
+        "dept_all_bath_body",
+        "dept_tools_brushes",
+        "lip_shape_packshot",
+        "treatment_packshot",
+        "need_hydration",
+        "need_glow",
+        "need_flush",
+        "need_lips",
+        "need_base",
+        "need_eyes",
+        "patrick_packshot",
+        "dior_palette_packshot"
+      ]
+    }
+  },
+  "order": [
+    "beauty_room"
+  ]
+}

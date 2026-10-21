@@ -1,0 +1,52 @@
+{%- liquid
+  assign needs = section.blocks | where: 'type', 'need'
+  assign all_products_collection = section.settings.catalog_collection
+-%}
+<sofie-beauty-room class="sfbr sfbr-cutout-room sfbr-catalog sfbr-needs-room" data-sfbr-catalog data-root="{{ routes.root_url }}" data-adding="{{ 'sf.room.adding' | t | escape }}" data-added="{{ 'sf.room.added' | t | escape }}" data-error="{{ 'sf.room.error' | t | escape }}" data-choose="{{ 'sf.room.choose' | t | escape }}" data-available="{{ 'sf.room.available' | t | escape }}" data-sold-out="{{ 'sf.room.sold_out' | t | escape }}">
+  <div class="sfbr-intro">
+    <div class="sfbr-edition"><span>{{ 'sf.room.edition' | t }}</span><span>{{ 'sf.room.needs_edition' | t }}</span></div>
+    <p class="sfbr-eyebrow">{{ 'sf.room.name' | t }}</p>
+    <h1>{{ 'sf.room.needs_title' | t }} <em>{{ 'sf.room.needs_em' | t }}</em></h1>
+    <p class="sfbr-intro-copy">{{ 'sf.room.needs_intro' | t }}</p>
+    <nav class="sfbr-need-nav" aria-label="{{ 'sf.room.choose_need' | t }}">{% for need in needs %}<a href="#sfbr-need-{{ section.id }}-{{ need.id }}"><span aria-hidden="true">{{ need.settings.icon | escape }}</span> {{ need.settings.label | escape }}</a>{% endfor %}</nav>
+    <a class="sfbr-all-products" href="{{ all_products_collection.url }}?view=beauty-room">{{ 'sf.room.browse_catalog' | t: count: all_products_collection.products_count }} <span aria-hidden="true">↗</span></a>
+  </div>
+  {% for need in needs %}
+    {%- liquid
+      assign row_position = forloop.index0 | modulo: 3
+      assign selected_count = 0
+      for number in (1..3)
+        assign product_key = 'product_' | append: number
+        if need.settings[product_key] != blank
+          assign selected_count = selected_count | plus: 1
+        endif
+      endfor
+      assign need_collection = need.settings.collection
+    -%}
+    {% if row_position == 0 %}<div class="sfbr-room sfbr-catalog-page-row" data-sfbr-page-row><div class="sfbr-bays" data-sfbr-bays>{% endif %}
+      <section id="sfbr-need-{{ section.id }}-{{ need.id }}" class="sfbr-bay {% if row_position == 1 %}sfbr-bay--colour{% elsif row_position == 2 %}sfbr-bay--finish{% endif %}" {{ need.shopify_attributes }}>
+        <div class="sfbr-bay-top"><span>0{{ forloop.index }}</span><span>{{ need.settings.label | escape }}</span><span>{{ 'sf.room.pieces' | t: count: selected_count }}</span></div>
+        <div class="sfbr-alcove">
+          <span class="sfbr-light" aria-hidden="true"></span>
+          <div class="sfbr-need-note"><h2>{{ need.settings.prompt | escape }}</h2><p>{{ need.settings.copy | escape }}</p></div>
+          <span class="sfbr-real-shelf sfbr-real-shelf--one" aria-hidden="true"></span><span class="sfbr-real-shelf sfbr-real-shelf--two" aria-hidden="true"></span>
+          <div class="sfbr-shelf-grid sfbr-shelf-grid--{{ selected_count }}">
+            {%- assign position = 0 -%}
+            {% for number in (1..3) %}{%- assign product_key = 'product_' | append: number -%}{%- assign room_product = need.settings[product_key] -%}{% if room_product != blank %}{%- assign position = position | plus: 1 -%}{% render 'sf-beauty-room-product', room_product: room_product, cutouts: section.blocks, position: position, section_id: section.id %}{% endif %}{% endfor %}
+          </div>
+        </div>
+        {% if need_collection != blank %}<a class="sfbr-need-explore" href="{{ need_collection.url }}?view=beauty-room"><span>{{ 'sf.room.explore_need' | t: need: need.settings.label }} <small>{{ 'sf.room.catalog_total' | t: count: need_collection.products_count }}</small></span><span aria-hidden="true">↗</span></a>{% endif %}
+      </section>
+    {% if row_position == 2 or forloop.last %}
+      <div class="sfbr-mascot-layer" aria-hidden="true">{%- assign character_ids = 'pocket,milk,tint,oil' | split: ',' -%}{% for character in character_ids %}{%- assign character_key = 'character_cutout_' | append: forloop.index -%}{% render 'sf-beauty-room-character', image: section.settings[character_key], character: character, index: forloop.index %}{% endfor %}</div>
+      </div></div>
+    {% endif %}
+  {% endfor %}
+  <div class="sfbr-after"><p><span class="sfbr-spark" aria-hidden="true">✧</span> {{ 'sf.room.instruction' | t }}</p><a href="{{ routes.cart_url }}">{{ 'sf.room.bag' | t }} (<span data-sfbr-cart-count>{{ cart.item_count }}</span>) ↗</a></div>
+  <p class="sfbr-mobile-hint">{{ 'sf.room.swipe' | t }} ↔</p>
+  <div class="sfbr-need-finale"><p>{{ 'sf.room.needs_continue' | t }}</p><a class="sfbr-more-shelves" href="{{ all_products_collection.url }}?view=beauty-room">{{ 'sf.room.browse_catalog' | t: count: all_products_collection.products_count }} <span aria-hidden="true">↗</span></a></div>
+  <dialog class="sfbr-dialog" aria-labelledby="sfbr-dialog-title-{{ section.id }}" data-sfbr-dialog><button type="button" class="sfbr-close" data-sfbr-close aria-label="{{ 'sf.room.close' | t }}">×</button><div data-sfbr-content></div></dialog>
+</sofie-beauty-room>
+{% schema %}
+{"name":"Beauty Room · Your needs","max_blocks":50,"settings":[{"type":"collection","id":"catalog_collection","label":"All best selling beauty brands"},{"type":"image_picker","id":"character_cutout_1","label":"Pocket Blush character"},{"type":"image_picker","id":"character_cutout_2","label":"Glazing Milk character"},{"type":"image_picker","id":"character_cutout_3","label":"Lip Tint character"},{"type":"image_picker","id":"character_cutout_4","label":"Dior Lip Oil character"}],"blocks":[{"type":"need","name":"Beauty need","settings":[{"type":"collection","id":"collection","label":"Complete edit"},{"type":"text","id":"label","label":"Short label"},{"type":"text","id":"prompt","label":"Question inside the arch"},{"type":"text","id":"copy","label":"Short beauty note"},{"type":"text","id":"icon","label":"Small icon"},{"type":"product","id":"product_1","label":"Featured product 1"},{"type":"product","id":"product_2","label":"Featured product 2"},{"type":"product","id":"product_3","label":"Featured product 3"}]},{"type":"cutout","name":"Isolated product image","settings":[{"type":"product","id":"product","label":"Product"},{"type":"image_picker","id":"image","label":"Transparent product image"},{"type":"text","id":"crop","label":"Optional crop · x,y,width,height (0–1)"}]}],"presets":[{"name":"Beauty Room · Your needs"}]}
+{% endschema %}

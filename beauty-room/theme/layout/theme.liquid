@@ -13,7 +13,7 @@
 {% render 'sf-fonts' %}
 {{ 'sofie-atelier.css' | asset_url | stylesheet_tag }}
 {{ 'sofie-claude.css' | asset_url | stylesheet_tag }}{{ 'sofie-claude-2.css' | asset_url | stylesheet_tag }}{{ 'sofie-claude-3.css' | asset_url | stylesheet_tag }}{{ 'sofie-claude-4.css' | asset_url | stylesheet_tag }}<script src="{{ 'sofie-claude.js' | asset_url }}" defer></script><script src="{{ 'sofie-now-auto.js' | asset_url }}" defer></script>{%- if request.page_type == 'product' -%}<script src="{{ 'sofie-claude-pdp.js' | asset_url }}" defer></script>{%- endif -%}
-{% if template.suffix == 'beauty-room' %}{{ 'sofie-beauty-room.css' | asset_url | stylesheet_tag }}<script src="{{ 'sofie-beauty-room.js' | asset_url }}" defer></script>{% endif %}
+{% if template.suffix == 'beauty-room' %}{{ 'sofie-beauty-room.css' | asset_url | stylesheet_tag }}{{ 'sofie-beauty-room-catalog.css' | asset_url | stylesheet_tag }}<script src="{{ 'sofie-room-cutouts.js' | asset_url }}" defer></script><script src="{{ 'sofie-beauty-room.js' | asset_url }}" defer></script>{% endif %}
 {{ content_for_header }}
 <script>document.documentElement.classList.replace('no-js','js');</script>
 <script src="{{ 'sofie-atelier.js' | asset_url }}" defer></script>

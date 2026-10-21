@@ -1,0 +1,26 @@
+[
+  {
+    "file": "sfbr-treatment-cutout-v2.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_product_core": 1.0
+  },
+  {
+    "file": "sfbr-patrick-cutout-v2.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_product_core": 1.0
+  }
+]
