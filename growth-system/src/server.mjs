@@ -10,6 +10,7 @@ import { runGrowth } from './jobs.mjs';
 import { ensureOrderWebhooks } from './webhooks.mjs';
 import { GOALS } from './config.mjs';
 import { procurementRoutes, startProcurementJobs } from './procurement-routes.mjs';
+import { birthdayRoutes } from './birthday-routes.mjs';
 import { syncOneOrder } from './procurement.mjs';
 const publicDir = fileURLToPath(new URL('../public/', import.meta.url));
 const assets = { '/': ['index.html', 'text/html; charset=utf-8'], '/app.js': ['app.js','text/javascript; charset=utf-8'],
@@ -36,6 +37,7 @@ export async function handler(req, res) {
   } else if (origin && url.pathname.startsWith('/api/')) return send(res,403,{error:'origin_not_allowed'});
   if (req.method === 'OPTIONS') { res.writeHead(204); return res.end(); }
   try {
+    if (await birthdayRoutes(req,res,url)) return;
     if (await procurementRoutes(req,res,url)) return;
     if (req.method === 'GET' && assets[url.pathname]) {
       const [name, mime] = assets[url.pathname];
