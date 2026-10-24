@@ -1,0 +1,110 @@
+{%- liquid
+  assign now_url = settings.now_collection.url | default: '/collections/sofie-hours'
+  assign wa = settings.whatsapp | default: '201007488707' | remove: '+' | remove: ' '
+-%}
+<section class="sf-track sf-wrap" data-track data-wa="{{ wa }}">
+<div class="sf-track-card" data-track-live hidden>
+<div class="sf-track-top"><p class="sf-nowp-badge"><i class="sf-pulse" aria-hidden="true"></i>SOFIE NOW · LIVE</p><p class="sf-track-order">Order <strong data-track-order></strong></p></div>
+<h1 class="sf-track-title" data-track-title>Your order is on its way</h1>
+<p class="sf-track-sub" data-track-sub></p>
+<div class="sf-track-clock"><div><span class="sf-track-time" data-track-left>--:--</span><small data-track-left-label>minutes left</small></div><div><span class="sf-track-eta" data-track-eta>--:--</span><small>estimated arrival</small></div></div>
+<div class="sf-track-map">
+<svg class="sf-track-svg" viewBox="0 0 640 230" role="img" aria-label="Your delivery on its way from SOFIE to your door">
+<path class="sf-road" data-track-road d="M48 170 C 150 170 150 70 255 78 S 395 190 470 140 S 560 66 598 82"/>
+<path class="sf-road-line" d="M48 170 C 150 170 150 70 255 78 S 395 190 470 140 S 560 66 598 82"/>
+<path class="sf-road-done" data-track-done pathLength="1000" d="M48 170 C 150 170 150 70 255 78 S 395 190 470 140 S 560 66 598 82"/>
+<g class="sf-pin-store" transform="translate(48 170)"><circle r="20"/><text y="6" text-anchor="middle">S</text></g>
+<g class="sf-pin-home" transform="translate(598 82)"><circle class="sf-pin-ring" r="24"/><circle r="18"/><path d="M-8 3 L0 -6 L8 3 M-5.5 1 V9 H5.5 V1"/></g>
+<text class="sf-pin-label" x="48" y="208" text-anchor="middle">SOFIE</text>
+<text class="sf-pin-label" x="598" y="124" text-anchor="middle">You</text>
+<g data-track-car><g class="sf-car">
+<g class="sf-car-speed"><path d="M-14 30h12M-22 40h16M-12 50h10"/></g>
+<g class="sf-car-body">
+<g class="sf-car-cargo" data-cargo="beauty"><path class="sf-bag-handle" d="M57 -2 Q65 -14 73 -2"/><rect class="sf-bag" x="50" y="-3" width="30" height="20" rx="3"/><text class="sf-bag-text" x="65" y="11" text-anchor="middle">SOFIE</text></g>
+<g class="sf-car-cargo" data-cargo="home"><rect class="sf-box" x="48" y="-6" width="34" height="23" rx="2"/><path class="sf-box-tape" d="M65 -6v23"/><text class="sf-box-text" x="65" y="9" text-anchor="middle">HOME</text></g>
+<path class="sf-car-rack" d="M46 17h38"/>
+<path class="sf-car-shell" d="M8 44 Q8 34 18 32 L34 30 L46 17 Q49 14 54 14 L82 14 Q88 14 91 19 L100 30 L110 32 Q116 33 116 40 L116 48 Q116 52 112 52 L12 52 Q8 52 8 48 Z"/>
+<path class="sf-car-glass" d="M49 19 Q51 17 55 17 L64 17 L64 29 L40 29 Z"/>
+<path class="sf-car-glass" d="M68 17 L82 17 Q86 17 88 21 L95 29 L68 29 Z"/>
+<path class="sf-car-line" d="M66 31v17"/>
+<rect class="sf-car-light" x="108" y="36" width="7" height="4" rx="2"/>
+<rect class="sf-car-tail" x="9" y="37" width="5" height="5" rx="2"/>
+</g>
+<g transform="translate(32 52)"><g class="sf-car-wheel"><circle r="9"/><circle class="sf-hub" r="3.5"/><path class="sf-spoke" d="M0 -8v16M-8 0h16"/></g></g>
+<g transform="translate(94 52)"><g class="sf-car-wheel"><circle r="9"/><circle class="sf-hub" r="3.5"/><path class="sf-spoke" d="M0 -8v16M-8 0h16"/></g></g>
+</g></g>
+</svg>
+</div>
+<ol class="sf-track-steps" data-track-steps><li data-step="0">Confirmed</li><li data-step="1">Packed</li><li data-step="2">On the way</li><li data-step="3">Arriving</li></ol>
+<div class="sf-track-actions"><a class="button" data-track-wa href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">Message SOFIE {% render 'sf-icon',name:'arrow' %}</a><a class="underlined" href="{{ now_url }}">Shop SOFIE NOW</a></div>
+<p class="small sf-track-note">Times are estimates from the moment your order left SOFIE. Traffic can change them a little.</p>
+</div>
+<div class="sf-track-empty" data-track-empty>
+<p class="sf-nowp-badge"><i class="sf-pulse" aria-hidden="true"></i>SOFIE NOW</p>
+<h1 data-track-empty-title>Track your SOFIE NOW delivery</h1>
+<p data-track-empty-text>Live tracking is available for SOFIE NOW orders. When your order leaves us, we send you a personal tracking link on WhatsApp.</p><p class="small">{% render 'sf-now-hours', mode: 'sentence' %}</p>
+<div class="sf-track-actions"><a class="button" href="https://wa.me/{{ wa }}?text={{ 'Hello SOFIE, I would like to check my SOFIE NOW order.' | url_encode }}" target="_blank" rel="noopener">Ask about my order {% render 'sf-icon',name:'arrow' %}</a><a class="underlined" href="{{ now_url }}">Shop SOFIE NOW</a></div>
+</div>
+</section>
+<script>
+(() => {
+  const root = document.querySelector('[data-track]');
+  if (!root) return;
+  const AREAS = { new_cairo: [30, 'New Cairo'], nasr_city: [60, 'Nasr City'], madinaty: [60, 'Madinaty'], giza: [120, 'Giza'], zayed: [120, 'Sheikh Zayed'], october: [120, '6 October'], shorouk: [120, 'El Shorouk'], obour: [120, 'El Obour'] };
+  const q = new URLSearchParams(location.search);
+  const order = (q.get('o') || '').trim();
+  const area = q.get('a') || '';
+  const kind = q.get('k') === 'home' ? 'home' : 'beauty';
+  const start = parseInt(q.get('t'), 10) * 1000;
+  const custom = parseInt(q.get('m'), 10);
+  const live = root.querySelector('[data-track-live]'), empty = root.querySelector('[data-track-empty]');
+  const valid = /^#?[A-Za-z0-9-]{1,16}$/.test(order) && AREAS[area] && start > 0 && start < Date.now() + 3600e3 && Date.now() - start < 24 * 3600e3;
+  if (!valid) {
+    if (q.has('o') || q.has('t')) {
+      root.querySelector('[data-track-empty-title]').textContent = 'This tracking link has expired';
+      root.querySelector('[data-track-empty-text]').textContent = 'Tracking links work for 24 hours after your order leaves SOFIE. Message us and we will check your order for you.';
+    }
+    return;
+  }
+  empty.hidden = true; live.hidden = false;
+  const mins = custom >= 10 && custom <= 240 ? custom : AREAS[area][0];
+  const total = mins * 60e3, eta = start + total;
+  const label = order.charAt(0) === '#' ? order : '#' + order;
+  const $ = s => root.querySelector(s);
+  $('[data-track-order]').textContent = label;
+  $('[data-track-eta]').textContent = new Date(eta).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  $('[data-track-wa]').href = 'https://wa.me/' + root.dataset.wa + '?text=' + encodeURIComponent('Hello SOFIE, I am checking on my SOFIE NOW order ' + label + '.');
+  root.querySelectorAll('[data-cargo]').forEach(g => { g.style.display = g.dataset.cargo === kind ? '' : 'none'; });
+  const road = $('[data-track-road]'), done = $('[data-track-done]'), car = $('[data-track-car]');
+  const len = road.getTotalLength();
+  const steps = Array.from(root.querySelectorAll('[data-step]'));
+  const title = $('[data-track-title]'), sub = $('[data-track-sub]'), left = $('[data-track-left]'), leftLabel = $('[data-track-left-label]');
+  const place = a => {
+    const p = road.getPointAtLength(len * a), p2 = road.getPointAtLength(Math.min(len, len * a + 2));
+    const deg = Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI;
+    car.setAttribute('transform', 'translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ') rotate(' + deg.toFixed(1) + ') scale(.56) translate(-63 -64)');
+  };
+  const pad = n => String(n).padStart(2, '0');
+  function tick() {
+    const now = Date.now(), raw = Math.max(0, (now - start) / total), shown = Math.min(.97, .03 + raw * .94);
+    place(shown);
+    done.style.strokeDashoffset = String(1000 - shown * 1000);
+    const ms = Math.max(0, eta - now), s = Math.round(ms / 1000);
+    left.textContent = s >= 3600 ? Math.floor(s / 3600) + ':' + pad(Math.floor(s % 3600 / 60)) + ':' + pad(s % 60) : pad(Math.floor(s / 60)) + ':' + pad(s % 60);
+    let stage = raw < .08 ? 1 : raw < .85 ? 2 : 3;
+    steps.forEach((li, i) => { li.classList.toggle('is-done', i < stage); li.classList.toggle('is-active', i === stage); });
+    root.classList.toggle('is-late', now > eta);
+    if (now > eta + 45 * 60e3) { title.textContent = 'Your order should be with you'; sub.textContent = 'If it has not arrived yet, message us and we will check with your rider right away.'; leftLabel.textContent = 'minutes left'; root.classList.add('is-parked'); }
+    else if (now > eta) { title.textContent = 'Arriving any minute'; sub.textContent = 'Your rider is close to ' + AREAS[area][1] + '. Thank you for waiting.'; leftLabel.textContent = 'minutes left'; }
+    else if (raw >= .85) { title.textContent = 'Almost there'; sub.textContent = 'Your rider is close to ' + AREAS[area][1] + '. Keep your phone nearby.'; leftLabel.textContent = 'minutes left'; }
+    else if (raw < .08) { title.textContent = 'Packed and leaving SOFIE'; sub.textContent = 'Your ' + (kind === 'home' ? 'SOFIE Home order' : 'SOFIE beauty bag') + ' is packed and heading to ' + AREAS[area][1] + '.'; leftLabel.textContent = 'minutes left'; }
+    else { title.textContent = 'Your order is on its way'; sub.textContent = 'Heading to ' + AREAS[area][1] + ' with your ' + (kind === 'home' ? 'SOFIE Home order' : 'SOFIE beauty bag') + '.'; leftLabel.textContent = 'minutes left'; }
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+{% schema %}
+{"name": "Sofie NOW Tracker", "settings": []}
+{% endschema %}
+

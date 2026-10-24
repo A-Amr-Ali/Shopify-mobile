@@ -1,0 +1,23 @@
+{% doc %}
+sf-card
+@param {product} product - Product to display
+@param {string} [label] - Optional small label above the vendor (e.g. "New · Sep 2026")
+@param {boolean} [unify] - Force the same-background treatment on the image
+@param {number} [rank] - Optional best-seller rank number
+@param {boolean} [eager] - Load the image eagerly
+{% enddoc %}
+{%- capture now_ready -%}{%- render 'sf-now-ready', product: product -%}{%- endcapture -%}
+{% liquid
+ assign now_ready = now_ready | strip
+ assign chosen = product.selected_or_first_available_variant
+ assign do_unify = false
+ if unify or settings.unify_backgrounds != false
+  assign do_unify = true
+ endif
+ assign nb = 'sf.text.now_badge' | t | split: '·'
+ assign load = 'lazy'
+ if eager
+  assign load = 'eager'
+ endif
+%}{%- unless product.handle == 'sofie-now-express-delivery' -%}<article class="sf-card"><div class="sf-card-image"><a href="{{ product.url }}" tabindex="-1" aria-hidden="true"{% if do_unify %} data-unify{% endif %}>{% if product.featured_image %}{{ product.featured_image | image_url:width:600 | image_tag: loading:load, widths:'200,300,400,600', sizes:'(min-width: 1000px) 23vw, 46vw', alt:product.title }}{% else %}{{ 'product-1' | placeholder_svg_tag }}{% endif %}</a>{% if rank %}<span class="sf-rank">No.{{ rank }}</span>{% endif %}<button class="sf-save icon-button" data-save="{{ product.handle }}" data-title="{{ product.title | escape }}" data-image="{{ product.featured_image | image_url:width:180 }}" data-url="{{ product.url }}" aria-label="{{ 'sf.text.save' | t }}" aria-pressed="false">{% render 'sf-icon',name:'heart' %}</button>{% if now_ready != blank %}<span class="sf-badge sf-badge-now"><i class="sf-pulse" aria-hidden="true"></i>SOFIE NOW{% if nb.size > 1 %}<em>{{ nb.last | strip }}</em>{% endif %}</span>{% elsif product.available == false %}<span class="sf-badge sf-badge-muted">{{ 'sf.text.sold_out' | t }}</span>{% endif %}</div><div class="sf-card-info">{% if label != blank %}<p class="sf-card-label">{{ label }}</p>{% endif %}<p class="sf-vendor">{{ product.vendor | escape }}</p><h3><a href="{{ product.url }}">{{ product.title | escape }}</a></h3><div class="sf-price">{% if product.price_varies %}<span>{{ 'sf.text.from' | t }}</span>{% endif %} {{ product.price | money }}{% if product.compare_at_price > product.price and product.price_varies == false %}<s>{{ product.compare_at_price | money }}</s>{% endif %}</div>{% if product.has_only_default_variant and product.available %}{% capture form_id %}sf-quick-{{ product.id }}{% endcapture %}{% form 'product',product,id:form_id,class:'sf-quick-add',data-product-form:'' %}<input name="id" type="hidden" value="{{ chosen.id }}"><button type="submit" class="sf-card-action">{{ 'sf.text.add' | t }} <span>+</span></button>{% endform %}{% else %}<a class="sf-card-action" href="{{ product.url }}">{% if product.available %}{{ 'sf.text.choose' | t }}{% else %}{{ 'sf.text.view_product' | t }}{% endif %}<span>↗</span></a>{% endif %}</div></article>{%- endunless -%}
+

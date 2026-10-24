@@ -1,0 +1,5 @@
+<section class="sf-section sf-wrap"><p class="eyebrow">{{ 'sf.text.brands_kicker' | t }}</p><h1>{{ 'sf.text.all_brands' | t }}</h1><label class="sr-only" for="brand-filter">{{ 'sf.text.find_brand' | t }}</label><input id="brand-filter" type="search" placeholder="{{ 'sf.text.find_brand' | t }}" data-brand-filter><div class="sf-brand-directory">{% for vendor in shop.vendors %}<a href="{{ routes.collections_url }}/vendors?q={{ vendor | url_encode }}" data-brand="{{ vendor | downcase | escape }}">{{ vendor | escape }} ↗</a>{% endfor %}</div></section>
+{% schema %}
+{"name": "Sofie Brands Page", "settings": []}
+{% endschema %}
+
