@@ -52,7 +52,7 @@ export async function birthdayDashboard(now = new Date()) {
       daysUntil,
       ...history
     };
-  }).filter(row => row.daysUntil !== null).sort((a, b) => a.daysUntil - b.daysUntil || a.name.localeCompare(b.name));
+  }).filter(row => row.daysUntil !== null).sort((a, b) => a.daysUntil - b.daysUntil || String(a.name || '').localeCompare(String(b.name || '')));
   const today = customers.filter(x => x.daysUntil === 0);
   const upcoming = customers.filter(x => x.daysUntil > 0 && x.daysUntil <= 30);
   return {
