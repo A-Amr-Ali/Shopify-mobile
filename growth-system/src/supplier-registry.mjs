@@ -19,7 +19,7 @@ export const OFFICIAL_BRANDS = [
   ['salt stone',['saltandstone.com']],['salt and stone',['saltandstone.com']],['vacation',['vacation.inc']],
   ['gisou',['gisou.com']],['olaplex',['olaplex.com']],['starface',['starface.world']],['snif',['snif.co']],
   ['natasha denona',['natashadenona.com']],['too faced',['toofaced.com']],['nars',['narscosmetics.com']],
-  ['yves saint laurent',['yslbeautyus.com']]
+  ['yves saint laurent',['yslbeautyus.com']],['ninja',['sharkninja.com']]
 ]);
 const US_STORES = [...[['rhode','https://www.rhodeskin.com'],['tarte','https://tartecosmetics.com'],['hourglass','https://www.hourglasscosmetics.com'],['k18','https://www.k18hair.com'],['briogeo','https://www.briogeohair.com'],['makeup by mario','https://www.makeupbymario.com'],['kosas','https://kosas.com'],['one size','https://www.onesizebeauty.com'],['beauty blender','https://beautyblender.com'],['sol de janeiro','https://soldejaneiro.com'],['ouai','https://theouai.com'],['owala','https://owalalife.com'],['josie maran','https://www.josiemaran.com'],['patrick ta','https://patrickta.com'],['rare beauty','https://www.rarebeauty.com'],['tower 28','https://www.tower28beauty.com'],['grande','https://grandecosmetics.com'],['amika','https://loveamika.com'],['color wow','https://colorwowhair.com'],['summer fridays','https://summerfridays.com'],['saie','https://saiehello.com']],...[['stanley','https://www.stanley1913.com'],['living proof','https://www.livingproof.com'],['byoma','https://byoma.com'],['huda beauty','https://hudabeauty.com/en-us']],
   ['bubble','https://hellobubble.com'],['sincerely yours','https://sincerely-yours.com'],
@@ -28,7 +28,11 @@ const US_STORES = [...[['rhode','https://www.rhodeskin.com'],['tarte','https://t
   ['salt stone','https://www.saltandstone.com'],['salt and stone','https://www.saltandstone.com'],
   ['vacation','https://vacation.inc'],['gisou','https://gisou.com'],['olaplex','https://olaplex.com'],
   ['starface','https://starface.world'],['snif','https://snif.co'],['natasha denona','https://natashadenona.com'],
-  ['too faced','https://www.toofaced.com'],['nars','https://www.narscosmetics.com'],['yves saint laurent','https://www.yslbeautyus.com']
+  ['too faced','https://www.toofaced.com'],['nars','https://www.narscosmetics.com'],['yves saint laurent','https://www.yslbeautyus.com'],
+  ['clinique','https://www.clinique.com'],['charlotte tilbury','https://www.charlottetilbury.com/us'],
+  ['milk makeup','https://milkmakeup.com'],['dior','https://www.dior.com/en_us/beauty'],
+  ['kiehl','https://www.kiehls.com'],['fenty','https://fentybeauty.com'],['slip','https://www.slip.com'],
+  ['benefit','https://www.benefitcosmetics.com/en-us'],['smashbox','https://www.smashbox.com'],['ninja','https://www.sharkninja.com']
 ];
 const REGIONAL_STORES = {
   AE: [['huda beauty','https://hudabeauty.com/en-ae']],

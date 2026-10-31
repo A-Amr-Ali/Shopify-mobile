@@ -14,6 +14,14 @@ export const SOURCE_STAGES=Object.freeze([
 export function researchDue(last,now=Date.now()) {
   return !last||last.summary?.version!==SOURCING_VERSION||!Number.isFinite(Date.parse(last.summary.nextRetryAt))||Date.parse(last.summary.nextRetryAt)<=now;
 }
+// Fresh/unresearched demand goes first; then rotate oldest completed research.
+// Repeatedly retrying recent blocked orders must not starve the older queue.
+export function compareResearchPriority(a,b) {
+  const finished=row=>Date.parse(row.research?.finishedAt)||0;
+  const first=row=>row.research?.version!==SOURCING_VERSION||!finished(row);
+  if(first(a)!==first(b))return first(a)?-1:1;
+  return (first(a)?0:finished(a)-finished(b))||(b.newestOrderAt||0)-(a.newestOrderAt||0);
+}
 export function supplierError(error) {
   const message=String(error?.message||error);
   if(/403|401|Access Denied|Forbidden/i.test(message))return {status:'blocked',detail:'Supplier denied automated access; stock was not assumed.'};

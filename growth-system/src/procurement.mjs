@@ -2,7 +2,7 @@ import { adminQuery } from './catalog.mjs';
 import { db } from './db.mjs';
 import { checkSephoraSource, checkSephoraUSSource, checkStructuredSource, verifyPurchaseLink } from './supplier-checks.mjs';
 import { officialDomains, sourcePriority } from './supplier-registry.mjs';
-import { researchProduct, researchDue, SOURCING_VERSION } from './source-research.mjs';
+import { researchProduct, researchDue, compareResearchPriority, SOURCING_VERSION } from './source-research.mjs';
 
 export const MARKETS = Object.freeze({
   AE: { currency:'AED', exchange:15, shipping:900, label:'UAE' },
@@ -326,18 +326,25 @@ export function discoverProcurementSources({limit=12,variantId=null,force=false,
     const lastRuns=new Map();for(const line of data.lines)if(line.research)lastRuns.set(line.variantId,{summary:line.research});
     const newest=id=>Math.max(0,...data.lines.filter(l=>l.variantId===id).map(l=>Date.parse(l.orderCreatedAt)||0));
     const queue=data.demand.filter(r=>(!variantId||r.variantId===variantId)&&(force||researchDue(lastRuns.get(r.variantId))))
-      .sort((a,b)=>newest(b.variantId)-newest(a.variantId)).slice(0,Math.min(50,Math.max(1,limit)));
-    let next=0,checked=0,verified=0;
+      .map(r=>({...r,newestOrderAt:newest(r.variantId)})).sort(compareResearchPriority).slice(0,Math.min(50,Math.max(1,limit)));
+    let next=0,checked=0,verified=0,failed=0;
     const worker=async()=>{while(next<queue.length){
       const group=queue[next++],line=data.lines.find(l=>l.variantId===group.variantId);
-      const result=await researchProduct(line,{fetcher,knownSources:line.offers||[],recheck:recheckSource,
-        allowed:(o,brand)=>allowedSource(o.url,brand,o.region),isVerified:o=>validSource(o)});
-      for(const offer of result.offers)await persistOffer(offer);
-      await db('procurement_runs',{method:'POST',body:{kind:'source_discovery',summary:result.summary}});
-      checked++;verified+=result.summary.verified;
+      try{
+        const result=await researchProduct(line,{fetcher,knownSources:line.offers||[],recheck:recheckSource,
+          allowed:(o,brand)=>allowedSource(o.url,brand,o.region),isVerified:o=>validSource(o)});
+        for(const offer of result.offers)await persistOffer(offer);
+        await db('procurement_runs',{method:'POST',body:{kind:'source_discovery',summary:result.summary}});
+        checked++;verified+=result.summary.verified;
+      }catch(error){
+        failed++;console.warn('procurement source option:',group.variantId,error.message);
+        // A malformed supplier result must not terminate research of the rest
+        // of the batch. Keep the error private and retry this option later.
+        try{await db('procurement_runs',{method:'POST',body:{kind:'source_discovery',summary:{variantId:group.variantId,version:SOURCING_VERSION,state:'research_needed',finishedAt:new Date().toISOString(),nextRetryAt:new Date(Date.now()+15*60000).toISOString(),attempts:[{supplier:'Research persistence',status:'temporary_error',detail:'This option could not be saved; a retry is scheduled.'}],errors:[String(error.message).slice(0,180)]}}});}catch{}
+      }
     }};
     await Promise.all([worker(),worker()]);
-    return {checked,verified,version:SOURCING_VERSION};
+    return {checked,verified,failed,version:SOURCING_VERSION};
   })().finally(()=>{discoveryFlight=null;});
   return discoveryFlight;
 }

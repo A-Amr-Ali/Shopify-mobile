@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {researchProduct,researchDue,SOURCING_VERSION,SOURCE_STAGES} from '../src/source-research.mjs';
+import {researchProduct,researchDue,compareResearchPriority,SOURCING_VERSION,SOURCE_STAGES} from '../src/source-research.mjs';
 import {allowedSource,chooseSource,validSource} from '../src/procurement.mjs';
 import {discoverSephora,discoverOfficialStore,structuredRetailOffers,titleMatches,marketStoreBases,verifyPurchaseLink} from '../src/supplier-checks.mjs';
 
@@ -19,6 +19,8 @@ test('supplier-class preference is Sephora AE/US/UK, official AE/US/UK, then Ult
   assert.equal(allowedSource('https://www.ulta.com/p/example','BUBBLE','US'),true);
   assert.equal(allowedSource('https://www.ulta.com/p/example','BUBBLE','UK'),false);
   for(const url of ['https://ulta.com.attacker.test/p/example','https://amazon.com/products/example','https://hellobubble.com:444/products/example','https://u:p@hellobubble.com/products/example'])assert.equal(allowedSource(url,'BUBBLE','US'),false);
+  assert.equal(validSource({...us,verified_at:null}),false);
+  assert.equal(validSource({...us,stock_status:'unverified',exact_match:false,verified_at:null}),false);
 });
 
 test('known Bubble Sephora URL is fetched live without a failing search request',async()=>{
@@ -81,6 +83,11 @@ test('a known unavailable option survives a blocked supplier search',async()=>{
   const unavailable=offer('AE','https://www.sephora.me/ae-en/p/example/P1',{stock_status:'out_of_stock'});
   const result=await researchProduct(bubble,{stages:[{id:'sephora_ae',label:'Sephora UAE',region:'AE',discover:async()=>{throw new Error('supplier_http_403');}}],knownSources:[unavailable],recheck:async()=>({stock_status:'out_of_stock',checked_at:at}),isVerified:o=>validSource(o)});
   assert.equal(result.offers.length,1);assert.equal(result.offers[0].stock_status,'out_of_stock');assert.equal(result.summary.attempts[0].status,'blocked');
+});
+
+test('new demand is first, and repeated blocked retries do not starve older research',()=>{
+  const rows=[{id:'recent-retry',newestOrderAt:300,research:{version:SOURCING_VERSION,finishedAt:'2026-10-31T11:00:00Z'}},{id:'older-unchecked',newestOrderAt:100},{id:'new-unchecked',newestOrderAt:400},{id:'older-retry',newestOrderAt:50,research:{version:SOURCING_VERSION,finishedAt:'2026-10-31T09:00:00Z'}}];
+  assert.deepEqual(rows.sort(compareResearchPriority).map(r=>r.id),['new-unchecked','older-unchecked','older-retry','recent-retry']);
 });
 
 test('known official non-Shopify pages use exact product schema, without working around denied access',async()=>{
