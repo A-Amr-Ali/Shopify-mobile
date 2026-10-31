@@ -1,6 +1,8 @@
 import { adminQuery } from './catalog.mjs';
 import { db } from './db.mjs';
-import { checkSephoraSource, checkSephoraUSSource, discoverSephora, discoverSephoraUS, discoverOfficialAE, discoverOfficialUS, discoverOfficialUK } from './supplier-checks.mjs';
+import { checkSephoraSource, checkSephoraUSSource, checkStructuredSource, verifyPurchaseLink } from './supplier-checks.mjs';
+import { officialDomains, sourcePriority } from './supplier-registry.mjs';
+import { researchProduct, researchDue, SOURCING_VERSION } from './source-research.mjs';
 
 export const MARKETS = Object.freeze({
   AE: { currency:'AED', exchange:15, shipping:900, label:'UAE' },
@@ -160,19 +162,7 @@ export async function allRows(table,query='') {
   return rows;
 }
 
-// Only Sephora or the product's official brand website is accepted.
-const BRANDS=[
-  ['rhode',['rhodeskin.com']],['k18',['k18hair.com','k18hair.ae','k18hair.co.uk']],['clinique',['clinique.com','clinique.co.uk','clinique-me.com']],
-  ['tarte',['tartecosmetics.com']],['briogeo',['briogeohair.com']],['charlotte tilbury',['charlottetilbury.com']],['huda beauty',['hudabeauty.com']],
-  ['makeup by mario',['makeupbymario.com']],['milk makeup',['milkmakeup.com']],['kosas',['kosas.com']],['dior',['dior.com']],
-  ['one size',['onesizebeauty.com']],['kiehl',['kiehls.com','kiehls.ae','kiehls.co.uk']],['stanley',['stanley1913.com','stanley1913.ae','uk.stanley1913.com']],
-  ['smeg',['smeg.com','smeguk.com','smeggulf.com']],['blond amsterdam',['blond-amsterdam.com']],['beauty blender',['beautyblender.com','beautyblender.co.uk']],
-  ['sol de janeiro',['soldejaneiro.com']],['ouai',['theouai.com','theouai.co.uk']],['owala',['owalalife.com']],['slip',['slip.com','slip.co.uk']],
-  ['josie maran',['josiemaran.com']],['24bottle',['24bottles.com']],['fenty',['fentybeauty.com','fentyskin.com']],
-  ['patrick ta',['patrickta.com']],['living proof',['livingproof.com']],['rare beauty',['rarebeauty.com']],['tower 28',['tower28beauty.com']],
-  ['grande',['grandecosmetics.com']],['benefit',['benefitcosmetics.com']],['amika',['loveamika.com']],['color wow',['colorwowhair.com']],
-  ['smashbox',['smashbox.com','smashbox.co.uk']],['summer fridays',['summerfridays.com']],['saie',['saiehello.com']],['hourglass',['hourglasscosmetics.com']],['byoma',['byoma.com']]
-];
+// Only Sephora, Ulta US, or an approved domain for this exact brand is accepted.
 export function allowedSource(url,brand,region) {
   let u;try{u=new URL(url);}catch{return false;}
   if(u.protocol!=='https:'||u.username||u.password||u.port||u.hash||!MARKETS[region])return false;
@@ -181,7 +171,8 @@ export function allowedSource(url,brand,region) {
   if(['sephora.me','sephora.ae'].includes(host))return region==='AE'&&(/^\/ae(?:-en|-ar)?(?:\/|$)/.test(u.pathname)||host==='sephora.ae');
   if(host==='sephora.com')return region==='US'&&!/^\/ca(?:\/|$)/.test(u.pathname);
   if(host==='sephora.co.uk')return region==='UK';
-  const name=normal(brand); const allowed=BRANDS.filter(([b])=>name.includes(b)).flatMap(([,domains])=>domains);
+  if(host==='ulta.com')return region==='US'&&/^\/p\//.test(u.pathname);
+  const allowed=officialDomains(brand);
   return allowed.some(d=>host===d||host.endsWith('.'+d));
 }
 export function validSource(row, now=Date.now()) {
@@ -189,17 +180,16 @@ export function validSource(row, now=Date.now()) {
     Number.isFinite(Date.parse(row.verified_at))&&Date.parse(row.verified_at)<=now+60000&&now-Date.parse(row.verified_at)<SOURCE_TTL_MS;
 }
 export function chooseSource(sources,brand,now=Date.now()) {
-  for(const region of ['AE','US','UK']) {
-    const matches=sources.filter(s=>s.region===region&&allowedSource(s.url,brand,region)&&validSource(s,now));
-    if(matches.length)return matches.sort((a,b)=>Number(a.price)-Number(b.price))[0];
-  }
-  return null;
+  return sources.filter(s=>allowedSource(s.url,brand,s.region)&&validSource(s,now))
+    .sort((a,b)=>sourcePriority(a)-sourcePriority(b)||Number(a.price)-Number(b.price))[0]||null;
 }
 
 export async function procurementDashboard() {
-  const [orders,options,sources,purchases,runs]=await Promise.all([
+  const [orders,options,sources,purchases,runs,researchRuns]=await Promise.all([
     allRows('procurement_orders','order=created_at.asc'),allRows('procurement_options'),allRows('procurement_sources'),
-    allRows('procurement_purchases','voided_at=is.null&order=created_at.desc'),db('procurement_runs?order=created_at.desc&limit=6')]);
+    allRows('procurement_purchases','voided_at=is.null&order=created_at.desc'),db('procurement_runs?order=created_at.desc&limit=6'),
+    db('procurement_runs?kind=eq.source_discovery&select=summary,created_at&order=created_at.desc&limit=1000')]);
+  const researchMap=new Map();for(const run of researchRuns)if(run.summary?.variantId&&!researchMap.has(run.summary.variantId))researchMap.set(run.summary.variantId,{...run.summary,createdAt:run.created_at});
   const optionMap=new Map(options.map(x=>[x.variant_id,x])); const lines=[];
   for(const order of orders) for(const original of order.lines) {
     const option=optionMap.get(original.variantId);const source=option?.source_override?{kind:option.source_override,evidence:'Staff source override',inferred:false}:original.source;
@@ -212,13 +202,13 @@ export async function procurementDashboard() {
     const status=!order.active?'completed':source.kind==='sofie'?'local_stock':!outstanding?'purchased':original.hold?'on_hold':stale?'sync_needed':source.kind==='review'?'source_review':selected?'ready':'needs_sourcing';
     lines.push({...original,source,orderId:order.order_id,orderName:order.order_name,orderCreatedAt:order.created_at,scannedAt:order.scanned_at,active:order.active,
       purchased:bought,outstanding,weightKg:weight,weightSource:option?.weight_kg?'Staff shipping weight':original.weightKg?original.weightSource:selected?.supplier_weight_kg?'Supplier reported weight estimate':'Missing shipping weight',status,
-      selectedSource:selected,offers:offers.map(s=>({...s,currentlyVerified:validSource(s)&&allowedSource(s.url,original.brand,s.region)})),
+      research:researchMap.get(original.variantId)||null,selectedSource:selected,offers:offers.filter(s=>allowedSource(s.url,original.brand,s.region)).map(s=>({...s,currentlyVerified:validSource(s)})),
       cost:selected?costEstimate(selected.region,selected.price,weight,outstanding||1):null});
   }
   const demand=new Map();
   for(const line of lines.filter(l=>l.active&&l.outstanding>0&&!['local_stock','on_hold'].includes(l.status))) {
     if(!demand.has(line.variantId))demand.set(line.variantId,{variantId:line.variantId,title:line.title,brand:line.brand,option:line.option,quantity:0,orders:[],status:line.status,
-      source:line.source,weightKg:line.weightKg,weightSource:line.weightSource,selectedSource:line.selectedSource,cost:line.cost});
+      source:line.source,weightKg:line.weightKg,weightSource:line.weightSource,selectedSource:line.selectedSource,cost:line.cost,research:line.research,offers:line.offers});
     const row=demand.get(line.variantId);row.quantity+=line.outstanding;row.orders.push({orderName:line.orderName,orderId:line.orderId,lineId:line.lineId,quantity:line.outstanding,status:line.status});
     if(line.status!=='ready')row.status=line.status;
   }
@@ -230,6 +220,7 @@ export async function procurementDashboard() {
     purchased:purchases.reduce((n,p)=>n+p.quantity,0),missingWeights:[...demand.values()].filter(x=>!x.weightKg).length,
     pricedTotal:[...demand.values()].reduce((n,r)=>n+(r.cost?.totalTargetEgp||0),0)};
   return {generatedAt:new Date().toISOString(),summary,lines,demand:[...demand.values()],purchases,runs,markets:MARKETS,
+    sourcingVersion:SOURCING_VERSION,sourcingPriority:'Sephora UAE → Sephora US → Sephora UK → official brand UAE → US → UK → Ulta US',
     sourceExpiryHours:SOURCE_TTL_MS/3600000,routingNotice:'Outside SOFIE NOW is inferred as Reglare Store. SOFIE NOW products without exact-option stock evidence require source review. You can override the source on each option.',
     dailyReport:{timezone:'Africa/Cairo',window:'Every morning, around 08:00',delivery:'ChatGPT notification'}};
 }
@@ -274,12 +265,19 @@ export async function undoPurchase(id) {
 
 // Refresh only an explicitly matched official Shopify variant. Pages without
 // machine-readable, exact option evidence remain unverified; no stock is guessed.
-export async function recheckSource(source,brand,fetcher=fetch) {
+export async function recheckSource(source,brand,fetcher=fetch,line=null) {
   if(!allowedSource(source.url,brand,source.region))return {stock_status:'unverified',checked_at:new Date().toISOString()};
   if(new URL(source.url).hostname.endsWith('sephora.me'))return checkSephoraSource(source,fetcher);
   if(new URL(source.url).hostname.replace(/^www\./,'')==='sephora.com')return checkSephoraUSSource(source,fetcher);
+  if(['sephora.co.uk','ulta.com'].includes(new URL(source.url).hostname.replace(/^www\./,''))){
+    if(!line)return {stock_status:'unverified',checked_at:new Date().toISOString()};
+    try{return await checkStructuredSource(source,line,fetcher);}catch{return {stock_status:'unverified',checked_at:new Date().toISOString()};}
+  }
   const u=new URL(source.url);const m=u.pathname.match(/^(.*\/products\/[^/]+?)(?:\.js|\.json)?\/?$/);
-  if(!m||!source.supplier_variant_id)return {checked_at:new Date().toISOString()};
+  if(!m||!source.supplier_variant_id){
+    if(line)try{return await checkStructuredSource(source,line,fetcher);}catch{}
+    return {stock_status:'unverified',checked_at:new Date().toISOString()};
+  }
   try{
     const r=await fetcher(u.origin+m[1]+'.js',{redirect:'error',signal:AbortSignal.timeout(10000),headers:{accept:'application/json'}});
     if(!r.ok)throw new Error('http');const p=await r.json();
@@ -291,35 +289,57 @@ export async function recheckSource(source,brand,fetcher=fetch) {
     const cart=await fetcher(u.origin+u.pathname.split('/products/')[0]+'/cart.js',{redirect:'error',signal:AbortSignal.timeout(10000),headers:{accept:'application/json'}});
     const context=cart.ok?await cart.json():null;
     if(context?.currency!==source.currency) return {stock_status:'unverified',checked_at:at};
-    return {stock_status:variant.available===true?'in_stock':'out_of_stock',price:Number(variant.price)/100,
-      ...(Number(variant.weight)>0&&Number(variant.weight)<=100000?{supplier_weight_kg:Number(variant.weight)/1000,weight_evidence:'Official Shopify product JSON exact variant weight: '+variant.weight+' grams.'}:{}),
+    if(typeof variant.available!=='boolean'||!(Number(variant.price)>0))return {stock_status:'unverified',checked_at:at};
+    return {stock_status:variant.available?'in_stock':'out_of_stock',price:Number(variant.price)/100,
+      ...(Number(variant.weight)>0&&Number(variant.weight)<=100000?{supplier_weight_kg:Number(variant.weight)/1000,weight_evidence:'Official Shopify product JSON exact variant weight: '+variant.weight+' grams (reported shipping-weight estimate).'}:{}),
       verified_at:at,checked_at:at,verification_method:'official_json',evidence:'Official product JSON exact variant '+variant.id+' ('+variant.title+'); availability='+variant.available+'; official cart currency='+context.currency};
   }catch{return {stock_status:'unverified',checked_at:new Date().toISOString()};}
 }
 export async function refreshProcurementSources() {
   const data=await procurementDashboard();let checked=0;
   for(const group of data.demand){for(const source of data.lines.find(l=>l.variantId===group.variantId)?.offers||[]){
-    const result=await recheckSource(source,group.brand);await db('procurement_sources?id=eq.'+source.id,{method:'PATCH',body:result});checked++;
+    const line=data.lines.find(l=>l.variantId===group.variantId);
+    const result=await recheckSource(source,group.brand,fetch,line);await db('procurement_sources?id=eq.'+source.id,{method:'PATCH',body:result});checked++;
   }}
   return {checked};
 }
 
-export async function discoverProcurementSources({limit=8}={}) {
-  const data=await procurementDashboard();
-  const recent=await db('procurement_runs?kind=eq.source_discovery&created_at=gte.'+encodeURIComponent(new Date(Date.now()-24*3600000).toISOString())+'&select=summary&limit=1000');
-  const seen=new Set(recent.map(r=>r.summary.variantId));let checked=0,verified=0;
-  for(const group of data.demand.filter(r=>!r.selectedSource&&!seen.has(r.variantId)).slice(0,limit)){
-    const line=data.lines.find(l=>l.variantId===group.variantId);const summary={variantId:group.variantId,regionsChecked:[],errors:[]};let offers=[];
-    try{const ae=await discoverSephora(line);offers.push(...ae);summary.regionsChecked.push('AE');}catch(e){summary.errors.push('AE: '+e.message);}
-    if(!offers.some(o=>o.stock_status==='in_stock'))try{offers.push(...await discoverOfficialAE(line));}catch(e){summary.errors.push('Official AE: '+e.message);}
-    if(!offers.some(o=>o.stock_status==='in_stock'))try{const us=await discoverSephoraUS(line);offers.push(...us);summary.regionsChecked.push('US');}catch(e){summary.errors.push('Sephora US: '+e.message);}
-    if(!offers.some(o=>o.stock_status==='in_stock'))try{const us=await discoverOfficialUS(line);offers.push(...us);if(!summary.regionsChecked.includes('US'))summary.regionsChecked.push('US');}catch(e){summary.errors.push('Official US: '+e.message);}
-    if(!offers.some(o=>o.stock_status==='in_stock'))try{offers.push(...await discoverOfficialUK(line));summary.regionsChecked.push('UK');}catch(e){summary.errors.push('Official UK: '+e.message);}
-    for(const offer of offers)if(allowedSource(offer.url,line.brand,offer.region))await db('procurement_sources?on_conflict=variant_id,region,url',{method:'POST',prefer:'resolution=merge-duplicates,return=minimal',body:offer});
-    summary.offers=offers.length;summary.verified=offers.filter(o=>o.stock_status==='in_stock').length;summary.remaining='Unmatched options and UK fallbacks are researched in the morning brief.';
-    await db('procurement_runs',{method:'POST',body:{kind:'source_discovery',summary}});checked++;verified+=summary.verified;
-  }
-  return {checked,verified};
+const SOURCE_FIELDS=['variant_id','region','retailer','url','supplier_variant_id','matched_title','matched_option','exact_match','stock_status','price','currency','evidence','verification_method','verified_at','checked_at','supplier_weight_kg','weight_evidence'];
+async function persistOffer(offer) {
+  const row=Object.fromEntries(SOURCE_FIELDS.filter(k=>offer[k]!==undefined).map(k=>[k,offer[k]]));
+  return db('procurement_sources?on_conflict=variant_id,region,url',{method:'POST',prefer:'resolution=merge-duplicates,return=minimal',body:row});
+}
+export async function verifySourceLink(body,fetcher=fetch) {
+  if(!gid(body.variantId)||!MARKETS[body.region])throw new Error('invalid_source');
+  const data=await procurementDashboard(),line=data.lines.find(l=>l.variantId===body.variantId&&l.active);
+  if(!line||!allowedSource(body.url,line.brand,body.region))throw new Error('invalid_official_source');
+  const offers=await verifyPurchaseLink(line,body.url,body.region,fetcher);
+  for(const offer of offers)if(allowedSource(offer.url,line.brand,offer.region))await persistOffer(offer);
+  return {found:offers.length,verified:offers.filter(o=>validSource(o)).length,
+    message:offers.some(o=>validSource(o))?'Exact option verified and saved.':'Product check saved where available; exact option/stock still needs verification.'};
+}
+let discoveryFlight=null;
+export function discoverProcurementSources({limit=12,variantId=null,force=false,fetcher=fetch}={}) {
+  if(discoveryFlight)return discoveryFlight;
+  discoveryFlight=(async()=>{
+    const data=await procurementDashboard();
+    const lastRuns=new Map();for(const line of data.lines)if(line.research)lastRuns.set(line.variantId,{summary:line.research});
+    const newest=id=>Math.max(0,...data.lines.filter(l=>l.variantId===id).map(l=>Date.parse(l.orderCreatedAt)||0));
+    const queue=data.demand.filter(r=>(!variantId||r.variantId===variantId)&&(force||researchDue(lastRuns.get(r.variantId))))
+      .sort((a,b)=>newest(b.variantId)-newest(a.variantId)).slice(0,Math.min(50,Math.max(1,limit)));
+    let next=0,checked=0,verified=0;
+    const worker=async()=>{while(next<queue.length){
+      const group=queue[next++],line=data.lines.find(l=>l.variantId===group.variantId);
+      const result=await researchProduct(line,{fetcher,knownSources:line.offers||[],recheck:recheckSource,
+        allowed:(o,brand)=>allowedSource(o.url,brand,o.region),isVerified:o=>validSource(o)});
+      for(const offer of result.offers)await persistOffer(offer);
+      await db('procurement_runs',{method:'POST',body:{kind:'source_discovery',summary:result.summary}});
+      checked++;verified+=result.summary.verified;
+    }};
+    await Promise.all([worker(),worker()]);
+    return {checked,verified,version:SOURCING_VERSION};
+  })().finally(()=>{discoveryFlight=null;});
+  return discoveryFlight;
 }
 
 export function exportCsv(data) {
@@ -329,3 +349,4 @@ export function exportCsv(data) {
     r.selectedSource?.url,r.selectedSource?.price,r.selectedSource?.currency,r.weightKg,r.cost?.landedEgp,r.cost?.targetEgp,r.cost?.totalTargetEgp,r.selectedSource?.verified_at]);
   return '\ufeff'+[fields,...rows].map(row=>row.map(csv).join(',')).join('\r\n');
 }
+

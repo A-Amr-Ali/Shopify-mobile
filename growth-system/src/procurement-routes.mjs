@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { createHmac, randomBytes } from 'node:crypto';
 import { secretMatches, privateActor } from './security.mjs';
 import { takeBudget } from './db.mjs';
-import { procurementDashboard, syncProcurement, refreshProcurementSources, discoverProcurementSources, saveOption, saveSource, recordPurchase, undoPurchase, costEstimate, exportCsv } from './procurement.mjs';
+import { procurementDashboard, syncProcurement, refreshProcurementSources, discoverProcurementSources, verifySourceLink, saveOption, saveSource, recordPurchase, undoPurchase, costEstimate, exportCsv } from './procurement.mjs';
 
 const root=new URL('../private/',import.meta.url);
 const secret=()=>process.env.PROCUREMENT_KEY||process.env.STAFF_KEY;
@@ -23,7 +23,7 @@ async function body(req){const chunks=[];let n=0;for await(const c of req){n+=c.
 let running=false;
 let sourcingRunning=false;
 function background(task){if(running)return false;running=true;task().catch(e=>console.warn('procurement job:',e.message)).finally(()=>{running=false;});return true;}
-function research(){if(sourcingRunning)return;sourcingRunning=true;discoverProcurementSources().catch(e=>console.warn('procurement sourcing:',e.message)).finally(()=>{sourcingRunning=false;});}
+function research(options={},reconcile=false){if(sourcingRunning)return false;sourcingRunning=true;(async()=>{if(reconcile)await syncProcurement();return discoverProcurementSources(options);})().catch(e=>console.warn('procurement sourcing:',e.message)).finally(()=>{sourcingRunning=false;});return true;}
 export async function procurementRoutes(req,res,url) {
   if(!url.pathname.startsWith('/ops/procurement'))return false;
   res.setHeader('cache-control','no-store');res.setHeader('x-frame-options','DENY');res.setHeader('referrer-policy','no-referrer');res.setHeader('x-robots-tag','noindex, nofollow, noarchive');
@@ -46,6 +46,17 @@ export async function procurementRoutes(req,res,url) {
   if(req.method==='POST'){
     if(url.pathname==='/ops/procurement/sync'){const started=background(async()=>{await syncProcurement();research();});json(res,202,{started});return true;}
     const data=await body(req);let result;
+    if(url.pathname==='/ops/procurement/research'){
+      if(data.variantId&&!/^gid:\/\/shopify\/ProductVariant\/\d+$/.test(data.variantId)){json(res,400,{error:'invalid_variant'});return true;}
+      if(!await takeBudget('procurement_research',privateActor(req),30,3600)){json(res,429,{error:'too_many_attempts'});return true;}
+      const started=research({variantId:data.variantId||null,force:true,limit:data.variantId?1:12},true);
+      json(res,202,{started});return true;
+    }
+    if(url.pathname==='/ops/procurement/source-link'){
+      if(!await takeBudget('procurement_source_link',privateActor(req),30,3600)){json(res,429,{error:'too_many_attempts'});return true;}
+      try{result=await verifySourceLink(data);}catch(error){const safe=/^invalid_/.test(error.message)?error.message:/supplier_http_(403|401)/.test(error.message)?'supplier_access_blocked_stock_not_verified':/supplier_http_429/.test(error.message)?'supplier_rate_limited_retry_later':'supplier_check_unavailable_no_stock_assumed';json(res,422,{error:safe});return true;}
+      json(res,200,{result});return true;
+    }
     if(url.pathname==='/ops/procurement/option')result=await saveOption(data);
     else if(url.pathname==='/ops/procurement/source')result=await saveSource(data);
     else if(url.pathname==='/ops/procurement/purchase')result=await recordPurchase(data);
@@ -58,3 +69,4 @@ export async function procurementRoutes(req,res,url) {
 }
 export function startProcurementJobs(){if(process.env.PROCUREMENT_ENABLED!=='true')return;const run=()=>background(async()=>{await syncProcurement();research();});setTimeout(run,5000).unref();setInterval(run,5*60000).unref();
   setInterval(()=>refreshProcurementSources().catch(e=>console.warn('procurement source refresh:',e.message)),60*60000).unref();}
+
