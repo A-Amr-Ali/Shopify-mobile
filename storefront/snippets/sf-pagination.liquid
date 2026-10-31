@@ -1,0 +1,6 @@
+{% doc %}
+sf-pagination
+@param {paginate} paginate - Pagination object
+{% enddoc %}
+{% if paginate.pages > 1 %}<nav class="sf-pagination" aria-label="{{ 'sf.text.products' | t }}">{% if paginate.previous %}<a href="{{ paginate.previous.url }}">← {{ 'sf.text.previous' | t }}</a>{% endif %}{% for part in paginate.parts %}{% if part.is_link %}<a href="{{ part.url }}">{{ part.title }}</a>{% else %}<span{% if part.title == paginate.current_page %} aria-current="page"{% endif %}>{{ part.title }}</span>{% endif %}{% endfor %}{% if paginate.next %}<a href="{{ paginate.next.url }}">{{ 'sf.text.next' | t }} →</a>{% endif %}</nav>{% endif %}
+

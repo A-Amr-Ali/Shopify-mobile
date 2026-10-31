@@ -1,0 +1,31 @@
+{%- assign first = nil -%}
+{%- for block in section.blocks -%}{%- if block.settings.collection.products_count > 0 -%}{%- assign first = block -%}{%- break -%}{%- endif -%}{%- endfor -%}
+{%- if first -%}
+<section class="sf-section sf-newtabs" data-newtabs data-sort="{{ section.settings.sort }}" data-limit="{{ section.settings.limit }}">
+<div class="sf-wrap">
+<div class="sf-section-head"><div><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.heading | escape }}</h2></div><a class="underlined" data-tab-viewall href="{{ first.settings.collection.url }}{% if section.settings.sort != 'manual' %}?sort_by={{ section.settings.sort }}{% endif %}">{{ 'sf.text.view_all' | t }} {% render 'sf-icon',name:'arrow' %}</a></div>
+<div class="sf-tabs" role="tablist" aria-label="{{ section.settings.heading | escape }}">
+{%- for block in section.blocks -%}{%- assign c = block.settings.collection -%}{%- if c.products_count == 0 -%}{%- continue -%}{%- endif -%}<button type="button" role="tab" class="sf-tab" id="Tab-{{ section.id }}-{{ block.id }}" aria-selected="{% if block.id == first.id %}true{% else %}false{% endif %}" aria-controls="Panel-{{ section.id }}" data-tab-url="{{ c.url }}" data-tab-feed="{{ c.url }}?{% if section.settings.sort != 'manual' %}sort_by={{ section.settings.sort }}&{% endif %}section_id=sf-product-feed" {{ block.shopify_attributes }}>{{ block.settings.label | default: c.title | escape }}</button>{%- endfor -%}
+</div>
+<div class="sf-rail" data-rail id="Panel-{{ section.id }}" role="tabpanel" aria-labelledby="Tab-{{ section.id }}-{{ first.id }}">{%- assign c = first.settings.collection -%}
+<div class="sf-rail-track" data-rail-track data-tab-panel>
+{%- assign shown = 0 -%}
+{%- for product in c.products limit: 30 -%}{%- if shown >= section.settings.limit -%}{%- break -%}{%- endif -%}{%- if product.available -%}{%- assign shown = shown | plus: 1 -%}<div class="sf-rail-item">{%- render 'sf-card', product: product, unify: true -%}</div>{%- endif -%}{%- endfor -%}
+{%- if shown == 0 -%}<p class="sf-empty-note">{{ 'sf.journey.no_options' | t }}</p>{%- endif -%}
+</div><button type="button" class="sf-rail-btn sf-rail-prev" data-rail-prev aria-label="{{ 'sf.text.previous' | t }}">{% render 'sf-icon',name:'arrow' %}</button><button type="button" class="sf-rail-btn sf-rail-next" data-rail-next aria-label="{{ 'sf.text.next' | t }}">{% render 'sf-icon',name:'arrow' %}</button></div>
+</div>
+</section>
+{%- endif -%}
+{% schema %}
+{"name": "Sofie New In Tabs", "settings": [
+ {"type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "NEW IN"},
+ {"type": "text", "id": "heading", "label": "Heading", "default": "Just arrived, by category"},
+ {"type": "select", "id": "sort", "label": "Order", "default": "created-descending", "options": [{"value": "created-descending", "label": "Newest first"}, {"value": "best-selling", "label": "Best selling"}, {"value": "manual", "label": "Collection order"}]},
+ {"type": "range", "id": "limit", "label": "Products per tab", "min": 4, "max": 16, "step": 1, "default": 12},
+ {"type": "checkbox", "id": "lazy", "label": "Lazy-load product images", "info": "Products render with the page; images load as needed.", "default": false}
+], "blocks": [{"type": "tab", "name": "Tab", "settings": [
+ {"type": "collection", "id": "collection", "label": "Collection"},
+ {"type": "text", "id": "label", "label": "Tab label"}
+]}], "presets": [{"name": "Sofie New In Tabs", "blocks": [{"type": "tab"}, {"type": "tab"}]}]}
+{% endschema %}
+

@@ -1,0 +1,5 @@
+<section class="sf-brands"><div class="sf-wrap"><p class="eyebrow">{{ 'sf.text.brands_kicker' | t }}</p><div class="sf-section-head"><h2>{{ 'sf.text.brands' | t | newline_to_br }}</h2><a class="underlined" href="{{ pages['brands'].url }}">{{ 'sf.text.browse_brands' | t }} ↗</a></div><div class="sf-brand-row">{% assign brands='rhode,Rare Beauty,Charlotte Tilbury,NARS,HUDA BEAUTY,MAKEUP BY MARIO' | split:',' %}{% assign handles='rhode,rare-beauty,charlotte-tilbury,nars,huda-beauty,makeup-by-mario' | split:',' %}{% for b in brands %}<a href="{{ routes.collections_url }}/{{ handles[forloop.index0] }}">{{ b | escape }}</a>{% endfor %}</div></div></section>
+{% schema %}
+{"name": "Sofie Brands", "settings": []}
+{% endschema %}
+

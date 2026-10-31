@@ -1,0 +1,51 @@
+{% doc %}
+sf-world
+Prints "home" when the visitor is inside SOFIE Home & living, otherwise "beauty".
+Capture it: capture sf_world / render 'sf-world' / endcapture
+{% enddoc %}
+{%- liquid
+  assign w = 'beauty'
+  assign home_menu = settings.home_nav_menu | default: settings.home_menu
+  if template.suffix == 'home-home'
+    assign w = 'home'
+  elsif request.page_type == 'page' and page.handle == 'sofies-home'
+    assign w = 'home'
+  elsif request.page_type == 'collection' and collection
+    if collection.handle == 'sofies-home' or collection.handle == 'best-seller-home'
+      assign w = 'home'
+    else
+      assign needle = collection.url | append: '|'
+      assign urls = '|'
+      for l1 in home_menu.links
+        assign urls = urls | append: l1.url | append: '|'
+        for l2 in l1.links
+          assign urls = urls | append: l2.url | append: '|'
+          for l3 in l2.links
+            assign urls = urls | append: l3.url | append: '|'
+          endfor
+        endfor
+      endfor
+      if urls contains needle
+        assign w = 'home'
+      else
+        assign first = collection.products.first
+        if first
+          for c in first.collections
+            if c.handle == 'sofies-home'
+              assign w = 'home'
+              break
+            endif
+          endfor
+        endif
+      endif
+    endif
+  elsif request.page_type == 'product' and product
+    for c in product.collections
+      if c.handle == 'sofies-home'
+        assign w = 'home'
+        break
+      endif
+    endfor
+  endif
+  echo w
+-%}

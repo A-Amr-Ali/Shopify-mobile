@@ -1,0 +1,11 @@
+{%- comment -%}Product feed for SOFIE tabs. Requested through the Section Rendering API on a collection URL, e.g. /collections/skincare?sort_by=created-descending&section_id=sf-product-feed{%- endcomment -%}
+<div class="sf-feed" data-feed>
+{%- if collection -%}
+{%- assign shown = 0 -%}
+{%- for product in collection.products limit: 30 -%}{%- if shown >= 16 -%}{%- break -%}{%- endif -%}{%- if product.available -%}{%- assign shown = shown | plus: 1 -%}<div class="sf-rail-item">{%- render 'sf-card', product: product, unify: true -%}</div>{%- endif -%}{%- endfor -%}
+{%- endif -%}
+</div>
+{% schema %}
+{"name": "Sofie Product Feed", "settings": []}
+{% endschema %}
+
