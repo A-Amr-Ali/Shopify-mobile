@@ -102,29 +102,11 @@ export function renderEmail(m) {
 export function renderBirthdayEmail(gift = {}) {
   const { ink, gold, storeUrl } = EMAIL;
   const name = gift.firstName ? `, ${esc(gift.firstName)}` : "";
-  const codeBox = gift.code
-    ? `<tr><td align="center" style="padding:6px 40px 6px;">
-        <div style="display:inline-block;border:1px dashed ${gold};border-radius:12px;padding:14px 26px;text-align:center;">
-          <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#9a8f88;margin-bottom:4px;">Your gift code</div>
-          <div style="font-size:22px;letter-spacing:.08em;color:${ink};">${esc(gift.code)}</div>
-          <div style="font-size:13px;color:#6b625c;margin-top:4px;">${esc(gift.egp)} EGP off your next order</div>
-        </div>
-      </td></tr>`
-    : "";
-  const giftLine = gift.code
-    ? `Enjoy <strong>${esc(gift.egp)} EGP off</strong> — our gift to you, to use on your next order.`
-    : `Your birthday treat: ${esc(gift.note || "a little something with your next order this month.")}`;
-  const content = `
-      <tr><td style="padding:34px 40px 6px 40px;" dir="auto">
-        <p style="margin:0 0 8px;color:${gold};font-size:12px;letter-spacing:.2em;text-transform:uppercase;">Happy Birthday</p>
-        <h1 style="margin:0;color:${ink};font-size:27px;line-height:1.3;font-weight:400;font-family:Georgia,'Times New Roman',serif;">Happy birthday${name} 🎉</h1>
-      </td></tr>
-      <tr><td style="padding:14px 40px 14px 40px;" dir="auto"><div style="color:#3a302c;font-size:16px;line-height:1.8;">Wishing you a beautiful day from all of us at Sofie. ${giftLine}</div></td></tr>
-      ${codeBox}
-      <tr><td align="center" style="padding:18px 40px 6px 40px;">
-        <table role="presentation" cellpadding="0" cellspacing="0"><tr><td align="center" bgcolor="${ink}" style="border-radius:999px;">
-          <a href="${storeUrl}" style="display:inline-block;padding:14px 34px;color:#ffffff;font-size:15px;letter-spacing:.04em;text-decoration:none;border-radius:999px;">Treat Yourself</a>
-        </td></tr></table>
-      </td></tr>`;
-  return shell(content, "A birthday treat from Sofie 🎉");
+  const expires = gift.expiresAt ? new Intl.DateTimeFormat('en-GB', { timeZone: 'Africa/Cairo', dateStyle: 'medium' }).format(new Date(gift.expiresAt)) : '';
+  return shell(`
+    <tr><td style="padding:34px 40px 8px;color:${gold};letter-spacing:.15em;font-size:12px;">YOUR SOFIE BIRTHDAY GIFT</td></tr>
+    <tr><td style="padding:0 40px;color:${ink};font:30px Georgia,serif;">Happy birthday${name}.</td></tr>
+    <tr><td style="padding:20px 40px;color:${ink};font-size:17px;line-height:1.8;">A little luxury, from us to you. Your <strong>${esc(gift.egp)} EGP birthday credit</strong> is ready.<br>Sign in to SOFIE Rewards to use it online, or show your SOFIE member number and registered email at a branch. Choose one channel for this year's gift.${expires ? `<br>Use before ${esc(expires)} (Cairo time).` : ''}<br>One gift per birthday year. Credit is a discount on merchandise, cannot be exchanged for cash, and cannot be combined with another discount.</td></tr>
+    <tr><td style="padding:10px 40px;color:${ink};font-size:15px;line-height:1.8;">${esc(gift.note || '')}</td></tr>
+    <tr><td style="padding:20px 40px 34px;"><a href="${storeUrl}/pages/my-rewards" style="display:inline-block;background:${ink};color:white;padding:16px 28px;text-decoration:none;">Open my SOFIE Rewards</a></td></tr>`, 'Your birthday gift from SOFIE is ready.');
 }
