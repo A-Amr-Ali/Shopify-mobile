@@ -1,0 +1,14 @@
+{%- layout none -%}
+{%- paginate collection.products by 100 -%}
+{"version":1,"nextPage":{% if paginate.next %}{{ paginate.current_page | plus: 1 }}{% else %}null{% endif %},"products":[
+{%- for product in collection.products -%}
+{%- capture ready_ids -%}{%- render 'sf-now-ready', product: product -%}{%- endcapture -%}
+{"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"vendor":{{ product.vendor | json }},"tags":{{ product.tags | json }},"description":{{ product.description | strip_html | truncate: 4000 | json }},"image":{% if product.featured_image %}{{ product.featured_image | image_url: width: 520 | json }}{% else %}null{% endif %},"variants":[
+{%- for variant in product.variants -%}
+{%- assign probe = ',' | append: variant.id | append: ',' -%}
+{"id":{{ variant.id | json }},"title":{{ variant.title | json }},"price":{{ variant.price | json }},"available":{{ variant.available | json }},"ready":{% if ready_ids contains probe %}true{% else %}false{% endif %}}{% unless forloop.last %},{% endunless %}
+{%- endfor -%}
+]}{% unless forloop.last %},{% endunless %}
+{%- endfor -%}
+]}
+{%- endpaginate -%}
