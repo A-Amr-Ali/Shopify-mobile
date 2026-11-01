@@ -1,0 +1,24 @@
+{%- layout none -%}
+{%- paginate collection.products by 100 -%}
+{"version":1,"products":[
+{%- assign emitted = 0 -%}
+{%- for p in collection.products -%}
+{%- if p.available -%}
+{%- capture now_ids -%}{%- render 'sf-now-ready', product: p -%}{%- endcapture -%}
+{%- if emitted > 0 -%},{%- endif -%}
+{%- assign emitted = emitted | plus: 1 -%}
+{"handle":{{ p.handle | json }},"title":{{ p.title | json }},"vendor":{{ p.vendor | json }},"type":{{ p.type | json }},"tags":{{ p.tags | json }},"description":{{ p.description | strip_html | json }},"image":{% if p.featured_image %}{{ p.featured_image | image_url: width: 540 | json }}{% else %}""{% endif %},"variants":[
+{%- assign variant_count = 0 -%}
+{%- for v in p.variants -%}
+{%- if v.available -%}
+{%- assign id_token = ',' | append: v.id | append: ',' -%}
+{%- if variant_count > 0 -%},{%- endif -%}
+{%- assign variant_count = variant_count | plus: 1 -%}
+{"id":{{ v.id }},"title":{{ v.title | json }},"price":{{ v.price }},"available":true,"now":{% if now_ids contains id_token %}true{% else %}false{% endif %}}
+{%- endif -%}
+{%- endfor -%}
+]}
+{%- endif -%}
+{%- endfor -%}
+],"next":{{ paginate.next.url | default: false | json }}}
+{%- endpaginate -%}
