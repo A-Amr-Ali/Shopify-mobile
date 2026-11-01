@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "hair_match": {
+      "type": "sf-hair-match",
+      "settings": {
+        "catalog_collection": "all-hair"
+      }
+    }
+  },
+  "order": [
+    "hair_match"
+  ]
+}
