@@ -719,7 +719,17 @@
       "bundle_title": "Six thoughtful beauty gifts",
       "bundle_text": "Curated favourites. Beautiful savings.",
       "bundle_cta": "Shop the gift bundles",
-      "bundle_from": "From {{ price }}"
+      "bundle_from": "From {{ price }}",
+      "home_title": "Home meets beauty.",
+      "home_entry_text": "Stanley, Owala, Lenox & festive mugs, paired with beauty favourites.",
+      "home_cta": "Explore Home + Beauty gifts",
+      "home_eyebrow": "Christmas at SOFIE · Home + Beauty",
+      "home_title_first": "Home meets",
+      "home_title_last": "beauty.",
+      "home_description": "A favourite cup. A little colour. A gift that becomes part of every day. Discover thoughtful home and beauty pairings, each with its own bundle saving.",
+      "home_now": "SOFIE NOW options available · area & stock apply",
+      "home_signature": "Thoughtfully paired. Beautifully given.",
+      "home_image_note": "Gift presentation is illustrative."
     },
     "bundles": {
       "saving": "Save {{ amount }} ({{ percent }}%)",

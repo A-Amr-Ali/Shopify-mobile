@@ -1,0 +1,14 @@
+{% doc %}
+  Displays the reviewed complete gift-box photograph for a bundle.
+  @param {object} gift_product - A bundle whose featured image shows its exact contents together.
+  @param {string} [size] - Use hero for the large composition or compact for an entry card.
+{% enddoc %}
+{%- if gift_product.featured_image -%}
+  <span class="sf-gift-box sf-gift-box--{{ size | default: 'compact' }}" data-sf-gift-box-photo>
+    {%- if size == 'hero' -%}
+      {{ gift_product.featured_image | image_url: width: 1400 | image_tag: widths: '420, 700, 1000, 1400', sizes: '(max-width: 520px) 100vw, 50vw', loading: 'eager', alt: gift_product.featured_image.alt }}
+    {%- else -%}
+      {{ gift_product.featured_image | image_url: width: 180 | image_tag: width: 84, height: 84, loading: 'lazy', alt: '' }}
+    {%- endif -%}
+  </span>
+{%- endif -%}
