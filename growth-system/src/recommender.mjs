@@ -1,5 +1,6 @@
 import { createHash, createHmac, randomUUID } from 'node:crypto';
 import { secretMatches } from './security.mjs';
+import { predict } from './reco-learning.mjs';
 
 export const ALGORITHM = 'sofie-item-cosine-v1';
 export const uuid = v => typeof v === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v);
@@ -63,7 +64,7 @@ export function candidateIds(model, history, limit=80) {
   const popular=Object.keys(model.popularity).sort((a,b)=>model.popularity[b]-model.popularity[a]);
   return [...new Set([...recent,...related,...popular])].filter(variant).slice(0,limit);
 }
-export function rankCards(cards, model, history, {visitorId, arm=armFor(visitorId), now=Date.now(), limit=8, current=null}={}) {
+export function rankCards(cards, model, history, {visitorId, arm=armFor(visitorId), now=Date.now(), limit=8, current=null, arrival=null,budget=null,includeFeatures=false}={}) {
   const byId=new Map(cards.map(c=>[c.variantId,c]));
   const dismissed=new Set(history.filter(e=>e.event==='dismiss').map(e=>e.variant_id));
   const byInterest=new Map();
@@ -83,14 +84,19 @@ export function rankCards(cards, model, history, {visitorId, arm=armFor(visitorI
       const content=byId.has(e.variant_id)?similarity(byId.get(e.variant_id),c):0;
       personal+=w*(relation+0.15*content);
     }
-    return {...c, score:score+personal, reason:personal>0.2?'Based on your recent interests':'Discover at SOFIE'};
+    const semantic=Math.max(0,Math.min(1,Number(c.semanticScore)||0));
+    const features={popularity:score,affinity:1-Math.exp(-personal),semantic,priceFit:budget?Math.max(0,1-Math.abs(c.price-budget)/budget):0.5,novelty:seen.has(c.variantId)?0:1};
+    const learned=arm==='personalized'?predict(model.ranker,features):null;
+    const contextWeight=arrival?.terms?.length?4:1.5;
+    return {...c, features,score:(arrival?.explicit?0.25:1)*score+2*features.affinity+contextWeight*semantic+(learned===null?0:learned*0.75),
+      reason:semantic>0.3&&arrival?.terms?.length?'Related to this visit':personal>0.2?'Based on your recent interests':'Discover at SOFIE'};
   }).sort((a,b)=>b.score-a.score || a.variantId.localeCompare(b.variantId));
   const distinct=[]; const handles=new Set();
   for(const c of ranked) if(!handles.has(c.handle)) { handles.add(c.handle); distinct.push(c); }
   const out=distinct.slice(0,limit);
   if(arm==='personalized' && out.length===limit) {
-    const novel=distinct.slice(limit).filter(c=>!seen.has(c.variantId));
+    const novel=distinct.slice(limit).filter(c=>!seen.has(c.variantId)&&(!arrival?.terms?.length||c.features.semantic>0.15));
     if(novel.length) { const i=parseInt(hash(visitorId+new Date(now).toISOString().slice(0,10)).slice(0,8),16)%novel.length; out[limit-1]={...novel[i],reason:'Something new to explore',exploration:true}; }
   }
-  return out.map(({score,text,...c})=>c);
+  return out.map(({score,text,features,semanticScore,description,tags,productType,...c})=>includeFeatures?{...c,features}:c);
 }

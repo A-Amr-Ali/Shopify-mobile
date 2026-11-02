@@ -24,7 +24,7 @@ async function getToken() {
   return tokenCache.token;
 }
 
-export async function adminQuery(query, variables = {}) {
+export async function adminQuery(query, variables = {}, options = {}) {
   const token = await getToken();
   const r = await fetch(`https://${process.env.SHOP_DOMAIN}/admin/api/2026-10/graphql.json`, {
     method: 'POST', signal: AbortSignal.timeout(12000), headers: { 'content-type': 'application/json', 'x-shopify-access-token': token },
@@ -32,7 +32,7 @@ export async function adminQuery(query, variables = {}) {
   });
   if (!r.ok) throw new Error('admin_http_' + r.status);
   const data = await r.json(); if (data.errors?.length) { const details=data.errors.map(e=>String(e.message).slice(0,240)).join('; ');console.warn('Shopify query error:',details);const error=new Error('admin_query_rejected');error.details=details;throw error; }
-  return data.data;
+  return options.cost ? {...data.data,__cost:data.extensions?.cost} : data.data;
 }
 
 async function feed(handle, step, fresh = false) {

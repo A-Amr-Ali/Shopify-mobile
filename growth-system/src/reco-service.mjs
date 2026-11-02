@@ -3,6 +3,10 @@ import { db, takeBudget, configured } from './db.mjs';
 import { adminQuery, OPTIONS_QUERY, discoveryCandidates } from './catalog.mjs';
 import { privateActor, secretMatches } from './security.mjs';
 import { issueVisitor, visitorFrom, armFor, uuid, variant, trainModel, candidateIds, rankCards } from './recommender.mjs';
+import { loadRecoIndex, syncRecoCatalog } from './reco-catalog.mjs';
+import { cleanArrival, retrieve, interestQuery, terms, CAMPAIGNS } from './reco-intent.mjs';
+import { accountFrom, accountSignals } from './reco-profile.mjs';
+import { fitRanker, matureLabels } from './reco-learning.mjs';
 
 const secret=()=>process.env.RECO_SIGNING_KEY || process.env.RATE_HASH_KEY;
 const insert=(store,rows)=>store('sofie_reco_events?on_conflict=event_id',{method:'POST',prefer:'resolution=ignore-duplicates,return=minimal',body:rows});
@@ -47,6 +51,14 @@ export async function retrain(store=db) {
   if(training) return training;
   training=(async()=>{
     const next=trainModel(await trainingEvents(store));
+    const visible=[];
+    let last=null;
+    for(let page=0;page<40;page++){
+      const rows=await store('sofie_reco_events?event=in.(impression,click)&created_at=gte.'+new Date(Date.now()-30*86400000).toISOString()+'&order=event_id.asc&limit=500'+(last?'&event_id=gt.'+last:''));
+      visible.push(...rows);if(rows.length<500)break;
+      if(page===39)throw Error('ranker_training_window_exceeds_limit');last=rows.at(-1).event_id;
+    }
+    next.ranker=fitRanker(matureLabels(visible));
     await store('sofie_reco_models?on_conflict=id',{method:'POST',prefer:'resolution=merge-duplicates,return=minimal',body:{id:'active',payload:next,trained_at:next.trainedAt}});
     cache=next; cachedAt=Date.now();
     await store('sofie_reco_events?created_at=lt.'+new Date(Date.now()-90*86400000).toISOString(),{method:'DELETE',prefer:'return=minimal'});
@@ -74,15 +86,30 @@ export async function catalogCards(ids) {
 }
 
 export function makeRecoRoutes({store=db,budget=takeBudget,cards=catalogCards,getModel=model,key=secret,
+  getIndex=loadRecoIndex,resolveAccount=accountFrom,profile=accountSignals,
   fallback=async()=>catalogCards((await discoveryCandidates()).map(x=>x.variantId))
 }={}) {
   return async function recoRoutes(req,res,url,{bodyJSON,send}) {
-    if(!url.pathname.startsWith('/api/for-you/') && url.pathname!=='/ops/for-you') return false;
+    if(!url.pathname.startsWith('/api/for-you/') && !url.pathname.startsWith('/ops/for-you')) return false;
     const reply=(status,value)=>{send(res,status,value);return true;};
     if(process.env.RECO_ENABLED==='false') return reply(503,{error:'recommendations_disabled'});
-    if(url.pathname==='/ops/for-you') {
+    if(url.pathname.startsWith('/ops/for-you')) {
       if(!secretMatches(String(req.headers.authorization||'').replace(/^Bearer /,''),process.env.STAFF_KEY)) return reply(401,{error:'unauthorized'});
-      const m=await getModel(store); return reply(200,{algorithm:m.algorithm,version:m.version,trainedAt:m.trainedAt,...m.metrics});
+      if(url.pathname==='/ops/for-you/campaigns'&&req.method==='POST'){
+        const input=await bodyJSON(req);
+        if(!Array.isArray(input.campaigns)||input.campaigns.length>100)return reply(400,{error:'invalid_campaigns'});
+        const rows=[];
+        for(const c of input.campaigns) {
+          if(!/^[a-z0-9_-]{1,100}$/.test(c.id)||!['google','meta','instagram','tiktok','youtube','klaviyo','other'].includes(c.source)||!Array.isArray(c.terms))return reply(400,{error:'invalid_campaign'});
+          const safe=terms(c.terms.join(' '),20);if(!safe.length)return reply(400,{error:'invalid_campaign_terms'});
+          rows.push({id:c.id,source:c.source,terms:safe,active:c.active!==false,updated_at:new Date().toISOString()});
+        }
+        if(rows.length)await store('sofie_reco_campaigns?on_conflict=id',{method:'POST',prefer:'resolution=merge-duplicates,return=minimal',body:rows});
+        return reply(200,{updated:rows.length});
+      }
+      const m=await getModel(store);
+      const [catalog]=await store('sofie_reco_catalog?id=eq.active&select=updated_at');
+      return reply(200,{algorithm:m.algorithm,version:m.version,trainedAt:m.trainedAt,...m.metrics,ranker:m.ranker||{active:false,reason:'awaiting_labels'},catalogUpdatedAt:catalog?.updated_at||null});
     }
     if(req.method!=='POST') return reply(405,{error:'method_not_allowed'});
     const data=await bodyJSON(req);
@@ -93,7 +120,9 @@ export function makeRecoRoutes({store=db,budget=takeBudget,cards=catalogCards,ge
     }
     const visitor=visitorFrom(data.token,key());
     if(!visitor) return reply(401,{error:'invalid_visitor'});
-    const scope='visitor_id=eq.'+visitor;
+    const account=data.identityTicket?resolveAccount(data.identityTicket):null;
+    if(data.identityTicket&&!account&&url.pathname!=='/api/for-you/forget')return reply(401,{error:'invalid_account_ticket'});
+    const scope=account?'subject_id=eq.'+account.subject:'visitor_id=eq.'+visitor;
     if(url.pathname==='/api/for-you/forget') {
       await store('sofie_reco_events?'+scope,{method:'DELETE',prefer:'return=minimal'});
       await store('sofie_reco_orders?'+scope,{method:'DELETE',prefer:'return=minimal'});
@@ -111,29 +140,48 @@ export function makeRecoRoutes({store=db,budget=takeBudget,cards=catalogCards,ge
         let served=null;
         if(e.requestId) {
           if(!uuid(e.requestId)) return reply(400,{error:'invalid_request'});
-          [served]=await store('sofie_reco_events?'+scope+'&event=eq.served&request_id=eq.'+e.requestId+'&variant_id=eq.'+e.variantId+'&limit=1');
+          [served]=await store('sofie_reco_events?'+scope+'&visitor_id=eq.'+visitor+'&event=eq.served&request_id=eq.'+e.requestId+'&variant_id=eq.'+e.variantId+'&limit=1');
           if(!served) return reply(400,{error:'invalid_attribution'});
         } else if(['impression','dismiss'].includes(e.event)) return reply(400,{error:'missing_attribution'});
-        rows.push({event_id:e.eventId,visitor_id:visitor,session_id:data.sessionId,event:e.event,variant_id:e.variantId,
+        rows.push({event_id:e.eventId,visitor_id:visitor,subject_id:account?.subject||null,session_id:data.sessionId,event:e.event,variant_id:e.variantId,
+          features:served?.features||null,source:served?.source||null,campaign:served?.campaign||null,
           request_id:served?.request_id||null,position:served?.position??null,arm:served?.arm||armFor(visitor),model_version:served?.model_version||null});
       }
       await insert(store,rows); return reply(200,{recorded:rows.length});
     }
     if(url.pathname==='/api/for-you/recommend') {
       const m=await getModel(store);
-      const history=await store('sofie_reco_events?'+scope+'&event=in.(view,click,save,cart,dismiss,purchase)&order=created_at.desc&limit=200');
+      const history=await store('sofie_reco_events?'+scope+(account?'':'&subject_id=is.null')+'&event=in.(view,click,save,cart,dismiss,purchase)&order=created_at.desc&limit=200');
       const current=variant(data.current)?data.current:null;
       // Current page context is recorded separately by the client, then becomes
       // part of the next recommendation. Never accept a client's customer ID.
-      const ids=candidateIds(m,history);
+      let index;
+      try { index=await getIndex(store); }catch { index=null; }
+      let saved={history:[],terms:[],budget:null};
+      if(account)try{saved=await profile(account,store);}catch(error){console.warn('recommendation profile unavailable:',error.message);}
+      history.push(...saved.history);history.sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at));
+      const arrival=cleanArrival(data.arrival,index?.vocabulary);
+      if(typeof data.arrival?.campaign==='string'&&/^[a-z0-9_-]{1,100}$/.test(data.arrival.campaign)&&!Object.hasOwn(CAMPAIGNS,data.arrival.campaign)){
+        const [campaign]=await store('sofie_reco_campaigns?id=eq.'+data.arrival.campaign+'&active=eq.true&limit=1');
+        if(campaign){arrival.campaign=campaign.id;arrival.source=campaign.source;arrival.terms=[...new Set([...arrival.terms,...terms(campaign.terms.join(' '))])].slice(0,20);}
+      }
+      const arm=armFor(account?.subject||visitor);
+      const contextual=index?retrieve(index,interestQuery(index,arm==='personalized'?history:[],arrival,arm==='personalized'?saved.terms:[])): [];
+      const landing=index?.byHandle.get(arrival.landing)||[];
+      if(!arrival.terms.length&&landing.length)arrival.terms=terms([landing[0].brand,landing[0].productType,landing[0].title].join(' '),12);
+      const handleHistory=(saved.handles||[]).flatMap(h=>index?.byHandle.get(h)?.slice(0,1)||[]);
+      const ids=[...new Set([...landing.slice(0,4).map(c=>c.variantId),...contextual.map(c=>c.variantId),...candidateIds(m,history),...handleHistory.map(c=>c.variantId)])].slice(0,160);
       let pool=ids.length?await cards(ids):[];
+      const semantic=new Map(contextual.map(c=>[c.variantId,c]));
+      pool=pool.map(c=>({...index?.byVariant.get(c.variantId),...c,semanticScore:semantic.get(c.variantId)?.semanticScore||0}));
       try { const more=await fallback();const seen=new Set(pool.map(c=>c.variantId));pool.push(...more.filter(c=>!seen.has(c.variantId))); }
       catch(error) { if(!pool.length)throw error; }
-      const arm=armFor(visitor), requestId=randomUUID();
-      const items=rankCards(pool,m,history,{visitorId:visitor,arm,current});
+      const requestId=randomUUID();
+      const items=rankCards(pool,m,history,{visitorId:visitor,arm,current,arrival,budget:saved.budget,includeFeatures:true});
       if(items.length) await insert(store,items.map((c,position)=>({event_id:randomUUID(),visitor_id:visitor,session_id:data.sessionId,
-        event:'served',variant_id:c.variantId,request_id:requestId,position,arm,model_version:m.version})));
-      return reply(200,{items,requestId,arm,modelVersion:m.version,currency:'EGP'});
+        subject_id:account?.subject||null,event:'served',variant_id:c.variantId,request_id:requestId,position,arm,model_version:m.version+':intent-v2',
+        features:c.features,source:arrival.source,campaign:arrival.campaign})));
+      return reply(200,{items:items.map(({features,...c})=>c),requestId,arm,modelVersion:m.version+':intent-v2',currency:'EGP',context:arrival,accountPersonalized:Boolean(account)});
     }
     return reply(404,{error:'not_found'});
   };
@@ -153,7 +201,7 @@ export async function recordRecoOrder(order,store=db) {
     const bought=new Set((order.line_items||[]).map(x=>String(x.variant_id)));
     const ids=[...new Set(served.filter(x=>bought.has(x.variant_id)).map(x=>x.variant_id))];
     if(!ids.length)return;
-    row={order_id:id,visitor_id:served[0].visitor_id,session_id:served[0].session_id,request_id:attrs.sofie_reco_request,
+    row={order_id:id,visitor_id:served[0].visitor_id,subject_id:served[0].subject_id||null,session_id:served[0].session_id,request_id:attrs.sofie_reco_request,
       variant_ids:ids,occurred_at:order.created_at};
   }
   row={...row,paid:!order.test && !order.cancelled_at && order.financial_status==='paid',
@@ -167,4 +215,7 @@ export function startRecoJobs() {
   const run=()=>retrain().then(x=>console.log('recommendation training',JSON.stringify(x))).catch(e=>console.warn('recommendation training:',e.message));
   setTimeout(run,30000).unref();
   setInterval(run,6*3600000).unref();
+  const catalog=()=>syncRecoCatalog().then(x=>console.log('recommendation catalog',JSON.stringify(x))).catch(e=>console.warn('recommendation catalog:',e.message));
+  setTimeout(catalog,5000).unref();
+  setInterval(catalog,3600000).unref();
 }

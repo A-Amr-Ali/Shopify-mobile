@@ -741,14 +741,15 @@
       "invite": "Discover a personal edit that learns from what you explore.",
       "enable": "Personalize my picks",
       "reset": "Turn off and forget my browsing",
-      "privacy": "With your permission, we use browsing and shopping interactions on this device to improve your recommendations. You can turn this off and clear your history anytime.",
+      "privacy": "With your permission, we use your activity on this browser and your saved SOFIE preferences when signed in to personalize your edit. Turn it off and clear recommendation history anytime.",
       "intro": "An edit shaped by your interests, with something new to discover.",
       "off": "Personalization is off. You can turn it on whenever you like.",
       "privacy_loading": "Privacy settings are loading. Please try again in a moment.",
       "dismiss": "Not interested",
       "interests": "Inspired by your recent interests",
       "discover": "Discover at SOFIE",
-      "explore": "Something new to explore"
+      "explore": "Something new to explore",
+      "from_visit": "Related to what brought you here"
     }
   }
 }

@@ -7,11 +7,11 @@ const source=await readFile(new URL('../../storefront/assets/sofie-for-you.js',i
 function browser({consent=false,storage={},fetcher}={}) {
  const calls=[],listeners={},timers=[],local=new Map(Object.entries(storage));
  const store={getItem:k=>local.get(k)||null,setItem:(k,v)=>local.set(k,v),removeItem:k=>local.delete(k)};
- const document={hidden:false,getElementById:()=>({textContent:JSON.stringify({api:'https://api.test',root:'/',strings:{},variant:'123'})}),querySelector:()=>null,
+ const document={hidden:false,referrer:'',getElementById:()=>({textContent:JSON.stringify({api:'https://api.test',root:'/',strings:{},variant:'123'})}),querySelector:()=>null,
   addEventListener:(k,fn)=>listeners[k]=fn};
  const p={analyticsProcessingAllowed:()=>consent,preferencesProcessingAllowed:()=>consent};
  const window={Shopify:{customerPrivacy:p,loadFeatures:(_,fn)=>fn()},addEventListener:(k,fn)=>listeners[k]=fn};
- const context={window,document,localStorage:store,sessionStorage:{...store},crypto:{randomUUID},AbortSignal,
+ const context={window,document,location:{search:''},URLSearchParams,URL,localStorage:store,sessionStorage:{...store},crypto:{randomUUID},AbortSignal,
   setTimeout:fn=>{timers.push(fn);return timers.length;},clearTimeout:()=>{},fetch:async(url,options)=>{
    const data=JSON.parse(options.body);calls.push({url,data});
    if(fetcher)return fetcher(url,data);
