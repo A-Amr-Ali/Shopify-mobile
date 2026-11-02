@@ -13,6 +13,7 @@ create table public.sofie_reco_events (
 create index sofie_reco_visitor_time on public.sofie_reco_events(visitor_id,created_at desc);
 create index sofie_reco_request on public.sofie_reco_events(request_id,visitor_id,event);
 create index sofie_reco_time on public.sofie_reco_events(created_at desc);
+create index growth_events_reco_signals on public.growth_events(id) where event in ('product_click','cart_add');
 create table public.sofie_reco_models (
   id text primary key check (id='active'),
   payload jsonb not null,

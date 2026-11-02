@@ -25,7 +25,9 @@ async function trainingEvents(store) {
     for(let page=0;page<40;page++) {
       const key=table==='growth_events'?'id':'event_id';
       const path=table+'?select='+select+'&'+filter+'&created_at=gte.'+since+'&order='+key+'.asc&limit=500'+(last?'&'+key+'=gt.'+last:'');
-      const rows=await store(path);
+      let rows;
+      try { rows=await store(path); }
+      catch(error) { throw Error('training_'+table+'_page_'+page+':'+error.message); }
       for(const row of rows) {
         const event=({product_click:'click',cart_add:'cart'})[row.event]||row.event;
         for(const id of row.variant_ids || [row.variant_id]) if(variant(String(id)))

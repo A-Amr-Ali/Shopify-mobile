@@ -67,9 +67,10 @@ or declare a winner before adequate traffic and a complete buying window.
 ## Deployment and rollback
 
 1. Apply `sql/for-you.sql` once through the connected database migration tool.
-   The two recorded production migrations are
+   The recorded production migrations are
    `sofie_for_you_learning_foundation` and
-   `sofie_for_you_verified_order_outcomes`.
+   `sofie_for_you_verified_order_outcomes` and
+   `sofie_reco_clean_signals_training_index`.
 2. Deploy the growth code from the connected journey branch after tests.
    Existing `RATE_HASH_KEY` signs anonymous capabilities; an optional
    `RECO_SIGNING_KEY` isolates that purpose. Never expose either to the theme.
