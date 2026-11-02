@@ -1,0 +1,74 @@
+{% doc %}
+  Renders the time-limited SOFIE Christmas layer, ending 8 January 2027 at 00:00 Cairo.
+  @param {string} placement - One of head, body, logo or footer.
+{% enddoc %}
+{%- liquid
+  assign festive_now = 'now' | date: '%s' | plus: 0
+  assign festive_start = 1793570400
+  assign festive_end = 1799359200
+  assign festive_enabled = false
+  if settings.sf_christmas_enabled != false and festive_now >= festive_start and festive_now < festive_end
+    assign festive_enabled = true
+  endif
+-%}
+{%- if festive_enabled -%}
+  {%- case placement -%}
+    {%- when 'head' -%}
+      <link id="sf-christmas-styles" rel="stylesheet" href="{{ 'sofie-christmas-2026.css' | asset_url }}">
+      <script>if(Date.now()>=1793570400000&&Date.now()<1799359200000){document.documentElement.setAttribute('data-sf-christmas','active');}</script>
+      <script id="sf-christmas-config" type="application/json">{"startsAt":1793570400000,"expiresAt":1799359200000,"snow":{% if settings.sf_christmas_snow == false %}false{% else %}true{% endif %},"strings":{"pause":{{ 'sf.christmas.pause' | t | json }},"resume":{{ 'sf.christmas.resume' | t | json }},"reduced":{{ 'sf.christmas.reduced' | t | json }}}}</script>
+      <script src="{{ 'sofie-christmas-2026.js' | asset_url }}" defer></script>
+    {%- when 'logo' -%}
+      <span class="sf-xmas-logo sf-xmas-fragment" data-sf-festive aria-hidden="true"><span class="sf-xmas-logo__flight sf-xmas-motion">{% render 'sofie-christmas-icon', name: 'sleigh' %}</span><span class="sf-xmas-logo__trail"></span></span>
+    {%- when 'body' -%}
+      {%- liquid
+        assign festive_all = routes.collections_url | append: '/all'
+        assign festive_gifts = collections['value-gift-sets']
+        assign festive_minis = collections['mini-size']
+        assign festive_gift_url = festive_all
+        assign festive_mini_url = festive_all
+        if festive_gifts.products_count > 0
+          assign festive_gift_url = festive_gifts.url
+        endif
+        if festive_minis.products_count > 0
+          assign festive_mini_url = festive_minis.url
+        endif
+        assign festive_hero = false
+        if request.page_type == 'index'
+          assign festive_hero = true
+        elsif request.page_type == 'page'
+          if page.handle == 'sofies-makeup' or page.handle == 'sofies-home'
+            assign festive_hero = true
+          endif
+        endif
+      -%}
+      <div class="sf-xmas-ribbon sf-xmas-fragment" data-sf-festive>
+        <a href="{{ festive_gift_url }}">{% render 'sofie-christmas-icon', name: 'gift' %}<span>{{ 'sf.christmas.ribbon' | t }}</span><span class="sf-xmas-ribbon__arrow" aria-hidden="true">↗</span></a>
+        <button type="button" class="sf-xmas-toggle" data-sf-festive-toggle aria-pressed="false"><span aria-hidden="true">❄</span><span data-sf-festive-toggle-label>{{ 'sf.christmas.pause' | t }}</span></button>
+      </div>
+      {%- if festive_hero -%}
+        <section class="sf-xmas-hero sf-xmas-fragment" data-sf-festive aria-labelledby="sf-xmas-title">
+          <div class="sf-xmas-hero__copy">
+            <p class="sf-xmas-eyebrow">{{ 'sf.christmas.eyebrow' | t }}</p>
+            <h2 id="sf-xmas-title">{{ 'sf.christmas.title_first' | t }}<br><em>{{ 'sf.christmas.title_last' | t }}</em></h2>
+            <p class="sf-xmas-hero__text">{{ 'sf.christmas.description' | t }}</p>
+            <div class="sf-xmas-hero__actions"><a class="sf-xmas-button" href="{{ festive_gift_url }}">{{ 'sf.christmas.shop_gifts' | t }}<span aria-hidden="true">↗</span></a><a class="sf-xmas-link" href="{{ festive_mini_url }}">{{ 'sf.christmas.shop_minis' | t }}<span aria-hidden="true">↗</span></a></div>
+            <p class="sf-xmas-hero__signature">{{ 'sf.christmas.signature' | t }}</p>
+          </div>
+          <div class="sf-xmas-scene" aria-hidden="true">
+            <div class="sf-xmas-scene__arch"></div><div class="sf-xmas-scene__ring"></div>
+            <span class="sf-xmas-scene__star sf-xmas-scene__star--one sf-xmas-motion">{% render 'sofie-christmas-icon', name: 'star' %}</span><span class="sf-xmas-scene__star sf-xmas-scene__star--two sf-xmas-motion">{% render 'sofie-christmas-icon', name: 'star' %}</span><span class="sf-xmas-scene__star sf-xmas-scene__star--three">{% render 'sofie-christmas-icon', name: 'star' %}</span>
+            <div class="sf-xmas-scene__sleigh sf-xmas-motion">{% render 'sofie-christmas-icon', name: 'sleigh' %}</div>
+            <div class="sf-xmas-scene__tree">{% render 'sofie-christmas-icon', name: 'tree' %}</div>
+            <div class="sf-xmas-present sf-xmas-present--cream"><span class="sf-xmas-present__bow"></span><span class="sf-xmas-present__lid"></span><span class="sf-xmas-present__tag">SOFIE</span></div>
+            <div class="sf-xmas-present sf-xmas-present--berry"><span class="sf-xmas-present__bow"></span><span class="sf-xmas-present__lid"></span></div>
+            <div class="sf-xmas-present sf-xmas-present--sage"><span class="sf-xmas-present__bow"></span><span class="sf-xmas-present__lid"></span></div>
+            <span class="sf-xmas-scene__caption">{{ 'sf.christmas.scene_caption' | t }}</span>
+          </div>
+        </section>
+      {%- endif -%}
+      <div class="sf-xmas-snow sf-xmas-fragment" data-sf-festive data-sf-festive-snow aria-hidden="true"></div>
+    {%- when 'footer' -%}
+      <div class="sf-xmas-signoff sf-xmas-fragment" data-sf-festive><span class="sf-xmas-signoff__sprig" aria-hidden="true">{% render 'sofie-christmas-icon', name: 'sprig' %}</span><p>{{ 'sf.christmas.signoff' | t }}</p><span class="sf-xmas-signoff__sleigh sf-xmas-motion" aria-hidden="true">{% render 'sofie-christmas-icon', name: 'sleigh' %}</span></div>
+  {%- endcase -%}
+{%- endif -%}

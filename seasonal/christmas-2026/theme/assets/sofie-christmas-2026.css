@@ -1,0 +1,72 @@
+.sf-xmas-fragment{display:none}
+html[data-sf-christmas="active"] .sf-xmas-fragment{display:block}
+html[data-sf-christmas="active"] .sf-header{border-bottom-color:#d7c5a1}
+html[data-sf-christmas="active"] .sf-announcement{background:#183d34}
+html[data-sf-christmas="active"] .sf-logo{position:relative}
+html[data-sf-christmas="active"] .sf-card-image::after{content:"✧";position:absolute;inset-block-start:10px;inset-inline-start:12px;color:#9c783d;font:24px/1 Georgia,serif;pointer-events:none;z-index:1}
+.sf-logo>.sf-xmas-logo{position:absolute;inset:0;pointer-events:none;overflow:visible}
+.sf-xmas-logo__flight{position:absolute;inset-inline-end:-8px;top:-23px;width:68px;height:42px;transform-origin:center;animation:sfXmasLogo 5s ease-in-out infinite}
+.sf-xmas-logo__flight svg{display:block;width:100%;height:100%;max-width:none}
+.sf-xmas-logo__trail{position:absolute;inset-inline-start:2px;bottom:-5px;width:calc(var(--logo-w,154px) - 4px);height:5px;border-block-end:1px solid #c7a96b;border-radius:50%;opacity:.7}
+html[data-sf-christmas="active"] .sf-xmas-ribbon{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:44px;padding:5px max(24px,calc((100vw - 1330px)/2));background:#fcf8f0;border-bottom:1px solid #e5d9c3;color:#572936}
+.sf-xmas-ribbon>a{display:inline-flex;align-items:center;gap:12px;color:inherit;font:400 12px/1.4 var(--body,Arial,sans-serif);text-decoration:none;min-height:32px}
+.sf-xmas-ribbon>a>svg{flex-shrink:0;width:19px;height:19px}
+.sf-xmas-ribbon__arrow{font-size:15px;color:#9b7842}
+.sf-xmas-toggle{display:inline-flex;align-items:center;gap:7px;flex-shrink:0;min-height:34px;border:1px solid #d6c5a4;border-radius:30px;padding:5px 12px;background:transparent;color:#572936;font:400 10px/1.5 var(--body,Arial,sans-serif);cursor:pointer}
+.sf-xmas-toggle:disabled{cursor:default}
+.sf-xmas-toggle:focus-visible,.sf-xmas-ribbon a:focus-visible,.sf-xmas-hero a:focus-visible{outline:2px solid #bd8d46;outline-offset:4px}
+html[data-sf-christmas="active"] .sf-xmas-hero{position:relative;display:grid;grid-template-columns:1fr 1fr;background:#183d34;color:#fcf8ef;isolation:isolate;overflow:hidden;max-width:1600px;margin:0 auto}
+.sf-xmas-hero__copy{position:relative;z-index:1;align-self:center;padding:48px clamp(28px,6vw,94px) 38px}
+.sf-xmas-eyebrow{font:500 10px/1.6 var(--body,Arial,sans-serif);letter-spacing:.24em;text-transform:uppercase;color:#e0c28c;margin:0 0 20px}
+.sf-xmas-hero h2{font:400 clamp(52px,6.8vw,96px)/.98 var(--serif,Georgia,serif);letter-spacing:-.035em;color:#fcf8ef;margin:0 0 23px}
+.sf-xmas-hero h2 em{font-weight:400;color:#e0c28c}
+.sf-xmas-hero__text{max-width:365px;font:400 13px/1.85 var(--body,Arial,sans-serif);color:#ebe8db;margin:0 0 25px}
+.sf-xmas-hero__actions{display:flex;align-items:center;flex-wrap:wrap;gap:20px}
+.sf-xmas-button{display:inline-flex;align-items:center;justify-content:space-between;gap:25px;min-height:48px;padding:13px 22px;background:#fcf8ef;color:#183d34;font:500 11px/1.4 var(--body,Arial,sans-serif);text-decoration:none;border:1px solid #fcf8ef;transition:background .2s}
+.sf-xmas-button:hover{background:#ead8b8}
+.sf-xmas-link{display:inline-flex;align-items:center;gap:12px;min-height:44px;border-bottom:1px solid #8d9a83;color:#fcf8ef;font:400 11px/1.4 var(--body,Arial,sans-serif);text-decoration:none}
+.sf-xmas-hero__signature{font:400 9px/1.6 var(--body,Arial,sans-serif);letter-spacing:.16em;text-transform:uppercase;color:#d8c6a1;margin:28px 0 0}
+.sf-xmas-scene{position:relative;min-height:460px;overflow:hidden;background:#f0e7d7;border-inline-start:1px solid #d0b279}
+.sf-xmas-scene__arch{position:absolute;inset:28px 12% 0;border:1px solid #cab285;border-bottom:0;border-radius:50% 50% 0 0;background:radial-gradient(ellipse at 50% 65%,#fff9ec 0,#f3e9d7 70%)}
+.sf-xmas-scene__ring{position:absolute;inset:46px 15% 0;border:1px solid #dfcfad;border-bottom:0;border-radius:50% 50% 0 0}
+.sf-xmas-scene__tree{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);width:220px;height:284px}
+.sf-xmas-scene__tree svg{width:100%;height:100%;display:block}
+.sf-xmas-scene__sleigh{position:absolute;left:23%;top:18px;width:190px;height:114px;animation:sfXmasSleigh 10s ease-in-out infinite}
+.sf-xmas-scene__sleigh svg{width:100%;height:100%;display:block}
+.sf-xmas-scene__star{position:absolute;color:#a4834d}
+.sf-xmas-scene__star svg{display:block;width:100%;height:100%}
+.sf-xmas-scene__star--one{left:18%;top:39%;width:30px;height:30px;animation:sfXmasTwinkle 5s ease-in-out infinite}
+.sf-xmas-scene__star--two{right:17%;top:21%;width:21px;height:21px;animation:sfXmasTwinkle 6s 1s ease-in-out infinite}
+.sf-xmas-scene__star--three{right:18%;bottom:34%;width:13px;height:13px}
+.sf-xmas-scene__caption{position:absolute;bottom:19px;inset-inline:12px;text-align:center;color:#776043;font:400 8px/1.5 var(--body,Arial,sans-serif);letter-spacing:.22em;text-transform:uppercase}
+.sf-xmas-present{--box:#f8f1e6;--ribbon:#a33044;position:absolute;width:143px;height:108px;background:var(--box);border:1px solid #00000012;box-shadow:5px 9px 13px #37231712}
+.sf-xmas-present::before{content:"";position:absolute;inset-block:0;left:calc(50% - 8px);width:16px;background:var(--ribbon)}
+.sf-xmas-present::after{content:"";position:absolute;top:39%;inset-inline:0;height:13px;background:var(--ribbon)}
+.sf-xmas-present__lid{position:absolute;inset-inline:-4px;top:-5px;height:15px;background:var(--box);border:1px solid #00000014;box-shadow:0 2px 2px #0000000a;z-index:1}
+.sf-xmas-present__lid::before{content:"";position:absolute;inset-block:0;left:calc(50% - 8px);width:16px;background:var(--ribbon)}
+.sf-xmas-present__bow{position:absolute;top:-28px;left:calc(50% - 29px);width:58px;height:27px;z-index:2}
+.sf-xmas-present__bow::before,.sf-xmas-present__bow::after{content:"";position:absolute;bottom:0;width:30px;height:24px;border:5px solid var(--ribbon);border-radius:70% 50% 0 50%;transform:rotate(25deg)}
+.sf-xmas-present__bow::after{right:0;transform:rotate(-25deg);border-radius:50% 70% 50% 0}
+.sf-xmas-present__tag{position:absolute;right:10px;top:20px;background:#fffaf0;border:1px solid #cebf9e;padding:6px 8px;color:#40392d;font:11px/1.2 var(--serif,Georgia,serif);letter-spacing:.13em;transform:rotate(9deg);z-index:3}
+.sf-xmas-present--cream{left:19%;bottom:49px;transform:rotate(-7deg)}
+.sf-xmas-present--berry{--box:#872e42;--ribbon:#dcc597;right:18%;bottom:45px;width:112px;height:96px;transform:rotate(6deg)}
+.sf-xmas-present--sage{--box:#c5c9ad;--ribbon:#f3e6c9;right:19%;bottom:146px;width:87px;height:65px;transform:rotate(-5deg)}
+html[data-sf-christmas="active"] .sf-xmas-snow{position:fixed;inset:0;overflow:hidden;pointer-events:none!important;z-index:32;contain:strict}
+.sf-xmas-flake{position:absolute;left:var(--x);top:-14px;width:var(--size);height:var(--size);border-radius:50%;background:#fff;box-shadow:0 0 2px #7f98ab70;opacity:var(--opacity);animation:sfXmasSnow var(--duration) var(--delay) linear infinite;pointer-events:none}
+html[data-sf-christmas-motion="paused"] .sf-xmas-motion,html[data-sf-christmas-motion="paused"] .sf-xmas-flake{animation-play-state:paused}
+html[data-sf-christmas-motion="paused"] .sf-xmas-snow{display:none}
+html[data-sf-christmas-hidden="true"] .sf-xmas-motion,html[data-sf-christmas-hidden="true"] .sf-xmas-flake{animation-play-state:paused}
+html[data-sf-christmas="active"] .sf-xmas-signoff{display:flex;justify-content:center;align-items:center;gap:28px;padding:24px 20px;background:#fcf8f0;border-block:1px solid #e4d9c3;color:#3b4e3d}
+.sf-xmas-signoff p{font:italic 23px/1.4 var(--serif,Georgia,serif);margin:0}
+.sf-xmas-signoff__sprig{display:block;width:75px;height:35px}
+.sf-xmas-signoff__sprig svg,.sf-xmas-signoff__sleigh svg{display:block;width:100%;height:100%}
+.sf-xmas-signoff__sleigh{display:block;width:82px;height:49px;animation:sfXmasLogo 5s ease-in-out infinite}
+@keyframes sfXmasSnow{from{transform:translate3d(0,-2vh,0)}to{transform:translate3d(var(--drift),calc(100vh + 24px),0)}}
+@keyframes sfXmasLogo{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-3px) rotate(2deg)}}
+@keyframes sfXmasSleigh{0%,100%{transform:translate3d(0,0,0) rotate(-7deg)}50%{transform:translate3d(26px,-7px,0) rotate(0)}}
+@keyframes sfXmasTwinkle{0%,100%{opacity:.6;transform:scale(.9)}50%{opacity:1;transform:scale(1.05)}}
+@media(max-width:1000px){.sf-xmas-hero__copy{padding:36px}.sf-xmas-hero h2{font-size:66px}.sf-xmas-scene{min-height:440px}.sf-xmas-present--cream{left:10%}.sf-xmas-present--berry{right:10%}.sf-xmas-present--sage{right:12%}}
+@media(max-width:800px){.sf-xmas-logo__flight{width:53px;height:32px;top:-17px;inset-inline-end:-5px}.sf-xmas-logo__trail{width:calc(var(--logo-w-mb,116px) - 4px);bottom:-3px}html[data-sf-christmas="active"] .sf-xmas-ribbon{min-height:47px;padding:5px 16px;gap:8px}.sf-xmas-ribbon>a{font-size:9px;gap:7px}.sf-xmas-ribbon>a>svg{width:16px;height:16px}.sf-xmas-toggle{font-size:8px;padding:5px 8px;gap:4px;min-height:34px}html[data-sf-christmas="active"] .sf-xmas-hero{grid-template-columns:1.08fr 1fr}.sf-xmas-hero__copy{padding:30px 22px}.sf-xmas-eyebrow{font-size:8px;letter-spacing:.16em;margin-bottom:15px}.sf-xmas-hero h2{font-size:50px;margin-bottom:17px}.sf-xmas-hero__text{font-size:11px;line-height:1.75;margin-bottom:19px}.sf-xmas-hero__actions{gap:9px}.sf-xmas-button{font-size:10px;padding:12px 16px;gap:20px;min-height:44px}.sf-xmas-link{font-size:10px;min-height:35px}.sf-xmas-hero__signature{font-size:7px;letter-spacing:.08em;margin-top:18px}.sf-xmas-scene{min-height:366px}.sf-xmas-scene__arch{inset:23px 9% 0}.sf-xmas-scene__ring{inset:34px 13% 0}.sf-xmas-scene__tree{width:163px;height:211px;bottom:42px}.sf-xmas-scene__sleigh{left:9%;top:25px;width:151px;height:91px}.sf-xmas-present--cream{left:8%;bottom:45px;width:96px;height:76px}.sf-xmas-present--berry{right:4%;bottom:42px;width:78px;height:70px}.sf-xmas-present--sage{right:6%;bottom:116px;width:60px;height:48px}.sf-xmas-present__tag{font-size:8px;right:6px;top:18px;padding:4px}.sf-xmas-scene__caption{font-size:6px;letter-spacing:.1em}.sf-xmas-scene__star--one{left:12%;width:20px;height:20px}.sf-xmas-scene__star--two{right:10%;top:16%;width:15px;height:15px}.sf-xmas-signoff p{font-size:19px}html[data-sf-christmas="active"] .sf-xmas-signoff{gap:15px;padding:20px 15px}.sf-xmas-signoff__sprig{width:55px}.sf-xmas-signoff__sleigh{width:65px;height:39px}}
+@media(max-width:520px){html[data-sf-christmas="active"] .sf-xmas-hero{grid-template-columns:1fr}.sf-xmas-hero__copy{padding:30px 26px 25px}.sf-xmas-hero h2{font-size:58px}.sf-xmas-hero__text{max-width:310px}.sf-xmas-hero__actions{gap:22px}.sf-xmas-hero__signature{margin-top:20px}.sf-xmas-scene{min-height:263px;border-inline-start:0;border-block-start:1px solid #d0b279}.sf-xmas-scene__arch{inset:14px 14% 0}.sf-xmas-scene__ring{inset:23px 17% 0}.sf-xmas-scene__tree{width:160px;height:207px;bottom:25px;left:54%}.sf-xmas-scene__sleigh{left:15%;top:14px;width:140px;height:84px}.sf-xmas-present--cream{left:23%;bottom:28px;width:101px;height:74px}.sf-xmas-present--berry{right:14%;bottom:25px;width:81px;height:67px}.sf-xmas-present--sage{right:16%;bottom:97px;width:60px;height:46px}.sf-xmas-scene__caption{bottom:9px}.sf-xmas-scene__star--one{top:42%;left:17%}.sf-xmas-scene__star--two{top:13%;right:18%}.sf-xmas-signoff p{font-size:17px}.sf-xmas-ribbon__arrow{display:none}}
+@media(prefers-reduced-motion:reduce){.sf-xmas-motion,.sf-xmas-flake{animation:none!important}.sf-xmas-snow{display:none!important}.sf-xmas-button{transition:none}}
+@media print{.sf-xmas-fragment{display:none!important}}
