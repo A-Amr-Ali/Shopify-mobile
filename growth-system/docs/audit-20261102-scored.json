@@ -1,0 +1,982 @@
+{
+  "schema_version": "1.0",
+  "catalog_version": "1.0.0",
+  "audit": {
+    "url": "https://sofiestore.net",
+    "started_at": "2026-11-02T21:07:31.155718+00:00",
+    "completed_at": "2026-11-02T21:11:45.196383+00:00",
+    "scope": {
+      "mode": "sampled",
+      "pages": [
+        {
+          "url": "https://sofiestore.net/",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/products/bouncy-firm-hydrogel-eye-patches",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/collections/sofie-hours",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/pages/sofies-home",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/pages/beauty-passport",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/pages/my-rewards",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/policies/refund-policy",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/policies/privacy-policy",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/cart",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/pages/shipping-policy",
+          "reason": "Actual shipping-policy navigation target; HTTP reachability."
+        }
+      ],
+      "limitations": [
+        "10 public HTML pages sampled, not a full-site crawl. robots.txt and sitemap index also retrieved.",
+        "Rendered DOM/manual inspection covered homepage only at 1348x936 desktop. No mobile viewport, full keyboard flow, contrast or error validation.",
+        "No field CWV, Lighthouse/network trace, authenticated customer test or paid order. A single API request took 9.03 seconds; this is not a Core Web Vital.",
+        "Sitemap index has 12 child sitemaps; child contents and structured-data validity not assessed."
+      ]
+    },
+    "performance_notes": {
+      "field": "LCP/INP/CLS not collected; no field CWV verdict.",
+      "lab": "No Lighthouse report. Production API recommendation request observed 9.03s; no causal conversion effect inferred."
+    }
+  },
+  "evidence": [
+    {
+      "id": "E001",
+      "url": "https://sofiestore.net/",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='Sofie Store | Authentic Luxury Beauty in Egypt'; canonical='https://sofiestore.net/'; description='Sofie Store is Egypt’s leading destination for authentic high-end makeup and premium home accessories. 100% original products, curated collections, and a luxury shopping experience you can trust.'; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E002",
+      "url": "https://sofiestore.net/products/bouncy-firm-hydrogel-eye-patches",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='Bouncy & Firm Hydrogel Eye Patches LANEIGE | Egypt | Sofie Store'; canonical='https://sofiestore.net/products/bouncy-firm-hydrogel-eye-patches'; description=\"Shop authentic LANEIGE Bouncy & Firm Hydrogel Eye Patches in Egypt at Sofie's Makeup Store. 100% original, fast nationwide delivery.\"; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E003",
+      "url": "https://sofiestore.net/collections/sofie-hours",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='SOFIE NOW | Sofie Store'; canonical='https://sofiestore.net/collections/sofie-hours'; description='Your beauty favourites, delivered in 30 to 120 minutes. Shop selected shades, scents and sizes from our available Mivida stock.Delivery estimates after order confirmation New Cairo: 30 minutes · LE 200 delivery Nasr City and Madinaty: 60 minutes · LE 225 delivery Giza, El Shorouk, El Obour City, Sheikh Zayed and 6 Octo'; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E004",
+      "url": "https://sofiestore.net/pages/sofies-home",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='Homeware & Kitchen Accessories in Egypt | Sofie Store'; canonical='https://sofiestore.net/pages/sofies-home'; description=\"Discover Sofie's Home in Egypt. Explore homeware, kitchen accessories and design details, with product information to help you choose.\"; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E005",
+      "url": "https://sofiestore.net/pages/beauty-passport",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='Beauty Passport | Sofie Store'; canonical='https://sofiestore.net/pages/beauty-passport'; description='Your SOFIE Beauty PassportKeep your preferences, exact product options and routine together. Build your routine · Your Rewards profile.'; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E006",
+      "url": "https://sofiestore.net/pages/my-rewards",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='My Rewards page | Sofie Store'; canonical='https://sofiestore.net/pages/my-rewards'; description='Sofie Store is Egypt’s leading destination for authentic high-end makeup and premium home accessories. 100% original products, curated collections, and a luxury shopping experience you can trust.'; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E007",
+      "url": "https://sofiestore.net/policies/refund-policy",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='Refund policy | Sofie Store'; canonical='https://sofiestore.net/policies/refund-policy'; description='Sofie Store is Egypt’s leading destination for authentic high-end makeup and premium home accessories. 100% original products, curated collections, and a luxury shopping experience you can trust.'; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E008",
+      "url": "https://sofiestore.net/policies/privacy-policy",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='Privacy policy | Sofie Store'; canonical='https://sofiestore.net/policies/privacy-policy'; description='Sofie Store is Egypt’s leading destination for authentic high-end makeup and premium home accessories. 100% original products, curated collections, and a luxury shopping experience you can trust.'; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E009",
+      "url": "https://sofiestore.net/cart",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='Your Shopping Cart | Sofie Store'; canonical='https://sofiestore.net/cart'; description='Sofie Store is Egypt’s leading destination for authentic high-end makeup and premium home accessories. 100% original products, curated collections, and a luxury shopping experience you can trust.'; robots='noindex,follow'; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E010",
+      "url": "https://sofiestore.net/robots.txt",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title=''; canonical=None; description=None; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E011",
+      "url": "https://sofiestore.net/sitemap.xml",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title=''; canonical=None; description=None; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "EDOM",
+      "url": "https://sofiestore.net/",
+      "method": "CUA rendered DOM and accessibility tree",
+      "captured_at": "2026-11-02T21:11:45.196383+00:00",
+      "observation": "Homepage at 1348x936: one main, meaningful H1, labelled search/menu controls and named recommendation links/dismiss buttons; no img missing alt attribute. Gift links retained. Tab moved focus to personalization control. Full keyboard flow and mobile not tested."
+    },
+    {
+      "id": "EAPI",
+      "url": "https://sofie-growth-production.up.railway.app/api/for-you/recommend",
+      "method": "Production synthetic API checks and source/unit tests",
+      "captured_at": "2026-11-02T21:11:45.196383+00:00",
+      "observation": "New intent-v2.1 runtime returned Rhode Lip Tint for the registered ad in 9.03 seconds. No consent records nothing; foreign origin 403; forged account ticket 401; synthetic visitor history removed. 92 growth tests passed. Control candidate history and account arm assignment fixed; pre-fix data must not support causal uplift."
+    },
+    {
+      "id": "EADS",
+      "url": null,
+      "source_label": "Windsor facebook connector, Sofies Home account; read-only ad configuration and Shopify inventory metadata",
+      "method": "Connected APIs",
+      "captured_at": "2026-11-02T21:11:45.196383+00:00",
+      "observation": "Four ads retain sf_ad={{ad.id}}. Three ACTIVE; perfume PENDING_REVIEW. Lip Tint ad says all shades available. Primary product has 8/9 positive-stock options; ninth has inventoryPolicy CONTINUE, so purchase availability is possible but readiness needs qualification. Active automatic 5% discount exists; applicability conditions not fully verified."
+    },
+    {
+      "id": "ESHIP",
+      "url": "https://sofiestore.net/pages/shipping-policy",
+      "method": "Navigation target plus passive HTTPS GET",
+      "captured_at": "2026-11-02T21:11:45.196383+00:00",
+      "observation": "Homepage shipping link resolves here, HTTP 200. No full checkout or policy/legal correctness determination."
+    }
+  ],
+  "checks": [
+    {
+      "id": "technical_seo.crawl_index",
+      "category": "technical_seo",
+      "name": "Crawlability and index eligibility",
+      "weight": 30,
+      "inspection": "Inspect response status, robots.txt, meta robots and X-Robots-Tag on sampled intended landing pages. Distinguish eligibility from confirmed indexing; use Search Console only when supplied/authorized.",
+      "pass_criteria": "Sampled intended public pages are reachable and eligible for indexing, with intentional exclusions documented.",
+      "applicability_note": "An intentionally private site can justify N/A for index eligibility; record evidence of its purpose. Inability to access Search Console is untested indexing evidence, not N/A for this entire check.",
+      "status": "pass",
+      "evidence_ids": [
+        "E001",
+        "E002",
+        "E003",
+        "E004",
+        "E005",
+        "E006",
+        "E007",
+        "E008",
+        "E009",
+        "E010"
+      ],
+      "notes": "All 9 metadata-sampled HTML pages return 200; public pages have no observed noindex; cart intentionally noindex,follow. robots allows public routes. Eligibility, not confirmed indexing."
+    },
+    {
+      "id": "technical_seo.canonicals",
+      "category": "technical_seo",
+      "name": "Canonical URLs and duplication controls",
+      "weight": 25,
+      "inspection": "Inspect canonical declarations, protocol/host variants and duplicate routes. Verify canonical targets resolve; do not infer Google selection without evidence.",
+      "pass_criteria": "Sampled indexable pages use consistent, reachable canonical targets and intentional variant handling.",
+      "applicability_note": "Usually applicable to all public websites.",
+      "status": "pass",
+      "evidence_ids": [
+        "E001",
+        "E002",
+        "E003",
+        "E004",
+        "E005",
+        "E006",
+        "E007",
+        "E008",
+        "E009"
+      ],
+      "notes": "Nine metadata-sampled pages have matching final canonical URLs. No assertion about Google-selected canonical."
+    },
+    {
+      "id": "technical_seo.sitemaps",
+      "category": "technical_seo",
+      "name": "Sitemaps and discovery",
+      "weight": 15,
+      "inspection": "Review robots-declared or directly located sitemap files, status, syntax and sampled listed URLs. Assess the need and alternative discovery paths.",
+      "pass_criteria": "Important pages have reliable discovery paths; available sitemaps are usable and list intended canonical URLs.",
+      "applicability_note": "A small one-page site with demonstrated complete discovery may justify N/A to sitemap-specific review; lack of sitemap access is not evidence of N/A.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "technical_seo.internal_links",
+      "category": "technical_seo",
+      "name": "Internal linking and crawl paths",
+      "weight": 20,
+      "inspection": "Follow representative navigation and contextual links; inspect broken destinations, important-page depth and orphan-page claims against the actual crawl scope.",
+      "pass_criteria": "Sampled important pages are linked through usable paths without material broken internal links.",
+      "applicability_note": "Usually applicable; qualify orphan-page conclusions unless a complete authorized URL inventory is available.",
+      "status": "pass",
+      "evidence_ids": [
+        "E001",
+        "E002",
+        "E003",
+        "E004",
+        "E005",
+        "E006",
+        "E007",
+        "E008",
+        "E009",
+        "ESHIP"
+      ],
+      "notes": "Homepage-linked representative destinations resolve 200. Not a complete link inventory."
+    },
+    {
+      "id": "technical_seo.structured_localization",
+      "category": "technical_seo",
+      "name": "Structured data and localization accuracy",
+      "weight": 10,
+      "inspection": "Inspect existing structured data and hreflang where relevant; compare declarations to visible content and intended language/region variants.",
+      "pass_criteria": "Relevant declarations are valid, consistent with visible content and correct for the tested variants; unnecessary markup is not required.",
+      "applicability_note": "N/A may be justified when there is no relevant structured-data feature or alternate-language/region content. Show inspection evidence and rationale.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "on_page_seo.titles",
+      "category": "on_page_seo",
+      "name": "Page titles and search intent",
+      "weight": 25,
+      "inspection": "Inspect titles on each sampled page and compare uniqueness, subject, intent and clarity; character counts alone do not determine success.",
+      "pass_criteria": "Sampled important pages have descriptive, differentiating titles aligned with their purpose.",
+      "applicability_note": "Usually applicable to public content pages.",
+      "status": "pass",
+      "evidence_ids": [
+        "E001",
+        "E002",
+        "E003",
+        "E004",
+        "E005",
+        "E006",
+        "E007",
+        "E008",
+        "E009"
+      ],
+      "notes": "Nine observed titles identify their distinct page purposes."
+    },
+    {
+      "id": "on_page_seo.descriptions",
+      "category": "on_page_seo",
+      "name": "Search descriptions and presentation",
+      "weight": 15,
+      "inspection": "Inspect meta descriptions and available observed search presentation, separating authored descriptions from search-engine rewrites.",
+      "pass_criteria": "Sampled pages provide useful, accurate descriptions where appropriate without material duplicate boilerplate.",
+      "applicability_note": "Usually applicable; a missing live search preview is not N/A for authored metadata.",
+      "status": "partial",
+      "evidence_ids": [
+        "E001",
+        "E002",
+        "E003",
+        "E004",
+        "E005",
+        "E006",
+        "E007",
+        "E008",
+        "E009"
+      ],
+      "notes": "Product/Home/Passport descriptions are specific; rewards, refund and privacy reuse generic homepage description. Cart duplication excluded as intentional noindex."
+    },
+    {
+      "id": "on_page_seo.headings",
+      "category": "on_page_seo",
+      "name": "Heading structure and main topic",
+      "weight": 20,
+      "inspection": "Inspect headings and main page topic in rendered DOM; avoid treating a count of H1 elements alone as a ranking defect.",
+      "pass_criteria": "Headings describe the content and form a coherent structure with an identifiable main topic.",
+      "applicability_note": "Usually applicable.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "on_page_seo.image_links",
+      "category": "on_page_seo",
+      "name": "Image and link context",
+      "weight": 20,
+      "inspection": "Inspect descriptive link text, relevant image alternatives/captions and contextual links. Avoid keyword stuffing; accessibility impact belongs to its own findings/checks.",
+      "pass_criteria": "Important links and meaningful images have accurate contextual descriptions appropriate to their purpose.",
+      "applicability_note": "Image-only subtests may be N/A when no meaningful images exist; links still apply.",
+      "status": "pass",
+      "evidence_ids": [
+        "EDOM"
+      ],
+      "notes": "Homepage sampled meaningful product links are named, and all images expose alt attributes. Not an image-by-image semantic audit of other templates."
+    },
+    {
+      "id": "on_page_seo.url_topic",
+      "category": "on_page_seo",
+      "name": "URL clarity and topical alignment",
+      "weight": 20,
+      "inspection": "Inspect URLs, breadcrumbs where relevant and visible main content against each page's intended search task; distinguish research-backed demand from inference.",
+      "pass_criteria": "Sampled pages clearly align URL, title and substantive content with one coherent visitor task.",
+      "applicability_note": "Usually applicable; do not invent search volumes or target-keyword data.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "performance.field_cwv",
+      "category": "performance",
+      "name": "Field Core Web Vitals evidence",
+      "weight": 30,
+      "inspection": "Collect available CrUX/PageSpeed/Search Console field evidence; record source, device, URL versus origin, collection period, percentile and LCP/INP/CLS availability. Preserve a provider's reported assessment separately from missing metric coverage.",
+      "pass_criteria": "Representative field LCP, INP and CLS all have adequate evidence and meet current documented good thresholds. If any required metric is unavailable, this composite check is not_tested; retain any provider-reported pass separately with its limits. Use partial only for complete required evidence showing mixed good/non-good metrics or sampled segments.",
+      "applicability_note": "Insufficient field traffic or unavailable data means not_tested, not N/A and not fail. No inference from lab scores to real-user CWV.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "performance.lab_loading",
+      "category": "performance",
+      "name": "Reproducible lab loading diagnostics",
+      "weight": 25,
+      "inspection": "Run or inspect authorized lab reports and record tool/version, tested URL, device/network profile, timestamp, cache state and repeated-run variability when available.",
+      "pass_criteria": "Available lab evidence shows no material loading bottleneck for the agreed tested scenario, with diagnostics supporting the conclusion.",
+      "applicability_note": "An unavailable lab tool means not_tested; avoid universal pass thresholds for a whole Lighthouse score.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "performance.assets",
+      "category": "performance",
+      "name": "Images, fonts and transferred assets",
+      "weight": 20,
+      "inspection": "Use measured requests or supplied traces to assess image sizing/formats, font behavior, transfer size, compression and request duplication.",
+      "pass_criteria": "Sampled critical pages avoid material observed oversized/duplicated assets and use appropriate delivery settings.",
+      "applicability_note": "Usually applicable; visual inspection alone cannot prove network byte savings.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "performance.main_thread",
+      "category": "performance",
+      "name": "Interaction and main-thread work",
+      "weight": 15,
+      "inspection": "Inspect supported traces or diagnostics for blocking scripts, long tasks, hydration or interaction delays; do not relabel TBT as INP.",
+      "pass_criteria": "Measured tested interactions and relevant main-thread diagnostics show no material responsiveness bottleneck.",
+      "applicability_note": "No supported trace or interaction measurement means not_tested.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "performance.delivery_stability",
+      "category": "performance",
+      "name": "Caching, delivery and layout stability",
+      "weight": 10,
+      "inspection": "Inspect actual cache/compression headers, resource delivery and observed layout shifts in the tested session. Qualify CDN/backend claims to accessible evidence.",
+      "pass_criteria": "Observed delivery policies suit resource sensitivity/update needs and no material avoidable layout instability appears in measured scenarios.",
+      "applicability_note": "Usually applicable; do not penalize intentionally private no-store responses.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "accessibility.keyboard_focus",
+      "category": "accessibility",
+      "name": "Keyboard access and visible focus",
+      "weight": 25,
+      "inspection": "Manually test representative navigation, menus, dialogs and forms using keyboard; inspect focus order, traps, visibility and focus return.",
+      "pass_criteria": "Tested critical journeys are keyboard usable with visible logical focus and no observed keyboard trap.",
+      "applicability_note": "Automated scans alone cannot pass this check; unavailable interaction testing means not_tested.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "accessibility.names_structure",
+      "category": "accessibility",
+      "name": "Accessible names and semantic structure",
+      "weight": 25,
+      "inspection": "Inspect rendered accessible roles/names, landmarks, headings, controls and meaningful image alternatives using available DOM/accessibility evidence.",
+      "pass_criteria": "Sampled meaningful content and controls expose appropriate names, roles and structure.",
+      "applicability_note": "Usually applicable; report sampled coverage, never a whole-site conformance certification.",
+      "status": "pass",
+      "evidence_ids": [
+        "EDOM"
+      ],
+      "notes": "Rendered homepage exposes main, H1, named navigation/search and recommendation controls; limited to homepage desktop states."
+    },
+    {
+      "id": "accessibility.contrast_zoom",
+      "category": "accessibility",
+      "name": "Contrast, text resize and reflow",
+      "weight": 20,
+      "inspection": "Use measured contrast where possible and manually inspect text resizing/reflow at relevant viewport/zoom conditions; record tested states.",
+      "pass_criteria": "Tested text/UI states meet applicable current WCAG contrast/reflow requirements without losing essential content or functionality.",
+      "applicability_note": "Brand colors or screenshots without reliable measurement support hypotheses, not a measured contrast failure.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "accessibility.forms_errors",
+      "category": "accessibility",
+      "name": "Labels, instructions and error recovery",
+      "weight": 20,
+      "inspection": "Inspect form labels, instructions, validation and error associations. Exercise only safe non-submitting states unless client authorization explicitly allows test submissions.",
+      "pass_criteria": "Tested forms communicate labels, requirements and actionable accessible error feedback.",
+      "applicability_note": "N/A requires evidence that the sampled site/journeys contain no forms or data-entry controls.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "accessibility.media_motion",
+      "category": "accessibility",
+      "name": "Media alternatives and motion controls",
+      "weight": 10,
+      "inspection": "Inspect captions/transcripts or other required alternatives for meaningful media, pause controls, flashing and reduced-motion behavior where relevant.",
+      "pass_criteria": "Tested meaningful media and animation expose the applicable alternatives and motion controls.",
+      "applicability_note": "N/A requires evidence that no relevant prerecorded/live media or moving content exists in the scope.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "ux_mobile.responsive",
+      "category": "ux_mobile",
+      "name": "Responsive layout and reflow",
+      "weight": 25,
+      "inspection": "Inspect representative pages at recorded mobile and desktop viewport sizes, including menus, tables, overlays and orientation where possible.",
+      "pass_criteria": "Tested layouts preserve meaningful content and controls without material unintended clipping or horizontal overflow.",
+      "applicability_note": "A desktop-only screenshot cannot support a mobile pass.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "ux_mobile.navigation",
+      "category": "ux_mobile",
+      "name": "Navigation and findability",
+      "weight": 25,
+      "inspection": "Trace primary visitor tasks through menus, search where present, breadcrumbs and back paths; note observed dead ends and unnecessary steps.",
+      "pass_criteria": "Key sampled tasks are discoverable with understandable labels and recoverable navigation.",
+      "applicability_note": "Usually applicable; do not claim usability-study evidence without participants.",
+      "status": "pass",
+      "evidence_ids": [
+        "EDOM",
+        "ESHIP"
+      ],
+      "notes": "Homepage paths and tested destinations are named and reachable. Mobile interactions remain untested."
+    },
+    {
+      "id": "ux_mobile.touch_readability",
+      "category": "ux_mobile",
+      "name": "Touch controls and mobile readability",
+      "weight": 20,
+      "inspection": "Inspect recorded mobile states for target usability, spacing, text legibility and sticky elements obstructing content or actions.",
+      "pass_criteria": "Sampled mobile controls and reading states remain usable without observed obstruction or precision-dependent operation.",
+      "applicability_note": "Unknown device state or absent mobile inspection means not_tested.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "ux_mobile.states_feedback",
+      "category": "ux_mobile",
+      "name": "Feedback, empty and error states",
+      "weight": 15,
+      "inspection": "Safely inspect loading, no-results, validation and error states reachable without destructive actions; state which states were exercised.",
+      "pass_criteria": "Tested states provide clear feedback and a route to recover or continue.",
+      "applicability_note": "Not reaching an error state is untested evidence, not proof that the state is correct.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "ux_mobile.journey_consistency",
+      "category": "ux_mobile",
+      "name": "Consistency of critical journeys",
+      "weight": 15,
+      "inspection": "Walk the agreed primary journey across representative templates; inspect terminology, controls, content hierarchy and cross-device continuity.",
+      "pass_criteria": "The tested journey uses consistent patterns and has no observed material interruption.",
+      "applicability_note": "Usually applicable; scope the conclusion to tested journeys.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "conversion.value_proposition",
+      "category": "conversion",
+      "name": "Value proposition and audience fit",
+      "weight": 25,
+      "inspection": "Compare the visible offer, intended audience and primary visitor problem against supplied client context; label inference when client context is absent.",
+      "pass_criteria": "Sampled entry pages clearly explain the offer, audience and relevant benefit using supported statements.",
+      "applicability_note": "Usually applicable even to noncommercial sites, using their primary user outcome.",
+      "status": "pass",
+      "evidence_ids": [
+        "EDOM"
+      ],
+      "notes": "Homepage clearly presents beauty/Home, gifting, personalization and qualified NOW delivery."
+    },
+    {
+      "id": "conversion.primary_cta",
+      "category": "conversion",
+      "name": "Primary calls to action",
+      "weight": 25,
+      "inspection": "Inspect clarity, visibility, expectations and destination of the primary CTA across tested pages and mobile states.",
+      "pass_criteria": "Primary actions are visible, understandable and lead to the intended next step without observed material friction.",
+      "applicability_note": "Usually applicable; do not infer conversion uplift from design changes.",
+      "status": "pass",
+      "evidence_ids": [
+        "EDOM"
+      ],
+      "notes": "Homepage named gift/shop/product links lead to observed destinations; full purchase flow untested."
+    },
+    {
+      "id": "conversion.trust",
+      "category": "conversion",
+      "name": "Trust and decision information",
+      "weight": 20,
+      "inspection": "Inspect verifiable contact details, offer/pricing terms where relevant, policy links, proof and claims. Do not invent testimonials or assurances.",
+      "pass_criteria": "Visitors receive the decision information and supported trust signals relevant to the stated offer.",
+      "applicability_note": "Use purpose-appropriate criteria; not every website needs reviews, pricing or checkout.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "conversion.funnel_friction",
+      "category": "conversion",
+      "name": "Lead or purchase journey friction",
+      "weight": 20,
+      "inspection": "Inspect the agreed funnel up to authorized boundaries; assess fields, steps, clarity and recoverability without purchasing or sending a lead by default.",
+      "pass_criteria": "Observed safe funnel steps are coherent and avoid material unnecessary friction for the stated visitor task.",
+      "applicability_note": "N/A only if the site's purpose has no actionable conversion journey; lack of transaction authorization means those steps are untested.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "conversion.measurement",
+      "category": "conversion",
+      "name": "Conversion measurement evidence",
+      "weight": 10,
+      "inspection": "Inspect supplied analytics/event evidence or authorized read-only configuration; distinguish tag presence from verified collection and business outcomes.",
+      "pass_criteria": "Evidence supports defined primary conversions and correct relevant event collection for the tested configuration.",
+      "applicability_note": "No analytics access means not_tested, not N/A or proof that tracking is broken.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "security.https",
+      "category": "security",
+      "name": "HTTPS and transport hygiene",
+      "weight": 30,
+      "inspection": "Inspect public HTTPS behavior, observed certificate validity and HTTP redirect behavior within the permitted scope.",
+      "pass_criteria": "Tested public entry points use valid HTTPS and appropriate transport behavior without an observed material transport issue.",
+      "applicability_note": "This is a passive/basic review, not penetration testing or complete TLS assurance.",
+      "status": "pass",
+      "evidence_ids": [
+        "E001",
+        "E002",
+        "E003",
+        "E004",
+        "E005",
+        "E006",
+        "E007",
+        "E008",
+        "E009"
+      ],
+      "notes": "Sampled HTTPS responses succeeded with HSTS. Broader TLS/protocol matrix not assessed."
+    },
+    {
+      "id": "security.headers",
+      "category": "security",
+      "name": "Relevant browser security controls",
+      "weight": 20,
+      "inspection": "Inspect actual response headers and evaluate CSP, framing controls, MIME sniffing and referrer policy against the site's behavior and risk; avoid checklist-only critical ratings.",
+      "pass_criteria": "Observed browser controls are appropriate to the tested exposure with no material evidenced misconfiguration.",
+      "applicability_note": "A missing header alone does not demonstrate exploitation; document context and limits.",
+      "status": "pass",
+      "evidence_ids": [
+        "E001",
+        "E002",
+        "E003",
+        "E004",
+        "E005",
+        "E006",
+        "E007",
+        "E008",
+        "E009"
+      ],
+      "notes": "Delivered CSP includes frame-ancestors none, upgrade-insecure-requests; X-Frame-Options DENY, HSTS and nosniff. Passive hygiene, not penetration testing."
+    },
+    {
+      "id": "security.mixed_content",
+      "category": "security",
+      "name": "Mixed content and insecure dependencies",
+      "weight": 20,
+      "inspection": "Inspect browser console/network evidence for insecure active resources and visible dependency delivery issues on tested pages.",
+      "pass_criteria": "No material insecure active dependency or mixed-content issue appears in the tested evidence.",
+      "applicability_note": "Missing console/network access means not_tested; do not infer a clean result from the page merely loading.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "security.cookies_forms",
+      "category": "security",
+      "name": "Observed cookie and form transport hygiene",
+      "weight": 15,
+      "inspection": "Inspect exposed cookie attributes and form destinations without collecting secrets or submitting credentials; apply Secure/HttpOnly/SameSite according to purpose.",
+      "pass_criteria": "Observed sensitive-cookie and form transport settings are appropriate to their documented role.",
+      "applicability_note": "N/A requires evidence that no relevant cookies or data-entry flows exist; inaccessible authenticated flows remain untested.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "security.exposure_errors",
+      "category": "security",
+      "name": "Visible technical exposure and broken states",
+      "weight": 15,
+      "inspection": "Review ordinarily accessed public responses for exposed secrets, debug output, stack traces and sensitive artifacts encountered naturally; do not enumerate exploit paths or scan aggressively.",
+      "pass_criteria": "Sampled public responses show no observed sensitive disclosure or materially broken technical state.",
+      "applicability_note": "Absence in the sample is limited assurance; do not describe it as proof the site is secure.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "content.usefulness",
+      "category": "content",
+      "name": "Task completion and content usefulness",
+      "weight": 30,
+      "inspection": "Read representative pages against the intended audience and visitor task; distinguish substantive gaps from stylistic preference.",
+      "pass_criteria": "Sampled content directly helps the intended reader complete the stated task with sufficient detail.",
+      "applicability_note": "Usually applicable.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "content.accuracy",
+      "category": "content",
+      "name": "Accuracy and supported claims",
+      "weight": 25,
+      "inspection": "Check material claims against supplied/source evidence and flag unverifiable claims for verification; apply domain-appropriate caution.",
+      "pass_criteria": "Material sampled claims are supportable and do not visibly contradict reliable evidence.",
+      "applicability_note": "An inability to verify is needs_verification, not an automatic factual-failure assertion.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "content.clarity",
+      "category": "content",
+      "name": "Clarity and readability",
+      "weight": 20,
+      "inspection": "Review organization, language, definitions and formatting for the intended audience; do not apply a universal reading-level target.",
+      "pass_criteria": "Sampled content communicates its point clearly with appropriate structure and terminology.",
+      "applicability_note": "Usually applicable.",
+      "status": "pass",
+      "evidence_ids": [
+        "EDOM"
+      ],
+      "notes": "Observed homepage English labels and shopping next steps are understandable. No user research or full content audit."
+    },
+    {
+      "id": "content.freshness",
+      "category": "content",
+      "name": "Freshness and maintenance cues",
+      "weight": 15,
+      "inspection": "Inspect dates, contacts, offer availability, references and change-sensitive information; distinguish undated evergreen content from stale content.",
+      "pass_criteria": "Sampled time-sensitive content is current or clearly qualified, with no evidenced material stale information.",
+      "applicability_note": "N/A can be justified for a wholly evergreen scope after inspection; absence of a date alone is not failure.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "content.originality_depth",
+      "category": "content",
+      "name": "Distinctiveness, depth and duplication",
+      "weight": 10,
+      "inspection": "Compare sampled pages for repetitive boilerplate, thin task coverage and useful differentiating detail; avoid plagiarism or AI-authorship claims without reliable evidence.",
+      "pass_criteria": "Sampled pages provide sufficient distinct task value without material avoidable duplication.",
+      "applicability_note": "Do not claim web-wide originality without an appropriately scoped comparison.",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    }
+  ],
+  "scorecard": [
+    {
+      "id": "technical_seo",
+      "name": "Technical SEO",
+      "weight": 20,
+      "score": 100.0,
+      "grade": "Strong",
+      "coverage_percent": 75.0,
+      "raw_measured_percent": 75.0,
+      "not_applicable_percent": 0.0,
+      "possible_check_weight": 100,
+      "applicable_check_weight": 100,
+      "measured_check_weight": 75,
+      "earned_check_weight": 75.0,
+      "status": "assessed"
+    },
+    {
+      "id": "on_page_seo",
+      "name": "On-page SEO",
+      "weight": 15,
+      "score": 87.5,
+      "grade": "Good",
+      "coverage_percent": 60.0,
+      "raw_measured_percent": 60.0,
+      "not_applicable_percent": 0.0,
+      "possible_check_weight": 100,
+      "applicable_check_weight": 100,
+      "measured_check_weight": 60,
+      "earned_check_weight": 52.5,
+      "status": "assessed"
+    },
+    {
+      "id": "performance",
+      "name": "Performance / Core Web Vitals",
+      "weight": 15,
+      "score": null,
+      "grade": "Unassessed",
+      "coverage_percent": 0.0,
+      "raw_measured_percent": 0.0,
+      "not_applicable_percent": 0.0,
+      "possible_check_weight": 100,
+      "applicable_check_weight": 100,
+      "measured_check_weight": 0,
+      "earned_check_weight": 0,
+      "status": "unassessed"
+    },
+    {
+      "id": "accessibility",
+      "name": "Accessibility",
+      "weight": 15,
+      "score": 100.0,
+      "grade": "Strong",
+      "coverage_percent": 25.0,
+      "raw_measured_percent": 25.0,
+      "not_applicable_percent": 0.0,
+      "possible_check_weight": 100,
+      "applicable_check_weight": 100,
+      "measured_check_weight": 25,
+      "earned_check_weight": 25.0,
+      "status": "provisional"
+    },
+    {
+      "id": "ux_mobile",
+      "name": "UX / mobile",
+      "weight": 10,
+      "score": 100.0,
+      "grade": "Strong",
+      "coverage_percent": 25.0,
+      "raw_measured_percent": 25.0,
+      "not_applicable_percent": 0.0,
+      "possible_check_weight": 100,
+      "applicable_check_weight": 100,
+      "measured_check_weight": 25,
+      "earned_check_weight": 25.0,
+      "status": "provisional"
+    },
+    {
+      "id": "conversion",
+      "name": "Conversion / CRO",
+      "weight": 10,
+      "score": 100.0,
+      "grade": "Strong",
+      "coverage_percent": 50.0,
+      "raw_measured_percent": 50.0,
+      "not_applicable_percent": 0.0,
+      "possible_check_weight": 100,
+      "applicable_check_weight": 100,
+      "measured_check_weight": 50,
+      "earned_check_weight": 50.0,
+      "status": "provisional"
+    },
+    {
+      "id": "security",
+      "name": "Security / technical hygiene",
+      "weight": 10,
+      "score": 100.0,
+      "grade": "Strong",
+      "coverage_percent": 50.0,
+      "raw_measured_percent": 50.0,
+      "not_applicable_percent": 0.0,
+      "possible_check_weight": 100,
+      "applicable_check_weight": 100,
+      "measured_check_weight": 50,
+      "earned_check_weight": 50.0,
+      "status": "provisional"
+    },
+    {
+      "id": "content",
+      "name": "Content quality",
+      "weight": 5,
+      "score": 100.0,
+      "grade": "Strong",
+      "coverage_percent": 20.0,
+      "raw_measured_percent": 20.0,
+      "not_applicable_percent": 0.0,
+      "possible_check_weight": 100,
+      "applicable_check_weight": 100,
+      "measured_check_weight": 20,
+      "earned_check_weight": 20.0,
+      "status": "provisional"
+    }
+  ],
+  "overall": {
+    "score": null,
+    "grade": "Unassessed",
+    "status": "provisional",
+    "coverage_percent": 41.25,
+    "raw_measured_percent": 41.25,
+    "not_applicable_percent": 0.0,
+    "provisional_reasons": [
+      "Overall score withheld: at least one category has no assessed checks.",
+      "Overall evidence coverage is below 80% or no applicable checks were assessed.",
+      "Performance / Core Web Vitals: evidence coverage is below 60% or the category is unassessed.",
+      "Accessibility: evidence coverage is below 60% or the category is unassessed.",
+      "UX / mobile: evidence coverage is below 60% or the category is unassessed.",
+      "Conversion / CRO: evidence coverage is below 60% or the category is unassessed.",
+      "Security / technical hygiene: evidence coverage is below 60% or the category is unassessed.",
+      "Content quality: evidence coverage is below 60% or the category is unassessed."
+    ]
+  },
+  "findings": [
+    {
+      "id": "F-CLAIMS",
+      "title": "Verify readiness wording and exclusivity claims in current ads",
+      "category": "content",
+      "check_ids": [
+        "content.accuracy"
+      ],
+      "severity": "medium",
+      "kind": "needs_verification",
+      "impact": 3,
+      "reach": 2,
+      "effort_hours": 1,
+      "confidence": "medium",
+      "evidence_ids": [
+        "EADS"
+      ],
+      "remediation": "Clarify available-to-order versus ready stock for the zero-stock CONTINUE option; verify exclusive first-drop evidence and 5% offer conditions before changing ad copy. No ads changed during this audit.",
+      "validation": "Check exact shade online availability/delivery promise and discount eligibility in an authorized cart preview; obtain substantiation for exclusivity.",
+      "owner_role": "Merchandising/marketing owner",
+      "dependencies": [],
+      "priority": "P2",
+      "priority_basis": "Risk tier first; benefit/effort within tier",
+      "benefit_effort_index": 4.5,
+      "quick_win": false,
+      "action_type": "verify_first",
+      "blocked_by": [],
+      "rank": 1
+    },
+    {
+      "id": "F-LATENCY",
+      "title": "Measure recommendation loading latency across representative sessions",
+      "category": "performance",
+      "check_ids": [
+        "performance.lab_loading"
+      ],
+      "severity": "medium",
+      "kind": "needs_verification",
+      "impact": 3,
+      "reach": 3,
+      "effort_hours": 2,
+      "confidence": "medium",
+      "evidence_ids": [
+        "EAPI"
+      ],
+      "remediation": "Collect cold/warm mobile and desktop traces, then optimize sequential candidate/stock/fallback reads if the delay reproduces. One backend sample is not field CWV.",
+      "validation": "Record median and p95 API/render latency with device/network settings; verify relevance, consent and stock guardrails after changes.",
+      "owner_role": "Storefront/backend developer",
+      "dependencies": [],
+      "priority": "P2",
+      "priority_basis": "Risk tier first; benefit/effort within tier",
+      "benefit_effort_index": 3.375,
+      "quick_win": false,
+      "action_type": "verify_first",
+      "blocked_by": [],
+      "rank": 2
+    },
+    {
+      "id": "F-META",
+      "title": "Generic descriptions on sampled rewards and policy pages",
+      "category": "on_page_seo",
+      "check_ids": [
+        "on_page_seo.descriptions"
+      ],
+      "severity": "low",
+      "kind": "observed",
+      "impact": 2,
+      "reach": 2,
+      "effort_hours": 1.5,
+      "confidence": "high",
+      "evidence_ids": [
+        "E006",
+        "E007",
+        "E008"
+      ],
+      "remediation": "Write purpose-specific descriptions without changing existing product descriptions.",
+      "validation": "Fetch those three pages again and verify distinct accurate meta descriptions.",
+      "owner_role": "SEO editor",
+      "dependencies": [],
+      "priority": "P3",
+      "priority_basis": "Risk tier first; benefit/effort within tier",
+      "benefit_effort_index": 2.6667,
+      "quick_win": false,
+      "action_type": "remediate",
+      "blocked_by": [],
+      "rank": 3
+    }
+  ],
+  "quick_win_ids": [],
+  "remediation_plan": {
+    "immediate": [],
+    "next": [
+      "F-CLAIMS",
+      "F-LATENCY"
+    ],
+    "later": [
+      "F-META"
+    ],
+    "verification_first": [
+      "F-CLAIMS",
+      "F-LATENCY"
+    ]
+  }
+}

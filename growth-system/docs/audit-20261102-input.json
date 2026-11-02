@@ -1,0 +1,566 @@
+{
+  "schema_version": "1.0",
+  "catalog_version": "1.0.0",
+  "audit": {
+    "url": "https://sofiestore.net",
+    "started_at": "2026-11-02T21:07:31.155718+00:00",
+    "completed_at": "2026-11-02T21:11:45.196383+00:00",
+    "scope": {
+      "mode": "sampled",
+      "pages": [
+        {
+          "url": "https://sofiestore.net/",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/products/bouncy-firm-hydrogel-eye-patches",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/collections/sofie-hours",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/pages/sofies-home",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/pages/beauty-passport",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/pages/my-rewards",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/policies/refund-policy",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/policies/privacy-policy",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/cart",
+          "reason": "Representative public template; HTTP metadata/header inspection."
+        },
+        {
+          "url": "https://sofiestore.net/pages/shipping-policy",
+          "reason": "Actual shipping-policy navigation target; HTTP reachability."
+        }
+      ],
+      "limitations": [
+        "10 public HTML pages sampled, not a full-site crawl. robots.txt and sitemap index also retrieved.",
+        "Rendered DOM/manual inspection covered homepage only at 1348x936 desktop. No mobile viewport, full keyboard flow, contrast or error validation.",
+        "No field CWV, Lighthouse/network trace, authenticated customer test or paid order. A single API request took 9.03 seconds; this is not a Core Web Vital.",
+        "Sitemap index has 12 child sitemaps; child contents and structured-data validity not assessed."
+      ]
+    },
+    "performance_notes": {
+      "field": "LCP/INP/CLS not collected; no field CWV verdict.",
+      "lab": "No Lighthouse report. Production API recommendation request observed 9.03s; no causal conversion effect inferred."
+    }
+  },
+  "evidence": [
+    {
+      "id": "E001",
+      "url": "https://sofiestore.net/",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='Sofie Store | Authentic Luxury Beauty in Egypt'; canonical='https://sofiestore.net/'; description='Sofie Store is Egypt’s leading destination for authentic high-end makeup and premium home accessories. 100% original products, curated collections, and a luxury shopping experience you can trust.'; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E002",
+      "url": "https://sofiestore.net/products/bouncy-firm-hydrogel-eye-patches",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='Bouncy & Firm Hydrogel Eye Patches LANEIGE | Egypt | Sofie Store'; canonical='https://sofiestore.net/products/bouncy-firm-hydrogel-eye-patches'; description=\"Shop authentic LANEIGE Bouncy & Firm Hydrogel Eye Patches in Egypt at Sofie's Makeup Store. 100% original, fast nationwide delivery.\"; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E003",
+      "url": "https://sofiestore.net/collections/sofie-hours",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='SOFIE NOW | Sofie Store'; canonical='https://sofiestore.net/collections/sofie-hours'; description='Your beauty favourites, delivered in 30 to 120 minutes. Shop selected shades, scents and sizes from our available Mivida stock.Delivery estimates after order confirmation New Cairo: 30 minutes · LE 200 delivery Nasr City and Madinaty: 60 minutes · LE 225 delivery Giza, El Shorouk, El Obour City, Sheikh Zayed and 6 Octo'; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E004",
+      "url": "https://sofiestore.net/pages/sofies-home",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='Homeware & Kitchen Accessories in Egypt | Sofie Store'; canonical='https://sofiestore.net/pages/sofies-home'; description=\"Discover Sofie's Home in Egypt. Explore homeware, kitchen accessories and design details, with product information to help you choose.\"; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E005",
+      "url": "https://sofiestore.net/pages/beauty-passport",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='Beauty Passport | Sofie Store'; canonical='https://sofiestore.net/pages/beauty-passport'; description='Your SOFIE Beauty PassportKeep your preferences, exact product options and routine together. Build your routine · Your Rewards profile.'; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E006",
+      "url": "https://sofiestore.net/pages/my-rewards",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='My Rewards page | Sofie Store'; canonical='https://sofiestore.net/pages/my-rewards'; description='Sofie Store is Egypt’s leading destination for authentic high-end makeup and premium home accessories. 100% original products, curated collections, and a luxury shopping experience you can trust.'; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E007",
+      "url": "https://sofiestore.net/policies/refund-policy",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='Refund policy | Sofie Store'; canonical='https://sofiestore.net/policies/refund-policy'; description='Sofie Store is Egypt’s leading destination for authentic high-end makeup and premium home accessories. 100% original products, curated collections, and a luxury shopping experience you can trust.'; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E008",
+      "url": "https://sofiestore.net/policies/privacy-policy",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='Privacy policy | Sofie Store'; canonical='https://sofiestore.net/policies/privacy-policy'; description='Sofie Store is Egypt’s leading destination for authentic high-end makeup and premium home accessories. 100% original products, curated collections, and a luxury shopping experience you can trust.'; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E009",
+      "url": "https://sofiestore.net/cart",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title='Your Shopping Cart | Sofie Store'; canonical='https://sofiestore.net/cart'; description='Sofie Store is Egypt’s leading destination for authentic high-end makeup and premium home accessories. 100% original products, curated collections, and a luxury shopping experience you can trust.'; robots='noindex,follow'; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'cache-control': 'private, max-age=0, must-revalidate', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E010",
+      "url": "https://sofiestore.net/robots.txt",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title=''; canonical=None; description=None; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "E011",
+      "url": "https://sofiestore.net/sitemap.xml",
+      "method": "Python urllib passive HTTPS GET; HTMLParser metadata",
+      "captured_at": "2026-11-02T21:07:31.155718+00:00",
+      "observation": "HTTP 200; title=''; canonical=None; description=None; robots=None; headers={'x-frame-options': 'DENY', 'content-security-policy': \"block-all-mixed-content; frame-ancestors 'none'; upgrade-insecure-requests;\", 'strict-transport-security': 'max-age=7889238', 'x-content-type-options': 'nosniff'}."
+    },
+    {
+      "id": "EDOM",
+      "url": "https://sofiestore.net/",
+      "method": "CUA rendered DOM and accessibility tree",
+      "captured_at": "2026-11-02T21:11:45.196383+00:00",
+      "observation": "Homepage at 1348x936: one main, meaningful H1, labelled search/menu controls and named recommendation links/dismiss buttons; no img missing alt attribute. Gift links retained. Tab moved focus to personalization control. Full keyboard flow and mobile not tested."
+    },
+    {
+      "id": "EAPI",
+      "url": "https://sofie-growth-production.up.railway.app/api/for-you/recommend",
+      "method": "Production synthetic API checks and source/unit tests",
+      "captured_at": "2026-11-02T21:11:45.196383+00:00",
+      "observation": "New intent-v2.1 runtime returned Rhode Lip Tint for the registered ad in 9.03 seconds. No consent records nothing; foreign origin 403; forged account ticket 401; synthetic visitor history removed. 92 growth tests passed. Control candidate history and account arm assignment fixed; pre-fix data must not support causal uplift."
+    },
+    {
+      "id": "EADS",
+      "url": null,
+      "source_label": "Windsor facebook connector, Sofies Home account; read-only ad configuration and Shopify inventory metadata",
+      "method": "Connected APIs",
+      "captured_at": "2026-11-02T21:11:45.196383+00:00",
+      "observation": "Four ads retain sf_ad={{ad.id}}. Three ACTIVE; perfume PENDING_REVIEW. Lip Tint ad says all shades available. Primary product has 8/9 positive-stock options; ninth has inventoryPolicy CONTINUE, so purchase availability is possible but readiness needs qualification. Active automatic 5% discount exists; applicability conditions not fully verified."
+    },
+    {
+      "id": "ESHIP",
+      "url": "https://sofiestore.net/pages/shipping-policy",
+      "method": "Navigation target plus passive HTTPS GET",
+      "captured_at": "2026-11-02T21:11:45.196383+00:00",
+      "observation": "Homepage shipping link resolves here, HTTP 200. No full checkout or policy/legal correctness determination."
+    }
+  ],
+  "checks": [
+    {
+      "id": "technical_seo.crawl_index",
+      "status": "pass",
+      "evidence_ids": [
+        "E001",
+        "E002",
+        "E003",
+        "E004",
+        "E005",
+        "E006",
+        "E007",
+        "E008",
+        "E009",
+        "E010"
+      ],
+      "notes": "All 9 metadata-sampled HTML pages return 200; public pages have no observed noindex; cart intentionally noindex,follow. robots allows public routes. Eligibility, not confirmed indexing."
+    },
+    {
+      "id": "technical_seo.canonicals",
+      "status": "pass",
+      "evidence_ids": [
+        "E001",
+        "E002",
+        "E003",
+        "E004",
+        "E005",
+        "E006",
+        "E007",
+        "E008",
+        "E009"
+      ],
+      "notes": "Nine metadata-sampled pages have matching final canonical URLs. No assertion about Google-selected canonical."
+    },
+    {
+      "id": "technical_seo.sitemaps",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "technical_seo.internal_links",
+      "status": "pass",
+      "evidence_ids": [
+        "E001",
+        "E002",
+        "E003",
+        "E004",
+        "E005",
+        "E006",
+        "E007",
+        "E008",
+        "E009",
+        "ESHIP"
+      ],
+      "notes": "Homepage-linked representative destinations resolve 200. Not a complete link inventory."
+    },
+    {
+      "id": "technical_seo.structured_localization",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "on_page_seo.titles",
+      "status": "pass",
+      "evidence_ids": [
+        "E001",
+        "E002",
+        "E003",
+        "E004",
+        "E005",
+        "E006",
+        "E007",
+        "E008",
+        "E009"
+      ],
+      "notes": "Nine observed titles identify their distinct page purposes."
+    },
+    {
+      "id": "on_page_seo.descriptions",
+      "status": "partial",
+      "evidence_ids": [
+        "E001",
+        "E002",
+        "E003",
+        "E004",
+        "E005",
+        "E006",
+        "E007",
+        "E008",
+        "E009"
+      ],
+      "notes": "Product/Home/Passport descriptions are specific; rewards, refund and privacy reuse generic homepage description. Cart duplication excluded as intentional noindex."
+    },
+    {
+      "id": "on_page_seo.headings",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "on_page_seo.image_links",
+      "status": "pass",
+      "evidence_ids": [
+        "EDOM"
+      ],
+      "notes": "Homepage sampled meaningful product links are named, and all images expose alt attributes. Not an image-by-image semantic audit of other templates."
+    },
+    {
+      "id": "on_page_seo.url_topic",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "performance.field_cwv",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "performance.lab_loading",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "performance.assets",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "performance.main_thread",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "performance.delivery_stability",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "accessibility.keyboard_focus",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "accessibility.names_structure",
+      "status": "pass",
+      "evidence_ids": [
+        "EDOM"
+      ],
+      "notes": "Rendered homepage exposes main, H1, named navigation/search and recommendation controls; limited to homepage desktop states."
+    },
+    {
+      "id": "accessibility.contrast_zoom",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "accessibility.forms_errors",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "accessibility.media_motion",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "ux_mobile.responsive",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "ux_mobile.navigation",
+      "status": "pass",
+      "evidence_ids": [
+        "EDOM",
+        "ESHIP"
+      ],
+      "notes": "Homepage paths and tested destinations are named and reachable. Mobile interactions remain untested."
+    },
+    {
+      "id": "ux_mobile.touch_readability",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "ux_mobile.states_feedback",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "ux_mobile.journey_consistency",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "conversion.value_proposition",
+      "status": "pass",
+      "evidence_ids": [
+        "EDOM"
+      ],
+      "notes": "Homepage clearly presents beauty/Home, gifting, personalization and qualified NOW delivery."
+    },
+    {
+      "id": "conversion.primary_cta",
+      "status": "pass",
+      "evidence_ids": [
+        "EDOM"
+      ],
+      "notes": "Homepage named gift/shop/product links lead to observed destinations; full purchase flow untested."
+    },
+    {
+      "id": "conversion.trust",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "conversion.funnel_friction",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "conversion.measurement",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "security.https",
+      "status": "pass",
+      "evidence_ids": [
+        "E001",
+        "E002",
+        "E003",
+        "E004",
+        "E005",
+        "E006",
+        "E007",
+        "E008",
+        "E009"
+      ],
+      "notes": "Sampled HTTPS responses succeeded with HSTS. Broader TLS/protocol matrix not assessed."
+    },
+    {
+      "id": "security.headers",
+      "status": "pass",
+      "evidence_ids": [
+        "E001",
+        "E002",
+        "E003",
+        "E004",
+        "E005",
+        "E006",
+        "E007",
+        "E008",
+        "E009"
+      ],
+      "notes": "Delivered CSP includes frame-ancestors none, upgrade-insecure-requests; X-Frame-Options DENY, HSTS and nosniff. Passive hygiene, not penetration testing."
+    },
+    {
+      "id": "security.mixed_content",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "security.cookies_forms",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "security.exposure_errors",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "content.usefulness",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "content.accuracy",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "content.clarity",
+      "status": "pass",
+      "evidence_ids": [
+        "EDOM"
+      ],
+      "notes": "Observed homepage English labels and shopping next steps are understandable. No user research or full content audit."
+    },
+    {
+      "id": "content.freshness",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    },
+    {
+      "id": "content.originality_depth",
+      "status": "not_tested",
+      "evidence_ids": [],
+      "notes": "Required full criterion evidence not collected in this bounded sample; retain in verification backlog."
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-META",
+      "title": "Generic descriptions on sampled rewards and policy pages",
+      "category": "on_page_seo",
+      "check_ids": [
+        "on_page_seo.descriptions"
+      ],
+      "severity": "low",
+      "kind": "observed",
+      "impact": 2,
+      "reach": 2,
+      "effort_hours": 1.5,
+      "confidence": "high",
+      "evidence_ids": [
+        "E006",
+        "E007",
+        "E008"
+      ],
+      "remediation": "Write purpose-specific descriptions without changing existing product descriptions.",
+      "validation": "Fetch those three pages again and verify distinct accurate meta descriptions.",
+      "owner_role": "SEO editor",
+      "dependencies": []
+    },
+    {
+      "id": "F-CLAIMS",
+      "title": "Verify readiness wording and exclusivity claims in current ads",
+      "category": "content",
+      "check_ids": [
+        "content.accuracy"
+      ],
+      "severity": "medium",
+      "kind": "needs_verification",
+      "impact": 3,
+      "reach": 2,
+      "effort_hours": 1,
+      "confidence": "medium",
+      "evidence_ids": [
+        "EADS"
+      ],
+      "remediation": "Clarify available-to-order versus ready stock for the zero-stock CONTINUE option; verify exclusive first-drop evidence and 5% offer conditions before changing ad copy. No ads changed during this audit.",
+      "validation": "Check exact shade online availability/delivery promise and discount eligibility in an authorized cart preview; obtain substantiation for exclusivity.",
+      "owner_role": "Merchandising/marketing owner",
+      "dependencies": []
+    },
+    {
+      "id": "F-LATENCY",
+      "title": "Measure recommendation loading latency across representative sessions",
+      "category": "performance",
+      "check_ids": [
+        "performance.lab_loading"
+      ],
+      "severity": "medium",
+      "kind": "needs_verification",
+      "impact": 3,
+      "reach": 3,
+      "effort_hours": 2,
+      "confidence": "medium",
+      "evidence_ids": [
+        "EAPI"
+      ],
+      "remediation": "Collect cold/warm mobile and desktop traces, then optimize sequential candidate/stock/fallback reads if the delay reproduces. One backend sample is not field CWV.",
+      "validation": "Record median and p95 API/render latency with device/network settings; verify relevance, consent and stock guardrails after changes.",
+      "owner_role": "Storefront/backend developer",
+      "dependencies": []
+    }
+  ]
+}
