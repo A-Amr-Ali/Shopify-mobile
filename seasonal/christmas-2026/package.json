@@ -2,7 +2,7 @@
   "name": "sofie-christmas-2026",
   "private": true,
   "scripts": {
-    "test": "node verify-season.cjs"
+    "test": "node verify-season.cjs && node verify-bundles.cjs"
   },
   "devDependencies": {
     "linkedom": "0.18.15",

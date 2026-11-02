@@ -1,0 +1,18 @@
+{% doc %}
+Shows the approved bundle saving against the same components bought separately.
+@param {product} product - Bundle product
+@param {variant} variant - Exact bundle option
+{% enddoc %}
+{%- if product.tags contains 'sofie-curated-bundle' and variant.compare_at_price > variant.price -%}
+  {%- liquid
+    assign bundle_saving = variant.compare_at_price | minus: variant.price
+    assign bundle_percent = bundle_saving | times: 100 | divided_by: variant.compare_at_price | floor
+    assign bundle_amount = bundle_saving | money
+  -%}
+  <p class="sf-bundle-savings"><strong>{{ 'sf.bundles.saving' | t: amount: bundle_amount, percent: bundle_percent }}</strong><span>{{ 'sf.bundles.separately' | t }}</span></p>
+{%- endif -%}
+{% stylesheet %}
+  .sf-bundle-savings{display:grid;gap:3px;margin:9px 0 15px;color:#183d34;font-size:12px;line-height:1.5}
+  .sf-bundle-savings strong{font-weight:600}
+  .sf-bundle-savings span{color:#65665d;font-size:10px}
+{% endstylesheet %}

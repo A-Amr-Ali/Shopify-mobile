@@ -703,7 +703,7 @@
       "refresh_picks": "Refresh prices and stock"
     },
     "christmas": {
-      "ribbon": "A season of little luxuries. Discover the gift edit.",
+      "ribbon": "The Christmas gift bundles are here. Discover the edit.",
       "pause": "Pause effects",
       "resume": "Resume effects",
       "reduced": "Motion reduced",
@@ -715,7 +715,15 @@
       "shop_minis": "Little luxuries & minis",
       "signature": "GIVE A LITTLE SOFIE",
       "scene_caption": "A little wonder, beautifully given.",
-      "signoff": "A little joy. A little SOFIE."
+      "signoff": "A little joy. A little SOFIE.",
+      "bundle_title": "Six thoughtful beauty gifts",
+      "bundle_text": "Curated favourites. Beautiful savings.",
+      "bundle_cta": "Shop the gift bundles",
+      "bundle_from": "From {{ price }}"
+    },
+    "bundles": {
+      "saving": "Save {{ amount }} ({{ percent }}%)",
+      "separately": "Compared with buying these products separately"
     }
   }
 }

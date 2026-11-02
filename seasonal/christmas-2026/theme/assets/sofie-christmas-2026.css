@@ -70,3 +70,12 @@ html[data-sf-christmas="active"] .sf-xmas-signoff{display:flex;justify-content:c
 @media(max-width:520px){html[data-sf-christmas="active"] .sf-xmas-hero{grid-template-columns:1fr}.sf-xmas-hero__copy{padding:30px 26px 25px}.sf-xmas-hero h2{font-size:58px}.sf-xmas-hero__text{max-width:310px}.sf-xmas-hero__actions{gap:22px}.sf-xmas-hero__signature{margin-top:20px}.sf-xmas-scene{min-height:263px;border-inline-start:0;border-block-start:1px solid #d0b279}.sf-xmas-scene__arch{inset:14px 14% 0}.sf-xmas-scene__ring{inset:23px 17% 0}.sf-xmas-scene__tree{width:160px;height:207px;bottom:25px;left:54%}.sf-xmas-scene__sleigh{left:15%;top:14px;width:140px;height:84px}.sf-xmas-present--cream{left:23%;bottom:28px;width:101px;height:74px}.sf-xmas-present--berry{right:14%;bottom:25px;width:81px;height:67px}.sf-xmas-present--sage{right:16%;bottom:97px;width:60px;height:46px}.sf-xmas-scene__caption{bottom:9px}.sf-xmas-scene__star--one{top:42%;left:17%}.sf-xmas-scene__star--two{top:13%;right:18%}.sf-xmas-signoff p{font-size:17px}.sf-xmas-ribbon__arrow{display:none}}
 @media(prefers-reduced-motion:reduce){.sf-xmas-motion,.sf-xmas-flake{animation:none!important}.sf-xmas-snow{display:none!important}.sf-xmas-button{transition:none}}
 @media print{.sf-xmas-fragment{display:none!important}}
+
+
+.sf-xmas-bundles{display:flex;align-items:center;gap:14px;max-width:430px;padding:12px;margin-top:24px;border:1px solid #cfb47775;background:#ffffff0b;color:#fcf8ef;text-decoration:none}
+.sf-xmas-bundles>img{flex:0 0 84px;width:84px;height:84px;object-fit:cover;border-radius:2px}
+.sf-xmas-bundles__copy{display:grid;gap:5px;flex:1;min-width:0;font:12px/1.5 var(--body,Arial,sans-serif)}
+.sf-xmas-bundles__copy strong{font:400 20px/1.2 var(--serif,Georgia,serif);color:#fcf8ef}
+.sf-xmas-bundles__copy>span{color:#e2dfcf}.sf-xmas-bundles__copy .sf-xmas-bundles__cta{color:#e0c28c;font-size:11px}
+.sf-xmas-bundles:hover{background:#ffffff15}.sf-xmas-bundles>span:last-child{color:#e0c28c}
+@media(max-width:800px){.sf-xmas-bundles{gap:10px;padding:10px;margin-top:20px}.sf-xmas-bundles>img{flex-basis:66px;width:66px;height:66px}.sf-xmas-bundles__copy{font-size:10px}.sf-xmas-bundles__copy strong{font-size:17px}.sf-xmas-bundles__copy .sf-xmas-bundles__cta{font-size:10px}}

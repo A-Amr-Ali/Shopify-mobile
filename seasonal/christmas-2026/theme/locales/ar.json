@@ -996,7 +996,7 @@
       "guided_shelves": "Back to your guided shelves"
     },
     "christmas": {
-      "ribbon": "موسم الهدايا الجميلة. اكتشفي اختيارات SOFIE.",
+      "ribbon": "بوكسات هدايا الكريسماس وصلت. اكتشفي المجموعة.",
       "pause": "إيقاف الحركة",
       "resume": "تشغيل الحركة",
       "reduced": "الحركة مخفّضة",
@@ -1008,7 +1008,15 @@
       "shop_minis": "هدايا صغيرة وميني",
       "signature": "أهدي لمسة من SOFIE",
       "scene_caption": "قليل من السحر، وكثير من الجمال.",
-      "signoff": "شوية فرحة. ولمسة SOFIE."
+      "signoff": "شوية فرحة. ولمسة SOFIE.",
+      "bundle_title": "ست هدايا جمال مختارة بعناية",
+      "bundle_text": "منتجاتك المفضلة مع توفير مميز.",
+      "bundle_cta": "تسوقي مجموعات الهدايا",
+      "bundle_from": "تبدأ من {{ price }}"
+    },
+    "bundles": {
+      "saving": "وفري {{ amount }} ({{ percent }}%)",
+      "separately": "مقارنة بشراء نفس المنتجات منفصلة"
     }
   }
 }

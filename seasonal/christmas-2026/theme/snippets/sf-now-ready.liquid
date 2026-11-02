@@ -1,0 +1,67 @@
+{% doc %}
+Prints the exact in-stock variant IDs eligible for SOFIE NOW as ",id,id,".
+Curated bundles inherit eligibility from every verified component; ordinary products retain the collection rules.
+@param {product} product - Product to check
+@param {number} [quantity] - Requested bundle quantity
+@param {object} [bag] - Cart whose shared component demand must fit current stock
+{% enddoc %}
+{%- if product.tags contains 'sofie-curated-bundle' -%}
+  {%- liquid
+    assign sfr_components = product.metafields.custom.sofie_bundle_components.value
+    assign sfr_quantities = product.metafields.custom.sofie_bundle_quantities.value
+    assign sfr_units = quantity | default: 1 | at_least: 1
+    assign sfr_bundle_ready = false
+    assign sfr_parent = product.variants.first
+    if product.has_only_default_variant and sfr_components.size >= 2 and sfr_components.size == sfr_quantities.size
+      if sfr_parent.available and sfr_parent.inventory_quantity >= sfr_units
+        assign sfr_bundle_ready = true
+      endif
+    endif
+  -%}
+  {%- if sfr_bundle_ready -%}
+    {%- for sfr_component in sfr_components -%}
+      {%- capture sfr_component_ready -%}{%- render 'sf-now-collection-ready', product: sfr_component.product -%}{%- endcapture -%}
+      {%- liquid
+        assign sfr_component_id = sfr_component.id | append: ''
+        assign sfr_probe = ',' | append: sfr_component.id | append: ','
+        assign sfr_per_bundle = sfr_quantities[sfr_component_id] | plus: 0
+        assign sfr_needed = sfr_per_bundle | times: sfr_units
+        if sfr_per_bundle < 1
+          assign sfr_bundle_ready = false
+          break
+        endif
+        unless sfr_component_ready contains sfr_probe
+          assign sfr_bundle_ready = false
+          break
+        endunless
+        if bag != blank
+          assign sfr_bag_needed = 0
+          for sfr_line in bag.items
+            if sfr_line.variant.id == sfr_component.id
+              assign sfr_bag_needed = sfr_bag_needed | plus: sfr_line.quantity
+            elsif sfr_line.product.tags contains 'sofie-curated-bundle'
+              assign sfr_line_components = sfr_line.product.metafields.custom.sofie_bundle_components.value
+              for sfr_line_component in sfr_line_components
+                if sfr_line_component.id == sfr_component.id
+                  assign sfr_line_per_bundle = sfr_line.product.metafields.custom.sofie_bundle_quantities.value[sfr_component_id] | plus: 0
+                  assign sfr_line_needed = sfr_line_per_bundle | times: sfr_line.quantity
+                  assign sfr_bag_needed = sfr_bag_needed | plus: sfr_line_needed
+                  break
+                endif
+              endfor
+            endif
+          endfor
+          assign sfr_needed = sfr_needed | at_least: sfr_bag_needed
+        endif
+        if sfr_component.inventory_quantity < sfr_needed
+          assign sfr_bundle_ready = false
+          break
+        endif
+      -%}
+    {%- endfor -%}
+  {%- endif -%}
+  {%- if sfr_bundle_ready -%},{{- sfr_parent.id -}},{%- endif -%}
+{%- else -%}
+  {%- render 'sf-now-collection-ready', product: product -%}
+{%- endif -%}
+
