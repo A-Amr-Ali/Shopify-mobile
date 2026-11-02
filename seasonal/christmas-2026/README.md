@@ -34,7 +34,7 @@ Browser review verified the real draft homepage and product page, working pause/
 
 ## Home + Beauty gifts
 
-The Christmas Home & Living hero and the main homepage entry link to the separate Home Meets Beauty collection. Mixed gifts have no advertised price ceiling. The hero uses exact component variant references and original Shopify product photographs, displayed with `object-fit: contain`; products must never be redrawn, recoloured or repackaged by image generation. This also applies to every existing beauty bundle.
+The Christmas Home & Living hero and the main homepage entry link to the separate Home Meets Beauty collection. Mixed gifts have no advertised price ceiling. The hero uses the reviewed bundle photograph, showing every included product together inside one gift box with `object-fit: contain`. Match each product's original shape, colour, packaging, cap, logo and exact option. A generated gift setting is permitted; replacing a complete bundle photograph with a single component or separate thumbnail cards is not. The product gallery retains the original component photographs for detail inspection.
 
 SOFIE NOW eligibility is derived from all selected component options and available stock. The underlying SOFIE NOW collection is not modified. New seasonal copy is included in English and Arabic, and the existing Christmas cutoff and motion controls apply.
 

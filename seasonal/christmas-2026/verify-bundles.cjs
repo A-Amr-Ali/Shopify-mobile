@@ -29,7 +29,7 @@ function fixture() {
     return v;
   });
   const parent = { id: 100, available: true, inventory_quantity: 3, price: 439000, compare_at_price: 485000 };
-  const product = { tags: ['sofie-curated-bundle'], has_only_default_variant: true, featured_image: { src: '/original-11.webp' }, variants: [parent], collections: [],
+  const product = { tags: ['sofie-curated-bundle'], has_only_default_variant: true, featured_image: { src: '/bundle-box.webp' }, variants: [parent], collections: [],
     metafields: { custom: { sofie_bundle_components: { value: components }, sofie_bundle_quantities: { value: { '11': 1, '22': 1 } } } } };
   return { product, parent, components };
 }
@@ -100,8 +100,9 @@ async function main() {
     assert.ok(html.includes('data-sf-home-beauty-hero')); assert.ok(html.includes('Home meets'));
     assert.equal((html.match(/href="\/collections\/home-meets-beauty-christmas-gift-bundles"/g) || []).length, 2);
     assert.ok(!html.includes('data-sf-gift-bundles')); assert.ok(!html.includes('bundle_from')); assert.ok(!html.includes('LE '));
-    assert.ok(html.includes('data-sf-original-product-photos')); assert.ok(html.includes('src="/original-11.webp"')); assert.ok(html.includes('src="/original-22.webp"'));
-    assert.ok(!html.includes('Gift presentation is illustrative'));
+    assert.ok(html.includes('data-sf-gift-box-photo')); assert.ok(html.includes('src="/bundle-box.webp"'));
+    assert.ok(!html.includes('src="/original-11.webp"')); assert.ok(!html.includes('src="/original-22.webp"'));
+    assert.ok(html.includes('Gift presentation is illustrative'));
   });
   await check('The main homepage exposes mixed gifts and makeup keeps its existing hero', async () => {
     const index = await renderWorld('index', '', homeFixture());

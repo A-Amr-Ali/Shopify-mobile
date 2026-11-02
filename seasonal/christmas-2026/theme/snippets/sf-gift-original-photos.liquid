@@ -1,24 +1,14 @@
 {% doc %}
-  Displays original component photographs without redrawing, cropping or recolouring products.
-  @param {object} gift_product - A bundle with exact component variant references.
+  Displays the reviewed complete gift-box photograph for a bundle.
+  @param {object} gift_product - A bundle whose featured image shows its exact contents together.
   @param {string} [size] - Use hero for the large composition or compact for an entry card.
 {% enddoc %}
-{%- assign gift_components = gift_product.metafields.custom.sofie_bundle_components.value -%}
-{%- if gift_components != blank -%}
-  <span class="sf-gift-originals sf-gift-originals--{{ size | default: 'compact' }}" data-sf-original-product-photos>
-    {%- for gift_component in gift_components limit: 3 -%}
-      {%- assign gift_component_image = gift_component.image | default: gift_component.product.featured_image -%}
-      {%- if gift_component_image -%}
-        <span class="sf-gift-originals__item">
-          {%- if size == 'hero' -%}
-            {{ gift_component_image | image_url: width: 900 | image_tag: widths: '240, 450, 650, 900', sizes: '(max-width: 520px) 50vw, 25vw', loading: 'eager', alt: gift_component_image.alt }}
-          {%- else -%}
-            {{ gift_component_image | image_url: width: 180 | image_tag: width: 84, height: 84, loading: 'lazy', alt: '' }}
-          {%- endif -%}
-        </span>
-      {%- endif -%}
-    {%- endfor -%}
+{%- if gift_product.featured_image -%}
+  <span class="sf-gift-box sf-gift-box--{{ size | default: 'compact' }}" data-sf-gift-box-photo>
+    {%- if size == 'hero' -%}
+      {{ gift_product.featured_image | image_url: width: 1400 | image_tag: widths: '420, 700, 1000, 1400', sizes: '(max-width: 520px) 100vw, 50vw', loading: 'eager', alt: gift_product.featured_image.alt }}
+    {%- else -%}
+      {{ gift_product.featured_image | image_url: width: 180 | image_tag: width: 84, height: 84, loading: 'lazy', alt: '' }}
+    {%- endif -%}
   </span>
-{%- elsif gift_product.featured_image -%}
-  {{ gift_product.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: gift_product.featured_image.alt }}
 {%- endif -%}
