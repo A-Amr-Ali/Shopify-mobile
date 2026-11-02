@@ -4,14 +4,14 @@ import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 const source=await readFile(new URL('../../storefront/assets/sofie-for-you.js',import.meta.url),'utf8');
-function browser({consent=false,storage={},fetcher}={}) {
+function browser({consent=false,storage={},fetcher,search=''}={}) {
  const calls=[],listeners={},timers=[],local=new Map(Object.entries(storage));
  const store={getItem:k=>local.get(k)||null,setItem:(k,v)=>local.set(k,v),removeItem:k=>local.delete(k)};
  const document={hidden:false,referrer:'',getElementById:()=>({textContent:JSON.stringify({api:'https://api.test',root:'/',strings:{},variant:'123'})}),querySelector:()=>null,
   addEventListener:(k,fn)=>listeners[k]=fn};
  const p={analyticsProcessingAllowed:()=>consent,preferencesProcessingAllowed:()=>consent};
  const window={Shopify:{customerPrivacy:p,loadFeatures:(_,fn)=>fn()},addEventListener:(k,fn)=>listeners[k]=fn};
- const context={window,document,location:{search:''},URLSearchParams,URL,localStorage:store,sessionStorage:{...store},crypto:{randomUUID},AbortSignal,
+ const context={window,document,location:{search},URLSearchParams,URL,localStorage:store,sessionStorage:{...store},crypto:{randomUUID},AbortSignal,
   setTimeout:fn=>{timers.push(fn);return timers.length;},clearTimeout:()=>{},fetch:async(url,options)=>{
    const data=JSON.parse(options.body);calls.push({url,data});
    if(fetcher)return fetcher(url,data);
@@ -22,6 +22,14 @@ function browser({consent=false,storage={},fetcher}={}) {
 }
 test('browser sends and stores no identity before permitted analytics and preferences',async()=>{
  const b=browser();await b.settle();assert.equal(b.calls.length,0);assert.equal(b.local.size,0);
+});
+test('verified Meta ad routing uses an ad ID and preserves explicit campaign precedence',async()=>{
+ const b=browser({consent:true,search:'?utm_source=meta&utm_content=120253519911590579'});await b.settle();
+ assert.equal(JSON.parse(b.local.get('sofie-for-you-arrival')).value.campaign,'meta-ad-120253519911590579');
+ const explicit=browser({consent:true,search:'?utm_source=meta&sf_ad=120253519911590579&sf_campaign=sofie-blush'});await explicit.settle();
+ assert.equal(JSON.parse(explicit.local.get('sofie-for-you-arrival')).value.campaign,'sofie-blush');
+ const unknown=browser({consent:true,search:'?utm_source=google&utm_content=120253519911590579'});await unknown.settle();
+ assert.equal(JSON.parse(unknown.local.get('sofie-for-you-arrival')).value.campaign,null);
 });
 test('returning consented browser reuses its visitor identity, never a customer ID',async()=>{
  const b=browser({consent:true,storage:{'sofie-for-you-v1':JSON.stringify({token:'existing',expires:Date.now()+100000})}});

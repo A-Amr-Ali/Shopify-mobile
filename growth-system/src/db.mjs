@@ -1,9 +1,9 @@
 const url = process.env.SUPABASE_URL;
 const key = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 export const configured = Boolean(url && key);
-export async function db(path, { method = 'GET', body, prefer = 'return=representation' } = {}) {
+export async function db(path, { method = 'GET', body, prefer = 'return=representation', timeoutMs = 10000 } = {}) {
   if (!configured) throw new Error('database_unconfigured');
-  const r = await fetch(url + '/rest/v1/' + path, { method, signal: AbortSignal.timeout(10000),
+  const r = await fetch(url + '/rest/v1/' + path, { method, signal: AbortSignal.timeout(timeoutMs),
     headers: { apikey: key, authorization: 'Bearer ' + key, 'content-type': 'application/json', Prefer: prefer },
     ...(body !== undefined ? { body: JSON.stringify(body) } : {}) });
   if (!r.ok) throw new Error('database_' + r.status);

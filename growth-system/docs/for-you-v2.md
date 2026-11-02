@@ -3,7 +3,7 @@
 ## What is implemented
 
 - Complete paginated retrieval of published, active, positive-inventory Shopify
-  variants, up to a 20,000-variant safety limit. A failed or truncated refresh
+  variants, up to a 40,000-variant safety limit. A failed or truncated refresh
   never replaces a good catalogue. API cost/throttle metadata controls pacing.
   Hourly refresh, persistent server-only snapshot, five-minute in-memory index.
 - Bilingual Arabic/English BM25-style retrieval over names, brand, product type,
@@ -111,3 +111,6 @@ and GA4 were absent from connected sources. There is no private search access.
 Catalogue sync uses 50-variant pages, bounded retry of transient timeouts and
 throttling, a 30-second Admin read deadline, and atomic snapshot publication.
 Failed catalogue jobs retry after five minutes, retaining the last good snapshot.
+Product metadata is stored once per handle in the v2 snapshot, with separate
+exact-option records. Catalogue reads/writes have a dedicated 60-second deadline;
+ordinary application database calls keep their existing 10-second deadline.

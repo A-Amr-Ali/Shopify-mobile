@@ -52,7 +52,7 @@ test('feedback cannot claim impressions from another visitor or fabricate a serv
 });
 test('records server-issued positions and model before returning recommendations',async()=>{
  const writes=[];const m={...trainModel([]),popularity:{'1':3}};
- const route=makeRecoRoutes({store:async(path,options)=>{if(options)writes.push(options.body);return[];},budget:async()=>true,key:()=> 'test',
+ const route=makeRecoRoutes({store:async(path,options)=>{if(options?.method==='POST')writes.push(options.body);return[];},budget:async()=>true,key:()=> 'test',
  cards:async()=>[card('1')],fallback:async()=>[],getModel:async()=>m});
  const result=await call(route,'/api/for-you/recommend',{consent:true,token:issueVisitor('test'),sessionId:randomUUID()});
  assert.equal(result.status,200);assert.equal(result.body.items.length,1);

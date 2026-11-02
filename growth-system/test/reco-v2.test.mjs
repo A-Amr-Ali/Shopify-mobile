@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto';
 import { buildIndex, cleanArrival, retrieve, terms, interestQuery } from '../src/reco-intent.mjs';
 import { issueIdentity,readIdentity } from '../src/reco-identity.mjs';
 import { fitRanker,matureLabels,predict } from '../src/reco-learning.mjs';
-import { syncRecoCatalog } from '../src/reco-catalog.mjs';
+import { syncRecoCatalog,packCatalog,unpackCatalog } from '../src/reco-catalog.mjs';
 import { rankCards,issueVisitor,trainModel } from '../src/recommender.mjs';
 import { makeRecoRoutes } from '../src/reco-service.mjs';
 const card=(variantId,handle,title,brand,productType,description='')=>({variantId,handle,title,brand,productType,description,tags:[],available:true,price:2000,variantTitle:'Default Title'});
@@ -70,6 +70,15 @@ test('invisible, too-recent, and late-click labels do not train as positive expo
  const late={...base,event:'click',created_at:new Date(now).toISOString()};
  assert.equal(matureLabels([impression,late],now)[0].y,0);
  assert.equal(matureLabels([{...impression,created_at:new Date(now).toISOString()}],now).length,0);
+});
+test('compact catalog preserves exact variants and avoids duplicating product metadata',()=>{
+ const cards=[...catalog,{...catalog[0],variantId:'100',variantTitle:'Second option'}];
+ const packed=packCatalog(cards);
+ assert.equal(Object.keys(packed.products).length,new Set(cards.map(c=>c.handle)).size);
+ assert.equal(packed.variants.length,cards.length);
+ assert.ok(packed.variants.every(v=>!('description' in v)&&!('image' in v)));
+ for(const c of unpackCatalog(JSON.parse(JSON.stringify(packed))))assert.deepEqual(c,cards.find(v=>v.variantId===c.variantId));
+ assert.deepEqual(unpackCatalog({cards}),cards);
 });
 test('catalog pagination publishes only after completion and excludes unavailable options',async()=>{
  const writes=[],pages=[{nodes:[{id:'gid://shopify/ProductVariant/1',title:'Default Title',price:'2000',inventoryQuantity:2,product:{handle:'ok',title:'Valid',vendor:'Brand',status:'ACTIVE',onlineStoreUrl:'https://sofiestore.net/products/ok'}}],pageInfo:{hasNextPage:true,endCursor:'next'}},{nodes:[{id:'gid://shopify/ProductVariant/2',price:'2000',inventoryQuantity:0,product:{status:'ACTIVE',onlineStoreUrl:'x'}}],pageInfo:{hasNextPage:false}}];

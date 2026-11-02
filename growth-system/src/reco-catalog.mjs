@@ -8,19 +8,28 @@ export const RECO_CATALOG_QUERY=`query RecoCatalog($after:String) {
  }
 }`;
 let cached=null,reading=null,syncing=null;
+export function packCatalog(cards) {
+ const products=Object.fromEntries(cards.map(({handle,title,brand,productType,tags,description,image})=>[handle,{title,brand,productType,tags,description,image}]));
+ const variants=cards.map(({variantId,handle,variantTitle,price,available})=>({variantId,handle,variantTitle,price,available}));
+ return {version:2,products,variants,complete:true};
+}
+export function unpackCatalog(payload) {
+ if(payload?.version!==2)return payload?.cards||[];
+ return (payload.variants||[]).map(v=>({...payload.products?.[v.handle],...v}));
+}
 export async function loadRecoIndex(store=db) {
  if(cached && Date.now()-cached.loaded<300000)return cached.index;
  if(reading)return reading;
- reading=(async()=>{const [row]=await store('sofie_reco_catalog?id=eq.active&select=payload,updated_at');
+ reading=(async()=>{const [row]=await store('sofie_reco_catalog?id=eq.active&select=payload,updated_at',{timeoutMs:60000});
   if(!row)return buildIndex([]);
-  const index=buildIndex(row.payload.cards||[]);cached={index,loaded:Date.now(),updatedAt:row.updated_at};return index;
+  const index=buildIndex(unpackCatalog(row.payload));cached={index,loaded:Date.now(),updatedAt:row.updated_at};return index;
  })().finally(()=>{reading=null;});return reading;
 }
 export async function syncRecoCatalog(store=db,query=(q,v)=>adminQuery(q,v,{cost:true,timeoutMs:30000}),pause=ms=>new Promise(r=>setTimeout(r,ms))) {
  if(syncing)return syncing;
  syncing=(async()=>{
   const cards=[];let after=null,complete=false;
-  for(let page=0;page<400;page++) {
+  for(let page=0;page<800;page++) {
    let data;
    for(let attempt=0;attempt<3;attempt++){
     try{data=await query(RECO_CATALOG_QUERY,{after});break;}
@@ -49,8 +58,10 @@ export async function syncRecoCatalog(store=db,query=(q,v)=>adminQuery(q,v,{cost
   }
   if(!complete||!cards.length)throw Error('catalog_incomplete');
   const updatedAt=new Date().toISOString();
+  const payload=packCatalog(cards);
+  console.log('recommendation catalog snapshot',JSON.stringify({variants:cards.length,products:Object.keys(payload.products).length,bytes:Buffer.byteLength(JSON.stringify(payload))}));
   for(let attempt=0;attempt<3;attempt++)try{
-   await store('sofie_reco_catalog?on_conflict=id',{method:'POST',prefer:'resolution=merge-duplicates,return=minimal',body:{id:'active',payload:{cards,complete:true},updated_at:updatedAt}});break;
+   await store('sofie_reco_catalog?on_conflict=id',{method:'POST',prefer:'resolution=merge-duplicates,return=minimal',timeoutMs:60000,body:{id:'active',payload,updated_at:updatedAt}});break;
   }catch(error){if(attempt===2)throw Error('catalog_snapshot_write:'+error.message);await pause(2000*(attempt+1));}
   const index=buildIndex(cards);cached={index,loaded:Date.now(),updatedAt};
   return {variants:cards.length,products:index.docs.size,updatedAt,complete:true};
