@@ -145,7 +145,7 @@ export function makeRecoRoutes({store=db,budget=takeBudget,cards=catalogCards,ge
         } else if(['impression','dismiss'].includes(e.event)) return reply(400,{error:'missing_attribution'});
         rows.push({event_id:e.eventId,visitor_id:visitor,subject_id:account?.subject||null,session_id:data.sessionId,event:e.event,variant_id:e.variantId,
           features:served?.features||null,source:served?.source||null,campaign:served?.campaign||null,
-          request_id:served?.request_id||null,position:served?.position??null,arm:served?.arm||armFor(visitor),model_version:served?.model_version||null});
+          request_id:served?.request_id||null,position:served?.position??null,arm:served?.arm||armFor(account?.subject||visitor),model_version:served?.model_version||null});
       }
       await insert(store,rows); return reply(200,{recorded:rows.length});
     }
@@ -169,8 +169,8 @@ export function makeRecoRoutes({store=db,budget=takeBudget,cards=catalogCards,ge
       const contextual=index?retrieve(index,interestQuery(index,arm==='personalized'?history:[],arrival,arm==='personalized'?saved.terms:[])): [];
       const landing=index?.byHandle.get(arrival.landing)||[];
       if(!arrival.terms.length&&landing.length)arrival.terms=terms([landing[0].brand,landing[0].productType,landing[0].title].join(' '),12);
-      const handleHistory=(saved.handles||[]).flatMap(h=>index?.byHandle.get(h)?.slice(0,1)||[]);
-      const ids=[...new Set([...landing.slice(0,4).map(c=>c.variantId),...contextual.map(c=>c.variantId),...candidateIds(m,history),...handleHistory.map(c=>c.variantId)])].slice(0,160);
+      const handleHistory=(arm==='personalized'?saved.handles||[]:[]).flatMap(h=>index?.byHandle.get(h)?.slice(0,1)||[]);
+      const ids=[...new Set([...landing.slice(0,4).map(c=>c.variantId),...contextual.map(c=>c.variantId),...candidateIds(m,arm==='personalized'?history:[]),...handleHistory.map(c=>c.variantId)])].slice(0,160);
       let pool=ids.length?await cards(ids):[];
       const semantic=new Map(contextual.map(c=>[c.variantId,c]));
       pool=pool.map(c=>({...index?.byVariant.get(c.variantId),...c,semanticScore:semantic.get(c.variantId)?.semanticScore||0}));
@@ -179,9 +179,9 @@ export function makeRecoRoutes({store=db,budget=takeBudget,cards=catalogCards,ge
       const requestId=randomUUID();
       const items=rankCards(pool,m,history,{visitorId:visitor,arm,current,arrival,budget:saved.budget,includeFeatures:true});
       if(items.length) await insert(store,items.map((c,position)=>({event_id:randomUUID(),visitor_id:visitor,session_id:data.sessionId,
-        subject_id:account?.subject||null,event:'served',variant_id:c.variantId,request_id:requestId,position,arm,model_version:m.version+':intent-v2',
+        subject_id:account?.subject||null,event:'served',variant_id:c.variantId,request_id:requestId,position,arm,model_version:m.version+':intent-v2.1',
         features:c.features,source:arrival.source,campaign:arrival.campaign})));
-      return reply(200,{items:items.map(({features,...c})=>c),requestId,arm,modelVersion:m.version+':intent-v2',currency:'EGP',context:arrival,accountPersonalized:Boolean(account)});
+      return reply(200,{items:items.map(({features,...c})=>c),requestId,arm,modelVersion:m.version+':intent-v2.1',currency:'EGP',context:arrival,accountPersonalized:Boolean(account)});
     }
     return reply(404,{error:'not_found'});
   };

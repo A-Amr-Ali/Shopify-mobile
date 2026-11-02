@@ -91,6 +91,12 @@ otherwise. Compare mature actual impressions/clicks/cart events and paid-order
 outcomes by assigned actor. Position and selection bias remain limits of the
 initial click ranker; a held-out improvement is not proof of causal sales lift.
 Do not treat campaign-level reporting as an individual's cross-platform history.
+Audit correction `intent-v2.1`: control-arm candidate retrieval excludes
+historical neighbors and saved handles; current declared arrival context remains
+available to both arms. Signed-in feedback without a served request uses the
+account's assigned arm, matching recommendation assignment. Analyze only the
+new model-version cohort for comparisons; do not pool pre-fix events into a
+causal uplift claim. No paid purchase has been executed as an audit test.
 
 Windsor.ai reads were verified on 2 November 2026. The Meta connector returned
 27 ads for account `1036288484368758` over 1 October–2 November. Fifteen ads had

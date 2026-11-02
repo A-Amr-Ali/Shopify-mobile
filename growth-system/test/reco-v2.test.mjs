@@ -5,7 +5,7 @@ import { buildIndex, cleanArrival, retrieve, terms, interestQuery } from '../src
 import { issueIdentity,readIdentity } from '../src/reco-identity.mjs';
 import { fitRanker,matureLabels,predict } from '../src/reco-learning.mjs';
 import { syncRecoCatalog,packCatalog,unpackCatalog } from '../src/reco-catalog.mjs';
-import { rankCards,issueVisitor,trainModel } from '../src/recommender.mjs';
+import { rankCards,issueVisitor,trainModel,armFor,visitorFrom } from '../src/recommender.mjs';
 import { makeRecoRoutes } from '../src/reco-service.mjs';
 const card=(variantId,handle,title,brand,productType,description='')=>({variantId,handle,title,brand,productType,description,tags:[],available:true,price:2000,variantTitle:'Default Title'});
 const catalog=[
@@ -103,6 +103,24 @@ test('catalog retries transient read and snapshot timeouts without publishing an
   return {productVariants:{nodes:[{id:'gid://shopify/ProductVariant/1',price:'2000',inventoryQuantity:1,product:{handle:'ok',title:'Valid',status:'ACTIVE',onlineStoreUrl:'https://sofiestore.net/products/ok'}}],pageInfo:{hasNextPage:false}}};
  },async ms=>pauses.push(ms));
  assert.equal(result.variants,1);assert.equal(reads,2);assert.equal(writes,2);assert.deepEqual(pauses,[2000,2000]);
+});
+test('control candidates exclude historical neighbors and saved handles; account events keep the assigned arm',async()=>{
+ const subject=Array.from({length:100},(_,i)=>i.toString(16).padStart(64,'0')).find(s=>armFor(s)==='control');
+ let token;do{token=issueVisitor('test');}while(armFor(visitorFrom(token,'test'))!=='personalized');
+ const requested=[],writes=[],account={customerId:'gid://shopify/Customer/123',subject};
+ const route=makeRecoRoutes({store:async(path,options)=>{
+  if(options?.method==='POST'){writes.push(...options.body);return[];}
+  if(path.includes('event=in.'))return[{event:'click',variant_id:'1',created_at:new Date().toISOString()}];return[];
+ },budget:async()=>true,key:()=> 'test',resolveAccount:()=>account,
+ profile:async()=>({history:[],terms:['mug'],handles:['mug']}),getIndex:async()=>buildIndex(catalog),
+ getModel:async()=>({...trainModel([]),popularity:{'1':1,'3':100},neighbors:{'1':[{id:'2',score:1}]}}),
+ cards:async ids=>{requested.push(...ids);return catalog.filter(c=>ids.includes(c.variantId));},fallback:async()=>[]});
+ const input={consent:true,token,identityTicket:'valid',sessionId:randomUUID()};let result;
+ const invoke=async(path,data)=>route({method:'POST',headers:{},socket:{remoteAddress:'127.0.0.1'}},{},new URL('https://api.test/api/for-you/'+path),{bodyJSON:async()=>({...input,...data}),send:(_,status,body)=>result={status,body}});
+ await invoke('recommend',{});assert.equal(result.status,200);assert.equal(result.body.arm,'control');
+ assert.ok(!requested.includes('2'));assert.ok(!requested.includes('4'));assert.ok(result.body.modelVersion.endsWith(':intent-v2.1'));
+ await invoke('events',{events:[{eventId:randomUUID(),event:'view',variantId:'1'}]});
+ assert.equal(result.status,200);assert.equal(writes.at(-1).arm,'control');
 });
 test('a forged customer ID cannot select another account; a signed account ticket scopes history',async()=>{
  const accesses=[],profileCalls=[];
