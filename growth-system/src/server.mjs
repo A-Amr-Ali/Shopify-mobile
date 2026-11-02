@@ -12,6 +12,7 @@ import { GOALS } from './config.mjs';
 import { procurementRoutes, startProcurementJobs } from './procurement-routes.mjs';
 import { birthdayRoutes } from './birthday-routes.mjs';
 import { syncOneOrder } from './procurement.mjs';
+import { recoRoutes, startRecoJobs, recordRecoOrder } from './reco-service.mjs';
 const publicDir = fileURLToPath(new URL('../public/', import.meta.url));
 const assets = { '/': ['index.html', 'text/html; charset=utf-8'], '/app.js': ['app.js','text/javascript; charset=utf-8'],
   '/styles.css': ['styles.css','text/css; charset=utf-8'], '/routine-editor.js':['routine-editor.js','text/javascript; charset=utf-8'], '/nour.jpg': ['nour.jpg','image/jpeg'] };
@@ -37,6 +38,7 @@ export async function handler(req, res) {
   } else if (origin && url.pathname.startsWith('/api/')) return send(res,403,{error:'origin_not_allowed'});
   if (req.method === 'OPTIONS') { res.writeHead(204); return res.end(); }
   try {
+    if (await recoRoutes(req,res,url,{bodyJSON,send})) return;
     if (await birthdayRoutes(req,res,url)) return;
     if (await procurementRoutes(req,res,url)) return;
     if (req.method === 'GET' && assets[url.pathname]) {
@@ -86,6 +88,7 @@ export async function handler(req, res) {
       const raw = await bodyBytes(req, 1048576);
       if (req.headers['x-shopify-shop-domain'] !== process.env.SHOP_DOMAIN || !validWebhook(raw, req.headers['x-shopify-hmac-sha256'], process.env.SHOPIFY_ADMIN_CLIENT_SECRET)) return send(res,401,{error:'unauthorized'});
       const payload=JSON.parse(raw);
+      if(process.env.RECO_ENABLED!=='false') await recordRecoOrder(payload);
       const row = orderRecord(payload);
       if (row) {
         // Insert once, then conditionally update atomically. A delayed webhook
@@ -122,6 +125,7 @@ export async function handler(req, res) {
 if (process.env.NODE_ENV !== 'test') {
   http.createServer(handler).listen(Number(process.env.PORT || 3000), '0.0.0.0', () => console.log('SOFIE Growth listening'));
   startProcurementJobs();
+  startRecoJobs();
   if (configured && process.env.RUN_JOBS === 'true') {
     ensureOrderWebhooks().then(s => console.log('order webhook setup', JSON.stringify(s))).catch(e=>console.warn('order webhook setup unavailable:', e.message));
     setTimeout(() => runGrowth().then(s => console.log('growth queue', JSON.stringify(s))), 15000);

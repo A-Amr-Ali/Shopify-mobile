@@ -9,31 +9,37 @@
  */
 {
   "sections": {
+    "match": {
+      "type": "sf-match",
+      "settings": {
+        "eyebrow": "PERSONALISED BY SOFIE",
+        "heading": "Find My Match",
+        "text": "Tell us about your skin, tone, finish and budget. We read every product we have in stock and hand-pick your matches — with shades to try and the reasons why.",
+        "button_label": "Start my match",
+        "time_label": "About 60 seconds",
+        "resume_label": "See my picks again"
+      }
+    },
+    "sf_beauty_room_entry_PLNxtn": {
+      "type": "sf-beauty-room-entry",
+      "settings": {
+        "enabled": true,
+        "primary": false,
+        "product_1": "soft-pinch-liquid-blush",
+        "cutout_1": "shopify://shop_images/sofie-beauty-room-rare-v1.webp",
+        "product_2": "hollywood-flawless-filter",
+        "cutout_2": "shopify://shop_images/sofie-beauty-room-filter-v1.webp",
+        "product_3": "dior-addict-lip-glow-oil",
+        "cutout_3": "shopify://shop_images/sofie-beauty-room-oil-v1.webp",
+        "character_cutout_1": "shopify://shop_images/sofie-beauty-room-pocket-v1.webp",
+        "character_cutout_2": "shopify://shop_images/sofie-beauty-room-milk-v1.webp",
+        "character_cutout_3": "shopify://shop_images/sofie-beauty-room-tint-v1.webp",
+        "character_cutout_4": "shopify://shop_images/sofie-beauty-room-oil-v1.webp"
+      }
+    },
     "hero": {
       "type": "sf-slideshow",
       "blocks": {
-        "slide_pNgQFU": {
-          "type": "slide",
-          "settings": {
-            "tone": "cream",
-            "image": "shopify://shop_images/sofie-home-christmas-hero-mobile.png",
-            "image_mobile": "shopify://shop_images/sofie-home-christmas-hero-mobile.png",
-            "alt": "Christmas table set with hand-painted red ribbon plates, Santa mug, soup tureen, cake stand and gingerbread tealight house",
-            "focal": "",
-            "collection": "",
-            "eyebrow": "SOFIE HOME. THE CHRISTMAS EDIT.",
-            "heading": "Christmas,\nbeautifully set.",
-            "text": "Hand-painted tableware, festive mugs, candles and decorations to get your home ready for the season.",
-            "button_label": "Shop Christmas at home",
-            "button_action": "link",
-            "button_link": "shopify://collections/christmas",
-            "match_mode": "",
-            "link_label": "Explore SOFIE Home",
-            "link_url": "shopify://collections/sofies-home",
-            "caption": "CHRISTMAS AT HOME",
-            "footnote": "01 / THE CHRISTMAS TABLE"
-          }
-        },
         "s_ritual": {
           "type": "slide",
           "settings": {
@@ -138,7 +144,6 @@
         }
       },
       "block_order": [
-        "slide_pNgQFU",
         "s_ritual",
         "s_fresh",
         "s_now",
@@ -150,6 +155,12 @@
         "first_is_h1": true,
         "autoplay": true,
         "interval": 7
+      }
+    },
+    "quest_banner": {
+      "type": "sf-quest-banner",
+      "settings": {
+        "enabled": true
       }
     },
     "now": {
@@ -269,15 +280,22 @@
         "bestseller_label": "Best seller"
       }
     },
-    "match": {
-      "type": "sf-match",
+    "beauty_room_entry": {
+      "type": "sf-beauty-room-entry",
+      "disabled": true,
       "settings": {
-        "eyebrow": "PERSONALISED BY SOFIE",
-        "heading": "Find My Match",
-        "text": "Tell us about your skin, tone, finish and budget. We read every product we have in stock and hand-pick your matches — with shades to try and the reasons why.",
-        "button_label": "Start my match",
-        "time_label": "About 60 seconds",
-        "resume_label": "See my picks again"
+        "enabled": true,
+        "primary": false,
+        "product_1": "soft-pinch-liquid-blush",
+        "cutout_1": "shopify://shop_images/sofie-beauty-room-rare-v1.webp",
+        "product_2": "hollywood-flawless-filter",
+        "cutout_2": "shopify://shop_images/sofie-beauty-room-filter-v1.webp",
+        "product_3": "dior-addict-lip-glow-oil",
+        "cutout_3": "shopify://shop_images/sofie-beauty-room-oil-v1.webp",
+        "character_cutout_1": "shopify://shop_images/sofie-beauty-room-pocket-v1.webp",
+        "character_cutout_2": "shopify://shop_images/sofie-beauty-room-milk-v1.webp",
+        "character_cutout_3": "shopify://shop_images/sofie-beauty-room-tint-v1.webp",
+        "character_cutout_4": "shopify://shop_images/sofie-beauty-room-oil-v1.webp"
       }
     },
     "best": {
@@ -774,19 +792,29 @@
         "title_3": "",
         "text_3": ""
       }
+    },
+    "sofie_for_you": {
+      "type": "sf-for-you",
+      "settings": {
+        "collection": "fresh-at-sofie"
+      }
     }
   },
   "order": [
-    "hero",
+    "match",
     "now",
+    "sf_beauty_room_entry_PLNxtn",
+    "hero",
+    "sofie_for_you",
     "fresh",
     "categories",
-    "match",
+    "beauty_room_entry",
     "best",
     "brands",
     "newin",
     "promos",
     "shortlist",
+    "quest_banner",
     "home",
     "home_rooms",
     "home_best",
@@ -794,4 +822,3 @@
     "trust"
   ]
 }
-

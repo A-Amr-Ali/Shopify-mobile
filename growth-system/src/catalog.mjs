@@ -147,3 +147,9 @@ export async function loadCatalog(goal, { fresh = false, today = false, budget =
   } else checked.cards = checked.cards.map(c => ({ ...c, now: false }));
   return checked;
 }
+
+export async function discoveryCandidates() {
+  const rows=await feed('fresh-at-sofie','discover');
+  const seen=new Set();
+  return rows.filter(c=>{if(seen.has(c.handle))return false;seen.add(c.handle);return true;}).slice(0,24);
+}
