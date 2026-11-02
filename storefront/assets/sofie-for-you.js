@@ -50,10 +50,10 @@
   }
   function element(tag,className,text) { const n=document.createElement(tag);if(className)n.className=className;if(text!==undefined)n.textContent=text;return n; }
   function card(item,requestId) {
-    if(!/^[a-z0-9-]{1,200}$/.test(item.handle)||!/^\d{1,20}$/.test(item.variantId)) return null;
+    if(!/^[\p{L}\p{N}\p{M}\p{S}_-]{1,200}$/u.test(item.handle)||!/^\d{1,20}$/.test(item.variantId)) return null;
     const article=element('article','sf-card sf-foryou-card');
     article.dataset.recoVariant=item.variantId;article.dataset.recoRequest=requestId;
-    const url=cfg.root+'products/'+item.handle+'?variant='+item.variantId;
+    const url=cfg.root+'products/'+encodeURIComponent(item.handle)+'?variant='+item.variantId;
     const imageWrap=element('div','sf-card-image'), imageLink=element('a');imageLink.href=url;imageLink.tabIndex=-1;imageLink.setAttribute('aria-hidden','true');
     try {
       const src=new URL(item.image);
