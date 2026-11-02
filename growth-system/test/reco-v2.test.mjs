@@ -80,6 +80,14 @@ test('compact catalog preserves exact variants and avoids duplicating product me
  for(const c of unpackCatalog(JSON.parse(JSON.stringify(packed))))assert.deepEqual(c,cards.find(v=>v.variantId===c.variantId));
  assert.deepEqual(unpackCatalog({cards}),cards);
 });
+test('a new ad intent overrides conflicting older browsing and saved profile terms',()=>{
+ const index=buildIndex(catalog),history=Array.from({length:8},()=>({event:'click',variant_id:'4'}));
+ const arrival=cleanArrival({campaign:'sofie-rhode-lips'},index.vocabulary);
+ const query=interestQuery(index,history,arrival,['mug','home','lenox']);
+ assert.deepEqual(query,['rhode','lip','tint']);
+ assert.equal(retrieve(index,query)[0].handle,'tint');
+ assert.ok(!query.includes('mug'));
+});
 test('catalog pagination publishes only after completion and excludes unavailable options',async()=>{
  const writes=[],pages=[{nodes:[{id:'gid://shopify/ProductVariant/1',title:'Default Title',price:'2000',inventoryQuantity:2,product:{handle:'ok',title:'Valid',vendor:'Brand',status:'ACTIVE',onlineStoreUrl:'https://sofiestore.net/products/ok'}}],pageInfo:{hasNextPage:true,endCursor:'next'}},{nodes:[{id:'gid://shopify/ProductVariant/2',price:'2000',inventoryQuantity:0,product:{status:'ACTIVE',onlineStoreUrl:'x'}}],pageInfo:{hasNextPage:false}}];
  const result=await syncRecoCatalog(async(path,options)=>{writes.push(options.body);return[];},async()=>({productVariants:pages.shift()}));

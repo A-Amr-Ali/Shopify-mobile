@@ -82,8 +82,9 @@ export function retrieve(index,query,limit=64) {
  return result;
 }
 export function interestQuery(index,history,arrival,profileTerms=[]) {
- // An explicit current search supersedes old interests for this visit.
- if(arrival.explicit)return arrival.terms;
+ // Current declared arrival intent supersedes historical retrieval terms.
+ // History still personalizes the ranking within the relevant candidates.
+ if(arrival.terms.length)return arrival.terms;
  const recent=history.filter(e=>['view','click','save','cart'].includes(e.event)).slice(0,8);
  const fromHistory=recent.flatMap(e=>{
   const c=index.byVariant.get(e.variant_id);return c?terms([c.brand,c.productType,c.title].join(' '),8):[];

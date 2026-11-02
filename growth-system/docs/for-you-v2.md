@@ -14,7 +14,9 @@
   only; Google/Meta private history, personal files and conversations are not
   read. Contact-like query strings are dropped and unrecognised query terms
   are removed against the catalogue vocabulary.
-- Current explicit on-site search supersedes old interests. Fresh candidates,
+- Current search or declared ad intent supersedes old retrieval interests.
+  Historical behavior still personalizes ranking within relevant candidates.
+  Fresh candidates,
   learned collaborative relationships and recency-weighted history are blended.
   Exploration respects the current intent rather than inserting unrelated items.
 - Optional authenticated account continuity. Shopify's signed proxy, exact shop,
