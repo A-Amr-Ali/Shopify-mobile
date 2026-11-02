@@ -1,0 +1,78 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "sf-product",
+      "settings": {},
+      "blocks": {
+        "283590cb-f9e4-431a-affa-15e01c495066": {
+          "type": "property",
+          "settings": {
+            "label": "Personalize\u00a0",
+            "required": false
+          }
+        },
+        "9a85cf98-17f3-4aab-b183-ab0b4038821d": {
+          "type": "property",
+          "settings": {
+            "label": "Write your text",
+            "required": false
+          }
+        }
+      },
+      "block_order": [
+        "283590cb-f9e4-431a-affa-15e01c495066",
+        "9a85cf98-17f3-4aab-b183-ab0b4038821d"
+      ]
+    },
+    "education": {
+      "type": "sf-education",
+      "settings": {},
+      "blocks": {
+        "glazing_source": {
+          "type": "source",
+          "settings": {
+            "product": "glazing-milk",
+            "source_name": "Rhode \u2014 official product reviews",
+            "url": "https://www.rhodeskin.com/products/glazing-milk",
+            "checked": "9 October 2026",
+            "summary": "4.7 / 5 from 6,354 reviews on the official Rhode website.",
+            "excerpt": "I love how hydrating it is, and i love how good it works under makeup",
+            "author": "Faith Y. \u2014 marked Verified Buyer on Rhode"
+          }
+        },
+        "glazing_tutorial": {
+          "type": "video",
+          "settings": {
+            "product": "glazing-milk",
+            "video": "https://www.youtube.com/watch?v=HZQVgCYIWq8",
+            "poster": "shopify://shop_images/pdp-desktop-2_1440x_1.webp",
+            "title": "Skin prep in Hailey\u2019s summer makeup routine",
+            "credit": "Hailey Bieber \u00b7 Full makeup routine with multiple products. The finished look is not a result of Glazing Milk alone. Packaging may differ."
+          }
+        }
+      },
+      "block_order": [
+        "glazing_tutorial",
+        "glazing_source"
+      ]
+    },
+    "recommendations": {
+      "type": "sf-recommendations",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "education",
+    "recommendations"
+  ]
+}

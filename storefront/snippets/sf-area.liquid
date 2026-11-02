@@ -1,0 +1,23 @@
+{% doc %}
+sf-area
+SOFIE NOW area picker shown in the area dialog: delivery time and fee for each area.
+{% enddoc %}
+{%- liquid
+  assign f30 = settings.now_fee_30 | default: 200
+  assign f60 = settings.now_fee_60 | default: 225
+  assign f120 = settings.now_fee_120 | default: 300
+  assign areas = 'new_cairo:30,nasr_city:60,madinaty:60,giza:120,zayed:120,october:120,shorouk:120,obour:120' | split: ','
+-%}
+<div class="sf-area-content"><p class="eyebrow">SOFIE NOW</p><h2>{{ 'sf.text.area' | t }}</h2><p>{{ 'sf.text.now_text' | t }}</p><label for="sf-area-select">{{ 'sf.text.area_label' | t }}</label><select id="sf-area-select" data-area-select><option value="">{{ 'sf.text.area_choose' | t }}</option>{%- for area in areas -%}{%- liquid
+  assign parts = area | split: ':'
+  assign key = 'sf.text.area_' | append: parts.first
+  case parts.last
+    when '30'
+      assign fee = f30
+    when '60'
+      assign fee = f60
+    else
+      assign fee = f120
+  endcase
+-%}<option value="{{ parts.first }}" data-minutes="{{ parts.last }}">{{ key | t }} — {{ parts.last }} min · LE {{ fee }}</option>{%- endfor -%}<option value="other">{{ 'sf.text.area_other' | t }}</option></select><p class="sf-area-result" data-area-result aria-live="polite"></p><p class="small">{{ 'sf.text.now_terms' | t }} {% render 'sf-now-hours', mode: 'sentence' %}</p><button class="button" data-area-save>{{ 'sf.text.save_changes' | t }}</button></div>
+

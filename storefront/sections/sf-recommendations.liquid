@@ -1,0 +1,35 @@
+{%- comment -%}
+Complete your routine. Hand-picked partners from Search & Discovery come first; the rest is filled automatically
+in the browser: the routine categories that pair with this product (primer with foundation, liner with lipstick,
+conditioner with shampoo…), same brand first, then the best-selling in-stock picks of each category.
+{%- endcomment -%}
+{%- liquid
+  assign comp = product.metafields['shopify--discovery--product_recommendation'].complementary_products.value
+  assign keys = '|foundation|tinted-moisturizer|concealer|setting-spray-powder|face-primer|cleansers|treatments|moisturizers-1|sunscreen|eye-care|masks-1|perfume-1|body-mist-hair-mist-1|all-fragrance-1|lip-gloss|lip-oil|lipstick|lip-balms-treatments-1|lip-liner|blush|bronzer|highlighter-1|shampoo-conditioner|treatments-hair|all-hair|mascara|eyeliner|eye-palettes|eyebrow|'
+  assign mine = ''
+  for c in product.collections
+    assign probe = '|' | append: c.handle | append: '|'
+    if keys contains probe
+      assign mine = mine | append: c.handle | append: ','
+    endif
+  endfor
+  assign shown = 0
+  assign vq = product.vendor | url_encode
+  assign vendor_url = routes.collections_url | append: '/vendors?q=' | append: vq
+-%}
+<section class="sf-section sf-wrap sf-routine" id="sf-routine" data-routine>
+<div class="sf-section-head"><div><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ 'sf.text.routine' | t }}</h2><p class="sf-section-sub" data-routine-sub>{{ section.settings.text | escape }}</p></div></div>
+<div class="sf-rail" data-rail><div class="sf-rail-track" data-rail-track data-routine-track>
+{%- for item in comp limit: 8 -%}{%- if item.available and item.id != product.id -%}{%- assign shown = shown | plus: 1 -%}<div class="sf-rail-item" data-handle="{{ item.handle }}">{%- render 'sf-card', product: item, unify: true -%}</div>{%- endif -%}{%- endfor -%}
+{%- if shown < 4 -%}{%- for i in (1..4) -%}<div class="sf-rail-item" data-skel><div class="sf-skel" aria-hidden="true"><i></i><b></b><b></b></div></div>{%- endfor -%}{%- endif -%}
+</div><button type="button" class="sf-rail-btn sf-rail-prev" data-rail-prev aria-label="{{ 'sf.text.previous' | t }}">{% render 'sf-icon',name:'arrow' %}</button><button type="button" class="sf-rail-btn sf-rail-next" data-rail-next aria-label="{{ 'sf.text.next' | t }}">{% render 'sf-icon',name:'arrow' %}</button></div>
+<script type="application/json" data-routine-config>{"handle":{{ product.handle | json }},"vendor":{{ product.vendor | json }},"vendorUrl":{{ vendor_url | json }},"title":{{ product.title | json }},"mine":{{ mine | json }},"collections":{{ routes.collections_url | json }},"max":{{ section.settings.limit | default: 8 }}}</script>
+</section>
+{% schema %}
+{"name": "Sofie Routine", "settings": [
+ {"type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "THE SOFIE ROUTINE"},
+ {"type": "text", "id": "text", "label": "Intro", "default": "Chosen to work with this product: by category, brand and what is in stock today."},
+ {"type": "range", "id": "limit", "label": "Products", "min": 4, "max": 12, "step": 1, "default": 8}
+]}
+{% endschema %}
+

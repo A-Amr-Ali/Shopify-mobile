@@ -1,0 +1,90 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "logo": "shopify://shop_images/sfe_blk-8_c75511a1-a97b-49c2-af4e-2406d4999d23.png",
+    "logo_width": 154,
+    "logo_width_mobile": 116,
+    "favicon": "shopify://shop_images/1000380377.png",
+    "whatsapp": "201007488707",
+    "now_collection": "sofie-hours",
+    "beauty_menu": "sofies-makeup",
+    "home_menu": "sofies-home",
+    "instagram": "https://www.instagram.com/sofiesmakeupstore/",
+    "fresh_collection": "fresh-at-sofie",
+    "unify_backgrounds": true,
+    "match_enabled": true,
+    "now_standard_fee": 150,
+    "now_open_hour": 10,
+    "now_close_hour": 22,
+    "pickup_enabled": true,
+    "pickup_name": "The Place Mall, Gate 8, Mivida, New Cairo",
+    "pickup_map": "https://maps.app.goo.gl/uoAZewBK3ajPYycM8",
+    "pickup_minutes": 10,
+    "home_nav_menu": "home",
+    "now_home_text": "SOFIE NOW for home — selected essentials, delivered fast in selected areas.",
+    "home_search_hint": "Search tableware, appliances & home essentials",
+    "beauty_switch_label": "SOFIE Makeup",
+    "home_tagline": "Beautiful living, down to the details.",
+    "home_instagram": "https://www.instagram.com/sofieshome_/",
+    "sections": {
+      "sf-header": {
+        "type": "sf-header",
+        "settings": {}
+      },
+      "sf-footer": {
+        "type": "sf-footer",
+        "settings": {}
+      }
+    },
+    "content_for_index": [],
+    "blocks": {
+      "13768625480086291342": {
+        "type": "shopify://apps/forms/blocks/forms/8744a304-fcb1-4347-b211-bb6b4759a76a",
+        "disabled": false,
+        "settings": {}
+      },
+      "13669581254962827849": {
+        "type": "shopify://apps/sofie-loyalty/blocks/sofie-tracker/019eb499-3607-73f4-8692-ccd8ed2ca108",
+        "disabled": false,
+        "settings": {
+          "enabled": true
+        }
+      },
+      "855628211100114053": {
+        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
+        "disabled": false,
+        "settings": {}
+      },
+      "11532412952436166569": {
+        "type": "shopify://apps/loox-reviews/blocks/loox-inject/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+        "disabled": false,
+        "settings": {}
+      },
+      "12439146293631897289": {
+        "type": "shopify://apps/blockify-fraud-filter/blocks/app_embed/2e3e0ba5-0e70-447a-9ec5-3bf76b5ef12e",
+        "disabled": false,
+        "settings": {}
+      },
+      "2200952712151285029": {
+        "type": "shopify://apps/microsoft-clarity/blocks/brandAgents_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": false,
+        "settings": {}
+      },
+      "2567389343055140935": {
+        "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": false,
+        "settings": {}
+      }
+    }
+  },
+  "presets": {}
+}
+

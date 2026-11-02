@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>SOFIE Birthday Desk</title><link rel="stylesheet" href="/ops/birthdays/style.css"></head><body>
+<main class="shell">
+  <section id="login" class="login card"><div class="mark">S</div><p class="eyebrow">SOFIE PRIVATE OPS</p><h1>Birthday desk</h1><p>Sign in with the same password as the buying desk.</p><form id="loginForm"><label for="password">Password</label><div class="loginRow"><input id="password" type="password" autocomplete="current-password" required><button>Sign in</button></div><p id="loginError" class="error" aria-live="polite"></p></form></section>
+  <section id="desk" hidden>
+    <header><div><p class="eyebrow">SOFIE PRIVATE OPS</p><h1>Birthday desk</h1><p id="stamp" class="muted"></p></div><nav><a href="/ops/procurement">Buying desk</a><button id="refresh" class="secondary">Refresh</button><button id="logout" class="secondary">Sign out</button></nav></header>
+    <div id="warning" class="warning" hidden>Shopify order history is temporarily unavailable. Stored SOFIE spend is shown where available.</div>
+    <section id="stats" class="stats"></section>
+    <section class="panel today"><div class="sectionHead"><div><p class="eyebrow">GIFT ACTIONS</p><h2>Birthdays today</h2></div><span id="todayBadge" class="badge"></span></div><div id="todayList" class="birthdayGrid"></div></section>
+    <section class="panel"><div class="sectionHead"><div><p class="eyebrow">PLAN AHEAD</p><h2>Next 30 days</h2></div></div><div class="tableWrap"><table><thead><tr><th>Customer</th><th>Birthday</th><th>Contact</th><th>Ordered before?</th><th>Lifetime value</th><th>Last order</th></tr></thead><tbody id="upcoming"></tbody></table></div><div id="upcomingEmpty" class="empty" hidden>No upcoming birthdays in the next 30 days.</div></section>
+  </section>
+</main><script src="/ops/birthdays/app.js" defer></script></body></html>

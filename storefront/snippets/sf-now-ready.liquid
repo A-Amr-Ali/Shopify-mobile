@@ -1,0 +1,49 @@
+{% doc %}
+sf-now-ready
+Prints the ids of in-stock options eligible for SOFIE NOW as ",id,id,".
+The product must belong to a configured SOFIE NOW collection. A valid eligible variants list restricts the options; otherwise all in-stock options of the collection member are eligible.
+References to options belonging to other products are ignored.
+@param {product} product - Product to check
+{% enddoc %}
+{%- liquid
+  assign sfr_in = false
+  assign sfr_h1 = settings.now_collection.handle | default: 'sofie-hours'
+  assign sfr_h2 = settings.now_home_collection.handle | default: 'sofie-hours'
+  for sfr_c in product.collections
+    if sfr_c.handle == sfr_h1 or sfr_c.handle == sfr_h2
+      assign sfr_in = true
+      break
+    endif
+  endfor
+  if sfr_in
+    assign sfr_own = ','
+    for sfr_v in product.variants
+      assign sfr_own = sfr_own | append: sfr_v.id | append: ','
+    endfor
+    assign sfr_list = product.metafields.custom.sofie_hours_variants.value
+    assign sfr_out = ','
+    assign sfr_listed = false
+    if sfr_list != blank and sfr_list.size > 0
+      for sfr_v in sfr_list
+        assign sfr_p = ',' | append: sfr_v.id | append: ','
+        if sfr_own contains sfr_p
+          assign sfr_listed = true
+          if sfr_v.available and sfr_v.inventory_quantity > 0
+            assign sfr_out = sfr_out | append: sfr_v.id | append: ','
+          endif
+        endif
+      endfor
+    endif
+    unless sfr_listed
+      for sfr_v in product.variants
+        if sfr_v.available and sfr_v.inventory_quantity > 0
+          assign sfr_out = sfr_out | append: sfr_v.id | append: ','
+        endif
+      endfor
+    endunless
+    if sfr_out != ','
+      echo sfr_out
+    endif
+  endif
+-%}
+

@@ -1,0 +1,5 @@
+<section class="sf-section sf-wrap"><h1>{{ 'sf.text.collections' | t }}</h1>{% paginate collections by 36 %}<div class="sf-category-grid">{% for c in collections %}<a href="{{ c.url }}" class="sf-category"><div>{% assign pic=c.image | default:c.products.first.featured_image %}{% if pic %}{{ pic | image_url:width:400 | image_tag:loading:'lazy',alt:c.title }}{% endif %}</div><span>{{ c.title | escape }}</span></a>{% endfor %}</div>{% render 'sf-pagination',paginate:paginate %}{% endpaginate %}</section>
+{% schema %}
+{"name": "Sofie List Collections", "settings": []}
+{% endschema %}
+

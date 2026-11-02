@@ -1,0 +1,5 @@
+<section class="sf-section sf-wrap"><h1>{{ 'sf.text.search_results' | t }}</h1>{% render 'sf-search',context:'page' %}{% if search.performed %}<p>{{ search.results_count }} {{ 'sf.text.results' | t }} — “{{ search.terms | escape }}”</p>{% paginate search.results by 24 %}<div class="sf-grid">{% for result in search.results %}{% if result.object_type == 'product' %}{% render 'sf-card',product:result %}{% else %}<article><h2><a href="{{ result.url }}">{{ result.title | escape }}</a></h2></article>{% endif %}{% else %}<p>{{ 'sf.text.no_results' | t }}</p>{% endfor %}</div>{% render 'sf-pagination',paginate:paginate %}{% endpaginate %}{% endif %}</section>
+{% schema %}
+{"name": "Sofie Search Page", "settings": []}
+{% endschema %}
+

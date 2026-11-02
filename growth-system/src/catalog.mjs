@@ -1,5 +1,6 @@
 import { STORE, GOALS } from './config.mjs';
 import { normalizeFeed, routineSteps } from './engine.mjs';
+export const OPTIONS_QUERY = `query JourneyOptions($ids: [ID!]!) { nodes(ids: $ids) { ... on ProductVariant { id title price inventoryQuantity product { handle title vendor status onlineStoreUrl featuredImage { url } } } } }`;
 const feeds = new Map();
 const readyCache = new Map();
 let tokenCache = null;
@@ -23,15 +24,15 @@ async function getToken() {
   return tokenCache.token;
 }
 
-export async function adminQuery(query, variables = {}) {
+export async function adminQuery(query, variables = {}, options = {}) {
   const token = await getToken();
   const r = await fetch(`https://${process.env.SHOP_DOMAIN}/admin/api/2026-10/graphql.json`, {
-    method: 'POST', signal: AbortSignal.timeout(12000), headers: { 'content-type': 'application/json', 'x-shopify-access-token': token },
+    method: 'POST', signal: AbortSignal.timeout(options.timeoutMs || 12000), headers: { 'content-type': 'application/json', 'x-shopify-access-token': token },
     body: JSON.stringify({ query, variables })
   });
   if (!r.ok) throw new Error('admin_http_' + r.status);
-  const data = await r.json(); if (data.errors?.length) { console.warn('Shopify query error:',data.errors.map(e=>String(e.message).slice(0,240)).join('; '));throw new Error('admin_query_rejected'); }
-  return data.data;
+  const data = await r.json(); if (data.errors?.length) { const details=data.errors.map(e=>String(e.message).slice(0,240)).join('; ');console.warn('Shopify query error:',details);const error=new Error('admin_query_rejected');error.details=details;throw error; }
+  return options.cost ? {...data.data,__cost:data.extensions?.cost} : data.data;
 }
 
 async function feed(handle, step, fresh = false) {
@@ -102,6 +103,25 @@ async function readyOptions(handle) {
   return ids;
 }
 
+export async function checkOptions(ids) {
+  if (!Array.isArray(ids) || !ids.length || ids.length > 10 || ids.some(id => !/^\d{1,20}$/.test(String(id)))) throw new Error('invalid_options');
+  const wanted = [...new Set(ids.map(String))];
+  const data = await adminQuery(OPTIONS_QUERY, { ids: wanted.map(id => 'gid://shopify/ProductVariant/' + id) });
+  const nodes = data.nodes.filter(Boolean);
+  const ready = new Map();
+  await Promise.all([...new Set(nodes.filter(v => v.product?.status === 'ACTIVE' && v.product?.onlineStoreUrl && v.inventoryQuantity > 0).map(v => v.product.handle))].map(async handle => {
+    try { ready.set(handle, await readyOptions(handle)); } catch { ready.set(handle, null); }
+  }));
+  const byId = new Map(nodes.map(v => [v.id.split('/').pop(), v]));
+  return { checkedAt: new Date().toISOString(), items: wanted.map(variantId => {
+    const v = byId.get(variantId);
+    if (!v || v.product?.status !== 'ACTIVE' || !v.product?.onlineStoreUrl) return { variantId, available: false, now: false };
+    return { variantId, handle:v.product.handle, title:v.product.title, brand:v.product.vendor, variantTitle:v.title,
+      price:Number(v.price), available:v.inventoryQuantity > 0, now:v.inventoryQuantity > 0 ? (ready.get(v.product.handle) instanceof Set ? ready.get(v.product.handle).has(variantId) : null) : false,
+      image:v.product.featuredImage?.url || '', url:STORE + '/products/' + v.product.handle + '?variant=' + variantId };
+  }) };
+}
+
 export function markExactNow(cards, readyByHandle) {
   return cards.map(c => ({ ...c, now: c.now && (c.nowVerified === true || readyByHandle.get(c.handle)?.has(c.variantId) === true) }));
 }
@@ -126,4 +146,10 @@ export async function loadCatalog(goal, { fresh = false, today = false, budget =
     checked.cards = markExactNow(checked.cards, readyByHandle);
   } else checked.cards = checked.cards.map(c => ({ ...c, now: false }));
   return checked;
+}
+
+export async function discoveryCandidates() {
+  const rows=await feed('fresh-at-sofie','discover');
+  const seen=new Set();
+  return rows.filter(c=>{if(seen.has(c.handle))return false;seen.add(c.handle);return true;}).slice(0,24);
 }

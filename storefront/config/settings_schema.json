@@ -1,0 +1,230 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "SOFIE Atelier",
+    "theme_version": "1.1.0",
+    "theme_author": "SOFIE",
+    "theme_documentation_url": "https://sofiestore.net/pages/contact",
+    "theme_support_url": "https://sofiestore.net/pages/contact"
+  },
+  {
+    "name": "SOFIE essentials",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Logo width on desktop",
+        "min": 110,
+        "max": 240,
+        "step": 2,
+        "unit": "px",
+        "default": 154
+      },
+      {
+        "type": "range",
+        "id": "logo_width_mobile",
+        "label": "Logo width on mobile",
+        "min": 80,
+        "max": 170,
+        "step": 2,
+        "unit": "px",
+        "default": 116
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "text",
+        "id": "whatsapp",
+        "label": "WhatsApp number, international digits only",
+        "default": "201007488707"
+      },
+      {
+        "type": "collection",
+        "id": "now_collection",
+        "label": "SOFIE NOW collection"
+      },
+      {
+        "type": "link_list",
+        "id": "beauty_menu",
+        "label": "Beauty menu",
+        "default": "main-menu"
+      },
+      {
+        "type": "link_list",
+        "id": "home_menu",
+        "label": "Home menu"
+      },
+      {
+        "type": "text",
+        "id": "instagram",
+        "label": "Instagram URL",
+        "default": "https://www.instagram.com/sofiesmakeupstore/"
+      }
+    ]
+  },
+  {
+    "name": "Fresh drops & Find My Match",
+    "settings": [
+      {
+        "type": "collection",
+        "id": "fresh_collection",
+        "label": "Fresh at SOFIE collection",
+        "info": "Used by the New In link, the Fresh drops section and the footer."
+      },
+      {
+        "type": "checkbox",
+        "id": "unify_backgrounds",
+        "label": "Same background for product photos",
+        "info": "Removes flat studio backgrounds (grey, pink, beige) so every product sits on the SOFIE cream card.",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "match_enabled",
+        "label": "Enable Find My Match",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "SOFIE NOW delivery",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Fees shown on product pages, in the bag and in the area picker. Keep them the same as the SOFIE NOW delivery rates in Settings → Shipping and delivery."
+      },
+      {
+        "type": "number",
+        "id": "now_fee_30",
+        "label": "New Cairo (30 min) fee, LE",
+        "default": 200
+      },
+      {
+        "type": "number",
+        "id": "now_fee_60",
+        "label": "Nasr City & Madinaty (60 min) fee, LE",
+        "default": 225
+      },
+      {
+        "type": "number",
+        "id": "now_fee_120",
+        "label": "Giza, Zayed, October, Shorouk & Obour (120 min) fee, LE",
+        "default": 300
+      },
+      {
+        "type": "number",
+        "id": "now_standard_fee",
+        "label": "Standard delivery fee shown for other items, LE",
+        "info": "Charged on top of the SOFIE NOW fee when the bag also has items that are not ready for SOFIE NOW.",
+        "default": 150
+      },
+      {
+        "type": "header",
+        "content": "Opening hours"
+      },
+      {
+        "type": "range",
+        "id": "now_open_hour",
+        "label": "SOFIE NOW opens at",
+        "min": 0,
+        "max": 23,
+        "step": 1,
+        "unit": "h",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "now_close_hour",
+        "label": "SOFIE NOW closes at",
+        "min": 1,
+        "max": 24,
+        "step": 1,
+        "unit": "h",
+        "default": 22,
+        "info": "24-hour clock, Cairo time. Orders placed after closing are delivered from the next opening."
+      },
+      {
+        "type": "header",
+        "content": "Store pickup"
+      },
+      {
+        "type": "checkbox",
+        "id": "pickup_enabled",
+        "label": "Offer free store pickup for bags where every item is ready for SOFIE NOW",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "pickup_name",
+        "label": "Pickup point",
+        "default": "The Place Mall, Gate 8, Mivida, New Cairo"
+      },
+      {
+        "type": "url",
+        "id": "pickup_map",
+        "label": "Google Maps link"
+      },
+      {
+        "type": "number",
+        "id": "pickup_minutes",
+        "label": "Ready in (minutes)",
+        "default": 10
+      }
+    ]
+  },
+  {
+    "name": "Home & living world",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "home_nav_menu",
+        "label": "Home & living navigation bar",
+        "info": "Replaces the beauty categories in the header on Home & living pages.",
+        "default": "main-menu"
+      },
+      {
+        "type": "collection",
+        "id": "now_home_collection",
+        "label": "SOFIE NOW home collection"
+      },
+      {
+        "type": "text",
+        "id": "now_home_text",
+        "label": "Home announcement",
+        "default": "Selected home essentials, delivered fast in selected areas."
+      },
+      {
+        "type": "text",
+        "id": "home_search_hint",
+        "label": "Home search placeholder",
+        "default": "Search tableware, appliances & home essentials"
+      },
+      {
+        "type": "text",
+        "id": "beauty_switch_label",
+        "label": "Tab back to beauty",
+        "default": "SOFIE Makeup"
+      },
+      {
+        "type": "text",
+        "id": "home_tagline",
+        "label": "Footer line in Home & living",
+        "default": "Beautiful living, down to the details."
+      },
+      {
+        "type": "text",
+        "id": "home_instagram",
+        "label": "SOFIE Home Instagram URL",
+        "info": "Shown in the footer next to the makeup Instagram, for example https://www.instagram.com/yourhomepage/"
+      }
+    ]
+  }
+]

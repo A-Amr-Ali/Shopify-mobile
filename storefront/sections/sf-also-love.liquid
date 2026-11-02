@@ -1,0 +1,26 @@
+{%- comment -%}
+You may also love. Loaded after the page appears from Shopify's product recommendations (related products,
+learned from what customers buy and browse together). If Shopify has nothing yet, the brand's best sellers are used.
+{%- endcomment -%}
+{%- liquid
+  assign vq = product.vendor | url_encode
+  assign vendor_url = routes.collections_url | append: '/vendors?q=' | append: vq | append: '&view=sfr&sort_by=best-selling'
+-%}
+<section class="sf-section sf-wrap sf-also" id="sf-also" data-also data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=16&intent=related" data-fallback="{{ vendor_url }}" data-handle="{{ product.handle }}">
+<div class="sf-section-head"><div><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.heading | escape }}</h2></div></div>
+<div class="sf-rail" data-rail><div class="sf-rail-track" data-rail-track data-also-track>
+{%- if recommendations.performed and recommendations.products_count > 0 -%}
+{%- for item in recommendations.products -%}{%- if item.available -%}<div class="sf-rail-item" data-handle="{{ item.handle }}">{%- render 'sf-card', product: item, unify: true -%}</div>{%- endif -%}{%- endfor -%}
+{%- else -%}
+{%- for i in (1..4) -%}<div class="sf-rail-item" data-skel><div class="sf-skel" aria-hidden="true"><i></i><b></b><b></b></div></div>{%- endfor -%}
+{%- endif -%}
+</div><button type="button" class="sf-rail-btn sf-rail-prev" data-rail-prev aria-label="{{ 'sf.text.previous' | t }}">{% render 'sf-icon',name:'arrow' %}</button><button type="button" class="sf-rail-btn sf-rail-next" data-rail-next aria-label="{{ 'sf.text.next' | t }}">{% render 'sf-icon',name:'arrow' %}</button></div>
+</section>
+{% schema %}
+{"name": "Sofie You May Also Love", "settings": [
+ {"type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "MORE TO DISCOVER"},
+ {"type": "text", "id": "heading", "label": "Heading", "default": "You may also love"},
+ {"type": "range", "id": "limit", "label": "Products", "min": 4, "max": 16, "step": 1, "default": 12}
+], "presets": [{"name": "Sofie You May Also Love"}]}
+{% endschema %}
+

@@ -1,0 +1,22 @@
+<section class="sf-section sf-wrap sf-for-you" data-sf-for-you aria-labelledby="sf-for-you-heading">
+  <p class="eyebrow">{{ 'sf.for_you.eyebrow' | t }}</p>
+  <h2 id="sf-for-you-heading">{{ 'sf.for_you.heading' | t }}</h2>
+  <p data-for-you-intro>{{ 'sf.for_you.invite' | t }}</p>
+  <div class="sf-for-you-toolbar">
+    <button type="button" class="button" data-for-you-enable>{{ 'sf.for_you.enable' | t }}</button>
+    <button type="button" class="sf-for-you-reset" data-for-you-reset hidden>{{ 'sf.for_you.reset' | t }}</button>
+  </div>
+  <small>{{ 'sf.for_you.privacy' | t }}</small>
+  <div class="sf-for-you-grid" data-for-you-items>
+    {% for item in section.settings.collection.products limit: 4 %}
+      {% if item.available %}{% render 'sf-card', product: item %}{% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "SOFIE For You",
+  "settings": [{"type": "collection", "id": "collection", "label": "Discovery collection"}],
+  "presets": [{"name": "SOFIE For You"}]
+}
+{% endschema %}

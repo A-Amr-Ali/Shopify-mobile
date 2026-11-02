@@ -1,0 +1,202 @@
+/* SOFIE Atelier — Claude edit, phase 2: SOFIE NOW panel, bag, tracker, routine, reviews, videos */
+
+/* ---------- SOFIE NOW on the product page ---------- */
+.sf-nowp{margin-top:22px;padding:20px 22px;border-radius:16px;background:var(--now-tint);border:1px solid rgba(179,50,94,.18);display:grid;gap:12px}
+.sf-nowp-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px}
+.sf-nowp-badge{display:inline-flex;align-items:center;gap:8px;margin:0;background:var(--now);color:var(--now-ink);padding:6px 13px 6px 11px;border-radius:999px;font-size:10px;font-weight:600;letter-spacing:1.6px;width:max-content}
+.sf-nowp-promise{margin:0;font-size:11px;color:var(--now-deep);font-weight:500}
+.sf-nowp-state{margin:0;font-size:14px;line-height:1.55;color:var(--ink)}
+.sf-nowp.is-ready .sf-nowp-state{font-weight:500}
+.sf-nowp.is-ready .sf-nowp-state::before{content:"✓";display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;margin-right:8px;border-radius:50%;background:var(--now);color:#fff;font-size:11px;vertical-align:1px}
+.sf-nowp.is-standard{background:#f7f4ef;border-color:var(--line)}
+.sf-nowp-label{margin:0 0 7px;font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted)}
+.sf-nowp-chips{display:flex;flex-wrap:wrap;gap:6px}
+.sf-nowp-chip{border:1px solid rgba(179,50,94,.35);background:#fff;border-radius:999px;padding:7px 12px;font-size:11px;line-height:1.3;text-align:left;transition:background .15s,color .15s,border-color .15s}
+.sf-nowp-chip:hover{border-color:var(--now)}
+.sf-nowp-chip[aria-pressed=true]{background:var(--now);border-color:var(--now);color:var(--now-ink)}
+.sf-nowp-area{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
+.sf-nowp-areabtn{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:12px;color:var(--ink);font-weight:500}
+.sf-nowp-areabtn svg{width:15px;height:15px;color:var(--now)}
+.sf-nowp-areabtn:hover{border-color:var(--ink)}
+.sf-nowp-steps{list-style:none;counter-reset:nowstep;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:2px 0 0;padding:0}
+.sf-nowp-steps li{counter-increment:nowstep;position:relative;padding:10px 10px 10px 34px;border-radius:12px;background:rgba(255,255,255,.72);font-size:11px;line-height:1.45}
+.sf-nowp-steps li::before{content:counter(nowstep);position:absolute;left:9px;top:9px;width:18px;height:18px;border-radius:50%;background:var(--now);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center}
+.sf-nowp-more summary{cursor:pointer;font-size:12px;font-weight:500;list-style:none;display:flex;align-items:center;gap:8px}
+.sf-nowp-more summary::-webkit-details-marker{display:none}
+.sf-nowp-more summary::after{content:"+";margin-left:auto;font-size:16px;line-height:1}
+.sf-nowp-more[open] summary::after{content:"–"}
+.sf-nowp-fees{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}
+.sf-nowp-fees th,.sf-nowp-fees td{padding:8px 0;border-bottom:1px solid rgba(179,50,94,.15);text-align:left;font-weight:400;vertical-align:top}
+.sf-nowp-fees td{white-space:nowrap;padding-left:12px;text-align:right}
+.sf-nowp-fees td:last-child{font-weight:600}
+.sf-nowp-more p{font-size:11px;color:var(--muted);margin:0;line-height:1.7}
+
+/* ---------- SOFIE NOW in the bag ---------- */
+.sf-cart-now{display:grid;gap:10px;margin:6px 0 4px;padding:18px;border-radius:16px;background:var(--now-tint);border:1px solid rgba(179,50,94,.18);border-top:1px solid rgba(179,50,94,.18)}
+.sf-cart-now .sf-nowp-head{gap:6px}
+.sf-cart-now-lead{margin:0;font-size:12px;line-height:1.6}
+.sf-cart-now-label{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:2px 0 -4px}
+.sf-cart-now select{width:100%;min-height:42px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:12px;padding:8px 30px 8px 12px}
+.sf-cart-now .sf-check{font-size:12px;font-weight:500}
+.sf-cart-now-hint{margin:0;font-size:11px;line-height:1.6;color:var(--now-deep)}
+.sf-cart-now-hint:empty{display:none}
+
+/* ---------- loading placeholders ---------- */
+.sf-skel i{display:block;aspect-ratio:1/1.14;border-radius:4px;background:linear-gradient(100deg,#f1ede7 30%,#f9f7f3 50%,#f1ede7 70%);background-size:300% 100%;animation:sfSkel 1.3s linear infinite}
+.sf-skel b{display:block;height:10px;margin-top:14px;width:60%;border-radius:6px;background:#f1ede7}
+.sf-skel b+b{width:85%;margin-top:9px;margin-bottom:46px}
+@keyframes sfSkel{to{background-position:-150% 0}}
+.sf-bb-collage:empty,.sf-collage:empty{min-height:120px}
+
+/* ---------- routine + you may also love ---------- */
+.sf-routine,.sf-also{padding-block:48px}
+.sf-routine .sf-section-sub{max-width:640px}
+.sf-also{border-top:1px solid var(--line)}
+
+/* ---------- ratings ---------- */
+.sf-stars{--r:0;display:inline-block;flex:none;font-size:14px;line-height:1;letter-spacing:1px}
+.sf-stars::before{content:"★★★★★";background:linear-gradient(90deg,var(--ink) calc(var(--r) / 5 * 100%),#d9d3ca 0);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sf-rating-line{display:inline-flex;align-items:center;gap:8px;margin:-4px 0 12px;font-size:12px;color:var(--ink)}
+.sf-rating-line:hover{text-decoration:underline;text-underline-offset:4px}
+.sf-rating-line.is-source{color:var(--muted)}
+.sf-source-rating .sf-sr-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;margin-bottom:8px}
+.sf-source-rating .sf-sr-row strong{font-size:22px;font-weight:400}
+.sf-source-rating .sf-stars{font-size:18px}
+
+/* ---------- videos ---------- */
+.sf-video-card.is-howto p{display:flex;flex-direction:column;gap:4px;font-size:13px;margin-top:10px}
+.sf-video-card.is-howto small{font-size:11px;color:var(--muted)}
+.sf-video-play img{width:100%;height:100%;object-fit:cover}
+.sf-video-fallback{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 28px;padding:24px 26px;border-radius:16px;background:var(--cream)}
+.sf-video-fallback p{margin:0;max-width:520px;font-size:13px;line-height:1.7}
+.sf-video-fallback .button{width:auto;margin:0;gap:10px}
+.sf-video-fallback .button svg{width:18px;height:18px}
+
+/* ---------- before & after ---------- */
+.sf-ba-lead{max-width:640px;font-size:13px;line-height:1.75;color:#4f4a43}
+.sf-ba-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin:18px 0 12px}
+.sf-ba-item{margin:0;border-radius:16px;overflow:hidden;background:#f7f6f3}
+.sf-ba-item img{width:100%;height:auto;display:block}
+.sf-ba-item figcaption{padding:12px 14px;font-size:12px;line-height:1.6}
+
+/* ---------- SOFIE NOW live tracker ---------- */
+.sf-track{padding-block:48px 72px}
+.sf-track-card,.sf-track-empty{max-width:880px;margin:0 auto;padding:34px 36px;border-radius:24px;background:#fff;border:1px solid var(--line);box-shadow:0 24px 60px rgba(24,24,24,.06)}
+.sf-track-empty{text-align:center}
+.sf-track-empty .sf-nowp-badge{margin:0 auto 18px}
+.sf-track-empty p{max-width:560px;margin-left:auto;margin-right:auto}
+.sf-track-empty .sf-track-actions{justify-content:center}
+.sf-track-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.sf-track-order{margin:0;font-size:12px;color:var(--muted)}
+.sf-track-order strong{color:var(--ink);font-size:14px}
+.sf-track-title,.sf-track-empty h1,.sf-dispatch h1{font-size:clamp(28px,4vw,46px);font-weight:300;letter-spacing:-1.4px;margin:0 0 8px}
+.sf-track-sub{font-size:13px;color:#4f4a43;margin:0 0 22px;line-height:1.7}
+.sf-track-clock{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.sf-track-clock>div{padding:16px 18px;border-radius:16px;background:var(--now-tint)}
+.sf-track-clock>div+div{background:var(--cream)}
+.sf-track-time,.sf-track-eta{display:block;font:300 40px/1 var(--body);letter-spacing:-1.5px;color:var(--now-deep);font-variant-numeric:tabular-nums}
+.sf-track-eta{color:var(--ink)}
+.sf-track-clock small{display:block;margin-top:6px;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
+.is-late .sf-track-time{color:var(--muted)}
+.sf-track-map{border-radius:20px;background:linear-gradient(180deg,#fbf6f2,#f6efe8);padding:8px;overflow:hidden}
+.sf-track-svg{display:block;width:100%;height:auto;overflow:visible}
+.sf-road{fill:none;stroke:#e6ddd3;stroke-width:16;stroke-linecap:round}
+.sf-road-line{fill:none;stroke:#fff;stroke-width:2;stroke-dasharray:8 10}
+.sf-road-done{fill:none;stroke:var(--now);stroke-width:6;stroke-linecap:round;stroke-dasharray:1000;stroke-dashoffset:1000;opacity:.85;transition:stroke-dashoffset .9s linear}
+.sf-pin-store circle{fill:var(--ink)}
+.sf-pin-store text{fill:#fff;font:600 16px var(--serif)}
+.sf-pin-home circle{fill:var(--now)}
+.sf-pin-home path{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sf-pin-home .sf-pin-ring{fill:none;stroke:var(--now);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:sfRing 1.8s ease-out infinite}
+@keyframes sfRing{0%{transform:scale(.7);opacity:.9}100%{transform:scale(1.5);opacity:0}}
+.sf-pin-label{font-size:12px;fill:var(--muted);letter-spacing:1px}
+[data-track-car]{transition:transform .9s linear}
+.sf-car-shell{fill:var(--now)}
+.sf-car-glass{fill:#fde9ef}
+.sf-car-line,.sf-car-rack{stroke:var(--now-deep);stroke-width:2;fill:none;stroke-linecap:round}
+.sf-car-light{fill:#ffe6a6}
+.sf-car-tail{fill:#ff8fb1}
+.sf-car-wheel circle{fill:#26231f}
+.sf-car-wheel .sf-hub{fill:#e9e3db}
+.sf-spoke{stroke:#26231f;stroke-width:1.6}
+.sf-car-wheel{transform-box:fill-box;transform-origin:center;animation:sfSpin .6s linear infinite}
+@keyframes sfSpin{to{transform:rotate(1turn)}}
+.sf-car-body{animation:sfBounce .5s ease-in-out infinite alternate}
+@keyframes sfBounce{to{transform:translateY(-1.5px)}}
+.sf-car-speed path{stroke:var(--now);stroke-width:2.4;stroke-linecap:round;fill:none;opacity:.5;animation:sfSpeed .7s linear infinite}
+@keyframes sfSpeed{0%{transform:translateX(0);opacity:.6}100%{transform:translateX(-10px);opacity:0}}
+.sf-bag{fill:#fff;stroke:var(--now-deep);stroke-width:1.6}
+.sf-bag-handle{fill:none;stroke:var(--now-deep);stroke-width:2}
+.sf-bag-text{font:700 7px var(--body);letter-spacing:1px;fill:var(--now-deep)}
+.sf-box{fill:#e7d4b5;stroke:#a88a5e;stroke-width:1.4}
+.sf-box-tape{stroke:#c9ad80;stroke-width:4}
+.sf-box-text{font:700 6.5px var(--body);letter-spacing:1px;fill:#5b4630}
+.is-parked .sf-car-wheel,.is-parked .sf-car-body{animation:none}
+.is-parked .sf-car-speed{display:none}
+.sf-track-steps{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:22px 0;padding:0}
+.sf-track-steps li{position:relative;padding-top:18px;font-size:11px;color:var(--muted);text-align:center}
+.sf-track-steps li::before{content:"";position:absolute;left:0;right:0;top:6px;height:3px;border-radius:3px;background:var(--line)}
+.sf-track-steps li.is-done{color:var(--ink)}
+.sf-track-steps li.is-done::before{background:var(--now)}
+.sf-track-steps li.is-active{color:var(--now-deep);font-weight:600}
+.sf-track-steps li.is-active::before{background:linear-gradient(90deg,var(--now) 50%,var(--line) 50%);background-size:200% 100%;animation:sfStep 1.6s linear infinite}
+@keyframes sfStep{0%{background-position:100% 0}100%{background-position:0 0}}
+.sf-track-actions{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;margin-top:8px}
+.sf-track-actions .button{width:auto;margin:0}
+.sf-track-note{margin-top:16px}
+
+/* ---------- dispatch (team) ---------- */
+.sf-dispatch-form{display:grid;gap:14px;margin-top:10px}
+.sf-dispatch-form label{display:grid;gap:6px;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
+.sf-dispatch-form input:not([type=radio]),.sf-dispatch-form select,.sf-dispatch-out input{min-height:46px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;font-size:14px;text-transform:none;letter-spacing:0;color:var(--ink);background:#fff;width:100%}
+.sf-dispatch-form fieldset{border:0;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px 20px}
+.sf-dispatch-form legend{width:100%;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.sf-dispatch-form .sf-check{display:flex;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)}
+.sf-dispatch-form .button{width:auto;justify-self:start}
+.sf-dispatch-out{margin-top:22px;padding-top:20px;border-top:1px solid var(--line);display:grid;gap:12px}
+.sf-dispatch-out label{display:grid;gap:6px;font-size:11px;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- footer ---------- */
+.sf-footer-social{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+
+@media(max-width:800px){
+ .sf-nowp{padding:16px}
+ .sf-nowp-steps{grid-template-columns:1fr}
+ .sf-track{padding-block:24px 48px}
+ .sf-track-card,.sf-track-empty{padding:24px 18px;border-radius:18px}
+ .sf-track-time,.sf-track-eta{font-size:32px}
+ .sf-track-steps li{font-size:10px}
+ .sf-video-fallback{padding:18px}
+ .sf-video-fallback .button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){.sf-car-wheel,.sf-car-body,.sf-car-speed path,.sf-pin-home .sf-pin-ring,.sf-skel i,.sf-track-steps li.is-active::before{animation:none}[data-track-car],.sf-road-done{transition:none}}
+/* Keep the product page two-column layout intact when a product has many photos */
+.sf-pdp-grid>*{min-width:0}
+.sf-thumbs{max-width:100%;overscroll-behavior-x:contain}
+.sf-reviews-empty{margin:0 0 6px;font-size:13px;line-height:1.7;color:var(--muted)}
+
+/* ---------- SOFIE NOW delivery line in the bag ---------- */
+.sf-cart-fee{background:var(--now-tint);border:1px solid rgba(179,50,94,.2);border-radius:16px;padding:16px;margin-top:14px}
+.sf-cart-fee-mark{display:flex;align-items:center;justify-content:center;width:100%;max-width:72px;aspect-ratio:1/1;border-radius:50%;background:var(--now);align-self:start}
+.sf-cart-fee .sf-vendor{color:var(--now-deep)}
+.sf-cart-fee .sf-line-price small{display:block;font-size:10px;color:var(--now-deep);text-align:right}
+.sf-cart-now.is-on{border-color:var(--now);box-shadow:inset 0 0 0 1px var(--now)}
+
+/* ---------- opening hours, pickup ---------- */
+.sf-now-status{display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(179,50,94,.2);font-size:10px;letter-spacing:.8px;text-transform:uppercase;font-weight:600;color:var(--now-deep);white-space:nowrap}
+.sf-now-status::before{content:"";width:7px;height:7px;border-radius:50%;background:#9aa0a6;flex:none}
+.sf-now-status.is-open::before{background:#2f9e5d;box-shadow:0 0 0 3px rgba(47,158,93,.2)}
+.sf-now-status.is-closed{color:var(--muted)}
+.sf-now-banner .sf-now-status{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);color:#fff}
+.sf-now-banner .sf-now-status.is-closed{color:rgba(255,255,255,.75)}
+.sf-now-side{display:flex;flex-direction:column;align-items:center;gap:10px}
+.sf-nowp-pickup{display:flex;gap:9px;align-items:flex-start;margin:0;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.72);font-size:12px;line-height:1.55}
+.sf-nowp-pickup svg{width:16px;height:16px;flex:none;color:var(--now);margin-top:2px}
+.sf-cart-fee.is-pickup .sf-cart-fee-mark{background:var(--ink)}
+.sf-cart-fee.is-pickup .sf-cart-fee-mark svg{width:26px;height:26px;color:#fff}
+.sf-cart-fee.is-pickup .sf-vendor{color:var(--ink)}
+.sf-footer-visit{margin-top:14px;line-height:1.8}
+.sf-footer-visit a{text-decoration:underline}
+@media(max-width:800px){.sf-nowp-head .sf-now-status{font-size:9px}}
+.sf-now-banner .sf-now-status{white-space:normal;text-align:center;justify-content:center;line-height:1.5}
+

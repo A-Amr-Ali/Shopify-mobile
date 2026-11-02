@@ -1,0 +1,104 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "178118988496c3e084": {
+      "type": "sf-apps",
+      "blocks": {
+        "sofie_loyalty_loyalty_program_gEdc9z": {
+          "type": "shopify://apps/sofie-loyalty/blocks/loyalty-program/019eb499-3607-73f4-8692-ccd8ed2ca108",
+          "settings": {
+            "eyebrow": "Sofie Rewards",
+            "heading": "Beauty that rewards you",
+            "subheading": "Earn points on everything you love, unlock exclusive perks, and rise through our tiers — online and in our boutiques.",
+            "s1_t": "Join free",
+            "s1_b": "Create an account and take your beauty quiz to start earning instantly.",
+            "s2_t": "Earn points",
+            "s2_b": "1 point for every 10 EGP, plus points for reviews, referrals and follows.",
+            "s3_t": "Redeem & enjoy",
+            "s3_b": "Turn points into EGP off, free gifts, and members-only perks.",
+            "tiers_title": "Your tiers",
+            "t1_name": "Insider",
+            "t1_req": "Free to join",
+            "t1_perks": "1× points on every order\nBirthday treat\nPersonalized tips & quiz\nEarly access to drops",
+            "t2_name": "VIP",
+            "t2_req": "Spend 40,000 EGP / year",
+            "t2_perks": "1.25× points\nFree shipping\nBirthday gift + 2× points that month\nExclusive member offers",
+            "t3_name": "Icon",
+            "t3_req": "Spend 120,000 EGP / year",
+            "t3_perks": "1.5× points\nEverything in VIP\nPremium birthday gift\n1:1 beauty consultation",
+            "cta_label": "Join Sofie Rewards",
+            "cta_link": ""
+          }
+        },
+        "sofie_loyalty_loyalty_dashboard_A8LCVc": {
+          "type": "shopify://apps/sofie-loyalty/blocks/loyalty-dashboard/019eb499-3607-73f4-8692-ccd8ed2ca108",
+          "settings": {
+            "proxy_base": "/apps/loyalty",
+            "currency": "EGP",
+            "eyebrow": "Sofie Rewards",
+            "heading": "Welcome back",
+            "rewards_heading": "Redeem your points",
+            "gifts_heading": "Or redeem for a free gift",
+            "reco_heading": "Recommended for your routine",
+            "advisor_heading": "Ask your beauty advisor",
+            "profile_heading": "Your beauty profile",
+            "tips_heading": "Your personalized beauty tips",
+            "edit_heading": "Update your beauty profile (retake anytime)",
+            "show_orders": true,
+            "orders_heading": "Recent orders",
+            "guest_heading": "Join Sofie Rewards",
+            "guest_text": "Sign in or create a free account to earn points on every order, take your beauty profile quiz, and redeem points for EGP off.",
+            "guest_cta": "Sign in to start earning",
+            "guest_link": ""
+          }
+        },
+        "sofie_loyalty_loyalty_quiz_9TDV9W": {
+          "type": "shopify://apps/sofie-loyalty/blocks/loyalty-quiz/019eb499-3607-73f4-8692-ccd8ed2ca108",
+          "settings": {
+            "proxy_base": "/apps/loyalty",
+            "eyebrow": "Earn 250 points",
+            "heading": "Build Your Beauty Profile",
+            "subheading": "Tell us about your skin and we will tailor recommendations just for you.",
+            "cta": "Save & earn 250 points"
+          }
+        },
+        "sofie_loyalty_loyalty_teaser_KWdEbh": {
+          "type": "shopify://apps/sofie-loyalty/blocks/loyalty-teaser/019eb499-3607-73f4-8692-ccd8ed2ca108",
+          "disabled": true,
+          "settings": {
+            "eyebrow": "Sofie Rewards",
+            "heading": "Earn points on every order",
+            "subheading": "Join free and collect points on purchases, reviews & referrals — then redeem them for EGP off your favourites.",
+            "cta_label": "Join & start earning",
+            "link": "",
+            "member_cta": "View your rewards",
+            "member_link": "",
+            "bg_color": "#2a201d",
+            "text_color": "#ffffff",
+            "accent_color": "#c9a96a",
+            "align": "center"
+          }
+        }
+      },
+      "block_order": [
+        "sofie_loyalty_loyalty_program_gEdc9z",
+        "sofie_loyalty_loyalty_dashboard_A8LCVc",
+        "sofie_loyalty_loyalty_quiz_9TDV9W",
+        "sofie_loyalty_loyalty_teaser_KWdEbh"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "178118988496c3e084"
+  ]
+}
+

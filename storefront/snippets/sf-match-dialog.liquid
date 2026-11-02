@@ -1,0 +1,15 @@
+{% doc %}
+sf-match-dialog
+Find My Match studio. The engine (assets/sofie-match-1..4.js, joined in order) loads the first time the dialog opens.
+{% enddoc %}
+{%- liquid
+  assign c = routes.collections_url
+  assign wa = settings.whatsapp | default: '201007488707' | remove: '+' | remove: ' '
+-%}
+<dialog id="sf-match" class="sf-dialog sf-match-dialog" aria-label="Find My Match">
+<button class="dialog-close icon-button" data-close aria-label="{{ 'sf.text.close' | t }}">{% render 'sf-icon',name:'close' %}</button>
+<div class="sfm" data-match-root>
+<script type="application/json" data-match-config>{"scripts":[{{ 'sofie-match-1.js' | asset_url | json }},{{ 'sofie-match-2.js' | asset_url | json }},{{ 'sofie-match-3.js' | asset_url | json }},{{ 'sofie-match-4.js' | asset_url | json }}],"collections":{{ c | json }},"cart":{{ routes.cart_add_url | append: '.js' | json }},"cartJs":{{ routes.cart_url | append: '.js' | json }},"cartUrl":{{ routes.cart_url | json }},"whatsapp":{{ wa | json }},"currency":{{ cart.currency.iso_code | default: shop.currency | json }},"moneyFormat":{{ shop.money_format | strip_html | json }},"locale":{{ request.locale.iso_code | json }},"now":{{ settings.now_collection.url | default: '/collections/sofie-hours' | json }},"feeds":{"foundation":"foundation","skintint":"tinted-moisturizer","concealer":"concealer","powder":"setting-spray-powder","primer":"face-primer","cleanser":"cleansers","treatment":"treatments","moisturizer":"moisturizers-1","spf":"sunscreen","eye":"eye-care","mask":"masks-1","perfume":"perfume-1","mist":"body-mist-hair-mist-1","fragrance":"all-fragrance-1","gloss":"lip-gloss","lipoil":"lip-oil","lipstick":"lipstick","balm":"lip-balms-treatments-1","liner":"lip-liner","blush":"blush","bronzer":"bronzer","highlighter":"highlighter-1","shampoo":"shampoo-conditioner","hairtreat":"treatments-hair","hair":"all-hair","mascara":"mascara","eyeliner":"eyeliner","palette":"eye-palettes","brow":"eyebrow"}}</script>
+<div class="sfm-app" data-match-app><div class="sfm-boot"><span class="sfm-orb" aria-hidden="true"></span><p>Opening your SOFIE matching studio…</p></div></div>
+</div>
+</dialog>

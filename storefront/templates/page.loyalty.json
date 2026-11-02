@@ -1,0 +1,53 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "sf-page",
+      "settings": {}
+    },
+    "17837870607c6e3be1": {
+      "type": "sf-apps",
+      "blocks": {
+        "sofie_loyalty_loyalty_dashboard_WVaxNG": {
+          "type": "shopify://apps/sofie-loyalty/blocks/loyalty-dashboard/019eb499-3607-73f4-8692-ccd8ed2ca108",
+          "settings": {
+            "proxy_base": "/apps/loyalty",
+            "currency": "EGP",
+            "eyebrow": "Sofie Rewards",
+            "heading": "Welcome back",
+            "rewards_heading": "Redeem your points",
+            "gifts_heading": "Or redeem for a free gift",
+            "reco_heading": "Recommended for your routine",
+            "advisor_heading": "Ask your beauty advisor",
+            "profile_heading": "Your beauty profile",
+            "tips_heading": "Your personalized beauty tips",
+            "edit_heading": "Update your beauty profile (retake anytime)",
+            "show_orders": true,
+            "orders_heading": "Recent orders",
+            "guest_heading": "Join Sofie Rewards",
+            "guest_text": "Sign in or create a free account to earn points on every order, take your beauty profile quiz, and redeem points for EGP off.",
+            "guest_cta": "Sign in to start earning",
+            "guest_link": "/account/login?return_url=/pages/sofie-rewards"
+          }
+        }
+      },
+      "block_order": [
+        "sofie_loyalty_loyalty_dashboard_WVaxNG"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "17837870607c6e3be1"
+  ]
+}
+

@@ -1,0 +1,17 @@
+{% doc %}
+  Configures SOFIE recommendations without exposing customer identity.
+{% enddoc %}
+<script type="application/json" id="sf-for-you-config">
+{"api":"https://sofie-growth-production.up.railway.app","root":{{ routes.root_url | json }},"locale":{{ request.locale.iso_code | json }},"variant":{{ product.selected_or_first_available_variant.id | append: '' | json }},"handle":{{ product.handle | json }},"page":{{ request.page_type | json }},"loggedIn":{% if customer %}true{% else %}false{% endif %},"strings":{
+  "intro":{{ 'sf.for_you.intro' | t | json }},
+  "off":{{ 'sf.for_you.off' | t | json }},
+  "privacy_loading":{{ 'sf.for_you.privacy_loading' | t | json }},
+  "dismiss":{{ 'sf.for_you.dismiss' | t | json }},
+  "interests":{{ 'sf.for_you.interests' | t | json }},
+  "from_visit":{{ 'sf.for_you.from_visit' | t | json }},
+  "discover":{{ 'sf.for_you.discover' | t | json }},
+  "explore":{{ 'sf.for_you.explore' | t | json }}
+}}
+</script>
+{{ 'sofie-for-you.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sofie-for-you.js' | asset_url }}" defer></script>

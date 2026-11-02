@@ -1,0 +1,190 @@
+{
+  "source": "Windsor.ai facebook connector; account 1036288484368758",
+  "window": {
+    "from": "2026-10-01",
+    "to": "2026-11-02"
+  },
+  "scope": "Product intent extracted only from explicit ad copy. Generic, dynamic and ambiguous ads omitted. No individual profiles, raw copy, spend or discounts imported.",
+  "routes": [
+    {
+      "id": "meta-ad-120253519911590579",
+      "source": "meta",
+      "terms": [
+        "rhode",
+        "lip",
+        "tint"
+      ],
+      "active": true,
+      "adId": "120253519911590579",
+      "campaignId": "120253519911570579"
+    },
+    {
+      "id": "meta-ad-120253520137080579",
+      "source": "meta",
+      "terms": [
+        "huda",
+        "beauty",
+        "perfume"
+      ],
+      "active": true,
+      "adId": "120253520137080579",
+      "campaignId": "120253519911570579"
+    },
+    {
+      "id": "meta-ad-120253520639800579",
+      "source": "meta",
+      "terms": [
+        "rhode",
+        "lip",
+        "peptide"
+      ],
+      "active": true,
+      "adId": "120253520639800579",
+      "campaignId": "120253519911570579"
+    },
+    {
+      "id": "meta-ad-120253694540740579",
+      "source": "meta",
+      "terms": [
+        "rhode",
+        "lip",
+        "peptide"
+      ],
+      "active": true,
+      "adId": "120253694540740579",
+      "campaignId": "120253694540730579"
+    },
+    {
+      "id": "meta-ad-120253694586410579",
+      "source": "meta",
+      "terms": [
+        "rhode",
+        "lip",
+        "peptide"
+      ],
+      "active": true,
+      "adId": "120253694586410579",
+      "campaignId": "120253694540730579"
+    },
+    {
+      "id": "meta-ad-120253695967570579",
+      "source": "meta",
+      "terms": [
+        "rhode",
+        "lip",
+        "tint"
+      ],
+      "active": true,
+      "adId": "120253695967570579",
+      "campaignId": "120253694540730579"
+    },
+    {
+      "id": "meta-ad-120253696035970579",
+      "source": "meta",
+      "terms": [
+        "huda",
+        "beauty",
+        "perfume"
+      ],
+      "active": true,
+      "adId": "120253696035970579",
+      "campaignId": "120253694540730579"
+    },
+    {
+      "id": "meta-ad-120253757592970579",
+      "source": "meta",
+      "terms": [
+        "rhode",
+        "lip",
+        "peptide"
+      ],
+      "active": true,
+      "adId": "120253757592970579",
+      "campaignId": "120253757593030579"
+    },
+    {
+      "id": "meta-ad-120253757593020579",
+      "source": "meta",
+      "terms": [
+        "rhode",
+        "lip",
+        "peptide"
+      ],
+      "active": true,
+      "adId": "120253757593020579",
+      "campaignId": "120253757593030579"
+    },
+    {
+      "id": "meta-ad-120253757593040579",
+      "source": "meta",
+      "terms": [
+        "huda",
+        "beauty",
+        "perfume"
+      ],
+      "active": true,
+      "adId": "120253757593040579",
+      "campaignId": "120253757593030579"
+    },
+    {
+      "id": "meta-ad-120253757593050579",
+      "source": "meta",
+      "terms": [
+        "rhode",
+        "lip",
+        "tint"
+      ],
+      "active": true,
+      "adId": "120253757593050579",
+      "campaignId": "120253757593030579"
+    },
+    {
+      "id": "meta-ad-120253937800020579",
+      "source": "meta",
+      "terms": [
+        "rhode",
+        "lip",
+        "peptide"
+      ],
+      "active": true,
+      "adId": "120253937800020579",
+      "campaignId": "120253937800010579"
+    },
+    {
+      "id": "meta-ad-120253937800030579",
+      "source": "meta",
+      "terms": [
+        "rhode",
+        "lip",
+        "peptide"
+      ],
+      "active": true,
+      "adId": "120253937800030579",
+      "campaignId": "120253937800010579"
+    },
+    {
+      "id": "meta-ad-120253937800070579",
+      "source": "meta",
+      "terms": [
+        "rhode",
+        "lip",
+        "tint"
+      ],
+      "active": true,
+      "adId": "120253937800070579",
+      "campaignId": "120253937800010579"
+    },
+    {
+      "id": "meta-ad-120253937800080579",
+      "source": "meta",
+      "terms": [
+        "huda",
+        "beauty",
+        "perfume"
+      ],
+      "active": true,
+      "adId": "120253937800080579",
+      "campaignId": "120253937800010579"
+    }
+  ]
+}

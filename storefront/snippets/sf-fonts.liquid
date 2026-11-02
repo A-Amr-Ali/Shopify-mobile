@@ -1,0 +1,13 @@
+{% doc %}
+Preserved SOFIE fonts served from Shopify CDN
+{% enddoc %}
+{{ 'sf-poppins-400-normal.woff' | asset_url | preload_tag: as: 'font', type: 'font/woff', crossorigin: 'anonymous' }}
+<style>
+@font-face{font-family:'Libre Baskerville';font-style:italic;font-weight:400;font-display:swap;src:url('{{ 'sf-libre-baskerville-400-italic.woff' | asset_url }}') format('woff')}
+@font-face{font-family:'Libre Baskerville';font-style:normal;font-weight:400;font-display:swap;src:url('{{ 'sf-libre-baskerville-400-normal.woff' | asset_url }}') format('woff')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:300;font-display:swap;src:url('{{ 'sf-poppins-300-normal.woff' | asset_url }}') format('woff')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url('{{ 'sf-poppins-400-normal.woff' | asset_url }}') format('woff')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:500;font-display:swap;src:url('{{ 'sf-poppins-500-normal.woff' | asset_url }}') format('woff')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url('{{ 'sf-poppins-600-normal.woff' | asset_url }}') format('woff')}
+</style>
+

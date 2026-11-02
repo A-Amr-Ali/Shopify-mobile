@@ -1,0 +1,73 @@
+{%- layout none -%}
+{%- comment -%}SOFIE NOW state of the bag as JSON, read by sofie-now-auto.js (/cart?view=now). It says which lines are ready for SOFIE NOW, which delivery line is in the bag and the fees, so the right SOFIE NOW delivery is added automatically.{%- endcomment -%}
+{%- liquid
+  assign fee_handle = 'sofie-now-express-delivery'
+  assign fee_product = all_products[fee_handle]
+  assign fee30 = ''
+  assign fee60 = ''
+  assign fee120 = ''
+  assign fee30m = ''
+  assign fee60m = ''
+  assign fee120m = ''
+  assign feepick = ''
+  for fv in fee_product.variants
+    case fv.sku
+      when 'SOFIE-NOW-30'
+        assign fee30 = fv.id
+      when 'SOFIE-NOW-60'
+        assign fee60 = fv.id
+      when 'SOFIE-NOW-120'
+        assign fee120 = fv.id
+      when 'SOFIE-NOW-30M'
+        assign fee30m = fv.id
+      when 'SOFIE-NOW-60M'
+        assign fee60m = fv.id
+      when 'SOFIE-NOW-120M'
+        assign fee120m = fv.id
+      when 'SOFIE-PICKUP'
+        assign feepick = fv.id
+    endcase
+  endfor
+  assign ready = 0
+  assign other = 0
+  assign names = ''
+  assign lines = ''
+  for item in cart.items
+    if item.product.handle == fee_handle
+      if lines != ''
+        assign lines = lines | append: ','
+      endif
+      assign lines = lines | append: '{"id":' | append: item.variant.id | append: ',"qty":' | append: item.quantity | append: '}'
+      continue
+    endif
+    capture item_ready
+      render 'sf-now-ready', product: item.product
+    endcapture
+    assign item_probe = ',' | append: item.variant.id | append: ','
+    if item_ready contains item_probe
+      assign ready = ready | plus: 1
+      assign nm = item.product.title
+      unless item.product.has_only_default_variant
+        assign nm = nm | append: ' — ' | append: item.variant.title
+      endunless
+      assign names = names | append: nm | append: ' ×' | append: item.quantity | append: '; '
+    else
+      assign other = other | plus: 1
+    endif
+  endfor
+  assign pickup_on = settings.pickup_enabled
+  if pickup_on == nil
+    assign pickup_on = true
+  endif
+  if feepick == blank
+    assign pickup_on = false
+  endif
+  assign pickup_name = settings.pickup_name | default: 'The Place Mall, Gate 8, Mivida, New Cairo'
+  assign pickup_min = settings.pickup_minutes | default: 10
+  assign f30 = settings.now_fee_30 | default: 200
+  assign f60 = settings.now_fee_60 | default: 225
+  assign f120 = settings.now_fee_120 | default: 300
+  assign std_fee = settings.now_standard_fee | default: 150
+-%}
+{"ready":{{ ready }},"other":{{ other }},"names":{{ names | json }},"lines":[{{ lines }}],"fees":{"30":{{ fee30 | json }},"60":{{ fee60 | json }},"120":{{ fee120 | json }},"30m":{{ fee30m | json }},"60m":{{ fee60m | json }},"120m":{{ fee120m | json }},"pickup":{% if pickup_on %}{{ feepick | json }}{% else %}""{% endif %}},"price":{"30":{{ f30 | json }},"60":{{ f60 | json }},"120":{{ f120 | json }},"std":{{ std_fee | json }}},"pickupName":{{ pickup_name | json }},"pickupMin":{{ pickup_min | json }},"attrs":{"requested":{{ cart.attributes['SOFIE NOW requested'] | default: '' | json }},"fee":{{ cart.attributes['SOFIE NOW fee'] | default: '' | json }},"items":{{ cart.attributes['SOFIE NOW items'] | default: '' | json }},"area":{{ cart.attributes['SOFIE NOW area'] | default: '' | json }}}}
+

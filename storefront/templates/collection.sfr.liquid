@@ -1,0 +1,19 @@
+{%- layout none -%}
+{%- comment -%}Routine feed: /collections/<handle>?view=sfr&sort_by=best-selling returns up to 12 in-stock products as ready-made SOFIE cards, with the routine categories each product belongs to. Used by "Complete your routine" and "You may also love" on product pages.{%- endcomment -%}
+{%- assign keys = '|foundation|tinted-moisturizer|concealer|setting-spray-powder|face-primer|cleansers|treatments|moisturizers-1|sunscreen|eye-care|masks-1|perfume-1|body-mist-hair-mist-1|all-fragrance-1|lip-gloss|lip-oil|lipstick|lip-balms-treatments-1|lip-liner|blush|bronzer|highlighter-1|shampoo-conditioner|treatments-hair|all-hair|mascara|eyeliner|eye-palettes|eyebrow|' -%}
+{%- assign n = 0 -%}
+[{%- for p in collection.products limit: 40 -%}{%- if n >= 12 -%}{%- break -%}{%- endif -%}{%- if p.available -%}
+{%- liquid
+  assign cs = ''
+  for c in p.collections
+    assign probe = '|' | append: c.handle | append: '|'
+    if keys contains probe
+      assign cs = cs | append: c.handle | append: ','
+    endif
+  endfor
+-%}
+{%- capture card -%}{%- render 'sf-card', product: p, unify: true -%}{%- endcapture -%}
+{%- if n > 0 -%},{%- endif -%}{%- assign n = n | plus: 1 -%}
+{"h":{{ p.handle | json }},"v":{{ p.vendor | json }},"c":{{ cs | json }},"html":{{ card | strip | json }}}
+{%- endif -%}{%- endfor -%}]
+

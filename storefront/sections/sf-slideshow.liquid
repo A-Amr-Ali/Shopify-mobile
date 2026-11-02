@@ -1,0 +1,81 @@
+{%- assign count = section.blocks.size -%}
+{%- if count > 0 -%}
+<section class="sf-slides" data-slides data-autoplay="{{ section.settings.autoplay }}" data-interval="{{ section.settings.interval | times: 1000 }}" aria-roledescription="carousel" aria-label="{{ section.settings.label | escape }}">
+<div class="sf-slides-track" data-slides-track>
+{%- for block in section.blocks -%}
+{%- liquid
+  assign b = block.settings
+  assign tag = 'h2'
+  if forloop.first and section.settings.first_is_h1
+    assign tag = 'h1'
+  endif
+  assign load = 'lazy'
+  assign fp = 'auto'
+  if forloop.first
+    assign load = 'eager'
+    assign fp = 'high'
+  endif
+  assign alt = b.alt | default: b.heading | strip_newlines
+-%}
+<article class="sf-slide sf-tone-{{ b.tone }}{% if b.image == blank %} is-collage{% endif %}" id="Slide-{{ section.id }}-{{ forloop.index }}" aria-roledescription="slide" aria-label="{{ forloop.index }} / {{ count }}" data-slide {{ block.shopify_attributes }}>
+<div class="sf-slide-copy">
+{%- if b.eyebrow != blank -%}<p class="eyebrow">{{ b.eyebrow | escape }}</p>{%- endif -%}
+<{{ tag }} class="sf-slide-title">{{ b.heading | escape | newline_to_br }}</{{ tag }}>
+{%- if b.text != blank -%}<p class="sf-slide-text">{{ b.text | escape }}</p>{%- endif -%}
+<div class="sf-slide-actions">
+{%- if b.button_label != blank -%}
+{%- case b.button_action -%}
+{%- when 'match' -%}<button type="button" class="button" data-match-open{% if b.match_mode != blank %}="{{ b.match_mode }}"{% endif %}>{{ b.button_label | escape }} {% render 'sf-icon',name:'arrow' %}</button>
+{%- when 'area' -%}<button type="button" class="button" data-dialog="sf-area">{{ b.button_label | escape }} {% render 'sf-icon',name:'arrow' %}</button>
+{%- else -%}<a class="button" href="{{ b.button_link | default: '#' }}">{{ b.button_label | escape }} {% render 'sf-icon',name:'arrow' %}</a>
+{%- endcase -%}
+{%- endif -%}
+{%- if b.link_label != blank -%}<a class="underlined" href="{{ b.link_url | default: '#' }}">{{ b.link_label | escape }}</a>{%- endif -%}
+</div>
+{%- if b.footnote != blank -%}<p class="sf-slide-foot">{{ b.footnote | escape }}</p>{%- endif -%}
+</div>
+<div class="sf-slide-media">
+{%- if b.image != blank -%}
+<picture>{%- if b.image_mobile != blank -%}<source media="(max-width: 800px)" srcset="{{ b.image_mobile | image_url: width: 600 }} 600w, {{ b.image_mobile | image_url: width: 900 }} 900w, {{ b.image_mobile | image_url: width: 1200 }} 1200w" sizes="100vw">{%- endif -%}{{ b.image | image_url: width: 1800 | image_tag: widths: '600,900,1200,1500,1800', sizes: '(min-width: 800px) 58vw, 100vw', loading: load, fetchpriority: fp, alt: alt, style: b.focal }}</picture>
+{%- elsif b.collection != blank and forloop.first == false -%}
+<div class="sf-collage" data-collage="{{ b.collection.url }}?view=sfb" data-collage-kind="slide"></div>
+{%- elsif b.collection != blank -%}
+<div class="sf-collage">{%- assign n = 0 -%}{%- for p in b.collection.products limit: 12 -%}{%- if n >= 3 -%}{%- break -%}{%- endif -%}{%- if p.available and p.featured_image -%}{%- assign n = n | plus: 1 -%}<a href="{{ p.url }}" class="sf-collage-item sf-collage-{{ n }}" data-unify tabindex="-1">{{ p.featured_image | image_url: width: 700 | image_tag: widths: '300,450,600,700', sizes: '(min-width: 800px) 22vw, 40vw', loading: load, alt: p.title }}<span>{{ p.vendor | escape }}</span></a>{%- endif -%}{%- endfor -%}</div>
+{%- endif -%}
+{%- if b.caption != blank -%}<span class="sf-image-caption">{{ b.caption | escape }}</span>{%- endif -%}
+</div>
+</article>
+{%- endfor -%}
+</div>
+{%- if count > 1 -%}
+<div class="sf-slides-ui sf-wrap"><div class="sf-slides-dots" role="tablist">{%- for block in section.blocks -%}<button type="button" role="tab" class="sf-dot-btn" aria-label="{{ block.settings.eyebrow | default: block.settings.heading | escape }}" aria-controls="Slide-{{ section.id }}-{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-slide-to="{{ forloop.index0 }}"><span></span></button>{%- endfor -%}</div><div class="sf-slides-arrows"><button type="button" class="sf-slide-arrow sf-prev" data-slide-prev aria-label="{{ 'sf.text.previous' | t }}">{% render 'sf-icon',name:'arrow' %}</button><button type="button" class="sf-slide-arrow" data-slide-next aria-label="{{ 'sf.text.next' | t }}">{% render 'sf-icon',name:'arrow' %}</button><button type="button" class="sf-slide-pause" data-slide-pause aria-label="Pause slideshow" aria-pressed="false"><span></span></button></div></div>
+{%- endif -%}
+</section>
+{%- endif -%}
+{% schema %}
+{"name": "Sofie Hero Banners", "settings": [
+ {"type": "text", "id": "label", "label": "Carousel name (accessibility)", "default": "SOFIE highlights"},
+ {"type": "checkbox", "id": "first_is_h1", "label": "Use the first slide title as the page heading", "default": true},
+ {"type": "checkbox", "id": "autoplay", "label": "Auto-rotate", "default": true},
+ {"type": "range", "id": "interval", "label": "Seconds per slide", "min": 4, "max": 12, "step": 1, "default": 7}
+], "blocks": [{"type": "slide", "name": "Slide", "settings": [
+ {"type": "select", "id": "tone", "label": "Colour story", "default": "cream", "options": [{"value": "cream", "label": "Cream"}, {"value": "now", "label": "SOFIE NOW rose"}, {"value": "ink", "label": "Ink"}, {"value": "blush", "label": "Blush"}, {"value": "linen", "label": "Linen (home)"}, {"value": "sage", "label": "Sage (home)"}]},
+ {"type": "image_picker", "id": "image", "label": "Image"},
+ {"type": "image_picker", "id": "image_mobile", "label": "Mobile image"},
+ {"type": "text", "id": "alt", "label": "Image description"},
+ {"type": "text", "id": "focal", "label": "Image focus (CSS)", "info": "Example: object-position: center 60%"},
+ {"type": "collection", "id": "collection", "label": "Product collage collection", "info": "Used when no image is set: shows three in-stock products from this collection."},
+ {"type": "text", "id": "eyebrow", "label": "Eyebrow"},
+ {"type": "textarea", "id": "heading", "label": "Heading"},
+ {"type": "textarea", "id": "text", "label": "Text"},
+ {"type": "text", "id": "button_label", "label": "Button label"},
+ {"type": "select", "id": "button_action", "label": "Button action", "default": "link", "options": [{"value": "link", "label": "Open link"}, {"value": "match", "label": "Open Find My Match"}, {"value": "area", "label": "Open SOFIE NOW area check"}]},
+ {"type": "url", "id": "button_link", "label": "Button link"},
+ {"type": "select", "id": "match_mode", "label": "Find My Match journey", "default": "", "options": [{"value": "", "label": "Let the customer choose"}, {"value": "base", "label": "Complexion"}, {"value": "skin", "label": "Skincare routine"}, {"value": "scent", "label": "Signature scent"}, {"value": "lips", "label": "Lips & cheeks"}, {"value": "hair", "label": "Hair"}]},
+ {"type": "text", "id": "link_label", "label": "Secondary link label"},
+ {"type": "url", "id": "link_url", "label": "Secondary link"},
+ {"type": "text", "id": "caption", "label": "Image caption"},
+ {"type": "text", "id": "footnote", "label": "Footnote"}
+]}], "presets": [{"name": "Sofie Hero Banners", "blocks": [{"type": "slide"}]}]}
+{% endschema %}
+

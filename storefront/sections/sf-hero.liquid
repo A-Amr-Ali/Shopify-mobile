@@ -1,0 +1,5 @@
+<section class="sf-hero"><div class="sf-hero-copy"><p class="eyebrow">{{ 'sf.text.hero_kicker' | t }}</p><h1>{{ 'sf.text.hero_title' | t | newline_to_br }}</h1><p>{{ 'sf.text.hero_text' | t }}</p><div class="sf-hero-actions"><a class="button" href="{{ collections['makeup'].url }}">{{ 'sf.text.hero_primary' | t }} {% render 'sf-icon',name:'arrow' %}</a><a class="underlined" href="{{ settings.now_collection.url | default: '/collections/sofie-hours' }}">{{ 'sf.text.hero_secondary' | t }}</a></div><div class="sf-hero-foot"><span>01 / THE SOFIE EDIT</span><span>{{ 'sf.text.hero_caption' | t }}</span></div></div><div class="sf-hero-image">{% if section.settings.image %}{{ section.settings.image | image_url:width:1500 | image_tag: widths:'500,750,1000,1500',sizes:'(min-width: 800px) 55vw, 100vw',loading:'eager',fetchpriority:'high',alt:'SOFIE beauty edit with Summer Fridays and Kayali' }}{% endif %}<span class="sf-image-caption">THE EVERYDAY BEAUTY RITUAL</span></div></section>
+{% schema %}
+{"name": "Sofie Hero", "settings": [{"type": "image_picker", "id": "image", "label": "Campaign image"}]}
+{% endschema %}
+

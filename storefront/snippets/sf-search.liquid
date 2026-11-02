@@ -1,0 +1,8 @@
+{% doc %}
+sf-search
+@param {string} context - Unique search context
+@param {string} [placeholder] - Optional placeholder text
+{% enddoc %}
+{%- if placeholder != blank -%}{%- assign sf_ph = placeholder | escape -%}{%- else -%}{%- assign sf_ph = 'sf.text.search_hint' | t -%}{%- endif -%}
+<form class="sf-search" action="{{ routes.search_url }}" method="get" role="search" data-search-form>
+<label class="sr-only" for="search-{{ context }}">{{ 'sf.text.search' | t }}</label><input id="search-{{ context }}" type="search" name="q" placeholder="{{ sf_ph }}" value="{{ search.terms | escape }}" autocomplete="off" aria-controls="suggestions-{{ context }}" aria-expanded="false" data-predictive><input type="hidden" name="type" value="product"><button aria-label="{{ 'sf.text.search' | t }}">{% render 'sf-icon', name:'search' %}</button><div class="sf-suggestions" id="suggestions-{{ context }}" hidden></div></form>

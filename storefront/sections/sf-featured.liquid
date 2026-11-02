@@ -1,0 +1,45 @@
+{%- assign featured = section.settings.collection -%}
+{%- if featured.products_count > 0 -%}
+{%- capture cards -%}
+{%- assign shown = 0 -%}
+{%- for product in featured.products limit: 40 -%}
+{%- if shown >= section.settings.limit -%}{%- break -%}{%- endif -%}
+{%- if shown < section.settings.limit -%}
+{%- if product.available or section.settings.hide_sold_out == false -%}
+{%- assign shown = shown | plus: 1 -%}
+{%- if section.settings.show_rank -%}{%- assign rank = shown -%}{%- else -%}{%- assign rank = nil -%}{%- endif -%}
+{%- if section.settings.layout == 'carousel' -%}<div class="sf-rail-item">{%- render 'sf-card', product: product, rank: rank, unify: true -%}</div>{%- else -%}{%- render 'sf-card', product: product, rank: rank, unify: true -%}{%- endif -%}
+{%- endif -%}
+{%- endif -%}
+{%- endfor -%}
+{%- endcapture -%}
+{%- if shown > 0 -%}
+<section class="sf-section sf-featured-{{ section.settings.layout }}{% if section.settings.tint %} is-tinted{% endif %}">
+<div class="sf-wrap">
+<div class="sf-section-head"><div><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.heading | escape }}</h2>{%- if section.settings.text != blank -%}<p class="sf-section-sub">{{ section.settings.text | escape }}</p>{%- endif -%}</div><a class="underlined" href="{{ featured.url }}">{% if section.settings.link_label != blank %}{{ section.settings.link_label | escape }}{% else %}{{ 'sf.text.view_all' | t }}{% endif %} {% render 'sf-icon',name:'arrow' %}</a></div>
+
+{%- if section.settings.layout == 'carousel' -%}
+<div class="sf-rail" data-rail><div class="sf-rail-track" data-rail-track>{{ cards }}</div><button type="button" class="sf-rail-btn sf-rail-prev" data-rail-prev aria-label="{{ 'sf.text.previous' | t }}">{% render 'sf-icon',name:'arrow' %}</button><button type="button" class="sf-rail-btn sf-rail-next" data-rail-next aria-label="{{ 'sf.text.next' | t }}">{% render 'sf-icon',name:'arrow' %}</button></div>
+{%- else -%}
+<div class="sf-grid">{{ cards }}</div>
+{%- endif -%}
+</div>
+</section>
+{%- endif -%}
+{%- endif -%}
+{% schema %}
+{"name": "Sofie Featured", "settings": [
+ {"type": "collection", "id": "collection", "label": "Collection"},
+ {"type": "text", "id": "eyebrow", "label": "Eyebrow"},
+ {"type": "text", "id": "heading", "label": "Heading"},
+ {"type": "textarea", "id": "text", "label": "Intro"},
+ {"type": "text", "id": "link_label", "label": "Link label"},
+ {"type": "select", "id": "layout", "label": "Layout", "default": "grid", "options": [{"value": "grid", "label": "Grid"}, {"value": "carousel", "label": "Carousel"}]},
+ {"type": "range", "id": "limit", "label": "Products", "min": 4, "max": 24, "step": 1, "default": 4},
+ {"type": "checkbox", "id": "show_rank", "label": "Show best-seller rank numbers", "default": false},
+ {"type": "checkbox", "id": "hide_sold_out", "label": "Hide sold-out products", "default": true},
+ {"type": "checkbox", "id": "tint", "label": "Tinted background", "default": false},
+ {"type": "checkbox", "id": "lazy", "label": "Lazy-load product images", "info": "Products render with the page; images load as needed.", "default": false}
+], "presets": [{"name": "Sofie Featured"}]}
+{% endschema %}
+

@@ -1,0 +1,48 @@
+<section class="sf-section sf-brandbanners{% if section.settings.dark %} is-dark{% endif %}" data-brandbanners>
+<div class="sf-wrap">
+<div class="sf-section-head"><div><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.heading | escape }}</h2>{%- if section.settings.text != blank -%}<p class="sf-section-sub">{{ section.settings.text | escape }}</p>{%- endif -%}</div>{%- if section.settings.link_label != blank -%}<a class="underlined" href="{{ section.settings.link_url | default: pages['brands'].url | default: routes.collections_url }}">{{ section.settings.link_label | escape }} {% render 'sf-icon',name:'arrow' %}</a>{%- endif -%}</div>
+<div class="sf-rail sf-brand-rail" data-rail><div class="sf-rail-track" data-rail-track>
+{%- for block in section.blocks -%}
+{%- liquid
+  assign b = block.settings
+  assign c = b.collection
+  assign name = b.title
+  if name == blank
+    assign name = c.title
+  endif
+-%}
+{%- if c != blank or b.link != blank -%}
+<a class="sf-brandbanner sf-bb-type-{{ b.type_style }}" href="{{ b.link | default: c.url }}" style="--bb:{{ b.bg }};--bt:{{ b.fg }}" {{ block.shopify_attributes }}>
+<div class="sf-brandbanner-media">
+{%- if b.image != blank -%}{{ b.image | image_url: width: 900 | image_tag: widths: '360,540,720,900', sizes: '(min-width: 900px) 24vw, 70vw', loading: 'lazy', alt: name, class: 'sf-bb-photo' }}
+{%- elsif c != blank -%}<div class="sf-bb-collage" data-collage="{{ c.url }}?view=sfb" data-collage-kind="bb"></div>
+{%- endif -%}
+</div>
+<div class="sf-brandbanner-copy"><span class="sf-bb-name">{{ name | escape }}</span>{%- if b.tagline != blank -%}<span class="sf-bb-tag">{{ b.tagline | escape }}</span>{%- endif -%}<span class="sf-bb-cta">{{ section.settings.cta_prefix | escape }} {{ name | escape }} {% render 'sf-icon',name:'arrow' %}</span></div>
+</a>
+{%- endif -%}
+{%- endfor -%}
+</div><button type="button" class="sf-rail-btn sf-rail-prev" data-rail-prev aria-label="{{ 'sf.text.previous' | t }}">{% render 'sf-icon',name:'arrow' %}</button><button type="button" class="sf-rail-btn sf-rail-next" data-rail-next aria-label="{{ 'sf.text.next' | t }}">{% render 'sf-icon',name:'arrow' %}</button></div>
+</div>
+</section>
+{% schema %}
+{"name": "Sofie Brand Banners", "settings": [
+ {"type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "OUR BEAUTY HOUSES"},
+ {"type": "text", "id": "heading", "label": "Heading", "default": "Shop by brand"},
+ {"type": "textarea", "id": "text", "label": "Text"},
+ {"type": "text", "id": "link_label", "label": "Link label", "default": "All brands A–Z"},
+ {"type": "url", "id": "link_url", "label": "Link"},
+ {"type": "text", "id": "cta_prefix", "label": "Card call to action", "default": "Shop"},
+ {"type": "checkbox", "id": "dark", "label": "Dark background", "default": false}
+], "blocks": [{"type": "brand", "name": "Brand", "settings": [
+ {"type": "collection", "id": "collection", "label": "Brand collection"},
+ {"type": "url", "id": "link", "label": "Custom link"},
+ {"type": "text", "id": "title", "label": "Brand name"},
+ {"type": "text", "id": "tagline", "label": "Tagline"},
+ {"type": "image_picker", "id": "image", "label": "Banner image", "info": "Optional. Without an image, the brand's three top-selling in-stock products are shown on one shared background."},
+ {"type": "color", "id": "bg", "label": "Background", "default": "#efe9e1"},
+ {"type": "color", "id": "fg", "label": "Text", "default": "#181818"},
+ {"type": "select", "id": "type_style", "label": "Name style", "default": "sans", "options": [{"value": "sans", "label": "Modern sans"}, {"value": "lower", "label": "Lowercase bold"}, {"value": "serif", "label": "Serif"}, {"value": "caps", "label": "Spaced capitals"}]}
+]}], "presets": [{"name": "Sofie Brand Banners", "blocks": [{"type": "brand"}, {"type": "brand"}, {"type": "brand"}]}]}
+{% endschema %}
+

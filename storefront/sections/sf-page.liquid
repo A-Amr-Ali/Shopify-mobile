@@ -1,0 +1,5 @@
+<section class="sf-section sf-wrap sf-page"><h1>{{ page.title | escape }}</h1><div class="rte">{{ page.content }}</div>{% for block in section.blocks %}<details class="sf-policy-accordion" {{ block.shopify_attributes }}><summary>{{ block.settings.title | escape }}</summary><div class="rte">{{ block.settings.content }}</div></details>{% endfor %}</section>
+{% schema %}
+{"name": "Sofie Page", "settings": [], "blocks": [{"type": "faq", "name": "FAQ", "settings": [{"type": "text", "id": "title", "label": "Question"}, {"type": "richtext", "id": "content", "label": "Answer"}]}]}
+{% endschema %}
+

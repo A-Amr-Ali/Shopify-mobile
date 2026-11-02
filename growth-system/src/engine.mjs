@@ -137,6 +137,16 @@ export function chooseRoutine(cards, p) {
     missingSteps: steps.filter(([s]) => !best.cards.some(c => c.step === s)).map(([s]) => STEP_NAMES[s][p.lang === 'en' ? 1 : 0]) };
 }
 
+export function routineAlternatives(cards, p, items) {
+  return items.flatMap(item => {
+    const remaining = p.budget === null ? Infinity : p.budget - items.filter(x => x !== item).reduce((n,x) => n + x.price, 0);
+    const seen = new Set([item.handle]);
+    return cards.filter(c => c.step === item.step && c.price <= remaining).map(c => scoreCard(c,p)).filter(Boolean)
+      .sort((a,b) => b.score-a.score || a.price-b.price).filter(c => !seen.has(c.handle) && seen.add(c.handle)).slice(0,5)
+      .map(c => ({step:c.step,variantId:c.variantId,handle:c.handle,title:c.title,variantTitle:c.variantTitle,price:c.price,image:c.image,brand:c.brand,url:c.url,reasons:c.reasons}));
+  });
+}
+
 export function ruleAdvice(p, items) {
   if (medicalQuestion(p.note)) return p.lang === 'en'
     ? 'This question needs advice from a qualified clinician. Our beauty matching tool can help with cosmetic preferences after you have that guidance.'

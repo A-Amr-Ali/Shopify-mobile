@@ -1,0 +1,35 @@
+{%- liquid
+  assign s = section.settings
+  if s.heading != blank
+    assign heading = s.heading | escape
+  else
+    assign heading = 'sf.text.home_title' | t
+  endif
+  if s.text != blank
+    assign text = s.text | escape
+  else
+    assign text = 'sf.text.home_text' | t
+  endif
+  if s.cta != blank
+    assign cta = s.cta | escape
+  else
+    assign cta = 'sf.text.home_cta' | t
+  endif
+  assign link = s.link | default: pages['sofies-home'].url | default: '/collections/sofies-home'
+-%}
+<section class="sf-home-edit sf-wrap{% if s.image_2 != blank %} has-pair{% endif %}">
+<div class="sf-home-media">{% if s.image %}{{ s.image | image_url:width:1200 | image_tag:loading:'lazy',widths:'500,750,1000,1200',sizes:'(min-width: 900px) 50vw, 100vw',alt:'SOFIE home and living edit' }}{% endif %}{% if s.image_2 != blank %}<span class="sf-home-inset">{{ s.image_2 | image_url:width:600 | image_tag:loading:'lazy',widths:'300,450,600',sizes:'(min-width: 900px) 18vw, 40vw',alt:'' }}</span>{% endif %}</div>
+<div class="sf-home-copy"><p class="eyebrow">{{ s.eyebrow | default: 'SOFIE HOME' | escape }}</p>{% if template.suffix == 'home-home' %}<h1>{{ heading | newline_to_br }}</h1>{% else %}<h2>{{ heading | newline_to_br }}</h2>{% endif %}<p>{{ text }}</p>{%- if s.points != blank -%}<ul class="sf-home-points">{%- assign pts = s.points | newline_to_br | split: '<br />' -%}{%- for pt in pts -%}{%- assign ptx = pt | strip -%}{%- if ptx != blank -%}<li>{{ ptx | escape }}</li>{%- endif -%}{%- endfor -%}</ul>{%- endif -%}<a class="button button-outline" href="{{ link }}">{{ cta }} {% render 'sf-icon',name:'arrow' %}</a></div>
+</section>
+{% schema %}
+{"name": "Sofie Home Edit", "settings": [
+ {"type": "image_picker", "id": "image", "label": "Home campaign"},
+ {"type": "image_picker", "id": "image_2", "label": "Second image (inset)"},
+ {"type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "SOFIE HOME"},
+ {"type": "textarea", "id": "heading", "label": "Heading", "info": "Leave blank to use the translated default."},
+ {"type": "textarea", "id": "text", "label": "Text"},
+ {"type": "textarea", "id": "points", "label": "Highlights (one per line)"},
+ {"type": "text", "id": "cta", "label": "Button"},
+ {"type": "url", "id": "link", "label": "Button link"}
+], "presets": [{"name": "Sofie Home Edit"}]}
+{% endschema %}

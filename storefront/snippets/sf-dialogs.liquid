@@ -1,0 +1,40 @@
+{% doc %}
+sf-dialogs
+{% enddoc %}
+{%- capture world -%}{%- render 'sf-world' -%}{%- endcapture -%}
+{%- liquid
+  assign world = world | strip
+  assign now_url = settings.now_collection.url | default: '/collections/sofie-hours'
+  if world == 'home' and settings.now_home_collection != blank
+    assign now_url = settings.now_home_collection.url
+  endif
+  assign beauty_url = pages['sofies-makeup'].url | default: routes.root_url
+  assign home_url = pages['sofies-home'].url | default: '/collections/sofies-home'
+  assign home_menu = settings.home_nav_menu | default: settings.home_menu
+-%}
+<dialog id="sf-menu" class="sf-dialog sf-menu-dialog" data-world="{{ world }}"><button class="dialog-close icon-button" data-close aria-label="{{ 'sf.text.close' | t }}">{% render 'sf-icon',name:'close' %}</button><p class="sf-wordmark">SOFIE{% if world == 'home' %}<small>Home</small>{% endif %}</p>
+<div class="sf-menu-worlds"><a href="{{ beauty_url }}"{% if world != 'home' %} aria-current="true"{% endif %}>{{ 'sf.text.beauty' | t }}</a><a href="{{ home_url }}"{% if world == 'home' %} aria-current="true"{% endif %}>{{ 'sf.text.home_living' | t }}</a></div>
+<nav><a class="sf-nav-now" href="{{ now_url }}"><i class="sf-pulse" aria-hidden="true"></i>SOFIE NOW</a>
+{%- if world == 'home' -%}
+{%- for link in home_menu.links -%}{%- liquid
+  assign label = link.title | strip
+  assign up = label | upcase
+  assign key = '|' | append: up | append: '|'
+  if label == up and label.size > 3
+    unless '|SMEG|' contains key
+      assign label = label | capitalize
+    endunless
+  endif
+-%}{%- if link.links.size > 0 -%}<details><summary>{{ label | escape }}</summary><a href="{{ link.url }}">{{ 'sf.text.shop_all' | t }}</a>{%- for child in link.links -%}<a href="{{ child.url }}">{{ child.title | escape }}</a>{%- endfor -%}</details>{%- else -%}<a href="{{ link.url }}">{{ label | escape }}</a>{%- endif -%}{%- endfor -%}
+<a class="sf-menu-switch" href="{{ beauty_url }}">{{ settings.beauty_switch_label | default: 'SOFIE Makeup' | escape }} {% render 'sf-icon',name:'arrow' %}</a>
+{%- else -%}
+{%- if settings.fresh_collection != blank -%}<a href="{{ settings.fresh_collection.url }}">{{ settings.fresh_collection.title | escape }}</a>{%- endif -%}
+<button type="button" class="sf-menu-match" data-match-open>Find My Match <span>New</span></button>
+{%- for link in settings.beauty_menu.links -%}{%- assign t = link.title | downcase | strip -%}{%- if link.url contains 'sofie-hours' or t contains 'match' or t == 'new in' -%}{%- continue -%}{%- endif -%}{%- if link.links.size > 0 -%}<details><summary>{% if t contains 'brand' %}Brands{% else %}{{ link.title | escape }}{% endif %}</summary><a href="{% if t contains 'brand' %}{{ pages['brands'].url | default: link.url }}{% else %}{{ link.url }}{% endif %}">{{ 'sf.text.shop_all' | t }}</a>{%- for child in link.links -%}<a href="{{ child.url }}">{{ child.title | escape }}</a>{%- endfor -%}</details>{%- else -%}<a href="{{ link.url }}">{{ link.title | escape }}</a>{%- endif -%}{%- endfor -%}
+<a class="sf-menu-switch" href="{{ home_url }}">{{ 'sf.text.home_living' | t }} {% render 'sf-icon',name:'arrow' %}</a>
+{%- endif -%}
+<a href="{{ routes.root_url }}pages/beauty-passport">{{ 'sf.journey.passport' | t }}</a><a href="{{ routes.account_url }}">{{ 'sf.text.account' | t }}</a></nav></dialog>
+<dialog id="sf-area" class="sf-dialog sf-modal" aria-label="{{ 'sf.text.area' | t }}"><button class="dialog-close icon-button" data-close aria-label="{{ 'sf.text.close' | t }}">{% render 'sf-icon',name:'close' %}</button>{% render 'sf-area' %}</dialog>
+<dialog id="sf-cart" class="sf-dialog sf-drawer" aria-label="{{ 'sf.text.bag' | t }}"><button class="dialog-close icon-button" data-close aria-label="{{ 'sf.text.close' | t }}">{% render 'sf-icon',name:'close' %}</button><h2>{{ 'sf.text.bag' | t }}</h2><div data-cart-content><a href="{{ routes.cart_url }}">{{ 'sf.text.bag' | t }}</a></div></dialog>
+<dialog id="sf-wishlist" class="sf-dialog sf-drawer" aria-label="{{ 'sf.text.saved' | t }}"><button class="dialog-close icon-button" data-close aria-label="{{ 'sf.text.close' | t }}">{% render 'sf-icon',name:'close' %}</button><h2>{{ 'sf.text.wishlist_heading' | t }}</h2><a class="underlined" href="{{ routes.root_url }}pages/beauty-passport">{{ 'sf.journey.open_passport' | t }} ↗</a><div data-wishlist-content></div></dialog>
+{%- if settings.match_enabled != false -%}{%- render 'sf-match-dialog' -%}{%- endif -%}

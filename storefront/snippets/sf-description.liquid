@@ -1,0 +1,16 @@
+{% doc %}
+Product description with a verified Glazing Milk refresh
+@param {product} product - Current product
+{% enddoc %}
+{% if product.handle == 'glazing-milk' %}
+<p>Rhode Glazing Milk adds a lightweight, milky hydration step between cleansing and the rest of your routine. It leaves skin looking dewy and helps prepare it for skincare and makeup.</p>
+<h2>What to expect</h2>
+<ul><li>Lightweight hydration with a glowy finish.</li><li>Ceramides to support the skin barrier.</li><li>A fragrance-free formula with glycerin, vitamin E and a mineral complex.</li></ul>
+<h2>How to use</h2>
+<ol><li>Shake before use.</li><li>After cleansing, pour into your hands and gently press onto face and neck.</li><li>Follow with the rest of your skincare routine.</li></ol>
+<details lang="ar" dir="rtl"><summary>طريقة الاستخدام</summary><p>رُجّي العبوة، وحطّي شوية في إيدك واربتي على بشرة نضيفة. كمّلي بعده باقي روتين العناية بالبشرة.</p></details>
+<h2>Before &amp; after</h2>
+<img src="https://cdn.shopify.com/s/files/1/0559/8986/2471/files/WhatsApp_Image_2024-06-17_at_14.36.43_431a9399.jpg?width=900" width="900" height="900" loading="lazy" alt="Glazing Milk comparison from the existing product gallery, labelled day 1 and day 14">
+<p class="small">Existing Rhode product-gallery comparison. Individual results vary.</p>
+{% else %}{{ product.description | replace: '<iframe', '<iframe loading="lazy"' }}{% endif %}
+
