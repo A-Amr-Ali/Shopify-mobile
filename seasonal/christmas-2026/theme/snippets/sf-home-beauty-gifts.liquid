@@ -1,0 +1,32 @@
+{% doc %}
+  Renders the Home & Living Christmas gift banner inside the seasonal lifecycle.
+  @param {object} gift_collection - The verified Home + Beauty bundle collection.
+{% enddoc %}
+{%- if gift_collection.products_count > 0 -%}
+  {%- liquid
+    assign home_gift_product = gift_collection.products.first
+    assign home_gift_now = false
+  -%}
+  {%- for home_gift in gift_collection.products -%}
+    {%- capture home_gift_ready -%}{% render 'sf-now-ready', product: home_gift %}{%- endcapture -%}
+    {%- assign home_gift_ready = home_gift_ready | strip -%}
+    {%- if home_gift_ready != blank -%}{%- assign home_gift_now = true -%}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+  <section class="sf-xmas-hero sf-xmas-home sf-xmas-fragment" data-sf-festive data-sf-home-beauty-hero aria-labelledby="sf-xmas-home-title">
+    <div class="sf-xmas-hero__copy">
+      <p class="sf-xmas-eyebrow">{{ 'sf.christmas.home_eyebrow' | t }}</p>
+      <h2 id="sf-xmas-home-title">{{ 'sf.christmas.home_title_first' | t }}<br><em>{{ 'sf.christmas.home_title_last' | t }}</em></h2>
+      <p class="sf-xmas-hero__text">{{ 'sf.christmas.home_description' | t }}</p>
+      <p class="sf-xmas-home__brands">Stanley · Owala · Lenox · SOFIE</p>
+      <div class="sf-xmas-hero__actions"><a class="sf-xmas-button" href="{{ gift_collection.url }}">{{ 'sf.christmas.home_cta' | t }}<span aria-hidden="true">↗</span></a></div>
+      {%- if home_gift_now -%}<p class="sf-xmas-home__now" data-sf-home-beauty-now>{{ 'sf.christmas.home_now' | t }}</p>{%- endif -%}
+      <p class="sf-xmas-hero__signature">{{ 'sf.christmas.home_signature' | t }}</p>
+    </div>
+    {%- if home_gift_product.featured_image -%}
+      <div class="sf-xmas-home__visual">
+        <div class="sf-xmas-home__photo-frame">{% render 'sf-gift-original-photos', gift_product: home_gift_product, size: 'hero' %}</div>
+        <span class="sf-xmas-home__caption">{{ 'sf.christmas.home_image_note' | t }}</span>
+      </div>
+    {%- endif -%}
+  </section>
+{%- endif -%}

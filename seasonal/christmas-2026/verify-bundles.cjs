@@ -18,18 +18,18 @@ engine.registerFilter('t', (key, ...args) => {
   return text;
 });
 engine.registerFilter('date', () => '1793610000');
-engine.registerFilter('image_url', () => '/gift.webp');
-engine.registerFilter('image_tag', () => '<img src="/gift.webp" alt="">');
+engine.registerFilter('image_url', image => image?.src || '/gift.webp');
+engine.registerFilter('image_tag', url => '<img src="' + url + '" alt="">');
 
 function fixture() {
   const components = [11, 22].map(id => {
     const product = { collections: [{ handle: 'sofie-hours' }], variants: [], metafields: { custom: {} } };
-    const v = { id, available: true, inventory_quantity: 3, product };
+    const v = { id, available: true, inventory_quantity: 3, image: { src: '/original-' + id + '.webp' }, product };
     product.variants.push(v);
     return v;
   });
   const parent = { id: 100, available: true, inventory_quantity: 3, price: 439000, compare_at_price: 485000 };
-  const product = { tags: ['sofie-curated-bundle'], has_only_default_variant: true, variants: [parent], collections: [],
+  const product = { tags: ['sofie-curated-bundle'], has_only_default_variant: true, featured_image: { src: '/original-11.webp' }, variants: [parent], collections: [],
     metafields: { custom: { sofie_bundle_components: { value: components }, sofie_bundle_quantities: { value: { '11': 1, '22': 1 } } } } };
   return { product, parent, components };
 }
@@ -85,6 +85,41 @@ async function main() {
     const html = await engine.renderFile('sofie-christmas-2026', { placement: 'body', settings: {}, routes: { collections_url: '/collections' }, request: { page_type: 'index' }, collections: { 'christmas-at-sofie-gift-bundles': gift } });
     assert.equal((html.match(/href="\/collections\/christmas-at-sofie-gift-bundles"/g) || []).length, 3);
     assert.ok(html.includes('data-sf-gift-bundles')); assert.ok(html.includes('Six thoughtful beauty gifts')); assert.ok(html.includes('LE 4390.00'));
+  });
+  const homeFixture = () => {
+    const f = fixture();
+    return { handle: 'home-meets-beauty-christmas-gift-bundles', url: '/collections/home-meets-beauty-christmas-gift-bundles', products_count: 12, image: { alt: 'Home and beauty gifts' }, products: [f.product] };
+  };
+  const renderWorld = (pageType, pageHandle, gifts) => engine.renderFile('sofie-christmas-2026', {
+    placement: 'body', settings: {}, routes: { collections_url: '/collections' },
+    request: { page_type: pageType }, page: { handle: pageHandle },
+    collections: gifts ? { 'home-meets-beauty-christmas-gift-bundles': gifts } : {}
+  });
+  await check('Home & Living gets its own mixed-gift hero and collection links without a price range', async () => {
+    const html = await renderWorld('page', 'sofies-home', homeFixture());
+    assert.ok(html.includes('data-sf-home-beauty-hero')); assert.ok(html.includes('Home meets'));
+    assert.equal((html.match(/href="\/collections\/home-meets-beauty-christmas-gift-bundles"/g) || []).length, 2);
+    assert.ok(!html.includes('data-sf-gift-bundles')); assert.ok(!html.includes('bundle_from')); assert.ok(!html.includes('LE '));
+    assert.ok(html.includes('data-sf-original-product-photos')); assert.ok(html.includes('src="/original-11.webp"')); assert.ok(html.includes('src="/original-22.webp"'));
+    assert.ok(!html.includes('Gift presentation is illustrative'));
+  });
+  await check('The main homepage exposes mixed gifts and makeup keeps its existing hero', async () => {
+    const index = await renderWorld('index', '', homeFixture());
+    const makeup = await renderWorld('page', 'sofies-makeup', homeFixture());
+    assert.ok(index.includes('data-sf-home-beauty-entry')); assert.ok(!index.includes('data-sf-home-beauty-hero'));
+    assert.ok(!makeup.includes('data-sf-home-beauty-entry')); assert.ok(!makeup.includes('data-sf-home-beauty-hero'));
+    assert.ok(makeup.includes('id="sf-xmas-title"'));
+  });
+  await check('The mixed-gift NOW message disappears when no complete set is ready', async () => {
+    const gifts = homeFixture(); assert.ok((await renderWorld('page', 'sofies-home', gifts)).includes('data-sf-home-beauty-now'));
+    gifts.products[0].metafields.custom.sofie_bundle_components.value[0].inventory_quantity = 0;
+    assert.ok(!(await renderWorld('page', 'sofies-home', gifts)).includes('data-sf-home-beauty-now'));
+  });
+  await check('Missing or empty mixed gifts fall back to the existing seasonal hero', async () => {
+    for (const gifts of [undefined, { ...homeFixture(), products_count: 0 }]) {
+      const html = await renderWorld('page', 'sofies-home', gifts);
+      assert.ok(!html.includes('data-sf-home-beauty-hero')); assert.ok(html.includes('id="sf-xmas-title"')); assert.ok(!html.includes('href=""'));
+    }
   });
   console.log(checks + ' bundle behaviour checks passed.');
 }

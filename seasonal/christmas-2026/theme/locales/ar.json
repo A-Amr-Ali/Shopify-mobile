@@ -1012,7 +1012,17 @@
       "bundle_title": "ست هدايا جمال مختارة بعناية",
       "bundle_text": "منتجاتك المفضلة مع توفير مميز.",
       "bundle_cta": "تسوقي مجموعات الهدايا",
-      "bundle_from": "تبدأ من {{ price }}"
+      "bundle_from": "تبدأ من {{ price }}",
+      "home_title": "هدايا تجمع البيت والجمال",
+      "home_entry_text": "Stanley وOwala وLenox ومجات الكريسماس، مع اختيارات بيوتي مميزة.",
+      "home_cta": "اكتشفي هدايا Home + Beauty",
+      "home_eyebrow": "كريسماس في SOFIE · البيت والجمال",
+      "home_title_first": "للبيت،",
+      "home_title_last": "ولجمالك.",
+      "home_description": "كوب مفضل، ولمسة لون، وهدية تبقى جزءًا من كل يوم. اكتشفي بندلز مختارة من منتجات البيت والبيوتي، مع توفير واضح لكل هدية.",
+      "home_now": "اختيارات متاحة مع SOFIE NOW حسب المنطقة والمخزون",
+      "home_signature": "اختيارات مدروسة، وهدايا مميزة.",
+      "home_image_note": "صور المنتجات الأصلية."
     },
     "bundles": {
       "saving": "وفري {{ amount }} ({{ percent }}%)",

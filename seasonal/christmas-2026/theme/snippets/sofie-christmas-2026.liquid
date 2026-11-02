@@ -28,6 +28,11 @@
           assign festive_gifts = collections['value-gift-sets']
         endif
         assign festive_minis = collections['mini-size']
+        assign festive_home_gifts = collections['home-meets-beauty-christmas-gift-bundles']
+        assign festive_home_world = false
+        if request.page_type == 'page' and page.handle == 'sofies-home' and festive_home_gifts.products_count > 0
+          assign festive_home_world = true
+        endif
         assign festive_gift_url = festive_all
         assign festive_mini_url = festive_all
         if festive_gifts.products_count > 0
@@ -35,6 +40,10 @@
         endif
         if festive_minis.products_count > 0
           assign festive_mini_url = festive_minis.url
+        endif
+        assign festive_ribbon_url = festive_gift_url
+        if festive_home_world
+          assign festive_ribbon_url = festive_home_gifts.url
         endif
         assign festive_hero = false
         if request.page_type == 'index'
@@ -46,10 +55,12 @@
         endif
       -%}
       <div class="sf-xmas-ribbon sf-xmas-fragment" data-sf-festive>
-        <a href="{{ festive_gift_url }}">{% render 'sofie-christmas-icon', name: 'gift' %}<span>{{ 'sf.christmas.ribbon' | t }}</span><span class="sf-xmas-ribbon__arrow" aria-hidden="true">↗</span></a>
+        <a href="{{ festive_ribbon_url }}">{% render 'sofie-christmas-icon', name: 'gift' %}<span>{{ 'sf.christmas.ribbon' | t }}</span><span class="sf-xmas-ribbon__arrow" aria-hidden="true">↗</span></a>
         <button type="button" class="sf-xmas-toggle" data-sf-festive-toggle aria-pressed="false"><span aria-hidden="true">❄</span><span data-sf-festive-toggle-label>{{ 'sf.christmas.pause' | t }}</span></button>
       </div>
-      {%- if festive_hero -%}
+      {%- if festive_home_world -%}
+        {% render 'sf-home-beauty-gifts', gift_collection: festive_home_gifts %}
+      {%- elsif festive_hero -%}
         <section class="sf-xmas-hero sf-xmas-fragment" data-sf-festive aria-labelledby="sf-xmas-title">
           <div class="sf-xmas-hero__copy">
             <p class="sf-xmas-eyebrow">{{ 'sf.christmas.eyebrow' | t }}</p>
@@ -62,6 +73,12 @@
               <a class="sf-xmas-bundles" href="{{ festive_gift_url }}" data-sf-gift-bundles>
                 {%- if festive_gift_image -%}{{ festive_gift_image | image_url: width: 180 | image_tag: width: 84, height: 84, loading: 'lazy', alt: '' }}{%- endif -%}
                 <span class="sf-xmas-bundles__copy"><strong>{{ 'sf.christmas.bundle_title' | t }}</strong><span>{{ 'sf.christmas.bundle_text' | t }}</span><span class="sf-xmas-bundles__cta">{{ 'sf.christmas.bundle_cta' | t }} · {{ 'sf.christmas.bundle_from' | t: price: festive_starting_price }}</span></span><span aria-hidden="true">↗</span>
+              </a>
+            {%- endif -%}
+            {%- if request.page_type == 'index' and festive_home_gifts.products_count > 0 -%}
+              <a class="sf-xmas-bundles sf-xmas-bundles--home" href="{{ festive_home_gifts.url }}" data-sf-home-beauty-entry>
+                {% render 'sf-gift-original-photos', gift_product: festive_home_gifts.products.first, size: 'compact' %}
+                <span class="sf-xmas-bundles__copy"><strong>{{ 'sf.christmas.home_title' | t }}</strong><span>{{ 'sf.christmas.home_entry_text' | t }}</span><span class="sf-xmas-bundles__cta">{{ 'sf.christmas.home_cta' | t }}</span></span><span aria-hidden="true">↗</span>
               </a>
             {%- endif -%}
             <p class="sf-xmas-hero__signature">{{ 'sf.christmas.signature' | t }}</p>

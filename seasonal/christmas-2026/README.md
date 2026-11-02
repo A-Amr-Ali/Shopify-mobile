@@ -31,3 +31,11 @@ The 27 checks cover Cairo midnight, Liquid output before and after expiry, alrea
 Shopify theme validation passes the changed Liquid, JavaScript, CSS, header, layout, settings schema and English locale. The Arabic locale retains the same 900 pre-existing theme-check translation diagnostics as the published baseline, with no added diagnostics. Existing translations are semantically unchanged apart from the new `sf.christmas` group.
 
 Browser review verified the real draft homepage and product page, working pause/resume controls, the existing product form, and `pointer-events: none` on the snow. Responsive component previews at 390px and 320px had no horizontal overflow. A checksum comparison verifies the uploaded overlay against local source and confirms all other original theme files are unchanged.
+
+## Home + Beauty gifts
+
+The Christmas Home & Living hero and the main homepage entry link to the separate Home Meets Beauty collection. Mixed gifts have no advertised price ceiling. The hero uses exact component variant references and original Shopify product photographs, displayed with `object-fit: contain`; products must never be redrawn, recoloured or repackaged by image generation. This also applies to every existing beauty bundle.
+
+SOFIE NOW eligibility is derived from all selected component options and available stock. The underlying SOFIE NOW collection is not modified. New seasonal copy is included in English and Arabic, and the existing Christmas cutoff and motion controls apply.
+
+Run `npm test` for the seasonal lifecycle, bundle stock handling, separate-purchase savings and Home + Beauty banner checks.
