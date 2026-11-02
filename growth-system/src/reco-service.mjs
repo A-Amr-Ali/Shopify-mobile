@@ -215,7 +215,10 @@ export function startRecoJobs() {
   const run=()=>retrain().then(x=>console.log('recommendation training',JSON.stringify(x))).catch(e=>console.warn('recommendation training:',e.message));
   setTimeout(run,30000).unref();
   setInterval(run,6*3600000).unref();
-  const catalog=()=>syncRecoCatalog().then(x=>console.log('recommendation catalog',JSON.stringify(x))).catch(e=>console.warn('recommendation catalog:',e.message));
+  const catalog=()=>syncRecoCatalog().then(x=>console.log('recommendation catalog',JSON.stringify(x))).catch(e=>{
+    console.warn('recommendation catalog:',e.message);
+    setTimeout(catalog,300000).unref();
+  });
   setTimeout(catalog,5000).unref();
   setInterval(catalog,3600000).unref();
 }

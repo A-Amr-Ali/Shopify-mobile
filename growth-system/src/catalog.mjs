@@ -27,7 +27,7 @@ async function getToken() {
 export async function adminQuery(query, variables = {}, options = {}) {
   const token = await getToken();
   const r = await fetch(`https://${process.env.SHOP_DOMAIN}/admin/api/2026-10/graphql.json`, {
-    method: 'POST', signal: AbortSignal.timeout(12000), headers: { 'content-type': 'application/json', 'x-shopify-access-token': token },
+    method: 'POST', signal: AbortSignal.timeout(options.timeoutMs || 12000), headers: { 'content-type': 'application/json', 'x-shopify-access-token': token },
     body: JSON.stringify({ query, variables })
   });
   if (!r.ok) throw new Error('admin_http_' + r.status);

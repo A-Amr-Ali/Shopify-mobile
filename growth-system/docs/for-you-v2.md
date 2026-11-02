@@ -90,7 +90,24 @@ outcomes by assigned actor. Position and selection bias remain limits of the
 initial click ranker; a held-out improvement is not proof of causal sales lift.
 Do not treat campaign-level reporting as an individual's cross-platform history.
 
-Windsor.ai installation was confirmed enabled through plugin discovery after
-Ahmed retried the connection. Its data tools were still not exposed to this
-execution session. External account/campaign reads and import remain pending
-verification; installation is not represented as a successful data sync.
+Windsor.ai reads were verified on 2 November 2026. The Meta connector returned
+27 ads for account `1036288484368758` over 1 October–2 November. Fifteen ads had
+explicit product copy and were mapped to three intents: Rhode lip tint, Rhode
+lip peptide, and Huda Beauty perfume. Reviewed routing metadata is in
+`data/windsor-ad-routes-20261102.json`; generic/dynamic/ambiguous ads were omitted.
+Only routing terms and ad IDs enter the server-only registry. Ad discounts,
+delivery promises, raw copy, spend and individual social profiles are not imported.
+
+For those ads use `sf_ad={{ad.id}}` in URL parameters; alternatively a numeric
+`utm_content={{ad.id}}` is recognized when `utm_source=meta` or `instagram`.
+The frontend resolves it as `meta-ad-<ID>`. Explicit `sf_campaign` takes precedence.
+Example verified ad: `https://sofiestore.net/?utm_source=meta&sf_ad=120253519911590579`.
+Returned `url_tags` and `link_url` were null, so automatic attribution of current
+ad traffic is not established. No live ad was edited, launched or funded.
+Updating Meta ad parameters requires confirmation of the specific change.
+This is a reviewed import snapshot, not a recurring Windsor sync. Google Ads
+and GA4 were absent from connected sources. There is no private search access.
+
+Catalogue sync uses 50-variant pages, bounded retry of transient timeouts and
+throttling, a 30-second Admin read deadline, and atomic snapshot publication.
+Failed catalogue jobs retry after five minutes, retaining the last good snapshot.

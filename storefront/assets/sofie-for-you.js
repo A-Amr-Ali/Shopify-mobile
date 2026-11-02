@@ -28,7 +28,8 @@
     if(source==='direct')try{const h=new URL(document.referrer).hostname;source=/google\./.test(h)?'google':/instagram\.com$/.test(h)?'instagram':/facebook\.com$/.test(h)?'meta':/youtu/.test(h)?'youtube':/tiktok/.test(h)?'tiktok':'direct';}catch{}
     let query=[p.get('utm_term'),p.get('sf_query'),cfg.page==='search'?p.get('q'):''].filter(Boolean).join(' ').slice(0,160);
     if(/@|https?:|\d{7,}/.test(query))query='';
-    const code=p.get('sf_campaign')||p.get('utm_campaign')||'';
+    const ad=p.get('sf_ad')||p.get('meta_ad_id')||(['meta','instagram'].includes(source)?p.get('utm_content'):'')||'';
+    const code=p.get('sf_campaign')||(/^\d{5,30}$/.test(ad)?'meta-ad-'+ad:p.get('utm_campaign'))||'';
     const campaign=/^[a-z0-9_-]{1,100}$/.test(code)?code:null;
     const intent=p.get('sf_intent')||null;
     let prior=null;try{prior=JSON.parse(sessionStorage.getItem('sofie-for-you-arrival'));}catch{}

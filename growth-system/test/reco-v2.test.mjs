@@ -79,6 +79,14 @@ test('catalog pagination publishes only after completion and excludes unavailabl
  await assert.rejects(()=>syncRecoCatalog(async()=>{wrote=true;},async()=>({productVariants:{nodes:[],pageInfo:{hasNextPage:true,endCursor:null}}})));
  assert.equal(wrote,false);
 });
+test('catalog retries transient read and snapshot timeouts without publishing an incomplete snapshot',async()=>{
+ let reads=0,writes=0;const pauses=[];
+ const result=await syncRecoCatalog(async()=>{if(++writes===1)throw Error('The operation was aborted due to timeout');},async()=>{
+  if(++reads===1)throw Error('The operation was aborted due to timeout');
+  return {productVariants:{nodes:[{id:'gid://shopify/ProductVariant/1',price:'2000',inventoryQuantity:1,product:{handle:'ok',title:'Valid',status:'ACTIVE',onlineStoreUrl:'https://sofiestore.net/products/ok'}}],pageInfo:{hasNextPage:false}}};
+ },async ms=>pauses.push(ms));
+ assert.equal(result.variants,1);assert.equal(reads,2);assert.equal(writes,2);assert.deepEqual(pauses,[2000,2000]);
+});
 test('a forged customer ID cannot select another account; a signed account ticket scopes history',async()=>{
  const accesses=[],profileCalls=[];
  const account={customerId:'gid://shopify/Customer/123',subject:'a'.repeat(64)};
