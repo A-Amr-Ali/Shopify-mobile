@@ -1,0 +1,11 @@
+{
+  "name": "sofie-christmas-2026",
+  "private": true,
+  "scripts": {
+    "test": "node verify-season.cjs"
+  },
+  "devDependencies": {
+    "linkedom": "0.18.15",
+    "liquidjs": "10.30.1"
+  }
+}
