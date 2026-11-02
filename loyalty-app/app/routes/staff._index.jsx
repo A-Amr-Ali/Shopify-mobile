@@ -1,139 +1,27 @@
-// GET /staff — self-contained in-store staff console (no Shopify embed needed).
-// Staff enter the STAFF_KEY password once, look a customer up by email, then
-// award points for an in-store purchase or redeem points. Served as plain HTML.
-export const loader = async () => {
-  return new Response(PAGE, { headers: { "content-type": "text/html; charset=utf-8" } });
-};
-
-const PAGE = `<!doctype html>
-<html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sofie Rewards — Staff</title>
-<style>
-  :root{--ink:#2a201d;--line:#e3ded9;--soft:#f6f3ef}
-  *{box-sizing:border-box}
-  body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);margin:0;background:var(--soft)}
-  .wrap{max-width:520px;margin:0 auto;padding:1.2rem}
-  h1{font-size:1.3rem;margin:.2rem 0 1rem}
-  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;margin-bottom:1rem}
-  label{display:block;font-size:.85rem;margin:.6rem 0 .25rem;color:#6b625c}
-  input{width:100%;padding:.7rem .8rem;border:1px solid var(--line);border-radius:10px;font:inherit}
-  button{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:.65rem 1.1rem;font:inherit;cursor:pointer}
-  button.ghost{background:#fff;color:var(--ink)}
-  button:disabled{opacity:.5;cursor:progress}
-  .row{display:flex;gap:.5rem;align-items:end}
-  .row input{flex:1}
-  .pts{font-size:2.4rem;font-weight:700;line-height:1}
-  .tier{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.15rem .7rem;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em}
-  .rewards{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
-  .rewards button{flex-direction:column}
-  .msg{margin-top:.8rem;font-size:.95rem;min-height:1.2em}
-  .msg.ok{color:#1f7a4d}.msg.err{color:#b23b3b}
-  .hide{display:none}
-  small{color:#8a807a}
-</style></head><body><div class="wrap">
-<h1>Sofie Rewards — Staff console</h1>
-
-<div class="card" id="loginCard">
-  <label>Staff password</label>
-  <div class="row"><input id="key" type="password" placeholder="Enter staff password"><button id="saveKey">Enter</button></div>
-  <small>Ask the manager for the password. It's saved on this device only.</small>
-</div>
-
-<div class="card hide" id="findCard">
-  <label>Customer email</label>
-  <div class="row"><input id="email" type="email" placeholder="customer@email.com" autocomplete="off"><button id="find">Find</button></div>
-  <p class="msg" id="findMsg"></p>
-</div>
-
-<div class="card hide" id="custCard">
-  <div style="display:flex;justify-content:space-between;align-items:center">
-    <div><strong id="cName"></strong><br><small id="cEmail"></small></div>
-    <span class="tier" id="cTier"></span>
-  </div>
-  <p style="margin:.8rem 0 .2rem"><span class="pts" id="cPts">0</span> <small>points</small></p>
-  <small id="cLife"></small>
-
-  <hr style="border:none;border-top:1px solid var(--line);margin:1rem 0">
-  <label>Award points for an in-store purchase (EGP spent)</label>
-  <div class="row"><input id="amt" type="number" min="1" placeholder="e.g. 7500"><button id="award" class="ghost">Award</button></div>
-
-  <hr style="border:none;border-top:1px solid var(--line);margin:1rem 0">
-  <label>Redeem points</label>
-  <div class="rewards" id="rewards"></div>
-
-  <p class="msg" id="actMsg"></p>
-</div>
-
-<script>
-(function(){
-  var $=function(id){return document.getElementById(id)};
-  var key=sessionStorage.getItem("sofieStaffKey")||"";
-  var cust=null;
-  function show(id,on){$(id).classList[on?"remove":"add"]("hide")}
-  function fmt(n){return Number(n||0).toLocaleString("en-EG")}
-  function post(url,data){data.key=key;return fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})}
-
-  if(key){show("loginCard",false);show("findCard",true)}
-  $("saveKey").onclick=function(){key=$("key").value.trim();if(!key)return;sessionStorage.setItem("sofieStaffKey",key);show("loginCard",false);show("findCard",true)};
-  $("key").addEventListener("keydown",function(e){if(e.key==="Enter")$("saveKey").click()});
-
-  function findCustomer(){
-    var email=$("email").value.trim();if(!email)return;
-    $("find").disabled=true;$("findMsg").textContent="Searching…";$("findMsg").className="msg";
-    post("/staff/lookup",{email:email}).then(function(res){
-      $("find").disabled=false;
-      if(res.j.error==="staff_key_not_set"){$("findMsg").textContent="Server password not set yet — add STAFF_KEY in Railway and let it redeploy.";$("findMsg").className="msg err";return}
-      if(res.j.error==="unauthorized"){$("findMsg").textContent="Wrong password.";$("findMsg").className="msg err";sessionStorage.removeItem("sofieStaffKey");show("loginCard",true);show("findCard",false);return}
-      if(!res.j.found){$("findMsg").textContent="No customer with that email.";$("findMsg").className="msg err";show("custCard",false);return}
-      cust=res.j;$("findMsg").textContent="";renderCust()
-    }).catch(function(){$("find").disabled=false;$("findMsg").textContent="Network error.";$("findMsg").className="msg err"})
-  }
-  $("find").onclick=findCustomer;
-  $("email").addEventListener("keydown",function(e){if(e.key==="Enter")findCustomer()});
-
-  function renderCust(){
-    show("custCard",true);
-    $("cName").textContent=cust.name;$("cEmail").textContent=cust.email;
-    $("cTier").textContent=cust.tier;$("cPts").textContent=fmt(cust.points);
-    $("cLife").textContent="Lifetime spend: "+fmt(cust.lifetime)+" EGP";
-    var box=$("rewards");box.innerHTML="";
-    (cust.rewards||[]).forEach(function(r){
-      var b=document.createElement("button");b.className="ghost";b.disabled=cust.points<r.pointsCost;
-      b.innerHTML="<span>"+fmt(r.egpValue)+" EGP off</span><small>"+fmt(r.pointsCost)+" pts</small>";
-      b.onclick=function(){redeem({pointsCost:r.pointsCost},b)};box.appendChild(b)
-    });
-    (cust.gifts||[]).forEach(function(g){
-      var b=document.createElement("button");b.className="ghost";b.disabled=cust.points<g.pointsCost;
-      b.innerHTML="<span>🎁 "+g.title+"</span><small>"+fmt(g.pointsCost)+" pts</small>";
-      b.onclick=function(){redeem({giftId:g.id},b)};box.appendChild(b)
-    });
-    $("actMsg").textContent="";$("actMsg").className="msg"
-  }
-
-  $("award").onclick=function(){
-    var amt=Number($("amt").value);if(!(amt>0)){$("actMsg").textContent="Enter the amount spent.";$("actMsg").className="msg err";return}
-    $("award").disabled=true;$("actMsg").textContent="Awarding…";$("actMsg").className="msg";
-    post("/staff/award",{customerId:cust.customerId,amountEgp:amt}).then(function(res){
-      $("award").disabled=false;
-      if(!res.ok||!res.j.ok){$("actMsg").textContent="Couldn't award points.";$("actMsg").className="msg err";return}
-      cust.points=res.j.balance;cust.tier=res.j.tier;$("amt").value="";renderCust();
-      $("actMsg").textContent="+"+fmt(res.j.awarded)+" points awarded. New balance: "+fmt(res.j.balance)+".";$("actMsg").className="msg ok"
-    }).catch(function(){$("award").disabled=false;$("actMsg").textContent="Network error.";$("actMsg").className="msg err"})
-  };
-
-  function redeem(payload,btn){
-    btn.disabled=true;$("actMsg").textContent="Redeeming…";$("actMsg").className="msg";
-    payload.customerId=cust.customerId;
-    post("/staff/redeem",payload).then(function(res){
-      if(!res.ok||!res.j.ok){
-        var m={insufficient_points:"Not enough points.",invalid_reward:"Reward unavailable."};
-        $("actMsg").textContent=m[res.j.error]||"Couldn't redeem.";$("actMsg").className="msg err";btn.disabled=false;return
-      }
-      cust.points=res.j.balance;renderCust();
-      $("actMsg").textContent="✅ Give the customer: "+res.j.apply+"  ·  Ref "+res.j.reference+"  ·  New balance "+fmt(res.j.balance)+" pts.";$("actMsg").className="msg ok"
-    }).catch(function(){btn.disabled=false;$("actMsg").textContent="Network error.";$("actMsg").className="msg err"})
-  }
+export const loader=async()=>new Response(PAGE,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});
+const PAGE=`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SOFIE Rewards · Branch desk</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f6f1e9;color:#352a24;font:15px/1.6 system-ui,sans-serif}.wrap{max-width:720px;margin:auto;padding:30px 18px}h1{font:34px Georgia,serif}h2{font-size:18px}.card{background:#fffdf9;border:1px solid #e0d5c7;padding:24px;margin:18px 0;border-radius:5px}label{display:block;margin:12px 0 5px;font-size:13px}input{padding:12px;width:100%;border:1px solid #cbbda9;font:inherit}button{border:1px solid #4b352b;background:#4b352b;color:white;padding:12px 18px;font:inherit;cursor:pointer;margin-top:12px}button:disabled{opacity:.45;cursor:default}.rewards{display:flex;flex-wrap:wrap;gap:8px}.ghost{background:transparent;color:#4b352b}.balance{font:44px Georgia,serif}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.status{white-space:pre-line;min-height:30px}.error{color:#a32838}.ok{color:#276441}[hidden]{display:none!important}small{color:#76685e}a{color:inherit}button:focus-visible,input:focus-visible{outline:2px solid #936b45;outline-offset:3px}@media(max-width:500px){.row{grid-template-columns:1fr}}
+</style></head><body><main class="wrap"><p>SOFIE REWARDS · BRANCH DESK</p><h1>One member. One balance.</h1><p>Use this desk for a non-Shopify till. For Shopify POS orders, points are awarded automatically when paid: do not award them here again.</p><section class="card" id="login"><label for="key">Staff password</label><input id="key" type="password" autocomplete="current-password"><button id="enter">Sign in</button></section><section class="card" id="findCard" hidden><div class="row"><div><label for="identity">Member number or registered email</label><input id="identity" autocomplete="off"></div><div><label for="branch">Branch name</label><input id="branch" value="Mivida" maxlength="60"></div></div><button id="find">Find member</button><button class="ghost" id="logout">Sign out</button><p class="status" id="findMsg" role="status"></p></section><section class="card" id="customer" hidden><h2 id="name"></h2><p id="email"></p><p id="tier"></p><p class="balance"><span id="points"></span> <small>points</small></p><p id="member"></p><p>Confirm the registered email and ask the customer to show their signed-in SOFIE member card before applying a reward.</p><div class="row"><div><label for="receipt">Till receipt number (required)</label><input id="receipt" maxlength="80" placeholder="e.g. MIV-10025"></div><div><label for="total">Eligible merchandise total (EGP)</label><input id="total" type="number" min="1" step="0.01" placeholder="After all other discounts"></div></div><h2>Redeem points on this receipt</h2><p>Apply the confirmed discount manually at the till. One points reward per receipt. Do not apply a website code manually.</p><div class="rewards" id="rewards"></div><h2>Birthday gift</h2><p id="birthday"></p><button id="birthdayClaim" class="ghost" hidden>Apply birthday credit</button><h2>Award points for this receipt</h2><p>Enter the final merchandise value the customer actually pays, after any rewards. Exclude shipping, tax and gift cards.</p><button id="award" class="ghost">Award paid-purchase points</button><p class="status" id="actionMsg" role="status" aria-live="polite"></p></section><p><a href="https://sofiestore.net/pages/my-rewards" target="_blank" rel="noopener">Customer rewards page ↗</a></p></main><script>
+(()=>{
+ const $=id=>document.getElementById(id);let key=sessionStorage.getItem('sofieStaffKey')||'',customer=null,busy=false;
+ const fmt=n=>Number(n||0).toLocaleString('en-EG');
+ function display(){ $('login').hidden=!!key;$('findCard').hidden=!key; }
+ function msg(id,text,error=false){$(id).textContent=text;$(id).className='status '+(error?'error':'ok');}
+ async function post(path,data){const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...data,key})});const d=await r.json();if(!r.ok||d.error)throw new Error(d.error||'unavailable');return d;}
+ $('enter').onclick=()=>{key=$('key').value.trim();sessionStorage.setItem('sofieStaffKey',key);$('key').value='';display();};
+ $('logout').onclick=()=>{key='';customer=null;sessionStorage.removeItem('sofieStaffKey');$('customer').hidden=true;display();};
+ async function find(){try{msg('findMsg','Searching…');customer=await post('/staff/lookup',{identity:$('identity').value});if(!customer.found){$('customer').hidden=true;msg('findMsg','No matching member.',true);return;}msg('findMsg','');render();}catch(e){msg('findMsg',e.message==='unauthorized'?'Check the staff password.':'Member lookup unavailable. Try again.',true);if(e.message==='unauthorized')$('logout').click();}}
+ $('find').onclick=find;$('identity').addEventListener('keydown',e=>{if(e.key==='Enter')find();});
+ function render(){ $('customer').hidden=false;$('name').textContent=customer.name;$('email').textContent=customer.email;$('member').textContent='Member '+customer.memberId;$('tier').textContent=customer.tier+' · '+customer.multiplier+'× points';$('points').textContent=fmt(customer.points);$('rewards').replaceChildren();(customer.rewards||[]).forEach(r=>{const b=document.createElement('button');b.textContent=fmt(r.egpValue)+' EGP off · '+fmt(r.pointsCost)+' pts';b.disabled=busy||customer.points<r.pointsCost;b.onclick=()=>act('/staff/redeem',{pointsCost:r.pointsCost},'Redeem '+r.pointsCost+' points for '+r.egpValue+' EGP off?');$('rewards').append(b);});const bd=customer.birthday;$('birthday').textContent=!bd?.enrolled?'Birthday not enrolled. Ask the customer to save their month and day and opt in on the SOFIE Rewards page.':bd.eligible?'Birthday gift available: '+bd.value+' EGP.':bd.status?'Birthday gift status: '+bd.status.replaceAll('_',' '):'Saved birthday: '+bd.date+'. Gift is available from the birthday for 45 days.';$('birthdayClaim').hidden=!bd?.eligible;$('birthdayClaim').disabled=busy; }
+ async function act(path,extra,confirmation){
+  if(busy)return;const receipt=$('receipt').value.trim(),branch=$('branch').value.trim(),total=Number($('total').value);
+  if(!receipt||!branch||!Number.isFinite(total)||total<=0){msg('actionMsg','Enter the branch, receipt number and eligible total.',true);return;}
+  if(!confirm(confirmation+' Receipt '+receipt+' at '+branch+'.'))return;
+  busy=true;document.querySelectorAll('#customer button').forEach(b=>b.disabled=true);msg('actionMsg','Processing…');
+  try{const result=await post(path,{customerId:customer.customerId,branch,receipt,purchaseTotalEgp:total,amountEgp:total,...extra});await find();msg('actionMsg',(result.replayed?'Already recorded — do not apply twice. ':'')+(path==='/staff/award'?'Recorded '+result.awarded+' points.':'Apply '+result.egp_value+' EGP off this receipt. Reference '+result.reference)+ (result.balance!=null?' Balance: '+result.balance+' points.':''));}
+  catch(e){const errors={insufficient_points:'Insufficient points.',receipt_already_used:'This receipt already belongs to another reward or purchase.',purchase_too_small:'The purchase total is smaller than this reward. Choose a smaller reward.',birthday_already_claimed:'Birthday gift already allocated online or in store.',birthday_not_available:'Birthday gift not available.',zero_points:'This receipt does not earn a whole point.'};msg('actionMsg',errors[e.message]||'Could not finish. Retry with the SAME receipt number; do not apply a discount until confirmed.',true);}
+  finally{busy=false;render();$('award').disabled=false;}
+ }
+ $('award').onclick=()=>act('/staff/award',{},'Award points for the final PAID amount?');$('birthdayClaim').onclick=()=>act('/staff/birthday',{},'Apply this year’s birthday credit?');display();
 })();
-</script>
-</div></body></html>`;
+</script></body></html>`;

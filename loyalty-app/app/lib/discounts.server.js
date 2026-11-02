@@ -24,7 +24,7 @@ export function generateCode() {
  * @param {string} [opts.code]       explicit code (else generated)
  * @returns {{code:string, nodeId:string}}
  */
-export async function mintDiscountCode(admin, { amountEgp, customerId, code }) {
+export async function mintDiscountCode(admin, { amountEgp, customerId, code, endsAt }) {
   const finalCode = code || generateCode();
   const basic = {
     title: `Loyalty redemption ${finalCode}`,
@@ -32,7 +32,8 @@ export async function mintDiscountCode(admin, { amountEgp, customerId, code }) {
     startsAt: new Date().toISOString(),
     usageLimit: 1,
     appliesOncePerCustomer: true,
-    customerSelection: { customers: { add: [customerId] } },
+    context: { customers: { add: [customerId] } },
+    ...(endsAt ? { endsAt } : {}),
     customerGets: {
       value: { discountAmount: { amount: amountEgp, appliesOnEachItem: false } },
       items: { all: true },
@@ -59,7 +60,7 @@ export async function mintOpenCode(admin, { amountEgp, code, prefix, days = 90 }
     startsAt: new Date().toISOString(),
     endsAt,
     usageLimit: 1,
-    customerSelection: { all: true },
+    context: { all: 'ALL' },
     customerGets: {
       value: { discountAmount: { amount: amountEgp, appliesOnEachItem: false } },
       items: { all: true },
@@ -86,7 +87,7 @@ export async function mintProductGiftCode(admin, { productGid, customerId, code 
     startsAt: new Date().toISOString(),
     usageLimit: 1,
     appliesOncePerCustomer: true,
-    customerSelection: { customers: { add: [customerId] } },
+    context: { customers: { add: [customerId] } },
     customerGets: {
       value: { percentage: 1.0 }, // 100% off → free
       items: { products: { productsToAdd: [productGid] } },

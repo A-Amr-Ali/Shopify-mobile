@@ -75,9 +75,9 @@ export const REFERRAL = {
 
 // Birthday gift entitlements per tier (the code value Klaviyo emails out).
 export const BIRTHDAY = {
-  insider: { egp: 0, note: "Deluxe mini with purchase in your birthday month" },
-  vip: { egp: 300, note: "Choice gift + 2x points this month" },
-  icon: { egp: 750, note: "Premium full-size gift + 2x points + 1:1 consultation" },
+  insider: { egp: 50, note: "50 EGP birthday credit, online or in a SOFIE branch" },
+  vip: { egp: 300, note: "300 EGP birthday credit + double your usual points in your birthday month" },
+  icon: { egp: 750, note: "750 EGP birthday credit + double your usual points in your birthday month" },
   codePrefix: "SOFIE-BDAY-",
 };
 

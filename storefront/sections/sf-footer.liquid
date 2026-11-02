@@ -1,0 +1,32 @@
+{%- capture sf_world -%}{%- render 'sf-world' -%}{%- endcapture -%}
+{%- liquid
+  assign sf_world = sf_world | strip
+  assign home_menu = settings.home_nav_menu | default: settings.home_menu
+  assign beauty_url = pages['sofies-makeup'].url | default: routes.root_url
+  assign home_url = pages['sofies-home'].url | default: '/collections/sofies-home'
+  assign ig_beauty = settings.instagram | default: 'https://www.instagram.com/sofiesmakeupstore/'
+  assign ig_beauty_handle = ig_beauty | split: 'instagram.com/' | last | split: '/' | first | split: '?' | first
+  assign ig_home = settings.home_instagram
+  assign ig_home_handle = ''
+  if ig_home != blank
+    assign ig_home_handle = ig_home | split: 'instagram.com/' | last | split: '/' | first | split: '?' | first
+  endif
+  assign tracker_url = pages['sofie-now-tracker'].url | default: '/pages/sofie-now-tracker'
+-%}
+<footer class="sf-footer{% if sf_world == 'home' %} is-home{% endif %}"><div class="sf-wrap sf-footer-top"><div><a class="sf-wordmark" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">{%- if settings.logo -%}<img class="sf-footer-logo" src="{{ settings.logo | image_url: width: 600 }}" srcset="{{ settings.logo | image_url: width: 300 }} 300w, {{ settings.logo | image_url: width: 450 }} 450w, {{ settings.logo | image_url: width: 600 }} 600w" sizes="180px" width="180" height="{{ 180 | divided_by: settings.logo.aspect_ratio | round }}" alt="{{ shop.name | escape }}" loading="lazy">{%- else -%}SOFIE{%- endif -%}</a><p>{% if sf_world == 'home' %}{{ settings.home_tagline | default: 'Beautiful living, down to the details.' | escape }}{% else %}{{ 'sf.text.footer_tagline' | t | newline_to_br }}{% endif %}</p><div class="sf-footer-social">{%- if sf_world == 'home' and ig_home != blank -%}<a href="{{ ig_home }}" target="_blank" rel="noopener">SOFIE Home · @{{ ig_home_handle | escape }} ↗</a><a href="{{ ig_beauty }}" target="_blank" rel="noopener">SOFIE Makeup · @{{ ig_beauty_handle | escape }} ↗</a>{%- else -%}<a href="{{ ig_beauty }}" target="_blank" rel="noopener">SOFIE Makeup · @{{ ig_beauty_handle | escape }} ↗</a>{%- if ig_home != blank -%}<a href="{{ ig_home }}" target="_blank" rel="noopener">SOFIE Home · @{{ ig_home_handle | escape }} ↗</a>{%- endif -%}{%- endif -%}</div>{%- if settings.pickup_name != blank -%}<p class="small sf-footer-visit">Visit us · {{ settings.pickup_name | escape }}<br>Every day {% render 'sf-now-hours', mode: 'range' %}{% if settings.pickup_map != blank %} · <a href="{{ settings.pickup_map }}" target="_blank" rel="noopener">Map ↗</a>{% endif %}{% if settings.pickup_enabled != false %}<br>Free store pickup for SOFIE NOW items{% endif %}</p>{%- endif -%}</div>
+<div><h2>{{ 'sf.text.shop' | t }}</h2>{%- if sf_world == 'home' -%}{%- for link in home_menu.links limit: 7 -%}{%- liquid
+  assign label = link.title | strip
+  assign up = label | upcase
+  assign key = '|' | append: up | append: '|'
+  if label == up and label.size > 3
+    unless '|SMEG|' contains key
+      assign label = label | capitalize
+    endunless
+  endif
+-%}<a href="{{ link.url }}">{{ label | escape }}</a>{%- endfor -%}<a href="{{ beauty_url }}">{{ settings.beauty_switch_label | default: 'SOFIE Makeup' | escape }}</a>{%- else -%}<a href="{{ settings.now_collection.url | default: '/collections/sofie-hours' }}">SOFIE NOW</a>{%- if settings.fresh_collection != blank -%}<a href="{{ settings.fresh_collection.url }}">{{ settings.fresh_collection.title | escape }}</a>{%- endif -%}<a href="{{ beauty_url }}">{{ 'sf.text.beauty' | t }}</a><a href="{{ home_url }}">{{ 'sf.text.home_living' | t }}</a><a href="{{ pages['brands'].url }}">{{ 'sf.text.all_brands' | t }}</a><button type="button" class="sf-footer-match" data-match-open>Find My Match</button><a href="{{ pages['my-rewards'].url | default: routes.account_url }}">{{ 'sf.text.rewards' | t }}</a>{%- endif -%}</div><div><h2>{{ 'sf.text.help' | t }}</h2><a href="{{ pages['contact'].url }}">{{ 'sf.text.contact' | t }}</a><a href="{{ routes.root_url }}apps/loyalty/account">{{ 'sf.text.account' | t }}</a><a href="{{ pages['shipping-policy'].url | default: shop.shipping_policy.url }}">{{ 'sf.text.shipping' | t }}</a><a href="{{ tracker_url }}">Track a SOFIE NOW order</a>{% for policy in shop.policies %}{% if policy != blank and policy.url != shop.shipping_policy.url %}<a href="{{ policy.url }}">{{ policy.title | escape }}</a>{% endif %}{% endfor %}</div><div class="sf-newsletter"><h2>{{ 'sf.text.newsletter' | t }}</h2><p>{{ 'sf.text.newsletter_text' | t }}</p>{% form 'customer',id:'sf-newsletter' %}<input type="hidden" name="contact[tags]" value="newsletter">{% if form.posted_successfully? %}<p role="status">{{ 'sf.text.subscribed' | t }}</p>{% else %}{{ form.errors | default_errors }}<label class="sr-only" for="newsletter-email">{{ 'sf.text.email' | t }}</label><div class="sf-email-row"><input id="newsletter-email" type="email" name="contact[email]" autocomplete="email" placeholder="{{ 'sf.text.email' | t }}" required><button aria-label="{{ 'sf.text.subscribe' | t }}">{% render 'sf-icon',name:'arrow' %}</button></div><small>{{ 'sf.text.subscribe_consent' | t }} <a href="{{ shop.privacy_policy.url }}">{{ 'sf.text.privacy' | t }}</a></small>{% endif %}{% endform %}</div></div><div class="sf-wrap sf-footer-bottom"><span>© {{ 'now' | date:'%Y' }} SOFIE. {{ 'sf.text.footer_copy' | t }}</span><div class="sf-payments">{% for type in shop.enabled_payment_types %}{{ type | payment_type_svg_tag }}{% endfor %}</div><span>{{ shop.currency }}</span></div></footer>
+<div class="sf-wrap"><a class="sfjp-footer" href="{{ routes.root_url }}pages/beauty-passport#measurement">{{ 'sf.journey.passport' | t }} · {{ 'sf.journey.privacy' | t }}</a></div>
+{% schema %}
+{"name": "Sofie Footer", "settings": []}
+{% endschema %}
+
+

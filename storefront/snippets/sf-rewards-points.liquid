@@ -1,0 +1,11 @@
+{% doc %}
+Renders the points estimate for the selected product option.
+@param {product} product - Current product
+{% enddoc %}
+{% assign reward_variant = product.selected_or_first_available_variant %}{% assign initial_points = reward_variant.price | divided_by: 100.0 | round | divided_by: 10 | floor %}
+<div class="sfr-points" data-rewards-product data-currency="{{ cart.currency.iso_code | default: shop.currency }}" data-gift-card="{{ product.gift_card }}" data-proxy="{{ routes.root_url }}apps/loyalty" data-earn="{{ 'sf.rewards.product_earn' | t | escape }}" data-note="{{ 'sf.rewards.estimate_note' | t | escape }}" data-currency-note="{{ 'sf.rewards.currency_note' | t | escape }}" data-gift-note="{{ 'sf.rewards.gift_card_note' | t | escape }}" data-unavailable="{{ 'sf.rewards.unavailable' | t | escape }}">
+  <a href="{{ routes.root_url }}pages/my-rewards"><span class="sfr-star" aria-hidden="true">✦</span> <strong data-points-estimate>{% if product.gift_card %}{{ 'sf.rewards.gift_card_note' | t }}{% else %}{{ 'sf.rewards.product_earn' | t | replace: '[points]', initial_points }}{% endif %}</strong></a>
+  <p data-points-note>{{ 'sf.rewards.estimate_note' | t }}</p>
+</div>
+{{ 'sofie-rewards.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sofie-rewards.js' | asset_url }}" defer></script>
